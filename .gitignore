@@ -1,2 +1,9 @@
 .idea
 *.iml
+.DS_Store
+src/.DS_Store
+src/main/.DS_Store
+src/main/java/.DS_Store
+src/main/java/application/.DS_Store
+src/main/resources/.DS_Store
+target/
