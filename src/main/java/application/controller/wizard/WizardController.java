@@ -44,7 +44,7 @@ public class WizardController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
 
 
-        loader.setLocation(getClass().getResource("/resources/fxml/wizard/content/Intro.fxml"));
+        loader.setLocation(getClass().getResource("/fxml/wizard/content/Intro.fxml"));
 
         try {
             AnchorPane introPane = loader.load();
@@ -66,8 +66,7 @@ public class WizardController implements Initializable {
         });
 
         button_Cancel.setOnAction(event -> {
-            GuiSvgPlott.getInstance().closeWizard();
-        });
+            GuiSvgPlott.getInstance().closeWizard(); });
 
     }
 

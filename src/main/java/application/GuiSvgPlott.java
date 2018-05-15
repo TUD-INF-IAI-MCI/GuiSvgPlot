@@ -28,7 +28,7 @@ public class GuiSvgPlott extends Application {
     }
 
 
-    static final Logger log = LoggerFactory.getLogger(GuiSvgPlott.class);
+   static final Logger log = LoggerFactory.getLogger(GuiSvgPlott.class);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -36,7 +36,7 @@ public class GuiSvgPlott extends Application {
         FXMLLoader loader = new FXMLLoader();
 
 
-        loader.setLocation(getClass().getResource("../resources/fxml/RootFrame.fxml"));
+        loader.setLocation(getClass().getResource("/fxml/RootFrame.fxml"));
 
         AnchorPane anchorPane = loader.load();
 

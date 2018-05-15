@@ -37,7 +37,7 @@ public class RootFrameController implements Initializable {
             FXMLLoader loader = new FXMLLoader();
 
 
-            loader.setLocation(getClass().getResource("/resources/fxml/wizard/Wizard.fxml"));
+            loader.setLocation(getClass().getResource("/fxml/wizard/Wizard.fxml"));
 
             try {
                 AnchorPane introPane = loader.load();
