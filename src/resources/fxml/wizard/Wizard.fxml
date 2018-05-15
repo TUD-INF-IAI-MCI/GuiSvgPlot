@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.WizardController">
+    <children>
+        <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0"
+                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                    AnchorPane.topAnchor="0.0">
+            <top>
+                <ToolBar disable="true" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0"
+                         prefWidth="200.0" visible="false" BorderPane.alignment="CENTER">
+                    <items>
+                        <Button fx:id="button_Close" accessibleText="Anwendung Beenden" mnemonicParsing="false" text="X"
+                                textFill="#eb0000">
+                            <font>
+                                <Font name="Berlin Sans FB Demi Bold" size="11.0"/>
+                            </font>
+                            ö
+                        </Button>
+                    </items>
+                </ToolBar>
+            </top>
+            <bottom>
+                <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <buttons>
+                        <Button fx:id="button_Next" accessibleText="Nächster Schritt" mnemonicParsing="false"
+                                text="Weiter"/>
+                        <Button fx:id="button_Cancel" accessibleText="Abbrechen" mnemonicParsing="false"
+                                text="Abbrechen"/>
+                    </buttons>
+                    <padding>
+                        <Insets right="10.0"/>
+                    </padding>
+                </ButtonBar>
+            </bottom>
+            <center>
+
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>
