@@ -25,6 +25,14 @@
 
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>stylesheet/**</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -33,8 +41,39 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <excludes>
+                        <exclude>resources/stylesheet/</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+
+
+            <!-- Sass compiler -->
+            <plugin>
+                <groupId>org.jasig.maven</groupId>
+                <artifactId>sass-maven-plugin</artifactId>
+                <version>1.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>update-stylesheets</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <resources>
+                        <resource>
+                            <!-- Set source and destination dirs -->
+                            <source>
+                                <directory>${project.basedir}/src/main/resources/stylesheet</directory>
+                            </source>
+                            <destination>${project.basedir}/target/classes/stylesheet</destination>
+                        </resource>
+                    </resources>
                 </configuration>
             </plugin>
         </plugins>
-    </build>
+   </build>
 </project>

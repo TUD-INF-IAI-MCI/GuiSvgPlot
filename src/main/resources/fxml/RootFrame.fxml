@@ -8,7 +8,8 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.111"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.RootFrameController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.RootFrameController"
+            stylesheets="/stylesheet/guiSvgPlott.css">
     <BorderPane fx:id="borderPane_Content" layoutX="311.0" layoutY="100.0" prefHeight="700.0" prefWidth="1000.0"
                 AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                 AnchorPane.topAnchor="0.0">
@@ -16,7 +17,7 @@
             <MenuBar BorderPane.alignment="CENTER">
                 <menus>
                     <Menu mnemonicParsing="false" text="File">
-                        <items>
+                        <items >
                             <MenuItem mnemonicParsing="false" text="Close"/>
                         </items>
                     </Menu>

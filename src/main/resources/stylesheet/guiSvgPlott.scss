@@ -1,0 +1,12 @@
+$tud-blue: #002557;
+
+.menu-bar {
+   -fx-background-color: $tud-blue;
+   /* -fx-use-system-menu-bar: true;*/
+}
+
+.menu .label{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-scale: 20;
+}
