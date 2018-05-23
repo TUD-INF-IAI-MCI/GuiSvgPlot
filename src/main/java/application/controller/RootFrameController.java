@@ -29,7 +29,7 @@ public class RootFrameController implements Initializable {
 
     private ButtonService buttonService = ButtonService.getInstance();
 
-   @Override
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
