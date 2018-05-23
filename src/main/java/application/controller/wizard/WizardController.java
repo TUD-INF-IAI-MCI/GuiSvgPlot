@@ -32,26 +32,17 @@ public class WizardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         initButtons();
-
         loadIntro();
-
-
     }
 
     private void loadIntro() {
         FXMLLoader loader = new FXMLLoader();
-
-
         loader.setLocation(getClass().getResource("/fxml/wizard/content/Intro.fxml"));
 
         try {
             AnchorPane introPane = loader.load();
-
             borderPane_Wizard.setCenter(introPane);
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,7 +51,6 @@ public class WizardController implements Initializable {
     }
 
     private void initButtons() {
-
         button_Next.setOnAction(event -> {
             loadWizardContentByIndex(++currentStageIndex);
         });
@@ -71,10 +61,8 @@ public class WizardController implements Initializable {
     }
 
     private void loadWizardContentByIndex(int currentStageIndex) {
-
         System.out.println(currentStageIndex);
         borderPane_Wizard.setCenter(null);
-
     }
 
 

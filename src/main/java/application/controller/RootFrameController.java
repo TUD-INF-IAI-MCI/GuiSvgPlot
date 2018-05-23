@@ -3,11 +3,12 @@ package application.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+import javafx.event.ActionEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,8 +22,11 @@ public class RootFrameController implements Initializable {
     @FXML
     public Button button_StartDiagram;
 
+    @FXML
+    public Button button_StartFunction;
 
-    private Stage wizardStage;
+    @FXML
+    public AnchorPane anchorPain_main;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -31,39 +35,35 @@ public class RootFrameController implements Initializable {
     }
 
     public void init() {
-
-        button_StartDiagram.setOnAction(event -> {
-
-            FXMLLoader loader = new FXMLLoader();
-
-
-            loader.setLocation(getClass().getResource("/fxml/wizard/Wizard.fxml"));
-
-            try {
-                AnchorPane introPane = loader.load();
-
-
-                Scene scene = new Scene(introPane);
-
-                wizardStage = new Stage();
-                wizardStage.setScene(scene);
-
-                wizardStage.showAndWait();
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
+        button_StartDiagram.setOnAction(this::startDiagram);
+        // fire Action Event on Enter
+        button_StartDiagram.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+            if (ev.getCode() == KeyCode.ENTER) {
+                button_StartDiagram.fire();
+                ev.consume();
             }
-
-
         });
-
     }
 
     public void closeWizard() {
+        anchorPain_main.getChildren().remove(anchorPain_main.getChildren().size() - 1 );
+        button_StartFunction.setVisible(true);
+        button_StartDiagram.setVisible(true);
+    }
 
-        if (wizardStage != null)
-            wizardStage.close();
+    private void startDiagram(ActionEvent event){
+        FXMLLoader loader = new FXMLLoader();
 
+        loader.setLocation(getClass().getResource("/fxml/wizard/Wizard.fxml"));
+
+        try {
+            button_StartDiagram.setVisible(false);
+            button_StartFunction.setVisible(false);
+            anchorPain_main.getChildren().add(loader.load());
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

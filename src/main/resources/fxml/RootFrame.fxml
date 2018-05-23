@@ -31,10 +31,10 @@
             </MenuBar>
         </top>
         <center>
-            <AnchorPane BorderPane.alignment="CENTER">
+            <AnchorPane BorderPane.alignment="CENTER" fx:id="anchorPain_main">
                 <children>
-                     <Button fx:id="button_StartFunction" accessibleText="Funktion erstellen" layoutX="108.0" layoutY="279.0" mnemonicParsing="false" prefHeight="103.0" prefWidth="338.0" text="Funktion erstellen" AnchorPane.bottomAnchor="289.0" AnchorPane.leftAnchor="63.0" AnchorPane.rightAnchor="553.0" AnchorPane.topAnchor="279.0" />
-                     <Button fx:id="button_StartDiagram" accessibleText="Diagramm erstellen" layoutX="603.0" layoutY="274.0" mnemonicParsing="false" prefHeight="103.0" prefWidth="338.0" text="Diagramm erstellen" AnchorPane.rightAnchor="63.0" />
+                     <Button fx:id="button_StartFunction" accessibleText="Funktion erstellen" layoutX="108.0" layoutY="279.0" mnemonicParsing="false" prefHeight="103.0" prefWidth="338.0" text="Funktion erstellen" AnchorPane.leftAnchor="100.0" />
+                     <Button fx:id="button_StartDiagram" accessibleText="Diagramm erstellen" layoutX="603.0" layoutY="274.0" mnemonicParsing="false" prefHeight="103.0" prefWidth="338.0" text="Diagramm erstellen" AnchorPane.rightAnchor="100.0" />
                 </children>
             </AnchorPane>
         </center>

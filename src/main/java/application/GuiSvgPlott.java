@@ -15,7 +15,7 @@ public class GuiSvgPlott extends Application {
     private static GuiSvgPlott instance;
 
     private RootFrameController rootFrameController;
-
+    
     public GuiSvgPlott() {
         instance = this;
     }
