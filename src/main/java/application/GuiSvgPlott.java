@@ -15,7 +15,7 @@ public class GuiSvgPlott extends Application {
     private static GuiSvgPlott instance;
 
     private RootFrameController rootFrameController;
-    
+
     public GuiSvgPlott() {
         instance = this;
     }
@@ -34,7 +34,6 @@ public class GuiSvgPlott extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         FXMLLoader loader = new FXMLLoader();
-
 
         loader.setLocation(getClass().getResource("/fxml/RootFrame.fxml"));
 

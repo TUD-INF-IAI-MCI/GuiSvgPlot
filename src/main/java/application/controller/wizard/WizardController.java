@@ -1,6 +1,7 @@
 package application.controller.wizard;
 
 import application.GuiSvgPlott;
+import application.service.ButtonService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,6 +27,7 @@ public class WizardController implements Initializable {
     @FXML
     public BorderPane borderPane_Wizard;
 
+    private ButtonService buttonService = ButtonService.getInstance();
 
     private int currentStageIndex = 0;
 
@@ -46,17 +48,18 @@ public class WizardController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private void initButtons() {
+        buttonService.addEnterEventHandler(button_Next);
         button_Next.setOnAction(event -> {
             loadWizardContentByIndex(++currentStageIndex);
         });
 
+        buttonService.addEnterEventHandler(button_Cancel);
         button_Cancel.setOnAction(event -> {
-            GuiSvgPlott.getInstance().closeWizard(); });
+            GuiSvgPlott.getInstance().closeWizard();
+        });
 
     }
 
