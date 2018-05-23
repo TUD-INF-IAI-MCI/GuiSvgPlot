@@ -19,7 +19,7 @@ public class RootFrameController implements Initializable {
     public BorderPane borderPane_Content;
 
     @FXML
-    public Button button_StartWIzard;
+    public Button button_StartDiagram;
 
 
     private Stage wizardStage;
@@ -32,7 +32,7 @@ public class RootFrameController implements Initializable {
 
     public void init() {
 
-        button_StartWIzard.setOnAction(event -> {
+        button_StartDiagram.setOnAction(event -> {
 
             FXMLLoader loader = new FXMLLoader();
 
