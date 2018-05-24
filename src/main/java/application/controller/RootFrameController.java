@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.GuiSvgPlott;
 import application.Wizard.WizardField;
 import application.Wizard.WizardStage;
 import application.controller.wizard.WizardController;
@@ -57,18 +58,22 @@ public class RootFrameController implements Initializable {
         borderPane_Content.setCenter(center);
     }
 
-    private void startDiagram(ActionEvent event){
+    private void startDiagram(ActionEvent event) {
         // TODO: verschlanken
         SvgPlotOptions svgPlotOptions = new SvgPlotOptions();
         FXMLLoader choiceBoxLoader = new FXMLLoader();
-        choiceBoxLoader.setLocation(getClass().getResource("/fxml/wizard/content/tiles/choiceBox.fxml"));
+        choiceBoxLoader.setLocation(GuiSvgPlott.class.getResource("/fxml/wizard/content/diagram/tiles/choiceBox.fxml"));
         FXMLLoader choiceBoxLoader2 = new FXMLLoader();
-        choiceBoxLoader2.setLocation(getClass().getResource("/fxml/wizard/content/tiles/choiceBox.fxml"));
+        choiceBoxLoader2.setLocation(GuiSvgPlott.class.getResource("/fxml/wizard/content/diagram/tiles/choiceBox.fxml"));
         FXMLLoader textFieldLoader = new FXMLLoader();
-        textFieldLoader.setLocation(getClass().getResource("/fxml/wizard/content/tiles/textField.fxml"));
+        textFieldLoader.setLocation(GuiSvgPlott.class.getResource("/fxml/wizard/content/diagram/tiles/textField.fxml"));
 
-        ObservableList<DiagramType> diagramTypeObservableList =  FXCollections.observableArrayList(DiagramType.values());
-        ObservableList<OutputDevice> outputDeviceObservableList =  FXCollections.observableArrayList(OutputDevice.values());
+
+        System.out.println(choiceBoxLoader.getLocation());
+
+
+        ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());
+        ObservableList<OutputDevice> outputDeviceObservableList = FXCollections.observableArrayList(OutputDevice.values());
         ChoiceBoxController<DiagramType> cbc = new ChoiceBoxController<>("Diagrammtyp", diagramTypeObservableList, svgPlotOptions.getDiagramType());
         ChoiceBoxController<OutputDevice> cbc2 = new ChoiceBoxController<>("Ausgabegerär", outputDeviceObservableList, svgPlotOptions.getOutputDevice());
         TextFieldController tfc = new TextFieldController("Titel", svgPlotOptions.getTitle());
@@ -86,6 +91,7 @@ public class RootFrameController implements Initializable {
             borderPane_Content.setCenter(loader.load());
             WizardController wizardController = loader.getController();
             wizardController.setStages(stagesMap);
+
             wizardController.setSvgPlotOptions(svgPlotOptions);
         } catch (IOException e) {
             e.printStackTrace();

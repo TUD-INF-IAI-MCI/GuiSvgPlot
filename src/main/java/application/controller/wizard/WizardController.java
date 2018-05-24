@@ -63,7 +63,7 @@ public class WizardController implements Initializable {
 
     private void loadIntro() {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/wizard/content/Intro.fxml"));
+        loader.setLocation(GuiSvgPlott.class.getResource("/fxml/wizard/content/Intro.fxml"));
 
         try {
             AnchorPane introPane = loader.load();
@@ -90,6 +90,7 @@ public class WizardController implements Initializable {
         System.out.println(currentStageIndex);
         borderPane_Wizard.setCenter(null);
         WizardStage stage = this.stages.getOrDefault(currentStageIndex, null);
+        System.out.println(stage);
         if (stage != null) {
             Pane stagePane = new AnchorPane();
             Label header = new Label(stage.getTitle());
