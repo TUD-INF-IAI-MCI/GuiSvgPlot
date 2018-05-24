@@ -47,13 +47,11 @@
                 </configuration>
             </plugin>
 
-
-
-            <!-- Sass compiler -->
+            <!--SASS compiler-->
             <plugin>
-                <groupId>org.jasig.maven</groupId>
+                <groupId>nl.geodienstencentrum.maven</groupId>
                 <artifactId>sass-maven-plugin</artifactId>
-                <version>1.1.1</version>
+                <version>3.5.3</version>
                 <executions>
                     <execution>
                         <phase>compile</phase>
@@ -65,15 +63,18 @@
                 <configuration>
                     <resources>
                         <resource>
-                            <!-- Set source and destination dirs -->
                             <source>
                                 <directory>${project.basedir}/src/main/resources/stylesheet</directory>
+                                <includes>
+                                    <include>**/*.scss</include>
+                                </includes>
                             </source>
+                            <relativeOutputDirectory>..</relativeOutputDirectory>
                             <destination>${project.basedir}/target/classes/stylesheet</destination>
                         </resource>
                     </resources>
                 </configuration>
             </plugin>
         </plugins>
-   </build>
+    </build>
 </project>
