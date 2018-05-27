@@ -1,25 +1,21 @@
 package application.controller.wizard.chart;
 
+import application.GuiSvgPlott;
 import application.Wizard.SVGWizardController;
 import application.Wizard.StageController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import tud.tangram.svgplot.options.SvgPlotOptions;
+import tud.tangram.svgplot.svgcreator.SvgCreator;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
-// hideoriginalPoints (trendlinie)
-// sorting, sortdescending
-// autoscale
-// size
-// device
-// output
-
 public class ChartController implements SVGWizardController {
+
+    private int AMOUNTOFSTAGES = 7;
 
     private int currentStage;
     private String title;
@@ -49,9 +45,13 @@ public class ChartController implements SVGWizardController {
     @Override
     public void setCurrentStage(int currentStage) {
         this.currentStage = currentStage;
-        this.setStageView();
-        if (this.currentStageController != null){
+        if (this.currentStageController != null) {
             this.svgPlotOptions = currentStageController.getSvgPlotOptions();
+        }
+        if (this.currentStage <= this.AMOUNTOFSTAGES) {
+            this.setStageView();
+        } else {
+            buildSVG();
         }
     }
 
@@ -71,12 +71,25 @@ public class ChartController implements SVGWizardController {
             loader.setLocation(getClass().getResource("/fxml/wizard/content/chart/stage" + this.currentStage + ".fxml"));
 
             try {
-                boderPane_stage.setCenter(loader.load());
-                currentStageController = loader.getController();
-                currentStageController.setSvgPlotOptions(this.svgPlotOptions);
+                this.boderPane_stage.setCenter(loader.load());
+                this.currentStageController = loader.getController();
+                this.currentStageController.setSvgPlotOptions(this.svgPlotOptions);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void buildSVG(){
+        this.svgPlotOptions.finalizeOptions();
+
+        SvgCreator creator = this.svgPlotOptions.getDiagramType().getInstance(this.svgPlotOptions);
+        try {
+            creator.run();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+       GuiSvgPlott.getInstance().closeWizard();
     }
 }

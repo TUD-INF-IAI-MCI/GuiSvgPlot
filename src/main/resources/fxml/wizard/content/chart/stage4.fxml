@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.Stage4Controller">
+    <children>
+        <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <padding>
+                <Insets left="10.0" right="10.0" />
+            </padding>
+            <children>
+                <Label fx:id="label_Autoscale" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="Diagramm auf Datenbereich skalieren" />
+                <CheckBox fx:id="checkbox_Autoscale" mnemonicParsing="false" prefWidth="600.0" text="auf Datenbereich skalieren" GridPane.columnIndex="1" />
+
+                <Label fx:id="label_xrange" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="Darstellungsbereich der X-Achse" GridPane.rowIndex="1" />
+                <TextField fx:id="textField_xfrom" accessibleText="Darstellungsbereich der X-Achse von" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" text="von" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                    <padding>
+                        <Insets right="10.0" />
+                    </padding>
+                </Label>
+                <TextField fx:id="textField_xTo" accessibleText="Darstellungsbereich der X-Achse bis" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" text="bis" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                    <padding>
+                        <Insets right="10.0" />
+                    </padding>
+                </Label>
+
+                <Label fx:id="label_yrange" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="Darstellungsbereich der Y-Achse" GridPane.rowIndex="4" />
+                <TextField fx:id="textField_yfrom" accessibleText="Darstellungsbereich der Y-Achse von" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" text="von" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                    <padding>
+                        <Insets right="10.0" />
+                    </padding>
+                </Label>
+                <TextField fx:id="textField_yto" accessibleText="Darstellungsbereich der Y-Achse bis" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" text="bis" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                    <padding>
+                        <Insets right="10.0" />
+                    </padding>
+                </Label>
+            </children>
+        </GridPane>
+    </children>
+</AnchorPane>

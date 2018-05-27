@@ -7,13 +7,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ResourceBundle;
 
 public class WizardController implements Initializable {
 
@@ -50,7 +50,6 @@ public class WizardController implements Initializable {
     private void loadIntro() {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/wizard/content/Intro.fxml"));
-        System.out.println(loader.getLocation());
         try {
             AnchorPane introPane = loader.load();
             borderPane_Wizard.setCenter(introPane);
@@ -91,6 +90,7 @@ public class WizardController implements Initializable {
     public void setSvgWizardController(SVGWizardController svgWizardController) {
         this.svgWizardController = svgWizardController;
         this.label_Headline.setText(this.svgWizardController.getTitle() + " erstellen");
+        this.label_Headline.setAccessibleText(this.svgWizardController.getTitle() + " erstellen");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(this.svgWizardController.getFXMLLocation()));
         try {

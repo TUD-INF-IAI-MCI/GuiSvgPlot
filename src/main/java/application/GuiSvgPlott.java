@@ -39,7 +39,6 @@ public class GuiSvgPlott extends Application {
 
         AnchorPane anchorPane = loader.load();
 
-
         rootFrameController = loader.getController();
 
         rootFrameController.init();
@@ -47,34 +46,10 @@ public class GuiSvgPlott extends Application {
 
         Scene scene = new Scene(anchorPane);
 
+        primaryStage.setResizable(true);
         primaryStage.setTitle("FXML Welcome");
         primaryStage.setScene(scene);
         primaryStage.show();
-
-
-    }
-
-
-    private void runSVGPlott() {
-
-
-        System.out.println("hs");
-
-//        SvgPlotOptions options = new SvgPlotOptions();
-
-//        System.out.println(options);
-//        JCommander jc = new JCommander(options);
-//        jc.addConverterFactory(new SvgPlotOptions.StringConverterFactory());
-//
-//
-//        // Create the SvgCreator that is responsible for rendering the selected chart type
-//        SvgCreator creator = options.getDiagramType().getInstance(options);
-//
-//        try {
-//            creator.run();
-//        } catch (Exception e) {
-//            log.error("Fehler beim Erstellen der SVG-Datei", e);
-//        }
 
 
     }

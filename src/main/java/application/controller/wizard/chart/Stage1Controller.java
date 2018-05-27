@@ -30,8 +30,7 @@ public class Stage1Controller implements StageController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initDiagramTypeItems();
-        initListeners();
+        this.initDiagramTypeItems();
     }
 
     @Override
@@ -43,6 +42,7 @@ public class Stage1Controller implements StageController {
     public void setSvgPlotOptions(SvgPlotOptions svgPlotOptions) {
         this.svgPlotOptions = svgPlotOptions;
         this.initFields();
+        this.initListeners();
     }
 
     private void initDiagramTypeItems() {

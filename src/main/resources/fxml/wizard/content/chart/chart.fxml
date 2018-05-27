@@ -8,7 +8,7 @@
             BorderPane.alignment="CENTER" >
     <!--fx:controller="application.controller.wizard.chartiagramController"-->
    <children>
-      <BorderPane AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" fx:id="boderPane_stage">
+      <BorderPane AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" fx:id="boderPane_stage">
           <center>
 
           </center>

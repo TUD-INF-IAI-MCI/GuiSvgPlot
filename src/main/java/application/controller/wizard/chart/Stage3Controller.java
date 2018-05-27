@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 
 /**
  * Controller for third chart stage.
- * Options: xunit, yunit, trendline/baraccumulation/linepoints
+ * Options: xunit, yunit, trendline+hideoriginalPoints/baraccumulation/linepoints
  */
 public class Stage3Controller implements StageController {
 
@@ -36,6 +36,8 @@ public class Stage3Controller implements StageController {
     public Label label_linepoints;
     @FXML
     public CheckBox checkbox_linepoints;
+    @FXML
+    public CheckBox checkbox_Autoscale;
 
 
     private SvgPlotOptions svgPlotOptions;
@@ -54,13 +56,13 @@ public class Stage3Controller implements StageController {
         this.svgPlotOptions = svgPlotOptions;
         this.initFields();
         this.initBaraccumulationItems();
-        this.initLinePoints();
         this.initListeners();
     }
 
     private void initFields() {
         this.textField_xunit.setText(this.svgPlotOptions.getxUnit());
         this.textField_yunit.setText(this.svgPlotOptions.getyUnit());
+        this.initLinePoints();
         DiagramType diagramType = this.svgPlotOptions.getDiagramType();
         if (diagramType != null) {
             switch (diagramType) {
@@ -71,7 +73,7 @@ public class Stage3Controller implements StageController {
                     setVisible(this.label_linepoints, this.checkbox_linepoints);
                     break;
                 default:
-                    break;
+                    break; // TODO: trendlinien bei Scatterplot
             }
         } else {
             setVisible(this.label_baraccumulation, this.choiceBox_baraccumulation);
@@ -79,18 +81,26 @@ public class Stage3Controller implements StageController {
         }
     }
 
+    /**
+     * Initializes the options of the {@link BarAccumulationStyle} choice box .
+     */
     private void initBaraccumulationItems() {
         ObservableList<BarAccumulationStyle> csvOrientationObservableList = FXCollections.observableArrayList(BarAccumulationStyle.values());
         this.choiceBox_baraccumulation.setItems(csvOrientationObservableList);
         this.choiceBox_baraccumulation.setValue(this.svgPlotOptions.getBarAccumulationStyle());
     }
 
+    /**
+     * Initializes the value of the " show line points" checkbox .
+     */
     private void initLinePoints() {
-        System.out.println(this.svgPlotOptions.getShowLinePoints());
         String showLinePoints = this.svgPlotOptions.getShowLinePoints();
         this.checkbox_linepoints.setSelected(showLinePoints != null && showLinePoints.equals("on"));
     }
 
+    /**
+     * Initializes {@link ChangeListener} on fields.
+     */
     private void initListeners() {
         this.textField_yunit.textProperty().addListener((observable, oldValue, newValue) -> {
             svgPlotOptions.setyUnit(newValue);

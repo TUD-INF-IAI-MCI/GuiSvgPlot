@@ -47,11 +47,10 @@ public class Stage2Controller implements StageController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initCsvOrientationItems();
-        initCsvTypeItems();
-        initCsvPathField();
-        initSortingTypeItems();
-        initListeners();
+        this.initCsvOrientationItems();
+        this.initCsvTypeItems();
+        this.initCsvPathField();
+        this.initSortingTypeItems();
     }
 
     @Override
@@ -63,6 +62,7 @@ public class Stage2Controller implements StageController {
     public void setSvgPlotOptions(SvgPlotOptions svgPlotOptions) {
         this.svgPlotOptions = svgPlotOptions;
         this.initFields();
+        this.initListeners();
     }
 
     private void initFields(){
@@ -135,7 +135,7 @@ public class Stage2Controller implements StageController {
      */
     private void initListeners() {
         this.textField_CsvPath.textProperty().addListener((observable, oldValue, newValue) -> {
-            svgPlotOptions.setTitle(newValue);
+            svgPlotOptions.setCsvPath(newValue);
         });
 
         this.choiceBox_CsvOrientation.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CsvOrientation>() {
