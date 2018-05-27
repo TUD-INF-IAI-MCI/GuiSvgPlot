@@ -67,7 +67,7 @@ public class GuiSvgPlott extends Application {
 //        jc.addConverterFactory(new SvgPlotOptions.StringConverterFactory());
 //
 //
-//        // Create the SvgCreator that is responsible for rendering the selected diagram type
+//        // Create the SvgCreator that is responsible for rendering the selected chart type
 //        SvgCreator creator = options.getDiagramType().getInstance(options);
 //
 //        try {
