@@ -1,28 +1,27 @@
 package application.controller.wizard;
 
 import application.GuiSvgPlott;
-import application.Wizard.WizardField;
-import application.Wizard.WizardStage;
+import application.Wizard.SVGWizardController;
 import application.service.ButtonService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import tud.tangram.svgplot.options.SvgPlotOptions;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ResourceBundle;
 
 public class WizardController implements Initializable {
 
     @FXML
     public Button button_Next;
+
+    @FXML
+    public Button button_Back;
 
     @FXML
     public Button button_Cancel;
@@ -33,27 +32,14 @@ public class WizardController implements Initializable {
     @FXML
     public BorderPane borderPane_Wizard;
 
+    @FXML
+    public Label label_Headline;
+
     private ButtonService buttonService = ButtonService.getInstance();
 
     private int currentStageIndex = 0;
 
-    private Map<Integer, WizardStage> stages;
-
-    private SvgPlotOptions svgPlotOptions;
-
-
-    public WizardController() {
-        this.stages = new HashMap<>();
-        this.svgPlotOptions = new SvgPlotOptions();
-    }
-
-    public void setStages(Map<Integer, WizardStage> stages) {
-        this.stages = stages;
-    }
-
-    public Map<Integer, WizardStage> getStages() {
-        return this.stages;
-    }
+    private SVGWizardController svgWizardController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -63,8 +49,7 @@ public class WizardController implements Initializable {
 
     private void loadIntro() {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(GuiSvgPlott.class.getResource("/fxml/wizard/content/Intro.fxml"));
-
+        loader.setLocation(getClass().getResource("/fxml/wizard/content/Intro.fxml"));
         try {
             AnchorPane introPane = loader.load();
             borderPane_Wizard.setCenter(introPane);
@@ -79,6 +64,11 @@ public class WizardController implements Initializable {
             loadWizardContentByIndex(++currentStageIndex);
         });
 
+        buttonService.addEnterEventHandler(button_Back);
+        button_Back.setOnAction(event -> {
+            loadWizardContentByIndex(--currentStageIndex);
+        });
+
         buttonService.addEnterEventHandler(button_Cancel);
         button_Cancel.setOnAction(event -> {
             GuiSvgPlott.getInstance().closeWizard();
@@ -88,30 +78,26 @@ public class WizardController implements Initializable {
 
     private void loadWizardContentByIndex(int currentStageIndex) {
         System.out.println(currentStageIndex);
-        borderPane_Wizard.setCenter(null);
-        WizardStage stage = this.stages.getOrDefault(currentStageIndex, null);
-        System.out.println(stage);
-        if (stage != null) {
-            Pane stagePane = new AnchorPane();
-            Label header = new Label(stage.getTitle());
-            stagePane.getChildren().add(header);
-            int index = 0;
-            for (WizardField tile : stage.getInputFields()) {
-                index++;
-                try {
-                    Node node = tile.getFxmlLoader().load();
-                    node.setTranslateY(node.getLayoutY() + 100 * index);
-                    stagePane.getChildren().add(node);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            borderPane_Wizard.setCenter(stagePane);
+        if(svgWizardController != null) {
+            svgWizardController.setCurrentStage(currentStageIndex);
         }
     }
 
+    public SVGWizardController getSvgWizardController() {
+        return svgWizardController;
+    }
 
-    public void setSvgPlotOptions(SvgPlotOptions svgPlotOptions) {
-        this.svgPlotOptions = svgPlotOptions;
+    public void setSvgWizardController(SVGWizardController svgWizardController) {
+        this.svgWizardController = svgWizardController;
+        this.label_Headline.setText(this.svgWizardController.getTitle() + " erstellen");
+        this.label_Headline.setAccessibleText(this.svgWizardController.getTitle() + " erstellen");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(this.svgWizardController.getFXMLLocation()));
+        try {
+            loader.setController(this.svgWizardController);
+            borderPane_Wizard.setCenter(loader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
