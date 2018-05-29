@@ -68,6 +68,8 @@ public class ChartController implements SVGWizardController {
     private void setStageView(){
         if(this.currentStage > 0) {
             FXMLLoader loader = new FXMLLoader();
+            ResourceBundle bundle = ResourceBundle.getBundle("langBundle");
+            loader.setResources(bundle);
             loader.setLocation(getClass().getResource("/fxml/wizard/content/chart/stage" + this.currentStage + ".fxml"));
 
             try {

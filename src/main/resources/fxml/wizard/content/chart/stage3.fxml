@@ -36,10 +36,10 @@
                 <Label fx:id="label_yunit" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="%y_axis_unit" GridPane.rowIndex="1" />
                 <TextField fx:id="textField_yunit" accessibleText="Einheit der Y-Achse" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                <Label fx:id="label_baraccumulation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="Akkumulation der Balken (Balkendiagramm)" visible="false" GridPane.rowIndex="3" />
+                <Label fx:id="label_baraccumulation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="%acc" visible="false" GridPane.rowIndex="3" />
                 <ChoiceBox fx:id="choiceBox_baraccumulation" accessibleText="Art, in der mehrere Datenreihen in Balkendiagrammen akkumuliert werden." prefHeight="25.0" prefWidth="600.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="Datenpunkte markieren (Liniendiagramm)" visible="false" GridPane.rowIndex="4" />
-                <CheckBox fx:id="checkbox_linepoints" accessibleText="Datenpunkte auf Linien eines Liniendiagramms markieren" mnemonicParsing="false" text="Datenpunkte auf Linien markieren" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="%mark_data" visible="false" GridPane.rowIndex="4" />
+                <CheckBox fx:id="checkbox_linepoints" accessibleText="Datenpunkte auf Linien eines Liniendiagramms markieren" mnemonicParsing="false" text="%mark_data_on_line" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             </children>
         </GridPane>
     </children>
