@@ -14,19 +14,19 @@
         <top>
             <MenuBar BorderPane.alignment="CENTER">
                 <menus>
-                    <Menu mnemonicParsing="false" text="File">
+                    <Menu mnemonicParsing="false" text="%file">
                         <items>
-                            <MenuItem mnemonicParsing="false" text="Close" />
+                            <MenuItem mnemonicParsing="false" text="%close" />
                         </items>
                     </Menu>
-                    <Menu mnemonicParsing="false" text="Edit">
+                    <Menu mnemonicParsing="false" text="%edit">
                         <items>
-                            <MenuItem mnemonicParsing="false" text="Delete" />
+                            <MenuItem mnemonicParsing="false" text="%delete" />
                         </items>
                     </Menu>
-                    <Menu mnemonicParsing="false" text="Help">
+                    <Menu mnemonicParsing="false" text="%help">
                         <items>
-                            <MenuItem mnemonicParsing="false" text="About" />
+                            <MenuItem mnemonicParsing="false" text="%about" />
                         </items>
                     </Menu>
                 </menus>
@@ -35,8 +35,8 @@
       <center>
          <ButtonBar buttonMinWidth="350.0" maxWidth="-Infinity" prefHeight="675.0" BorderPane.alignment="CENTER">
            <buttons>
-                     <Button fx:id="button_StartFunction" accessibleText="Funktion erstellen" mnemonicParsing="false" prefHeight="103.0" text="Funktion erstellen" ButtonBar.buttonData="LEFT" />
-                     <Button fx:id="button_StartDiagram" accessibleText="Diagramm erstellen" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="103.0" text="Diagramm erstellen" ButtonBar.buttonData="RIGHT" />
+                     <Button fx:id="button_StartFunction" accessibleText="Funktion erstellen" mnemonicParsing="false" prefHeight="103.0" text="%function_create" ButtonBar.buttonData="LEFT" />
+                     <Button fx:id="button_StartDiagram" accessibleText="Diagramm erstellen" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="103.0" text="%diagram_create" ButtonBar.buttonData="RIGHT" />
            </buttons>
             <BorderPane.margin>
                <Insets />
