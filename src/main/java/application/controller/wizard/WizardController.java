@@ -49,6 +49,8 @@ public class WizardController implements Initializable {
 
     private void loadIntro() {
         FXMLLoader loader = new FXMLLoader();
+        ResourceBundle bundle = ResourceBundle.getBundle("langBundle");
+        loader.setResources(bundle);
         loader.setLocation(getClass().getResource("/fxml/wizard/content/Intro.fxml"));
         try {
             AnchorPane introPane = loader.load();

@@ -7,26 +7,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="1000.0"
-            xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="application.controller.wizard.WizardController">
+<AnchorPane maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.WizardController">
     <children>
-        <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0"
-                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                    AnchorPane.topAnchor="0.0">
+        <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <bottom>
                 <ButtonBar maxWidth="1.7976931348623157E308" prefHeight="40.0" BorderPane.alignment="CENTER">
                     <buttons>
-                        <Button fx:id="button_Back" accessibleText="Vorheriger Schritt" mnemonicParsing="false"
-                                text="Zurück" ButtonBar.buttonData="RIGHT"/>
-                        <Button fx:id="button_Next" accessibleText="Nächster Scritt" mnemonicParsing="false"
-                                text="Weiter" ButtonBar.buttonData="RIGHT"/>
-                        <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT"
-                                cancelButton="true" mnemonicParsing="false" text="Abbrechen"
-                                ButtonBar.buttonData="LEFT"/>
+                        <Button fx:id="button_Back" accessibleText="Vorheriger Schritt" mnemonicParsing="false" text="%back" ButtonBar.buttonData="RIGHT" />
+                        <Button fx:id="button_Next" accessibleText="Nächster Scritt" mnemonicParsing="false" text="%next" ButtonBar.buttonData="RIGHT" />
+                        <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT" cancelButton="true" mnemonicParsing="false" text="%cancel" ButtonBar.buttonData="LEFT" />
                     </buttons>
                     <padding>
-                        <Insets left="10.0" right="10.0"/>
+                        <Insets left="10.0" right="10.0" />
                     </padding>
                 </ButtonBar>
             </bottom>
@@ -34,8 +26,7 @@
 
             </center>
             <top>
-                <Label fx:id="label_Headline" alignment="CENTER" contentDisplay="CENTER"
-                       minWidth="200.0" prefHeight="48.0" text="Label" textAlignment="CENTER" BorderPane.alignment="CENTER"/>
+                <Label fx:id="label_Headline" alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" prefHeight="48.0" text="Label" textAlignment="CENTER" BorderPane.alignment="CENTER" />
             </top>
         </BorderPane>
     </children>

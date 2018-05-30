@@ -30,10 +30,10 @@
                 <Insets left="10.0" right="10.0" />
             </padding>
             <children>
-                <Label fx:id="label_Device" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="Ausgabegerät" />
+                <Label fx:id="label_Device" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="%output_device" />
                 <ChoiceBox fx:id="choiceBox_Device" accessibleText="Ausgabegerät " maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" />
-                <Label fx:id="label_output" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="Pfad zur Ausgabedatei" GridPane.rowIndex="1" />
-                <TextField fx:id="textField_output" accessibleText="Pfad zur Ausgabedatei" maxWidth="1.7976931348623157E308" promptText="Bitte Pfad eingeben" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label fx:id="label_output" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="%path_to_output" GridPane.rowIndex="1" />
+                <TextField fx:id="textField_output" accessibleText="Pfad zur Ausgabedatei" maxWidth="1.7976931348623157E308" promptText="%prompt_path_to_file" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             </children>
         </GridPane>
     </children>

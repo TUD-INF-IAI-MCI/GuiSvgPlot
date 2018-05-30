@@ -30,9 +30,9 @@
                 <Insets left="10.0" right="10.0" />
             </padding>
             <children>
-                <Label fx:id="label_DiagramType" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="Diagramm Typ" />
+                <Label fx:id="label_DiagramType" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="%diagram_type" />
                 <ChoiceBox fx:id="choiceBox_DiagramType" accessibleText="Diagrammtyp auswählen" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" />
-                <Label fx:id="label_Title" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="Diagramm Titel" GridPane.rowIndex="1" />
+                <Label fx:id="label_Title" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="300.0" text="%diagram_title" GridPane.rowIndex="1" />
                 <TextField fx:id="textField_Title" accessibleText="Diagramm Titel" maxWidth="1.7976931348623157E308" promptText="Bitte Titel eingeben" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             </children>
         </GridPane>

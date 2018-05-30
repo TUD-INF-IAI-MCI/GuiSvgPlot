@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 public class ChartController implements SVGWizardController {
 
-    private int AMOUNTOFSTAGES = 7;
+    private  static final int AMOUNTOFSTAGES = 7;
 
     private int currentStage;
     private String title;
@@ -48,7 +48,7 @@ public class ChartController implements SVGWizardController {
         if (this.currentStageController != null) {
             this.svgPlotOptions = currentStageController.getSvgPlotOptions();
         }
-        if (this.currentStage <= this.AMOUNTOFSTAGES) {
+        if (this.currentStage <= ChartController.AMOUNTOFSTAGES) {
             this.setStageView();
         } else {
             buildSVG();
@@ -68,6 +68,8 @@ public class ChartController implements SVGWizardController {
     private void setStageView(){
         if(this.currentStage > 0) {
             FXMLLoader loader = new FXMLLoader();
+            ResourceBundle bundle = ResourceBundle.getBundle("langBundle");
+            loader.setResources(bundle);
             loader.setLocation(getClass().getResource("/fxml/wizard/content/chart/stage" + this.currentStage + ".fxml"));
 
             try {

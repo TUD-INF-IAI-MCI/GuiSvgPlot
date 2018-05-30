@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ResourceBundle;
+
 public class GuiSvgPlott extends Application {
 
 
@@ -32,9 +34,9 @@ public class GuiSvgPlott extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        ResourceBundle bundle = ResourceBundle.getBundle("langBundle");
         FXMLLoader loader = new FXMLLoader();
-
+        loader.setResources(bundle);
         loader.setLocation(getClass().getResource("/fxml/RootFrame.fxml"));
 
         AnchorPane anchorPane = loader.load();

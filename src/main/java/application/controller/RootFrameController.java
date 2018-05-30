@@ -36,7 +36,7 @@ public class RootFrameController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        ResourceBundle bundle = resources;
     }
 
     public void init() {
@@ -50,7 +50,9 @@ public class RootFrameController implements Initializable {
     }
 
     private void startDiagram(ActionEvent event){
+        ResourceBundle bundle = ResourceBundle.getBundle("langBundle");
         FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
         loader.setLocation(getClass().getResource("/fxml/wizard/Wizard.fxml"));
         try {
             center = borderPane_Content.getCenter();
