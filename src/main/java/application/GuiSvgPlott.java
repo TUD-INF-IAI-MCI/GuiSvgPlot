@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,7 @@ public class GuiSvgPlott extends Application {
     private static GuiSvgPlott instance;
 
     private RootFrameController rootFrameController;
+    private Stage primaryStage;
 
     public GuiSvgPlott() {
         instance = this;
@@ -30,7 +32,7 @@ public class GuiSvgPlott extends Application {
     }
 
 
-   static final Logger log = LoggerFactory.getLogger(GuiSvgPlott.class);
+    static final Logger log = LoggerFactory.getLogger(GuiSvgPlott.class);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -47,7 +49,7 @@ public class GuiSvgPlott extends Application {
 
 
         Scene scene = new Scene(anchorPane);
-
+        this.primaryStage = primaryStage;
         primaryStage.setResizable(true);
         primaryStage.setTitle("FXML Welcome");
         primaryStage.setScene(scene);
@@ -63,4 +65,7 @@ public class GuiSvgPlott extends Application {
 
     }
 
+    public Window getPrimaryStage() {
+        return primaryStage;
+    }
 }

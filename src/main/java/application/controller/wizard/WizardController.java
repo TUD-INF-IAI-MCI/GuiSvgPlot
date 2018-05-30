@@ -3,6 +3,7 @@ package application.controller.wizard;
 import application.GuiSvgPlott;
 import application.Wizard.SVGWizardController;
 import application.service.ButtonService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -64,11 +65,19 @@ public class WizardController implements Initializable {
         buttonService.addEnterEventHandler(button_Next);
         button_Next.setOnAction(event -> {
             loadWizardContentByIndex(++currentStageIndex);
+            Platform.runLater(() -> button_Back.setDisable(false));
+
         });
 
         buttonService.addEnterEventHandler(button_Back);
         button_Back.setOnAction(event -> {
-            loadWizardContentByIndex(--currentStageIndex);
+
+            if (currentStageIndex <= 2) {
+                Platform.runLater(() -> button_Back.setDisable(true));
+                loadWizardContentByIndex(--currentStageIndex);
+            } else {
+                loadWizardContentByIndex(--currentStageIndex);
+            }
         });
 
         buttonService.addEnterEventHandler(button_Cancel);
@@ -79,8 +88,7 @@ public class WizardController implements Initializable {
     }
 
     private void loadWizardContentByIndex(int currentStageIndex) {
-        System.out.println(currentStageIndex);
-        if(svgWizardController != null) {
+        if (svgWizardController != null) {
             svgWizardController.setCurrentStage(currentStageIndex);
         }
     }
@@ -98,8 +106,11 @@ public class WizardController implements Initializable {
         try {
             loader.setController(this.svgWizardController);
             borderPane_Wizard.setCenter(loader.load());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 }
