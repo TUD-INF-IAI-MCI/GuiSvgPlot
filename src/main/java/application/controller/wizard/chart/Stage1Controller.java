@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 
@@ -27,10 +28,12 @@ public class Stage1Controller implements StageController {
     public TextField textField_Title;
 
     private SvgPlotOptions svgPlotOptions;
+    private ResourceBundle bundle;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.initDiagramTypeItems();
+        this.bundle = resources;
     }
 
     @Override
@@ -49,6 +52,25 @@ public class Stage1Controller implements StageController {
         ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());
         diagramTypeObservableList.remove(DiagramType.FunctionPlot);
         this.choiceBox_DiagramType.setItems(diagramTypeObservableList);
+
+        // i18n
+        this.choiceBox_DiagramType.setConverter(new StringConverter<DiagramType>() {
+            @Override
+            public String toString(DiagramType diagramType) {
+                return bundle.getString(diagramType.toString());
+            }
+
+            @Override
+            public DiagramType fromString(String string) {
+                DiagramType diagramType = DiagramType.FunctionPlot;
+                for (DiagramType dt: FXCollections.observableArrayList(DiagramType.values())) {
+                    if (this.toString(dt).equals(string)) {
+                        diagramType = dt;
+                    }
+                }
+                return diagramType;
+            }
+        });
     }
 
     private void initListeners() {
