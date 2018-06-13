@@ -47,8 +47,6 @@ public class RootFrameController implements Initializable {
 
     public void init() {
         button_StartDiagram.setOnAction(this::startDiagram);
-        // fire Action Event on Enter
-        buttonService.addEnterEventHandler(button_StartDiagram);
         button_StartFunction.setOnAction(event -> startFunction());
     }
 
@@ -61,13 +59,10 @@ public class RootFrameController implements Initializable {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
-        loader.setLocation(getClass().getResource("/fxml/wizard/Wizard.fxml"));
+        loader.setLocation(getClass().getResource("/fxml/wizard/content/functions/FunctionWizardFrame.fxml"));
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
-            WizardController controller = loader.getController();
-            controller.setSvgWizardController(new FunctionFrameController());
-            currentStage = new SvgStage();
 
         } catch (IOException e) {
             e.printStackTrace();

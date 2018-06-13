@@ -5,14 +5,10 @@ import application.Wizard.SVGWizardController;
 import application.Wizard.StageController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,7 +22,7 @@ public class FunctionFrameController implements SVGWizardController {
     private BorderPane borderPane_stage;
 
 
-    private StageController currentStageController;
+    private StageController functionController;
     private SvgPlotOptions svgPlotOptions;
 
 
@@ -67,21 +63,19 @@ public class FunctionFrameController implements SVGWizardController {
             ResourceBundle bundle = ResourceBundle.getBundle("langBundle");
             loader.setResources(bundle);
 
-            URL path = GuiSvgPlott.getInstance().getClass().getResource("/fxml/wizard/content/functions/FunctionStage" + this.currentStageLevel + ".fxml");
-            File f = new File(path.toString());
-
-            System.out.println(f);
+            URL path = GuiSvgPlott.getInstance().getClass().getResource("/fxml/wizard/content/functions/FunctionWizardFrame.fxml");
             loader.setLocation(path);
 
-            try {
-                AnchorPane pane = loader.load();
-
-                this.borderPane_stage.setCenter(pane.getChildren().get(0));
-                this.currentStageController = loader.getController();
-                this.currentStageController.setSvgPlotOptions(this.svgPlotOptions);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            System.out.println();
+            
+//            try {
+//                AnchorPane pane = loader.load();
+//                this.borderPane_stage.setCenter(pane);
+//                this.functionController = loader.getController();
+//                this.functionController.setSvgPlotOptions(this.svgPlotOptions);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
 
     }
