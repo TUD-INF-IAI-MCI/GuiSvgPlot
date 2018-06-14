@@ -55,6 +55,10 @@ public class RootFrameController implements Initializable {
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
+            alert.setHeaderText("Function Wizard Mode");
+            alert.setTitle("Choose Function Wizard Mode");
+            alert.setContentText("Simple will be faster, Extended will be more sophisticated");
+
             ButtonType buttonTypeSimple = new ButtonType("Simple");
             ButtonType buttonTypeExtended = new ButtonType("Extended");
             ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);

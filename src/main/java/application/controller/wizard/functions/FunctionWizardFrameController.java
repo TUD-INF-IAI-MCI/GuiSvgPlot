@@ -273,12 +273,12 @@ public class FunctionWizardFrameController implements StageController {
 
     @Override
     public void setSvgPlotOptions(SvgPlotOptions svgPlotOptions) {
-
+        svgOptions = new GuiSvgOptions(svgPlotOptions);
     }
 
     @Override
     public SvgPlotOptions getSvgPlotOptions() {
-        return null;
+        return svgOptions.getOptions();
     }
 
 
