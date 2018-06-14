@@ -171,7 +171,7 @@ public class FunctionWizardFrameController implements StageController {
 
         button_OutputPath.setOnAction(event -> {
             FileChooser fc = new FileChooser();
-            fc.setInitialDirectory(new File(System.getProperty("user.home")));
+            fc.setInitialDirectory(userDir);
             File f = fc.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
             if (f != null)
                 textField_OutputPath.setText(f.getAbsolutePath());
@@ -207,12 +207,10 @@ public class FunctionWizardFrameController implements StageController {
 
 
         isExtended.addListener(invalid -> {
-            System.out.println("shit");
         });
 
         isExtended.addListener((args, oldVal, newVal) -> {
 
-            System.out.println("kek");
             initStage1(newVal);
             initStage2(newVal);
             initStage4(newVal);

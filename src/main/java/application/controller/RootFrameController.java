@@ -85,7 +85,6 @@ public class RootFrameController implements Initializable {
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
-            System.out.println("ext: " + isExtended);
             ((FunctionWizardFrameController) loader.getController()).setExtended(isExtended);
 
         } catch (IOException e) {
