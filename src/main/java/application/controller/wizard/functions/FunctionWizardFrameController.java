@@ -107,14 +107,15 @@ public class FunctionWizardFrameController implements StageController {
     private TextField textField_Title1;
 
 
-    /// Options
+    // ############# Options / Fields / Helper ########################
+
     private File userDir;
     private IntegerProperty currentStage;
 
     private ArrayList<AnchorPane> stages;
     private BooleanProperty isExtended;
 
-    GuiSvgOptions svgOptions;
+    private GuiSvgOptions svgOptions;
 
 
     @Override
@@ -126,26 +127,36 @@ public class FunctionWizardFrameController implements StageController {
         svgOptions = new GuiSvgOptions(new SvgPlotOptions());
 
         this.currentStage = new SimpleIntegerProperty();
-        this.isExtended = new SimpleBooleanProperty();
+        this.isExtended = new SimpleBooleanProperty(false);
 
         initListener();
 
         preProcessContent();
 
-        initStage1(false);
-        initStage2(false);
-        initStage4(false);
-        initStage3(false);
-
+        initiateAllStages();
 
     }
 
+    private void initiateAllStages() {
+        initStage1();
+        initStage2();
+        initStage4();
+        initStage3();
+    }
+
+    /**
+     * sets the {@code isExtended} value for the wizard
+     *
+     * @param isExtended {@link Boolean}-value for the isExtendedProperty
+     */
     public void setExtended(boolean isExtended) {
         this.isExtended.set(isExtended);
 
     }
 
-
+    /**
+     * content-preprocessing. Will "hide" the content-tabPane and shows the first stage
+     */
     private void preProcessContent() {
         stages = new ArrayList<>();
         tabPane_ContentHolder.getTabs().forEach(tab -> stages.add((AnchorPane) tab.getContent()));
@@ -155,7 +166,10 @@ public class FunctionWizardFrameController implements StageController {
     }
 
 
-    private void initStage1(Boolean extended) {
+    /**
+     * Will initiate the first stage. Depending on {@code extended}, some parts will dis- or enabled
+     */
+    private void initStage1() {
 
         textField_Title.setText("");
 
@@ -181,18 +195,32 @@ public class FunctionWizardFrameController implements StageController {
 
     }
 
-    private void initStage2(Boolean extended) {
+    /**
+     * Will initiate the second stage. Depending on {@code isExtended}, some parts will dis- or enabled
+     */
+    private void initStage2() {
     }
 
-    private void initStage3(Boolean extended) {
+    /**
+     * Will initiate the third stage. Depending on {@code isExtended}, some parts will dis- or enabled
+     */
+    private void initStage3() {
     }
 
-    private void initStage4(Boolean extended) {
+    /**
+     * Will initiate the fourth stage. Depending on {@code isExtended}, some parts will dis- or enabled
+     */
+    private void initStage4() {
     }
 
 
+    /**
+     * initiates all listeners for properties and elements
+     */
     private void initListener() {
 
+
+        // indicator for current stage. changes will automatically render the chosen stage
         currentStage.addListener((args, oldVal, newVal) -> {
 
             if (newVal.intValue() < 1) button_Back.setDisable(true);
@@ -206,24 +234,18 @@ public class FunctionWizardFrameController implements StageController {
         });
 
 
-        isExtended.addListener(invalid -> {
-        });
-
+        // listener for extended wizard mode
         isExtended.addListener((args, oldVal, newVal) -> {
-
-            initStage1(newVal);
-            initStage2(newVal);
-            initStage4(newVal);
-            initStage3(newVal);
-
+            initiateAllStages();
         });
 
-        // PreProcess
+        // increment the currentStage counter. Will trigger its changeListener
         button_Next.setOnAction(event -> currentStage.set(currentStage.get() + 1));
 
-
+        // decrement the currentStage counter. Will trigger its changeListener
         button_Back.setOnAction(event -> currentStage.set(currentStage.get() - 1));
 
+        // closes the wizard
         button_Cancel.setOnAction(event -> {
             GuiSvgPlott.getInstance().closeWizard();
         });
