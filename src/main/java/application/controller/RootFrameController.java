@@ -2,7 +2,7 @@ package application.controller;
 
 import application.controller.wizard.WizardController;
 import application.controller.wizard.chart.ChartController;
-import application.controller.wizard.functions.FunctionFrameController;
+import application.controller.wizard.functions.FunctionWizardFrameController;
 import application.model.SvgStage;
 import application.service.ButtonService;
 import javafx.event.ActionEvent;
@@ -10,12 +10,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class RootFrameController implements Initializable {
@@ -47,7 +51,25 @@ public class RootFrameController implements Initializable {
 
     public void init() {
         button_StartDiagram.setOnAction(this::startDiagram);
-        button_StartFunction.setOnAction(event -> startFunction());
+        button_StartFunction.setOnAction(event -> {
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+            ButtonType buttonTypeSimple = new ButtonType("Simple");
+            ButtonType buttonTypeExtended = new ButtonType("Extended");
+            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            alert.getButtonTypes().setAll(buttonTypeSimple, buttonTypeExtended, buttonTypeCancel);
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == buttonTypeSimple) {
+                startFunction(false);
+            } else if (result.get() == buttonTypeExtended) {
+                startFunction(true);
+            } else {
+                alert.close();
+            }
+        });
     }
 
     public void closeWizard() {
@@ -55,7 +77,7 @@ public class RootFrameController implements Initializable {
     }
 
 
-    private void startFunction() {
+    private void startFunction(boolean isExtended) {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
@@ -63,6 +85,8 @@ public class RootFrameController implements Initializable {
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
+            System.out.println("ext: " + isExtended);
+            ((FunctionWizardFrameController) loader.getController()).setExtended(isExtended);
 
         } catch (IOException e) {
             e.printStackTrace();
