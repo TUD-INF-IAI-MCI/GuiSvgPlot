@@ -1,7 +1,7 @@
 package application.controller.wizard.functions;
 
 import application.GuiSvgPlott;
-import application.Wizard.StageController;
+import application.Wizard.SVGWizardController;
 import application.model.GuiSvgOptions;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FunctionWizardFrameController implements StageController {
+public class FunctionWizardFrameController implements SVGWizardController {
 
 
     // WIZARD
@@ -191,8 +191,6 @@ public class FunctionWizardFrameController implements StageController {
                 textField_OutputPath.setText(f.getAbsolutePath());
 
         });
-
-
     }
 
     /**
@@ -269,17 +267,5 @@ public class FunctionWizardFrameController implements StageController {
         });
 
     }
-
-
-    @Override
-    public void setSvgPlotOptions(SvgPlotOptions svgPlotOptions) {
-        svgOptions = new GuiSvgOptions(svgPlotOptions);
-    }
-
-    @Override
-    public SvgPlotOptions getSvgPlotOptions() {
-        return svgOptions.getOptions();
-    }
-
 
 }

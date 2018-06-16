@@ -1,8 +1,6 @@
 package application.controller;
 
-import application.controller.wizard.WizardController;
-import application.controller.wizard.chart.ChartController;
-import application.controller.wizard.functions.FunctionWizardFrameController;
+import application.Wizard.SVGWizardController;
 import application.model.SvgStage;
 import application.service.ButtonService;
 import javafx.event.ActionEvent;
@@ -82,30 +80,22 @@ public class RootFrameController implements Initializable {
 
 
     private void startFunction(boolean isExtended) {
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setResources(bundle);
-        loader.setLocation(getClass().getResource("/fxml/wizard/content/functions/FunctionWizardFrame.fxml"));
-        try {
-            center = borderPane_Content.getCenter();
-            borderPane_Content.setCenter(loader.load());
-            ((FunctionWizardFrameController) loader.getController()).setExtended(isExtended);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        startWizard("/fxml/wizard/content/functions/FunctionWizardFrame.fxml", isExtended);
     }
 
     private void startDiagram(ActionEvent event) {
-        ResourceBundle bundle = ResourceBundle.getBundle("langBundle");
+        startWizard("/fxml/wizard/content/chart/ChartWizardFrame.fxml", false );
+    }
+
+    private void startWizard(String fxmlPath, boolean isExtended) {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
-        loader.setLocation(getClass().getResource("/fxml/wizard/Wizard.fxml"));
+        loader.setLocation(getClass().getResource(fxmlPath));
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
-            WizardController wizardController = loader.getController();
-            wizardController.setSvgWizardController(new ChartController());
+            ((SVGWizardController) loader.getController()).setExtended(isExtended);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

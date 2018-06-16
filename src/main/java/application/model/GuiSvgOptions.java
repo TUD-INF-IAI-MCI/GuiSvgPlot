@@ -8,6 +8,7 @@ import tud.tangram.svgplot.data.Point;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.data.sorting.SortingType;
+import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.plotting.Function;
@@ -21,7 +22,7 @@ public class GuiSvgOptions {
 
     private SvgPlotOptions options;
 
-
+    private ObjectProperty<DiagramType> diagramType;
     private ObjectProperty<CsvOrientation> csvOrientation;
     private ObjectProperty<OutputDevice> outputDevice;
     private ObjectProperty<Point> size;
@@ -51,6 +52,7 @@ public class GuiSvgOptions {
 
         this.options = options;
 
+        this.diagramType = new SimpleObjectProperty<>(options.getDiagramType());
         this.outputDevice = new SimpleObjectProperty<>(options.getOutputDevice());
         this.csvOrientation = new SimpleObjectProperty<>(options.getCsvOrientation());
         this.barAccumulationStyle = new SimpleObjectProperty<>(options.getBarAccumulationStyle());
@@ -87,6 +89,18 @@ public class GuiSvgOptions {
 
     public void setOptions(SvgPlotOptions options) {
         this.options = options;
+    }
+
+    public DiagramType getDiagramType() {
+        return diagramType.get();
+    }
+
+    public ObjectProperty<DiagramType> diagramTypeProperty() {
+        return diagramType;
+    }
+
+    public void setDiagramType(DiagramType diagramType) {
+        this.diagramType.set(diagramType);
     }
 
     public CsvOrientation getCsvOrientation() {
