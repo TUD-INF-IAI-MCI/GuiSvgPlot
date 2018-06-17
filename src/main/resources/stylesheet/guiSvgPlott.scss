@@ -1,5 +1,8 @@
 $tud-blue: #002557;
 $menu-font-color: #fff;
+$stage-btn-color: #fff;
+$stage-btn-font: $tud-blue;
+$stage-btn-font-active: #fff;
 
 .menu-bar {
    -fx-background-color: $tud-blue;
@@ -10,9 +13,27 @@ $menu-font-color: #fff;
     -fx-text-fill: $menu-font-color;
     -fx-font-weight: bold;
     -fx-font-scale: 20;
-
-
 }
+
 .menu-item .label{
   -fx-text-fill: #000;
+}
+
+HBox {
+  -fx-spacing: 10;
+}
+
+.stageBtn {
+  -fx-background-color: $stage-btn-color;
+  -fx-background-radius: 0, 0;
+  -fx-text-fill: $stage-btn-font;
+  -fx-pref-width: 100px;
+  -fx-pref-height: 75px;
+  -fx-vgap: 10;
+
+  &.active{
+    -fx-background-color: $tud-blue;
+    -fx-text-fill: $stage-btn-font-active;
+    -fx-font-weight: bold;
+  }
 }

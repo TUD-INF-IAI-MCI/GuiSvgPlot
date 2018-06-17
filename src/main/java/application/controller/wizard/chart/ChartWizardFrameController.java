@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
@@ -47,6 +48,8 @@ public class ChartWizardFrameController implements SVGWizardController {
     private Button button_Back;
     @FXML
     private BorderPane borderPane_Wizard;
+    @FXML
+    private HBox hBox_pagination;
     @FXML
     private Button button_Next;
     @FXML
@@ -157,6 +160,7 @@ public class ChartWizardFrameController implements SVGWizardController {
     private ArrayList<GridPane> stages;
     private BooleanProperty isExtended;
 
+    private List<Button> stageBtns;
     private GuiSvgOptions svgOptions;
     private SvgPlotOptions svgPlotOptions;
     private SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
@@ -184,6 +188,26 @@ public class ChartWizardFrameController implements SVGWizardController {
 
         initiateAllStages();
 
+        initiatePagination();
+
+    }
+
+    private void initiatePagination() {
+        this.stageBtns = new ArrayList<>();
+        for (int stage = 0; stage < AMOUNTOFSTAGES; stage++) {
+            Button stageBtn = new Button(bundle.getString("chart_stage" + stage));
+            stageBtn.getStyleClass().add("stageBtn");
+            if (this.currentStage.get() == stage) {
+                stageBtn.getStyleClass().add("active");
+            }
+
+            final int stageNumber = stage;
+            stageBtn.setOnAction(event -> {
+                currentStage.set(stageNumber);
+            });
+            this.hBox_pagination.getChildren().add(stageBtn);
+            this.stageBtns.add(stageBtn);
+        }
     }
 
     /**
@@ -224,12 +248,14 @@ public class ChartWizardFrameController implements SVGWizardController {
     private void initListener() {
         // indicator for current stage. changes will automatically render the chosen stage
         currentStage.addListener((args, oldVal, newVal) -> {
+            this.stageBtns.get(oldVal.intValue()).getStyleClass().remove("active");
+
             if (newVal.intValue() < 1) button_Back.setDisable(true);
             else button_Back.setDisable(false);
 
-            if(newVal.intValue() == stages.size() - 1) {
+            if (newVal.intValue() == stages.size() - 1) {
                 button_Next.setText(bundle.getString("create"));
-            }else {
+            } else {
                 button_Next.setText(bundle.getString("next"));
             }
             if (newVal.intValue() > stages.size() - 1) {
@@ -238,6 +264,8 @@ public class ChartWizardFrameController implements SVGWizardController {
             }
             borderPane_Wizard.setCenter(stages.get(currentStage.get()));
             this.svgOptionsService.buildSVG(this.svgPlotOptions, this.webView_svg);
+
+            this.stageBtns.get(currentStage.get()).getStyleClass().add("active");
         });
 
         // increment the currentStage counter. Will trigger its changeListener
@@ -313,7 +341,7 @@ public class ChartWizardFrameController implements SVGWizardController {
         // output path
         this.textField_outputPath.setDisable(false);
         this.textField_outputPath.textProperty().addListener((observable, oldValue, newValue) -> {
-           this.svgPlotOptions.setOutput(new File(newValue));
+            this.svgPlotOptions.setOutput(new File(newValue));
         });
         this.button_OutputPath.setDisable(false);
         this.button_OutputPath.setOnAction(event -> {
@@ -325,6 +353,7 @@ public class ChartWizardFrameController implements SVGWizardController {
             }
         });
     }
+
     /**
      * Will initiate the second stage. Depending on {@code extended}, some parts will dis- or enabled
      */
@@ -536,6 +565,7 @@ public class ChartWizardFrameController implements SVGWizardController {
 
     private List<String> colors;
     private Point size;
+
     private void initStage6() {
         this.colors = new ArrayList<>();
         this.size = this.svgPlotOptions.getSize();
@@ -592,6 +622,7 @@ public class ChartWizardFrameController implements SVGWizardController {
         label.setVisible(true);
         field.setVisible(true);
     }
+
     private void hide(Label label, Node field) {
         label.setVisible(false);
         field.setVisible(false);

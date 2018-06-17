@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.CheckBox?>
@@ -15,12 +16,19 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
-            <Label fx:id="label_Headline" alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" prefHeight="48.0" text="Label" textAlignment="CENTER" BorderPane.alignment="CENTER" />
+         <VBox BorderPane.alignment="CENTER">
+            <children>
+                  <Label fx:id="label_Headline" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="200.0" prefHeight="48.0" text="Label" textAlignment="CENTER" />
+               <HBox fx:id="hBox_pagination" alignment="CENTER" prefHeight="48.0" prefWidth="600.0" />
+            </children>
+         </VBox>
+            
         </top>
 
         <center>
@@ -184,6 +192,7 @@
                         <columnConstraints>
                             <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
                             <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                     <ColumnConstraints />
                         </columnConstraints>
                         <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -285,7 +294,7 @@
             </ButtonBar>
         </bottom>
       <right>
-         <WebView fx:id="webView_svg" prefHeight="312.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+         <WebView fx:id="webView_svg" prefHeight="312.0" prefWidth="310.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       </right>
     </BorderPane>
 </AnchorPane>
