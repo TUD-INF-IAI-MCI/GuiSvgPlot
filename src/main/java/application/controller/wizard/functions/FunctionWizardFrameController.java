@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FunctionWizardFrameController implements SVGWizardController {
+public class FunctionWizardFrameController extends SVGWizardController {
 
 
     // WIZARD
@@ -107,13 +107,13 @@ public class FunctionWizardFrameController implements SVGWizardController {
     private TextField textField_Title1;
 
 
-    // ############# Options / Fields / Helper ########################
-
-    private File userDir;
-    private IntegerProperty currentStage;
-
+//    // ############# Options / Fields / Helper ########################
+//
+//    private File userDir;
+//    private IntegerProperty currentStage;
+//
     private ArrayList<AnchorPane> stages;
-    private BooleanProperty isExtended;
+//    private BooleanProperty isExtended;
 
     private GuiSvgOptions svgOptions;
 
@@ -157,7 +157,7 @@ public class FunctionWizardFrameController implements SVGWizardController {
     /**
      * content-preprocessing. Will "hide" the content-tabPane and shows the first stage
      */
-    private void preProcessContent() {
+    protected void preProcessContent() {
         stages = new ArrayList<>();
         tabPane_ContentHolder.getTabs().forEach(tab -> stages.add((AnchorPane) tab.getContent()));
         currentStage.set(0);
@@ -215,7 +215,8 @@ public class FunctionWizardFrameController implements SVGWizardController {
     /**
      * initiates all listeners for properties and elements
      */
-    private void initListener() {
+    @Override
+    protected void initListener() {
 
 
         // indicator for current stage. changes will automatically render the chosen stage

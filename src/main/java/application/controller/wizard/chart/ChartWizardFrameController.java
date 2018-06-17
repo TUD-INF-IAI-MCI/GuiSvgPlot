@@ -38,28 +38,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ChartWizardFrameController implements SVGWizardController {
+public class ChartWizardFrameController extends SVGWizardController {
 
     private static final int AMOUNTOFSTAGES = 6;
 
     /*Begin: FXML Nodes*/
-    // WIZARD
-    @FXML
-    private Button button_Back;
-    @FXML
-    private BorderPane borderPane_Wizard;
-    @FXML
-    private HBox hBox_pagination;
-    @FXML
-    private Button button_Next;
-    @FXML
-    private Button button_Cancel;
-    @FXML
-    private Label label_Headline;
-    @FXML
-    private TabPane tabPane_ContentHolder;
-    @FXML
-    private WebView webView_svg;
 
     /* stage 1 */
     @FXML
@@ -152,73 +135,21 @@ public class ChartWizardFrameController implements SVGWizardController {
     public ChoiceBox<Color> choiceBox_color2;
 
     /*End: FXML Nodes*/
-
-    private ResourceBundle bundle;
-    private File userDir;
-    private IntegerProperty currentStage;
-
-    private ArrayList<GridPane> stages;
-    private BooleanProperty isExtended;
-
-    private List<Button> stageBtns;
-    private GuiSvgOptions svgOptions;
-    private SvgPlotOptions svgPlotOptions;
-    private SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
     private Range xRange;
     private Range yRange;
 
     public ChartWizardFrameController() {
+
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.bundle = resources;
-        this.userDir = new File(System.getProperty("user.home"));
+        super.initialize(location, resources);
+        super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES);
         this.textField_outputPath.setText(userDir.getPath());
-
-        this.svgPlotOptions = new SvgPlotOptions();
-        this.svgOptions = new GuiSvgOptions(svgPlotOptions);
-
-        this.currentStage = new SimpleIntegerProperty();
-        this.isExtended = new SimpleBooleanProperty(false);
-
-        initListener();
-
-        preProcessContent();
-
-        initiateAllStages();
-
-        initiatePagination();
-
+        this.initiateAllStages();
     }
 
-    private void initiatePagination() {
-        this.stageBtns = new ArrayList<>();
-        for (int stage = 0; stage < AMOUNTOFSTAGES; stage++) {
-            Button stageBtn = new Button(bundle.getString("chart_stage" + stage));
-            stageBtn.getStyleClass().add("stageBtn");
-            if (this.currentStage.get() == stage) {
-                stageBtn.getStyleClass().add("active");
-            }
-
-            final int stageNumber = stage;
-            stageBtn.setOnAction(event -> {
-                currentStage.set(stageNumber);
-            });
-            this.hBox_pagination.getChildren().add(stageBtn);
-            this.stageBtns.add(stageBtn);
-        }
-    }
-
-    /**
-     * sets the {@code isExtended} value for the wizard
-     *
-     * @param isExtended {@link Boolean}-value for the isExtendedProperty
-     */
-    public void setExtended(boolean isExtended) {
-        this.isExtended.set(isExtended);
-
-    }
 
     private void initiateAllStages() {
         initStage1();
@@ -227,59 +158,6 @@ public class ChartWizardFrameController implements SVGWizardController {
         initStage4();
         initStage5();
         initStage6();
-    }
-
-
-    /**
-     * content-preprocessing. Will "hide" the content-tabPane and shows the first stage
-     */
-    private void preProcessContent() {
-        stages = new ArrayList<>();
-        tabPane_ContentHolder.getTabs().forEach(tab -> stages.add((GridPane) tab.getContent()));
-        currentStage.set(0);
-        borderPane_Wizard.setCenter(stages.get(0));
-        button_Back.setDisable(true);
-    }
-
-
-    /**
-     * initiates all listeners for properties and elements
-     */
-    private void initListener() {
-        // indicator for current stage. changes will automatically render the chosen stage
-        currentStage.addListener((args, oldVal, newVal) -> {
-            this.stageBtns.get(oldVal.intValue()).getStyleClass().remove("active");
-
-            if (newVal.intValue() < 1) button_Back.setDisable(true);
-            else button_Back.setDisable(false);
-
-            if (newVal.intValue() == stages.size() - 1) {
-                button_Next.setText(bundle.getString("create"));
-            } else {
-                button_Next.setText(bundle.getString("next"));
-            }
-            if (newVal.intValue() > stages.size() - 1) {
-                currentStage.set(oldVal.intValue());
-                this.svgOptionsService.buildSVG(this.svgPlotOptions);
-            }
-            borderPane_Wizard.setCenter(stages.get(currentStage.get()));
-            this.svgOptionsService.buildSVG(this.svgPlotOptions, this.webView_svg);
-
-            this.stageBtns.get(currentStage.get()).getStyleClass().add("active");
-        });
-
-        // increment the currentStage counter. Will trigger its changeListener
-        button_Next.setOnAction(event -> {
-            currentStage.set(currentStage.get() + 1);
-        });
-
-        // decrement the currentStage counter. Will trigger its changeListener
-        button_Back.setOnAction(event -> currentStage.set(currentStage.get() - 1));
-
-        // closes the wizard
-        button_Cancel.setOnAction(event -> {
-            GuiSvgPlott.getInstance().closeWizard();
-        });
     }
 
 
