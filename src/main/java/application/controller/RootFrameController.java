@@ -14,6 +14,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,6 +31,9 @@ public class RootFrameController implements Initializable {
 
     @FXML
     public Button button_StartFunction;
+
+    @FXML
+    public Button button_ExitProgram;
 
     @FXML
     public AnchorPane anchorPain_main;
@@ -85,6 +89,11 @@ public class RootFrameController implements Initializable {
 
     private void startDiagram(ActionEvent event) {
         startWizard("/fxml/wizard/content/chart/ChartWizardFrame.fxml", false );
+    }
+
+    @FXML
+    private void closeButtonAction(){
+        System.exit(1);
     }
 
     private void startWizard(String fxmlPath, boolean isExtended) {
