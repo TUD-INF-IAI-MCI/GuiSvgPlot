@@ -29,7 +29,7 @@ public class SVGWizardController implements Initializable {
     @FXML
     protected Button button_Back;
     @FXML
-    protected BorderPane borderPane_Wizard;
+    protected BorderPane borderPane_WizardContent;
     @FXML
     protected HBox hBox_pagination;
     @FXML
@@ -95,7 +95,7 @@ public class SVGWizardController implements Initializable {
         stages = new ArrayList<>();
         tabPane_ContentHolder.getTabs().forEach(tab -> stages.add((GridPane) tab.getContent()));
         currentStage.set(0);
-        borderPane_Wizard.setCenter(stages.get(0));
+        borderPane_WizardContent.setCenter(stages.get(0));
         button_Back.setDisable(true);
     }
 
@@ -122,7 +122,7 @@ public class SVGWizardController implements Initializable {
                 this.stageBtns.get(currentStage.get()).getStyleClass().add("active");
             }
 
-            borderPane_Wizard.setCenter(stages.get(currentStage.get()));
+            borderPane_WizardContent.setCenter(stages.get(currentStage.get()));
             this.svgOptionsService.buildSVG(this.svgPlotOptions, this.webView_svg);
         });
 

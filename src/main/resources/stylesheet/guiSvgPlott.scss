@@ -5,22 +5,27 @@ $stage-btn-font: $tud-blue;
 $stage-btn-font-active: #fff;
 
 .menu-bar {
-   -fx-background-color: $tud-blue;
-   -fx-use-system-menu-bar: true;
+  -fx-background-color: $tud-blue;
+  -fx-use-system-menu-bar: true;
 }
 
-.menu .label{
-    -fx-text-fill: $menu-font-color;
-    -fx-font-weight: bold;
-    -fx-font-scale: 20;
+.menu .label {
+  -fx-text-fill: $menu-font-color;
+  -fx-font-weight: bold;
+  -fx-font-scale: 20;
 }
 
-.menu-item .label{
+.menu-item .label {
   -fx-text-fill: #000;
 }
 
 HBox {
+  -fx-spacing: 10
+}
+
+VBox {
   -fx-spacing: 10;
+  -fx-padding: 10;
 }
 
 .stageBtn {
@@ -31,9 +36,19 @@ HBox {
   -fx-pref-height: 75px;
   -fx-vgap: 10;
 
-  &.active{
+  &.active {
     -fx-background-color: $tud-blue;
     -fx-text-fill: $stage-btn-font-active;
     -fx-font-weight: bold;
   }
+}
+
+Button {
+  &:focused {
+    -fx-border-color: $tud-blue;
+  }
+}
+
+WebView {
+  -fx-min-width: 75%;
 }
