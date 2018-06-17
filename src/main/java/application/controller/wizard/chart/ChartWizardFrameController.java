@@ -94,6 +94,10 @@ public class ChartWizardFrameController extends SVGWizardController {
     public Label label_trendline_n;
     @FXML
     public TextField textField_trendline_n;
+    @FXML
+    public Label label_hideOriginalPoints;
+    @FXML
+    public CheckBox checkbox_hideOriginalPoints;
 
     /* stage 4 */
     @FXML
@@ -340,40 +344,9 @@ public class ChartWizardFrameController extends SVGWizardController {
                 }
             }
         });
-        // trendline
+        // trendline and hide original points
+        // TODO: disable trendline and hideOriginalPoints doesn't work! --- WHY?
         ObservableList<String> trendline = FXCollections.observableArrayList();
-        ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
-        this.choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
-        this.choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TrendlineAlgorithm>() {
-            @Override
-            public void changed(ObservableValue<? extends TrendlineAlgorithm> observable, TrendlineAlgorithm oldValue, TrendlineAlgorithm newValue) {
-                trendline.clear();
-                trendline.add(0, newValue.toString());
-                switch (newValue) {
-                    case MovingAverage:
-                        show(label_trendline_n, textField_trendline_n);
-                        hide(label_trendline_alpha, textField_trendline_alpha);
-                        hide(label_trendline_forecast, textField_trendline_forecast);
-                        break;
-                    case BrownLES:
-                        show(label_trendline_alpha, textField_trendline_alpha);
-                        show(label_trendline_forecast, textField_trendline_forecast);
-                        hide(label_trendline_n, textField_trendline_n);
-                        break;
-                    case ExponentialSmoothing:
-                        show(label_trendline_alpha, textField_trendline_alpha);
-                        hide(label_trendline_forecast, textField_trendline_forecast);
-                        hide(label_trendline_n, textField_trendline_n);
-                        break;
-                    default:
-                        hide(label_trendline_alpha, textField_trendline_alpha);
-                        hide(label_trendline_forecast, textField_trendline_forecast);
-                        hide(label_trendline_n, textField_trendline_n);
-                        break;
-                }
-            }
-        });
-
         this.textField_trendline_n.textProperty().addListener((observable, oldValue, newValue) -> {
             trendline.add(1, newValue);
             svgPlotOptions.setTrendLine(trendline);
@@ -386,6 +359,65 @@ public class ChartWizardFrameController extends SVGWizardController {
             trendline.add(2, newValue);
             svgPlotOptions.setTrendLine(trendline);
         });
+        this.checkbox_linepoints.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+              svgOptions.setHideOriginalPoints(newValue);
+            }
+        });
+        ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
+        this.choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
+        this.choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TrendlineAlgorithm>() {
+            @Override
+            public void changed(ObservableValue<? extends TrendlineAlgorithm> observable, TrendlineAlgorithm oldValue, TrendlineAlgorithm newValue) {
+                trendline.clear();
+                trendline.add(0, newValue.toString());
+                switch (newValue) {
+                    case MovingAverage:
+                        show(label_trendline_n, textField_trendline_n);
+                        show(label_hideOriginalPoints, checkbox_hideOriginalPoints);
+                        hide(label_trendline_alpha, textField_trendline_alpha);
+                        hide(label_trendline_forecast, textField_trendline_forecast);
+                        // default n
+                        textField_trendline_n.setText("1");
+                        break;
+                    case BrownLES:
+                        show(label_trendline_alpha, textField_trendline_alpha);
+                        show(label_trendline_forecast, textField_trendline_forecast);
+                        show(label_hideOriginalPoints, checkbox_hideOriginalPoints);
+                        hide(label_trendline_n, textField_trendline_n);
+                        // default alpha
+                        textField_trendline_alpha.setText("0.0");
+                        // default forecast
+                        textField_trendline_forecast.setText("1");
+                        break;
+                    case ExponentialSmoothing:
+                        show(label_trendline_alpha, textField_trendline_alpha);
+                        show(label_hideOriginalPoints, checkbox_hideOriginalPoints);
+                        hide(label_trendline_forecast, textField_trendline_forecast);
+                        hide(label_trendline_n, textField_trendline_n);
+                        // default alpha
+                        textField_trendline_alpha.setText("0.0");
+                        break;
+                    case LinearRegression:
+                        show(label_hideOriginalPoints, checkbox_hideOriginalPoints);
+                        hide(label_trendline_alpha, textField_trendline_alpha);
+                        hide(label_trendline_forecast, textField_trendline_forecast);
+                        hide(label_trendline_n, textField_trendline_n);
+                        break;
+                    case None:
+                        hide(label_trendline_alpha, textField_trendline_alpha);
+                        hide(label_trendline_forecast, textField_trendline_forecast);
+                        hide(label_trendline_n, textField_trendline_n);
+                        hide(label_hideOriginalPoints, checkbox_hideOriginalPoints);
+                        trendline.clear();
+                        break;
+                }
+                svgPlotOptions.setTrendLine(trendline);
+
+            }
+        });
+
 
     }
 
