@@ -2,12 +2,9 @@ package application.controller.wizard.chart;
 
 import application.GuiSvgPlott;
 import application.Wizard.SVGWizardController;
-import application.model.GuiSvgOptions;
-import application.service.SvgOptionsService;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import application.model.TrendlineAlgorithm;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -15,11 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.data.Point;
@@ -28,7 +21,6 @@ import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
-import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.Color;
 
@@ -41,6 +33,7 @@ import java.util.ResourceBundle;
 public class ChartWizardFrameController extends SVGWizardController {
 
     private static final int AMOUNTOFSTAGES = 6;
+
 
     /*Begin: FXML Nodes*/
 
@@ -78,10 +71,6 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private GridPane stage3;
     @FXML
-    public TextField textField_xunit;
-    @FXML
-    public TextField textField_yunit;
-    @FXML
     public Label label_baraccumulation;
     @FXML
     public ChoiceBox<BarAccumulationStyle> choiceBox_baraccumulation;
@@ -89,20 +78,48 @@ public class ChartWizardFrameController extends SVGWizardController {
     public Label label_linepoints;
     @FXML
     public CheckBox checkbox_linepoints;
+    @FXML
+    private Label label_trendline;
+    @FXML
+    private ChoiceBox<TrendlineAlgorithm> choiceBox_trendline;
+    @FXML
+    public Label label_trendline_alpha;
+    @FXML
+    public TextField textField_trendline_alpha;
+    @FXML
+    public Label label_trendline_forecast;
+    @FXML
+    public TextField textField_trendline_forecast;
+    @FXML
+    public Label label_trendline_n;
+    @FXML
+    public TextField textField_trendline_n;
 
     /* stage 4 */
     @FXML
     private GridPane stage4;
     @FXML
+    public TextField textField_xunit;
+    @FXML
+    public TextField textField_yunit;
+    @FXML
     public CheckBox checkbox_Autoscale;
     @FXML
     public TextField textField_xfrom;
     @FXML
-    public TextField textField_xTo;
+    public Label label_xfrom;
+    @FXML
+    public TextField textField_xto;
+    @FXML
+    public Label label_xto;
     @FXML
     public TextField textField_yfrom;
     @FXML
+    public Label label_yfrom;
+    @FXML
     public TextField textField_yto;
+    @FXML
+    public Label label_yto;
 
     /* stage 5 */
     @FXML
@@ -135,8 +152,8 @@ public class ChartWizardFrameController extends SVGWizardController {
     public ChoiceBox<Color> choiceBox_color2;
 
     /*End: FXML Nodes*/
-    private Range xRange;
-    private Range yRange;
+    private ObjectProperty<Range> xRange;
+    private ObjectProperty<Range> yRange;
 
     public ChartWizardFrameController() {
 
@@ -147,7 +164,10 @@ public class ChartWizardFrameController extends SVGWizardController {
         super.initialize(location, resources);
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES);
         this.textField_outputPath.setText(userDir.getPath());
+        this.xRange = new SimpleObjectProperty<>();
+        this.yRange = new SimpleObjectProperty<>();
         this.initiateAllStages();
+
     }
 
 
@@ -182,21 +202,25 @@ public class ChartWizardFrameController extends SVGWizardController {
                         case BarChart:
                             show(label_baraccumulation, choiceBox_baraccumulation);
                             hide(label_linepoints, checkbox_linepoints);
+                            hide(label_trendline, choiceBox_trendline);
                             break;
                         case LineChart:
                             show(label_linepoints, checkbox_linepoints);
                             hide(label_baraccumulation, choiceBox_baraccumulation);
+                            hide(label_trendline, choiceBox_trendline);
                             break;
                         default:
+                            show(label_trendline, choiceBox_trendline);
                             hide(label_baraccumulation, choiceBox_baraccumulation);
                             hide(label_linepoints, checkbox_linepoints);
-                            break; // TODO: trendlinien bei Scatterplot
+                            break;
                     }
                 } else {
                     show(label_baraccumulation, choiceBox_baraccumulation);
                     show(label_linepoints, checkbox_linepoints);
                 }
             }
+
         });
         this.choiceBox_DiagramType.getSelectionModel().select(0);
 
@@ -293,18 +317,6 @@ public class ChartWizardFrameController extends SVGWizardController {
     }
 
     private void initStage3() {
-        // x unit
-        this.textField_xunit.setText(this.svgPlotOptions.getxUnit());
-        this.textField_xunit.textProperty().addListener((observable, oldValue, newValue) -> {
-            svgPlotOptions.setxUnit(newValue);
-        });
-
-        // y unit
-        this.textField_yunit.setText(this.svgPlotOptions.getyUnit());
-        this.textField_yunit.textProperty().addListener((observable, oldValue, newValue) -> {
-            svgPlotOptions.setyUnit(newValue);
-        });
-
         // baraccumulation
         ObservableList<BarAccumulationStyle> csvOrientationObservableList = FXCollections.observableArrayList(BarAccumulationStyle.values());
         this.choiceBox_baraccumulation.setItems(csvOrientationObservableList);
@@ -328,42 +340,67 @@ public class ChartWizardFrameController extends SVGWizardController {
                 }
             }
         });
+        // trendline
+        ObservableList<String> trendline = FXCollections.observableArrayList();
+        ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
+        this.choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
+        this.choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TrendlineAlgorithm>() {
+            @Override
+            public void changed(ObservableValue<? extends TrendlineAlgorithm> observable, TrendlineAlgorithm oldValue, TrendlineAlgorithm newValue) {
+                trendline.clear();
+                trendline.add(0, newValue.toString());
+                switch (newValue) {
+                    case MovingAverage:
+                        show(label_trendline_n, textField_trendline_n);
+                        hide(label_trendline_alpha, textField_trendline_alpha);
+                        hide(label_trendline_forecast, textField_trendline_forecast);
+                        break;
+                    case BrownLES:
+                        show(label_trendline_alpha, textField_trendline_alpha);
+                        show(label_trendline_forecast, textField_trendline_forecast);
+                        hide(label_trendline_n, textField_trendline_n);
+                        break;
+                    case ExponentialSmoothing:
+                        show(label_trendline_alpha, textField_trendline_alpha);
+                        hide(label_trendline_forecast, textField_trendline_forecast);
+                        hide(label_trendline_n, textField_trendline_n);
+                        break;
+                    default:
+                        hide(label_trendline_alpha, textField_trendline_alpha);
+                        hide(label_trendline_forecast, textField_trendline_forecast);
+                        hide(label_trendline_n, textField_trendline_n);
+                        break;
+                }
+            }
+        });
+
+        this.textField_trendline_n.textProperty().addListener((observable, oldValue, newValue) -> {
+            trendline.add(1, newValue);
+            svgPlotOptions.setTrendLine(trendline);
+        });
+        this.textField_trendline_alpha.textProperty().addListener((observable, oldValue, newValue) -> {
+            trendline.add(1, newValue);
+            svgPlotOptions.setTrendLine(trendline);
+        });
+        this.textField_trendline_forecast.textProperty().addListener((observable, oldValue, newValue) -> {
+            trendline.add(2, newValue);
+            svgPlotOptions.setTrendLine(trendline);
+        });
+
     }
 
     private void initStage4() {
         //TODO: validate text input
-        // xRange
-        this.xRange = this.svgPlotOptions.getxRange();
-        if (this.xRange == null) {
-            this.xRange = new Range(-8, 8);
-        }
-        this.textField_xfrom.setText("" + this.xRange.getFrom());
-        this.textField_xTo.setText("" + this.xRange.getTo());
-
-        this.textField_xfrom.textProperty().addListener((observable, oldValue, newValue) -> {
-            xRange.setFrom(Double.parseDouble(newValue));
-            svgPlotOptions.setxRange(xRange);
-        });
-        this.textField_xTo.textProperty().addListener((observable, oldValue, newValue) -> {
-            xRange.setTo(Double.parseDouble(newValue));
-            svgPlotOptions.setxRange(xRange);
+        // x unit
+        this.textField_xunit.setText(this.svgPlotOptions.getxUnit());
+        this.textField_xunit.textProperty().addListener((observable, oldValue, newValue) -> {
+            svgPlotOptions.setxUnit(newValue);
         });
 
-        // yRange
-        this.yRange = this.svgPlotOptions.getyRange();
-        if (this.yRange == null) {
-            this.yRange = new Range(-8, 8);
-        }
-        this.textField_yfrom.setText("" + this.yRange.getFrom());
-        this.textField_yto.setText("" + this.yRange.getTo());
-
-        this.textField_yfrom.textProperty().addListener((observable, oldValue, newValue) -> {
-            yRange.setFrom(Double.parseDouble(newValue));
-            svgPlotOptions.setxRange(yRange);
-        });
-        this.textField_yto.textProperty().addListener((observable, oldValue, newValue) -> {
-            yRange.setTo(Double.parseDouble(newValue));
-            svgPlotOptions.setxRange(yRange);
+        // y unit
+        this.textField_yunit.setText(this.svgPlotOptions.getyUnit());
+        this.textField_yunit.textProperty().addListener((observable, oldValue, newValue) -> {
+            svgPlotOptions.setyUnit(newValue);
         });
 
         // autoscale
@@ -372,8 +409,61 @@ public class ChartWizardFrameController extends SVGWizardController {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 svgPlotOptions.setAutoScale(newValue);
+                toggleAxesRanges(!newValue);
             }
         });
+
+        // xRange
+        this.xRange.set(this.svgPlotOptions.getxRange());
+        if (this.xRange.get() == null) {
+            this.xRange.set(new Range(-8, 8));
+        }
+        this.textField_xfrom.setText("" + this.xRange.get().getFrom());
+        this.textField_xto.setText("" + this.xRange.get().getTo());
+
+        this.textField_xfrom.textProperty().addListener((observable, oldValue, newValue) -> {
+            xRange.get().setFrom(Double.parseDouble(newValue));
+        });
+        this.textField_xto.textProperty().addListener((observable, oldValue, newValue) -> {
+            xRange.get().setTo(Double.parseDouble(newValue));
+        });
+        this.xRange.addListener((args, oldVal, newVal) -> {
+            svgPlotOptions.setxRange(xRange.get());
+        });
+
+        // yRange
+        this.yRange.set(this.svgPlotOptions.getyRange());
+        if (this.yRange.get() == null) {
+            this.yRange.set(new Range(-8, 8));
+        }
+        this.textField_yfrom.setText("" + this.yRange.get().getFrom());
+        this.textField_yto.setText("" + this.yRange.get().getTo());
+
+        this.textField_yfrom.textProperty().addListener((observable, oldValue, newValue) -> {
+            yRange.get().setFrom(Double.parseDouble(newValue));
+        });
+        this.textField_yto.textProperty().addListener((observable, oldValue, newValue) -> {
+            yRange.get().setTo(Double.parseDouble(newValue));
+        });
+        this.yRange.addListener((args, oldVal, newVal) -> {
+            svgPlotOptions.setxRange(yRange.get());
+        });
+    }
+
+    private void toggleAxesRanges(Boolean enabled) {
+        if (!enabled) {
+            this.xRange.set(null);
+            this.yRange.set(null);
+        } else {
+            this.xRange.set(new Range(-8, 8));
+            this.yRange.set(new Range(-8, 8));
+        }
+
+
+        setVisible(enabled, label_xfrom, textField_xfrom);
+        setVisible(enabled, label_xto, textField_xto);
+        setVisible(enabled, label_yfrom, textField_yfrom);
+        setVisible(enabled, label_yto, textField_yto);
     }
 
     private void initStage5() {
@@ -506,4 +596,11 @@ public class ChartWizardFrameController extends SVGWizardController {
         field.setVisible(false);
     }
 
+    private void setVisible(boolean visible, Label label, Node field) {
+        if (visible) {
+            show(label, field);
+        } else {
+            hide(label, field);
+        }
+    }
 }
