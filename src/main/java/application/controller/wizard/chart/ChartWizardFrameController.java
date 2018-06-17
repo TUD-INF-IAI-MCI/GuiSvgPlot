@@ -3,7 +3,7 @@ package application.controller.wizard.chart;
 import application.GuiSvgPlott;
 import application.Wizard.SVGWizardController;
 import application.model.GuiSvgOptions;
-import application.service.SvgOptionsHelper;
+import application.service.SvgOptionsService;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -17,6 +17,8 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.data.Point;
@@ -28,7 +30,6 @@ import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.Color;
-import tud.tangram.svgplot.svgcreator.SvgCreator;
 
 import java.io.File;
 import java.net.URL;
@@ -54,6 +55,8 @@ public class ChartWizardFrameController implements SVGWizardController {
     private Label label_Headline;
     @FXML
     private TabPane tabPane_ContentHolder;
+    @FXML
+    private WebView webView_svg;
 
     /* stage 1 */
     @FXML
@@ -156,7 +159,7 @@ public class ChartWizardFrameController implements SVGWizardController {
 
     private GuiSvgOptions svgOptions;
     private SvgPlotOptions svgPlotOptions;
-    private SvgOptionsHelper svgOptionsHelper = SvgOptionsHelper.getInstance();
+    private SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
     private Range xRange;
     private Range yRange;
 
@@ -231,14 +234,16 @@ public class ChartWizardFrameController implements SVGWizardController {
             }
             if (newVal.intValue() > stages.size() - 1) {
                 currentStage.set(oldVal.intValue());
-                this.buildSVG();
-
+                this.svgOptionsService.buildSVG(this.svgPlotOptions);
             }
             borderPane_Wizard.setCenter(stages.get(currentStage.get()));
+            this.svgOptionsService.buildSVG(this.svgPlotOptions, this.webView_svg);
         });
 
         // increment the currentStage counter. Will trigger its changeListener
-        button_Next.setOnAction(event -> currentStage.set(currentStage.get() + 1));
+        button_Next.setOnAction(event -> {
+            currentStage.set(currentStage.get() + 1);
+        });
 
         // decrement the currentStage counter. Will trigger its changeListener
         button_Back.setOnAction(event -> currentStage.set(currentStage.get() - 1));
@@ -261,7 +266,7 @@ public class ChartWizardFrameController implements SVGWizardController {
         diagramTypeObservableList.remove(DiagramType.FunctionPlot);
         this.choiceBox_DiagramType.setItems(diagramTypeObservableList);
         // i18n
-        this.choiceBox_DiagramType.setConverter(svgOptionsHelper.getDiagramTypConverter(this.bundle));
+        this.choiceBox_DiagramType.setConverter(svgOptionsService.getDiagramTypConverter(this.bundle));
         this.choiceBox_DiagramType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DiagramType>() {
             @Override
             public void changed(ObservableValue<? extends DiagramType> observable, DiagramType oldValue, DiagramType newValue) {
@@ -592,17 +597,4 @@ public class ChartWizardFrameController implements SVGWizardController {
         field.setVisible(false);
     }
 
-
-    private void buildSVG(){
-        this.svgPlotOptions.finalizeOptions();
-
-        SvgCreator creator = this.svgPlotOptions.getDiagramType().getInstance(this.svgPlotOptions);
-        try {
-            creator.run();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        GuiSvgPlott.getInstance().closeWizard();
-    }
 }

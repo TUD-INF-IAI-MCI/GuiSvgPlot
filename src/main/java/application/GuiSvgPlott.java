@@ -1,6 +1,7 @@
 package application;
 
 import application.controller.RootFrameController;
+import application.service.UTF8Control;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -55,7 +56,7 @@ public class GuiSvgPlott extends Application {
 
         setSettings();
 
-        ResourceBundle bundle = ResourceBundle.getBundle("langBundle");
+        ResourceBundle bundle = ResourceBundle.getBundle("langBundle", new UTF8Control());
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
         loader.setLocation(getClass().getResource("/fxml/RootFrame.fxml"));
@@ -106,7 +107,6 @@ public class GuiSvgPlott extends Application {
             FileChooser fc = new FileChooser();
             File gnuFile = fc.showOpenDialog(primaryStage);
             settings.addProperty("gnu-path", gnuFile != null ? gnuFile.getAbsolutePath() : "");
-
         }
     }
 
