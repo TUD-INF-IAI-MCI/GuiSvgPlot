@@ -17,57 +17,44 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="application.controller.wizard.functions.FunctionWizardFrameController">
-    <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0"
-                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                AnchorPane.topAnchor="0.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.functions.FunctionWizardFrameController">
+    <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <bottom>
             <ButtonBar maxWidth="1.7976931348623157E308" prefHeight="40.0" BorderPane.alignment="CENTER">
                 <buttons>
-                    <Button fx:id="button_Back" accessibleText="Vorheriger Schritt" mnemonicParsing="false" text="%back"
-                            ButtonBar.buttonData="RIGHT"/>
-                    <Button fx:id="button_Next" accessibleText="Nächster Scritt" mnemonicParsing="false" text="%next"
-                            ButtonBar.buttonData="RIGHT"/>
-                    <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT" cancelButton="true"
-                            mnemonicParsing="false" text="%cancel" ButtonBar.buttonData="LEFT"/>
+                    <Button fx:id="button_Back" accessibleText="Vorheriger Schritt" mnemonicParsing="false" text="%back" ButtonBar.buttonData="RIGHT" />
+                    <Button fx:id="button_Next" accessibleText="Nächster Scritt" mnemonicParsing="false" text="%next" ButtonBar.buttonData="RIGHT" />
+                    <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT" cancelButton="true" mnemonicParsing="false" text="%cancel" ButtonBar.buttonData="LEFT" />
                 </buttons>
                 <padding>
-                    <Insets left="10.0" right="10.0"/>
+                    <Insets left="10.0" right="10.0" />
                 </padding>
             </ButtonBar>
         </bottom>
         <center>
 
 
-            <TabPane fx:id="tabPane_ContentHolder" layoutX="177.0" layoutY="112.0" prefHeight="400.0" prefWidth="600.0"
-                     tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TabPane fx:id="tabPane_ContentHolder" layoutX="177.0" layoutY="112.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <Tab text="Stage1">
                     <AnchorPane fx:id="stage1" prefHeight="200.0" prefWidth="200.0">
-                        <GridPane prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="20.0"
-                                  AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0"
-                                  AnchorPane.topAnchor="20.0">
+                        <GridPane prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints vgrow="SOMETIMES"/>
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
                             </rowConstraints>
-                            <Label text="Titel"/>
-                            <Label text="Ausgabegerät" GridPane.rowIndex="1"/>
-                            <Label text="Pfad zur AusgabeDatei" GridPane.rowIndex="2"/>
-                            <TextField fx:id="textField_Title" GridPane.columnIndex="1"/>
-                            <ComboBox fx:id="comboBox_OutputDevice" prefWidth="150.0" GridPane.columnIndex="1"
-                                      GridPane.halignment="RIGHT" GridPane.rowIndex="1"/>
-                            <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1"
-                                  GridPane.rowIndex="2">
-                                <TextField fx:id="textField_OutputPath" HBox.hgrow="ALWAYS"/>
-                                <Button fx:id="button_OutputPath" mnemonicParsing="false" text="..."/>
+                            <Label text="%title" />
+                            <Label text="%output_device" GridPane.rowIndex="1" />
+                            <Label text="%path_to_output" GridPane.rowIndex="2" />
+                            <TextField fx:id="textField_Title" GridPane.columnIndex="1" />
+                            <ComboBox fx:id="comboBox_OutputDevice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                            <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <TextField fx:id="textField_OutputPath" HBox.hgrow="ALWAYS" />
+                                <Button fx:id="button_OutputPath" mnemonicParsing="false" text="..." />
                             </HBox>
                         </GridPane>
                     </AnchorPane>
@@ -75,56 +62,49 @@
                 <Tab text="Stage2">
                     <AnchorPane fx:id="stage2" maxHeight="800.0" maxWidth="900.0" prefHeight="400.0" prefWidth="600.0">
 
-                        <GridPane layoutX="162.0" layoutY="110.0" AnchorPane.bottomAnchor="20.0"
-                                  AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0"
-                                  AnchorPane.topAnchor="20.0">
+                        <GridPane layoutX="162.0" layoutY="110.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
 
-                            <Label text="Integral"/>
-                            <TextField fx:id="textField_Integral" GridPane.columnIndex="1"/>
+                            <Label text="Integral" />
+                            <TextField fx:id="textField_Integral" GridPane.columnIndex="1" />
 
-                            <Label text="Pi" GridPane.rowIndex="1"/>
-                            <CheckBox fx:id="checkBox_Pi" mnemonicParsing="false" GridPane.columnIndex="1"
-                                      GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+                            <Label text="Pi" GridPane.rowIndex="1" />
+                            <CheckBox fx:id="checkBox_Pi" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
 
-                            <Label text="Diagram Typ" GridPane.rowIndex="2"/>
-                            <ComboBox fx:id="comboBox_DiagramType" prefWidth="150.0" GridPane.columnIndex="1"
-                                      GridPane.halignment="RIGHT" GridPane.rowIndex="2"/>
+                            <Label text="Diagram Typ" GridPane.rowIndex="2" />
+                            <ComboBox fx:id="comboBox_DiagramType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
 
 
-                            <Label text="OriginalPunkte" GridPane.rowIndex="3"/>
-                            <CheckBox fx:id="checkBox_OriginalPoints" mnemonicParsing="false" GridPane.columnIndex="1"
-                                      GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
+                            <Label text="OriginalPunkte" GridPane.rowIndex="3" />
+                            <CheckBox fx:id="checkBox_OriginalPoints" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
 
-                            <Label text="Sortierung" GridPane.rowIndex="5"/>
-                            <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1"
-                                  GridPane.rowIndex="5">
-                                <Button fx:id="button_Sort" mnemonicParsing="false" text="^"/>
-                                <ComboBox fx:id="comboBox_Sort" prefWidth="150.0"/>
+                            <Label text="Sortierung" GridPane.rowIndex="5" />
+                            <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                <Button fx:id="button_Sort" mnemonicParsing="false" text="^" />
+                                <ComboBox fx:id="comboBox_Sort" prefWidth="150.0" />
                             </HBox>
 
 
                             <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.rowIndex="6">
-                                <Label text="Einheit X-Achse"/>
-                                <TextField fx:id="textField_UnitX"/>
+                                <Label text="Einheit X-Achse" />
+                                <TextField fx:id="textField_UnitX" />
                             </HBox>
 
-                            <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1"
-                                  GridPane.rowIndex="6">
-                                <Label text="Einheit Y-Achse"/>
-                                <TextField fx:id="textField_UnitY"/>
+                            <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                <Label text="Einheit Y-Achse" />
+                                <TextField fx:id="textField_UnitY" />
                             </HBox>
                         </GridPane>
                     </AnchorPane>
@@ -132,34 +112,30 @@
                 <Tab text="Stage3">
                     <AnchorPane fx:id="stage3" maxHeight="800.0" maxWidth="900.0" prefHeight="400.0" prefWidth="600.0">
 
-                        <GridPane layoutX="162.0" layoutY="110.0" AnchorPane.bottomAnchor="20.0"
-                                  AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0"
-                                  AnchorPane.topAnchor="20.0">
+                        <GridPane layoutX="162.0" layoutY="110.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints vgrow="SOMETIMES"/>
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
                             </rowConstraints>
-                            <Label text="CSV-Type"/>
-                            <ComboBox fx:id="comboBox_CsvType" prefWidth="150.0" GridPane.columnIndex="1"
-                                      GridPane.halignment="RIGHT"/>
+                            <Label text="%csv_type" />
+                            <ComboBox fx:id="comboBox_CsvType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
 
 
-                            <Label text="CSV-Orientation" GridPane.rowIndex="1"/>
+                            <Label text="%csv_orientation" GridPane.rowIndex="1" />
                             <HBox alignment="CENTER" spacing="70.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <RadioButton fx:id="radio_Horizontal" mnemonicParsing="false" text="Horizonzal"/>
-                                <RadioButton fx:id="radio_Vertical" mnemonicParsing="false" text="Vertikal"/>
+                                <RadioButton fx:id="radio_Horizontal" mnemonicParsing="false" text="%horizontal" />
+                                <RadioButton fx:id="radio_Vertical" mnemonicParsing="false" text="%vertical" />
                             </HBox>
 
-                            <Label text="CSV Pfad" GridPane.rowIndex="2"/>
-                            <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1"
-                                  GridPane.rowIndex="2">
-                                <TextField fx:id="textField_CsvPath" HBox.hgrow="ALWAYS"/>
-                                <Button fx:id="button_CsvPath" mnemonicParsing="false" text="..."/>
+                            <Label text="%csv_path" GridPane.rowIndex="2" />
+                            <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <TextField fx:id="textField_CsvPath" HBox.hgrow="ALWAYS" />
+                                <Button fx:id="button_CsvPath" mnemonicParsing="false" text="..." />
                             </HBox>
 
 
@@ -169,28 +145,24 @@
                 <Tab text="Stage4">
                     <AnchorPane fx:id="stage4" maxHeight="800.0" maxWidth="900.0" prefHeight="400.0" prefWidth="600.0">
 
-                        <GridPane layoutX="162.0" layoutY="110.0" AnchorPane.bottomAnchor="20.0"
-                                  AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0"
-                                  AnchorPane.topAnchor="20.0">
+                        <GridPane layoutX="162.0" layoutY="110.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints vgrow="SOMETIMES"/>
-                                <RowConstraints vgrow="SOMETIMES"/>
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
+                                <RowConstraints vgrow="SOMETIMES" />
                             </rowConstraints>
-                            <Label text="Ttiel"/>
-                            <Label text="Ausgabegerät" GridPane.rowIndex="1"/>
-                            <Label text="Pfad zur AUsgabeDatei" GridPane.rowIndex="2"/>
-                            <TextField fx:id="textField_Title1" GridPane.columnIndex="1"/>
-                            <ComboBox fx:id="comboBox_OutputDevice1" prefWidth="150.0" GridPane.columnIndex="1"
-                                      GridPane.halignment="RIGHT" GridPane.rowIndex="1"/>
-                            <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1"
-                                  GridPane.rowIndex="2">
-                                <TextField fx:id="textField_OutputPath1" HBox.hgrow="ALWAYS"/>
-                                <Button fx:id="button_OutputPath1" mnemonicParsing="false" text="..."/>
+                            <Label text="%title" />
+                            <Label text="%output_device" GridPane.rowIndex="1" />
+                            <Label text="%path_to_output" GridPane.rowIndex="2" />
+                            <TextField fx:id="textField_Title1" GridPane.columnIndex="1" />
+                            <ComboBox fx:id="comboBox_OutputDevice1" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                            <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <TextField fx:id="textField_OutputPath1" HBox.hgrow="ALWAYS" />
+                                <Button fx:id="button_OutputPath1" mnemonicParsing="false" text="..." />
                             </HBox>
                         </GridPane>
                     </AnchorPane>
@@ -199,8 +171,7 @@
 
         </center>
         <top>
-            <Label fx:id="label_Headline" alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" prefHeight="48.0"
-                   text="Label" textAlignment="CENTER" BorderPane.alignment="CENTER"/>
+            <Label fx:id="label_Headline" alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" prefHeight="48.0" text="Label" textAlignment="CENTER" BorderPane.alignment="CENTER" />
         </top>
     </BorderPane>
 
