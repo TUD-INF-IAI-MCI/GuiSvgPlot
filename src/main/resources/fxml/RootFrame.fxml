@@ -24,6 +24,15 @@
                             <MenuItem mnemonicParsing="false" text="%delete" />
                         </items>
                     </Menu>
+               <Menu mnemonicParsing="false" text="%presets">
+                  <items>
+                     <MenuItem fx:id="menuItem_Preset_default" mnemonicParsing="false" onAction="#startPreset" text="%default" />
+                     <MenuItem fx:id="menuItem_Preset_1" mnemonicParsing="false" onAction="#startPreset" text="%preset_1" />
+                     <MenuItem fx:id="menuItem_Preset_2" mnemonicParsing="false" onAction="#startPreset" text="%preset_2" />
+                     <MenuItem fx:id="menuItem_Preset_3" mnemonicParsing="false" onAction="#startPreset" text="%preset_3" />
+                     <MenuItem fx:id="menuItem_Preset_Editor" mnemonicParsing="false" onAction="#startPresetEditor" text="%set_preset" />
+                  </items>
+               </Menu>
                     <Menu mnemonicParsing="false" text="%help">
                         <items>
                             <MenuItem mnemonicParsing="false" text="%about" />

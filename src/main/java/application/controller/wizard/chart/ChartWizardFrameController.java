@@ -186,7 +186,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
 
     /**
-     * Will initiate the first stage. Depending on {@code extended}, some parts will dis- or enabled
+     * Will initiate the first stage. Depending on {@code extended}, some parts will be dis- or enabled
      */
     private void initStage1() {
         this.label_Headline.setText("Diagramm erstellen");
@@ -261,7 +261,7 @@ public class ChartWizardFrameController extends SVGWizardController {
     }
 
     /**
-     * Will initiate the second stage. Depending on {@code extended}, some parts will dis- or enabled
+     * Will initiate the second stage. Depending on {@code extended}, some parts will be dis- or enabled
      */
     private void initStage2() {
         // csv path

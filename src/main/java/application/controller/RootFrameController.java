@@ -33,9 +33,6 @@ public class RootFrameController implements Initializable {
     public Button button_StartFunction;
 
     @FXML
-    public Button button_ExitProgram;
-
-    @FXML
     public AnchorPane anchorPain_main;
 
     private Node center;
@@ -94,6 +91,28 @@ public class RootFrameController implements Initializable {
     @FXML
     private void closeButtonAction(){
         System.exit(1);
+    }
+
+    @FXML
+    private void startPreset(ActionEvent event){
+        //TODO: will handle predefined preset functionality
+
+
+    }
+
+    @FXML
+    private void startPresetEditor(){
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+        loader.setLocation(getClass().getResource("/fxml/wizard/SettingsFrame.fxml"));
+        try {
+            center = borderPane_Content.getCenter();
+            borderPane_Content.setCenter(loader.load());
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 
     private void startWizard(String fxmlPath, boolean isExtended) {
