@@ -106,6 +106,7 @@ public class RootFrameController implements Initializable {
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
+           // ((SettingsController) loader.getController()).testFunction();
         } catch (IOException e){
             e.printStackTrace();
         }
