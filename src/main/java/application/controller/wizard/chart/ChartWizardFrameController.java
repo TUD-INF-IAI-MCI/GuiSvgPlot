@@ -344,7 +344,6 @@ public class ChartWizardFrameController extends SVGWizardController {
             }
         });
         // trendline and hide original points
-        // TODO: disable trendline and hideOriginalPoints doesn't work! --- WHY?
         ObservableList<String> trendline = FXCollections.observableArrayList();
         this.textField_trendline_n.textProperty().addListener((observable, oldValue, newValue) -> {
             trendline.add(1, newValue);
@@ -358,14 +357,15 @@ public class ChartWizardFrameController extends SVGWizardController {
             trendline.add(2, newValue);
             svgPlotOptions.setTrendLine(trendline);
         });
-        this.checkbox_linepoints.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        this.checkbox_hideOriginalPoints.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-              svgOptions.setHideOriginalPoints(newValue);
+              svgPlotOptions.setHideOriginalPoints(newValue);
             }
         });
         ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
         this.choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
+        this.choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
         this.choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TrendlineAlgorithm>() {
             @Override
             public void changed(ObservableValue<? extends TrendlineAlgorithm> observable, TrendlineAlgorithm oldValue, TrendlineAlgorithm newValue) {
@@ -409,7 +409,9 @@ public class ChartWizardFrameController extends SVGWizardController {
                         hide(label_trendline_forecast, textField_trendline_forecast);
                         hide(label_trendline_n, textField_trendline_n);
                         hide(label_hideOriginalPoints, checkbox_hideOriginalPoints);
+                        // TODO: this does not have any effect because SvgPlotOptions do not clear his private variable trendlineAlgorithm (SvgPlotOptions.parseTrendLine)
                         trendline.clear();
+                        checkbox_hideOriginalPoints.setSelected(false);
                         break;
                 }
                 svgPlotOptions.setTrendLine(trendline);
