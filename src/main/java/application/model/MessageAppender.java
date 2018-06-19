@@ -21,7 +21,7 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
     public void start() {
         patternLayout = new PatternLayout();
         patternLayout.setContext(getContext());
-        patternLayout.setPattern("%msg%n");
+        patternLayout.setPattern("%msg");
         patternLayout.start();
 
         super.start();

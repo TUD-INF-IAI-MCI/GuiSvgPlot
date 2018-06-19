@@ -135,6 +135,7 @@ public class SVGWizardController implements Initializable {
 
             borderPane_WizardContent.setCenter(stages.get(currentStage.get()));
             GuiSvgPlott.getInstance().getRootFrameController().label_message.setVisible(false);
+            GuiSvgPlott.getInstance().getRootFrameController().label_message.getStyleClass().clear();
             this.svgOptionsService.buildSVG(this.svgPlotOptions, this.webView_svg);
         });
 

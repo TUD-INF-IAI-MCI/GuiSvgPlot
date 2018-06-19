@@ -1,5 +1,6 @@
 package application.service;
 
+import application.GuiSvgPlott;
 import javafx.collections.FXCollections;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -18,6 +19,7 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
+import javafx.scene.control.Label;
 
 /**
  * This class provides methods for {@link SvgPlotOptions}.
@@ -89,8 +91,8 @@ public class SvgOptionsService {
         }
         svgPlotOptions.finalizeOptions();
 
-        SvgCreator creator = svgPlotOptions.getDiagramType().getInstance(svgPlotOptions);
         try {
+            SvgCreator creator = svgPlotOptions.getDiagramType().getInstance(svgPlotOptions);
             creator.run();
 
             /* show created svg */
@@ -109,6 +111,10 @@ public class SvgOptionsService {
             webView_svg.setAccessibleHelp(bundle.getString("preview") + ": " + description);
 
         } catch (Exception e) {
+            Label label =GuiSvgPlott.getInstance().getRootFrameController().label_message;
+            label.setText("Fehler beim Erstellen der Vorschau!");
+            label.getStyleClass().add("warn");
+            label.setVisible(true);
             e.printStackTrace();
         }
     }
