@@ -8,13 +8,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,6 +30,9 @@ public class RootFrameController implements Initializable {
 
     @FXML
     public AnchorPane anchorPain_main;
+
+    @FXML
+    public Label label_message;
 
     private Node center;
 
@@ -96,8 +95,6 @@ public class RootFrameController implements Initializable {
     @FXML
     private void startPreset(ActionEvent event){
         //TODO: will handle predefined preset functionality
-
-
     }
 
     @FXML

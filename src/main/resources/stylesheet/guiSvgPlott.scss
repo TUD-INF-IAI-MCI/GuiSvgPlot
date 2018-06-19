@@ -3,6 +3,10 @@ $menu-font-color: #fff;
 $stage-btn-color: #fff;
 $stage-btn-font: $tud-blue;
 $stage-btn-font-active: #fff;
+$error-bg-color: #f2dede;
+$error-font-color: #a94442;
+$warning-bg-color: #fcf8e3;
+$warning-font-color: #8a6d3b;
 
 .menu-bar {
   -fx-background-color: $tud-blue;
@@ -24,7 +28,6 @@ HBox {
 }
 
 VBox {
-  -fx-spacing: 10;
   -fx-padding: 10;
 }
 
@@ -55,4 +58,20 @@ WebView {
 
 Label {
   -fx-padding: 0 10 0 10;
+
+  &#label_message {
+    -fx-pref-height: 0;
+    -fx-padding: 0 0 0 0 ;
+    -fx-font-weight: bold;
+
+    &.warn {
+      -fx-background-color: $warning-bg-color;
+      -fx-text-fill: $warning-font-color;
+    }
+
+    &.error {
+      -fx-background-color: $error-bg-color;
+      -fx-text-fill: $error-font-color;
+    }
+  }
 }

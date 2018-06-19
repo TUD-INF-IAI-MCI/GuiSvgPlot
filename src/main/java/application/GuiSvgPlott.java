@@ -2,11 +2,9 @@ package application;
 
 import application.controller.RootFrameController;
 import application.service.UTF8Control;
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,8 +13,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileReader;
@@ -24,7 +20,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class GuiSvgPlott extends Application {
@@ -49,11 +44,8 @@ public class GuiSvgPlott extends Application {
     }
 
 
-    static final Logger log = LoggerFactory.getLogger(GuiSvgPlott.class);
-
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         setSettings();
 
         ResourceBundle bundle = ResourceBundle.getBundle("langBundle", new UTF8Control());
@@ -124,5 +116,9 @@ public class GuiSvgPlott extends Application {
 
     public String getGnuPlot() {
         return settings.has("gnu-path") ? settings.get("gnu-path").getAsString() : "";
+    }
+
+    public RootFrameController getRootFrameController() {
+        return rootFrameController;
     }
 }

@@ -34,7 +34,6 @@ public class ChartWizardFrameController extends SVGWizardController {
 
     private static final int AMOUNTOFSTAGES = 6;
 
-
     /*Begin: FXML Nodes*/
 
     /* stage 1 */
@@ -191,7 +190,8 @@ public class ChartWizardFrameController extends SVGWizardController {
      * Will initiate the first stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage1() {
-        this.label_Headline.setText("Diagramm erstellen");
+
+        this.label_Headline.setText("");
 
         // diagram type
         ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());

@@ -17,6 +17,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.web.WebView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 
 import java.io.File;
@@ -26,6 +28,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class SVGWizardController implements Initializable {
+    // start logger
+    private static final Logger logger = LoggerFactory.getLogger(SVGWizardController.class);
 
     @FXML
     protected Button button_Back;
@@ -93,6 +97,7 @@ public class SVGWizardController implements Initializable {
             this.stageBtns.add(stageBtn);
         }
     }
+
     /**
      * content-preprocessing. Will "hide" the content-tabPane and shows the first stage
      */
@@ -110,6 +115,7 @@ public class SVGWizardController implements Initializable {
     protected void initListener() {
         // indicator for current stage. changes will automatically render the chosen stage
         currentStage.addListener((args, oldVal, newVal) -> {
+
             if (newVal.intValue() < 1) button_Back.setDisable(true);
             else button_Back.setDisable(false);
 
@@ -122,12 +128,13 @@ public class SVGWizardController implements Initializable {
                 currentStage.set(oldVal.intValue());
             }
 
-            if(oldVal.intValue() < this.stageBtns.size()){
+            if (oldVal.intValue() < this.stageBtns.size()) {
                 this.stageBtns.get(oldVal.intValue()).getStyleClass().remove("active");
                 this.stageBtns.get(currentStage.get()).getStyleClass().add("active");
             }
 
             borderPane_WizardContent.setCenter(stages.get(currentStage.get()));
+            GuiSvgPlott.getInstance().getRootFrameController().label_message.setVisible(false);
             this.svgOptionsService.buildSVG(this.svgPlotOptions, this.webView_svg);
         });
 
@@ -141,8 +148,8 @@ public class SVGWizardController implements Initializable {
 
         // closes the wizard
         button_Cancel.setOnAction(event -> {
+            GuiSvgPlott.getInstance().getRootFrameController().label_message.setVisible(false);
             GuiSvgPlott.getInstance().closeWizard();
         });
     }
-
 }

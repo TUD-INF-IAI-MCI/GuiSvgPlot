@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Form -->
+    <appender name="FORM" class="application.model.MessageAppender" />
+
+    <root level="warn">
+        <appender-ref ref="FORM" />
+    </root>
+
+</configuration>
