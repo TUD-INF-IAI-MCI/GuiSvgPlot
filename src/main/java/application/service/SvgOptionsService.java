@@ -19,6 +19,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
+/**
+ * This class provides methods for {@link SvgPlotOptions}.
+ */
 public class SvgOptionsService {
 
     private static final SvgOptionsService INSTANCE = new SvgOptionsService();
@@ -31,6 +34,10 @@ public class SvgOptionsService {
         return INSTANCE;
     }
 
+    /**
+     * Builds a {@link StringConverter} which converts a {@link DiagramType} to a string from language bundle.
+     * @return the {@link StringConverter}
+     */
     public StringConverter<DiagramType> getDiagramTypConverter() {
         return new StringConverter<DiagramType>() {
             @Override
@@ -51,6 +58,10 @@ public class SvgOptionsService {
         };
     }
 
+    /**
+     * Builds the Svg.
+     * @param svgPlotOptions the {@link SvgPlotOptions}
+     */
     public void buildSVG(SvgPlotOptions svgPlotOptions) {
         svgPlotOptions.finalizeOptions();
 
@@ -62,6 +73,11 @@ public class SvgOptionsService {
         }
     }
 
+    /**
+     * Build Svg and load it into {@link WebView}.
+     * @param svgPlotOptions the {@link SvgPlotOptions}
+     * @param webView_svg the {@link WebView}
+     */
     public void buildSVG(SvgPlotOptions svgPlotOptions, WebView webView_svg) {
         File svg = svgPlotOptions.getOutput();
 
@@ -123,6 +139,10 @@ public class SvgOptionsService {
         return desc;
     }
 
+    /**
+     * Sets the {@link ResourceBundle}
+     * @param bundle the {@link ResourceBundle}
+     */
     public void setBundle(ResourceBundle bundle) {
         this.bundle = bundle;
     }

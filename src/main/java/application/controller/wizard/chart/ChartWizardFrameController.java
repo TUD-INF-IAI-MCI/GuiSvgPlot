@@ -155,6 +155,9 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     public ChoiceBox<Color> choiceBox_color2;
 
+    private List<String> colors;
+    private Point size;
+
     /*End: FXML Nodes*/
     private ObjectProperty<Range> xRange;
     private ObjectProperty<Range> yRange;
@@ -185,7 +188,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
 
     /**
-     * Will initiate the first stage. Depending on {@code extended}, some parts will be dis- or enabled
+     * Will initiate the first stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage1() {
         this.label_Headline.setText("Diagramm erstellen");
@@ -260,7 +263,7 @@ public class ChartWizardFrameController extends SVGWizardController {
     }
 
     /**
-     * Will initiate the second stage. Depending on {@code extended}, some parts will be dis- or enabled
+     * Will initiate the second stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage2() {
         // csv path
@@ -319,6 +322,9 @@ public class ChartWizardFrameController extends SVGWizardController {
         });
     }
 
+    /**
+     * Will initiate the third stage. Depending on {@code extended}, some parts will be dis- or enabled.
+     */
     private void initStage3() {
         // baraccumulation
         ObservableList<BarAccumulationStyle> csvOrientationObservableList = FXCollections.observableArrayList(BarAccumulationStyle.values());
@@ -422,6 +428,9 @@ public class ChartWizardFrameController extends SVGWizardController {
 
     }
 
+    /**
+     * Will initiate the forth stage. Depending on {@code extended}, some parts will be dis- or enabled.
+     */
     private void initStage4() {
         //TODO: validate text input
         // x unit
@@ -483,22 +492,9 @@ public class ChartWizardFrameController extends SVGWizardController {
         });
     }
 
-    private void toggleAxesRanges(Boolean enabled) {
-        if (!enabled) {
-            this.xRange.set(null);
-            this.yRange.set(null);
-        } else {
-            this.xRange.set(new Range(-8, 8));
-            this.yRange.set(new Range(-8, 8));
-        }
-
-
-        setVisible(enabled, label_xfrom, textField_xfrom);
-        setVisible(enabled, label_xto, textField_xto);
-        setVisible(enabled, label_yfrom, textField_yfrom);
-        setVisible(enabled, label_yto, textField_yto);
-    }
-
+    /**
+     * Will initiate the fifth stage. Depending on {@code extended}, some parts will be dis- or enabled.
+     */
     private void initStage5() {
         // horizontal grid
         String showHorizontalGrid = this.svgPlotOptions.getShowHorizontalGrid();
@@ -564,9 +560,9 @@ public class ChartWizardFrameController extends SVGWizardController {
         });
     }
 
-    private List<String> colors;
-    private Point size;
-
+    /**
+     * Will initiate the sixth stage. Depending on {@code extended}, some parts will be dis- or enabled.
+     */
     private void initStage6() {
         this.colors = new ArrayList<>();
         this.size = this.svgPlotOptions.getSize();
@@ -619,16 +615,52 @@ public class ChartWizardFrameController extends SVGWizardController {
 
     }
 
+    /**
+     * Sets the visibility of given Label and given field to true.
+     * @param label the {@link Label}
+     * @param field the field {@link Node}
+     */
     private void show(Label label, Node field) {
         label.setVisible(true);
         field.setVisible(true);
     }
 
+    /**
+     * Sets the visibility of given Label and given field to false.
+     * @param label the {@link Label}
+     * @param field the field {@link Node}
+     */
     private void hide(Label label, Node field) {
         label.setVisible(false);
         field.setVisible(false);
     }
 
+    /**
+     * Sets the value and visibility of x- and y-{@link Range} and corresponding {@link Node}s.
+     * @param enabled whether fields should be visible
+     */
+    private void toggleAxesRanges(Boolean enabled) {
+        if (!enabled) {
+            this.xRange.set(null);
+            this.yRange.set(null);
+        } else {
+            this.xRange.set(new Range(-8, 8));
+            this.yRange.set(new Range(-8, 8));
+        }
+
+
+        setVisible(enabled, label_xfrom, textField_xfrom);
+        setVisible(enabled, label_xto, textField_xto);
+        setVisible(enabled, label_yfrom, textField_yfrom);
+        setVisible(enabled, label_yto, textField_yto);
+    }
+
+    /**
+     * Sets the visibility of given label and field to given value.
+     * @param visible whether field {@link Node} and {@link Label} should be visible.
+     * @param label the {@link Label}
+     * @param field the the field {@link Node}
+     */
     private void setVisible(boolean visible, Label label, Node field) {
         if (visible) {
             show(label, field);
@@ -636,4 +668,5 @@ public class ChartWizardFrameController extends SVGWizardController {
             hide(label, field);
         }
     }
+
 }
