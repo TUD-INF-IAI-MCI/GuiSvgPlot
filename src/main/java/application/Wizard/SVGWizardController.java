@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.AccessibleRole;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
@@ -54,6 +55,8 @@ public class SVGWizardController implements Initializable {
     protected SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
 
     public void initialize(URL location, ResourceBundle resources) {
+        this.bundle = resources;
+        this.svgOptionsService.setBundle(resources);
         this.currentStage = new SimpleIntegerProperty();
         this.isExtended = new SimpleBooleanProperty(false);
         this.bundle = resources;
@@ -65,6 +68,8 @@ public class SVGWizardController implements Initializable {
 
         this.svgPlotOptions = new SvgPlotOptions();
         this.svgOptions = new GuiSvgOptions(svgPlotOptions);
+        this.webView_svg.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
+        this.webView_svg.setAccessibleHelp(this.bundle.getString("preview"));
     }
 
     public void setExtended(boolean isExtended) {

@@ -171,7 +171,6 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.xRange = new SimpleObjectProperty<>();
         this.yRange = new SimpleObjectProperty<>();
         this.initiateAllStages();
-
     }
 
 
@@ -196,7 +195,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         diagramTypeObservableList.remove(DiagramType.FunctionPlot);
         this.choiceBox_DiagramType.setItems(diagramTypeObservableList);
         // i18n
-        this.choiceBox_DiagramType.setConverter(svgOptionsService.getDiagramTypConverter(this.bundle));
+        this.choiceBox_DiagramType.setConverter(svgOptionsService.getDiagramTypConverter());
         this.choiceBox_DiagramType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DiagramType>() {
             @Override
             public void changed(ObservableValue<? extends DiagramType> observable, DiagramType oldValue, DiagramType newValue) {
