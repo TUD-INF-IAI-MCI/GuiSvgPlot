@@ -5,6 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.util.StringConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.svgcreator.SvgCreator;
@@ -25,7 +27,7 @@ import javafx.scene.control.Label;
  * This class provides methods for {@link SvgPlotOptions}.
  */
 public class SvgOptionsService {
-
+    private static final Logger logger = LoggerFactory.getLogger(SvgOptionsService.class);
     private static final SvgOptionsService INSTANCE = new SvgOptionsService();
     private ResourceBundle bundle;
 
@@ -111,10 +113,7 @@ public class SvgOptionsService {
             webView_svg.setAccessibleHelp(bundle.getString("preview") + ": " + description);
 
         } catch (Exception e) {
-            Label label =GuiSvgPlott.getInstance().getRootFrameController().label_message;
-            label.setText("Fehler beim Erstellen der Vorschau!");
-            label.getStyleClass().add("warn");
-            label.setVisible(true);
+            logger.error(this.bundle.getString("preview_load_error"));
             e.printStackTrace();
         }
     }
