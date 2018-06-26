@@ -67,7 +67,6 @@ public class GuiSvgPlott extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-
     }
 
     private void setSettings() throws IOException {

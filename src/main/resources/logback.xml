@@ -2,7 +2,7 @@
 <configuration>
 
     <!-- Form -->
-    <appender name="FORM" class="application.model.MessageAppender" />
+    <appender name="FORM" class="application.infrastructure.MessageAppender" />
 
     <!--Console-->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">

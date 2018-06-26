@@ -2,6 +2,7 @@ package application.controller.wizard.chart;
 
 import application.GuiSvgPlott;
 import application.Wizard.SVGWizardController;
+import application.model.PageSize;
 import application.model.TrendlineAlgorithm;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -27,6 +28,7 @@ import tud.tangram.svgplot.styles.Color;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -49,6 +51,8 @@ public class ChartWizardFrameController extends SVGWizardController {
     public TextField textField_outputPath;
     @FXML
     private Button button_OutputPath;
+    @FXML
+    private ChoiceBox<PageSize> choiceBox_size;
 
     /* stage 2*/
     @FXML
@@ -145,10 +149,10 @@ public class ChartWizardFrameController extends SVGWizardController {
     private GridPane stage6;
     @FXML
     public TextField textField_cssFile;
-    @FXML
-    public TextField textField_sizeWidth;
-    @FXML
-    public TextField textField_sizeHeight;
+    //    @FXML
+//    public TextField textField_sizeWidth;
+//    @FXML
+//    public TextField textField_sizeHeight;
     @FXML
     public ChoiceBox<Color> choiceBox_color1;
     @FXML
@@ -239,11 +243,8 @@ public class ChartWizardFrameController extends SVGWizardController {
         ObservableList<OutputDevice> outputDevices = FXCollections.observableArrayList(OutputDevice.values());
         this.choiceBox_outputDevice.setItems(outputDevices);
         this.choiceBox_outputDevice.getSelectionModel().select(0);
-        this.choiceBox_outputDevice.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<OutputDevice>() {
-            @Override
-            public void changed(ObservableValue<? extends OutputDevice> observable, OutputDevice oldValue, OutputDevice newValue) {
-                svgPlotOptions.setOutputDevice(newValue);
-            }
+        this.choiceBox_outputDevice.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            svgPlotOptions.setOutputDevice(newValue);
         });
 
         // output path
@@ -259,6 +260,17 @@ public class ChartWizardFrameController extends SVGWizardController {
             if (file != null) {
                 this.textField_outputPath.setText(file.getAbsolutePath());
             }
+        });
+
+        // size
+        ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
+        ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
+        this.choiceBox_size.setItems(sortedPageSizes);
+        this.choiceBox_size.setConverter(svgOptionsService.getPageSizeConverter());
+        this.choiceBox_size.getSelectionModel().select(PageSize.A4);
+        this.choiceBox_size.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            Point size = new Point(newValue.getWidth(), newValue.getHeight());
+            this.svgPlotOptions.setSize(size);
         });
     }
 
@@ -366,7 +378,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.checkbox_hideOriginalPoints.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-              svgPlotOptions.setHideOriginalPoints(newValue);
+                svgPlotOptions.setHideOriginalPoints(newValue);
             }
         });
         ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
@@ -567,17 +579,17 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.colors = new ArrayList<>();
         this.size = this.svgPlotOptions.getSize();
 
-        // size
-        this.textField_sizeWidth.setText(this.svgPlotOptions.getSize().x());
-        this.textField_sizeWidth.textProperty().addListener((observable, oldValue, newValue) -> {
-            size.setX(Double.parseDouble(newValue));
-            svgPlotOptions.setSize(size);
-        });
-        this.textField_sizeHeight.setText(this.svgPlotOptions.getSize().y());
-        this.textField_sizeHeight.textProperty().addListener((observable, oldValue, newValue) -> {
-            size.setY(Double.parseDouble(newValue));
-            svgPlotOptions.setSize(size);
-        });
+//        // size
+//        this.textField_sizeWidth.setText(this.svgPlotOptions.getSize().x());
+//        this.textField_sizeWidth.textProperty().addListener((observable, oldValue, newValue) -> {
+//            size.setX(Double.parseDouble(newValue));
+//            svgPlotOptions.setSize(size);
+//        });
+//        this.textField_sizeHeight.setText(this.svgPlotOptions.getSize().y());
+//        this.textField_sizeHeight.textProperty().addListener((observable, oldValue, newValue) -> {
+//            size.setY(Double.parseDouble(newValue));
+//            svgPlotOptions.setSize(size);
+//        });
 
         // css file
         this.textField_cssFile.setText(this.svgPlotOptions.getCss());
@@ -617,6 +629,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
     /**
      * Sets the visibility of given Label and given field to true.
+     *
      * @param label the {@link Label}
      * @param field the field {@link Node}
      */
@@ -627,6 +640,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
     /**
      * Sets the visibility of given Label and given field to false.
+     *
      * @param label the {@link Label}
      * @param field the field {@link Node}
      */
@@ -637,6 +651,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
     /**
      * Sets the value and visibility of x- and y-{@link Range} and corresponding {@link Node}s.
+     *
      * @param enabled whether fields should be visible
      */
     private void toggleAxesRanges(Boolean enabled) {
@@ -657,9 +672,10 @@ public class ChartWizardFrameController extends SVGWizardController {
 
     /**
      * Sets the visibility of given label and field to given value.
+     *
      * @param visible whether field {@link Node} and {@link Label} should be visible.
-     * @param label the {@link Label}
-     * @param field the the field {@link Node}
+     * @param label   the {@link Label}
+     * @param field   the the field {@link Node}
      */
     private void setVisible(boolean visible, Label label, Node field) {
         if (visible) {

@@ -1,4 +1,4 @@
-package application.model;
+package application.infrastructure;
 
 import application.GuiSvgPlott;
 import application.controller.RootFrameController;

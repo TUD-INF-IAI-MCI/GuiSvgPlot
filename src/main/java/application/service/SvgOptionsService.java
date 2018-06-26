@@ -1,27 +1,34 @@
 package application.service;
 
-import application.GuiSvgPlott;
+import application.model.PageSize;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Worker;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.svgcreator.SvgCreator;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-
-import java.io.*;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
-import javafx.scene.control.Label;
 
 /**
  * This class provides methods for {@link SvgPlotOptions}.
@@ -40,6 +47,7 @@ public class SvgOptionsService {
 
     /**
      * Builds a {@link StringConverter} which converts a {@link DiagramType} to a string from language bundle.
+     *
      * @return the {@link StringConverter}
      */
     public StringConverter<DiagramType> getDiagramTypConverter() {
@@ -63,7 +71,35 @@ public class SvgOptionsService {
     }
 
     /**
+     * Builds a {@link StringConverter} which converts a {@link PageSize} to a string from language bundle.
+     *
+     * @return the {@link StringConverter}
+     */
+    public StringConverter<PageSize> getPageSizeConverter() {
+        return new StringConverter<PageSize>() {
+            @Override
+            public String toString(PageSize pageSize) {
+                return pageSize.getName() + " " + bundle.getString(pageSize.getPageOrientationName().toLowerCase());
+            }
+
+            @Override
+            public PageSize fromString(String string) {
+                PageSize pageSize = PageSize.A4;
+                for (PageSize ps : FXCollections.observableArrayList(PageSize.values())) {
+                    if (this.toString(ps).equals(string)) {
+                        pageSize = ps;
+                    }
+                }
+                return pageSize;
+            }
+        };
+    }
+
+
+
+    /**
      * Builds the Svg.
+     *
      * @param svgPlotOptions the {@link SvgPlotOptions}
      */
     public void buildSVG(SvgPlotOptions svgPlotOptions) {
@@ -79,8 +115,9 @@ public class SvgOptionsService {
 
     /**
      * Build Svg and load it into {@link WebView}.
+     *
      * @param svgPlotOptions the {@link SvgPlotOptions}
-     * @param webView_svg the {@link WebView}
+     * @param webView_svg    the {@link WebView}
      */
     public void buildSVG(SvgPlotOptions svgPlotOptions, WebView webView_svg) {
         File svg = svgPlotOptions.getOutput();
@@ -105,12 +142,25 @@ public class SvgOptionsService {
                 sb.append(line.trim());
             }
             WebEngine webEngine = webView_svg.getEngine();
+            webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
+                if (newState == Worker.State.SUCCEEDED) {
+                    adjustScaleOfWebView(webView_svg);
+                }
+            });
             webEngine.loadContent(sb.toString());
 
             // accessibility
             Path descPath = Paths.get(svg.getParentFile().getPath() + "/" + svg.getName().replace(".svg", "_desc.html"));
             String description = loadDescription(descPath.toString());
             webView_svg.setAccessibleHelp(bundle.getString("preview") + ": " + description);
+
+            // reset zoom
+            ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
+                adjustScaleOfWebView(webView_svg);
+            };
+            Window window = webView_svg.getScene().getWindow();
+            window.widthProperty().addListener(stageSizeListener);
+            window.heightProperty().addListener(stageSizeListener);
 
         } catch (Exception e) {
             logger.error(this.bundle.getString("preview_load_error"));
@@ -146,9 +196,43 @@ public class SvgOptionsService {
 
     /**
      * Sets the {@link ResourceBundle}
+     *
      * @param bundle the {@link ResourceBundle}
      */
     public void setBundle(ResourceBundle bundle) {
         this.bundle = bundle;
+    }
+
+    /**
+     * Sets the zoom of the WebView so that the content fits in without scrollbars.
+     *
+     * @param webView the {@link WebView}
+     */
+    private void adjustScaleOfWebView(WebView webView) {
+        webView.setZoom(1.0);
+        WebEngine webEngine = webView.getEngine();
+
+        double docHeight = Double.parseDouble(webEngine.executeScript("document.height").toString());
+        double docWidth = Double.parseDouble(webEngine.executeScript("document.width").toString());
+
+        if (docHeight > docWidth) {
+            double zoom = 1.0;
+            if (docHeight > webView.getHeight()) {
+                zoom = webView.getHeight() / docHeight;
+                webView.setZoom(zoom);
+            } else if (docHeight != webView.getHeight()) {
+                zoom = docHeight / webView.getHeight();
+                webView.setZoom(zoom);
+            }
+        } else {
+            double zoom = 1.0;
+            if (docWidth > webView.getWidth()) {
+                zoom = webView.getWidth() / docWidth;
+                webView.setZoom(zoom);
+            } else if (docHeight != webView.getHeight()) {
+                zoom = docWidth / webView.getWidth();
+                webView.setZoom(zoom);
+            }
+        }
     }
 }
