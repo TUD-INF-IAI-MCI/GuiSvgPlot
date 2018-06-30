@@ -26,11 +26,19 @@ $info-font-color: #3c763d;
 }
 
 HBox {
-  -fx-spacing: 10
+  -fx-spacing: 10;
 }
 
 VBox {
   -fx-padding: 10;
+
+  &.warn{
+    -fx-background-color: $warning-bg-color;
+  }
+
+  &.info{
+    -fx-background-color: $info-bg-color;
+  }
 }
 
 .stageBtn {
@@ -48,12 +56,30 @@ VBox {
   }
 }
 
+
 Button {
   &:focused {
     -fx-border-color: $tud-blue;
   }
 }
+.messageBtn {
+  -fx-background-color: none;
+  -fx-background-radius: 10, 10;
+  -fx-pref-height: 30px;
+  -fx-pref-width: 30px;
 
+  &#btn_infos{
+    -fx-background-color: $info-bg-color;
+    -fx-text-fill: $info-font-color;
+  }
+  &#btn_warnings{
+    -fx-background-color: $warning-bg-color;
+    -fx-text-fill: $warning-font-color;
+  }
+  &:focused {
+    -fx-border-color: none;
+  }
+}
 WebView {
   -fx-min-width: 75%;
 }
@@ -67,16 +93,14 @@ Label {
     -fx-font-weight: bold;
 
     &.warn {
-      -fx-background-color: $warning-bg-color !important;
-      -fx-text-fill: $warning-font-color !important;
+      -fx-text-fill: $warning-font-color;
     }
 
     &.error {
-      -fx-background-color: $error-bg-color !important;
-      -fx-text-fill: $error-font-color !important;
+      -fx-background-color: $error-bg-color;
+      -fx-text-fill: $error-font-color;
     }
     &.info {
-      -fx-background-color: $info-bg-color;
       -fx-text-fill: $info-font-color;
     }
   }

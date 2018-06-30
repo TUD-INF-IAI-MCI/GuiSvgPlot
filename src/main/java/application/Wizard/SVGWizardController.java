@@ -12,11 +12,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.AccessibleRole;
 import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
+import org.controlsfx.control.PopOver;
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.options.SvgPlotOptions;
@@ -34,7 +35,7 @@ public class SVGWizardController implements Initializable {
     @FXML
     protected Button button_Back;
     @FXML
-    protected BorderPane borderPane_WizardContent;
+    public BorderPane borderPane_WizardContent;
     @FXML
     protected HBox hBox_pagination;
     @FXML
@@ -43,15 +44,26 @@ public class SVGWizardController implements Initializable {
     protected Button button_Cancel;
     @FXML
     protected Button button_Create;
-//    @FXML
+    //    @FXML
 //    protected Label label_Headline;
     @FXML
     protected TabPane tabPane_ContentHolder;
     @FXML
     protected WebView webView_svg;
 
+    @FXML
+    public Button button_Warnings;
+    @FXML
+    public Button button_Infos;
+
+    public VBox vBox_warnings;
+    public PopOver popOver_warnings;
+    public VBox vBox_infos;
+    public PopOver popOver_infos;
+
     protected BooleanProperty isExtended;
     protected List<Button> stageBtns;
+    protected List<Button> messageBtns;
     protected ResourceBundle bundle;
     protected IntegerProperty currentStage;
     protected File userDir;
@@ -98,6 +110,42 @@ public class SVGWizardController implements Initializable {
             hBox_pagination.getChildren().add(stageBtn);
             this.stageBtns.add(stageBtn);
         }
+
+        this.messageBtns = new ArrayList<>();
+        hBox_pagination.getChildren().remove(this.button_Warnings);
+        this.button_Warnings = new Button("", new Glyph("FontAwesome", FontAwesome.Glyph.WARNING));
+        this.button_Warnings.getStyleClass().add("messageBtn");
+        this.button_Warnings.setId("btn_warnings");
+        this.button_Warnings.setDisable(true);
+        hBox_pagination.getChildren().add(this.button_Warnings);
+
+        hBox_pagination.getChildren().remove(this.button_Infos);
+        this.button_Infos = new Button("", new Glyph("FontAwesome", FontAwesome.Glyph.INFO));
+        this.button_Infos.getStyleClass().add("messageBtn");
+        this.button_Infos.setId("btn_infos");
+        this.button_Infos.setDisable(true);
+        hBox_pagination.getChildren().add(this.button_Infos);
+        this.messageBtns.add(this.button_Infos);
+
+        popOver_warnings = new PopOver();
+        popOver_infos = new PopOver();
+
+        vBox_infos = new VBox();
+        vBox_infos.getStyleClass().add("info");
+        vBox_warnings = new VBox();
+        vBox_warnings.getStyleClass().add("warn");
+
+        button_Infos.setOnAction(event -> {
+            popOver_infos.setTitle("Informationen");
+            popOver_infos.setContentNode(vBox_infos);
+            popOver_infos.show(button_Infos);
+        });
+        button_Warnings.setOnAction(event -> {
+            popOver_warnings.setTitle("Warnungen");
+            popOver_warnings.setContentNode(vBox_warnings);
+            popOver_warnings.show(button_Infos);
+        });
+
     }
 
     /**
@@ -159,7 +207,7 @@ public class SVGWizardController implements Initializable {
             fileChooser.setInitialDirectory(userDir);
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Scalable Vector Graphics (SVG)", "*.svg");
             fileChooser.getExtensionFilters().add(extFilter);
-            String title = this.svgPlotOptions.getTitle().isEmpty() ?  "untitled" : this.svgPlotOptions.getTitle();
+            String title = this.svgPlotOptions.getTitle().isEmpty() ? "untitled" : this.svgPlotOptions.getTitle();
             fileChooser.setInitialFileName(title.toLowerCase() + ".svg");
             File file = fileChooser.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
             if (file != null) {
@@ -168,6 +216,7 @@ public class SVGWizardController implements Initializable {
                 GuiSvgPlott.getInstance().closeWizard();
             }
         });
+
     }
 
 }

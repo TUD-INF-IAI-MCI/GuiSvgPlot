@@ -9,6 +9,7 @@ import ch.qos.logback.core.AppenderBase;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.util.ResourceBundle;
@@ -33,20 +34,45 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
 
         patternLayoutWithStartingLinebreak = new PatternLayout();
         patternLayoutWithStartingLinebreak.setContext(getContext());
-        patternLayoutWithStartingLinebreak.setPattern("%n %-5level: %msg");
+        patternLayoutWithStartingLinebreak.setPattern("%msg");
         patternLayoutWithStartingLinebreak.start();
 
         super.start();
     }
 
     @Override
-    protected void append(ILoggingEvent event) {
+    protected void append(final ILoggingEvent event) {
+
+        // https://controlsfx.bitbucket.io/ --> NotificationPane/Notification
+//        Notifications notifications = Notifications.create()
+//                .title(this.bundle.getString(event.getLevel().levelStr.toLowerCase()))
+//                .text(formattedMsg);
+
+        switch (event.getLevel().levelStr) {
+            case "WARN":
+                renderWarnMessage(event);
+//                notifications.showWarning();
+                break;
+            case "INFO":
+//                notifications.showInformation();
+                renderInfoMessage(event);
+                break;
+            default:
+//                notifications.showError();
+                renderErrorMessage(event);
+                break;
+        }
+
+    }
+
+    private void renderErrorMessage(final ILoggingEvent event) {
         String formattedMsg = patternLayout.doLayout(event);
+        formattedMsg = formattedMsg.replace(event.getLevel().levelStr, this.bundle.getString(event.getLevel().levelStr.toLowerCase()));
         VBox vBox_messages = rootFrameController.vBox_messages;
 //        if (vBox_messages.getChildren().size() > 0) {
 //            formattedMsg = patternLayoutWithStartingLinebreak.doLayout(event);
 //        }
-        formattedMsg = formattedMsg.replace(event.getLevel().levelStr, this.bundle.getString(event.getLevel().levelStr.toLowerCase()));
+
 
         Label label = new Label(formattedMsg);
         label.setAccessibleText(formattedMsg);
@@ -55,10 +81,30 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
         label.setAlignment(Pos.CENTER);
         label.setPrefWidth(rootFrameController.scrollPane_message.getWidth());
 
-
         vBox_messages.getChildren().add(label);
 
+        // TODO: set accassible help text
         ScrollPane scrollPane = rootFrameController.scrollPane_message;
         scrollPane.setVisible(true);
+    }
+
+    private void renderInfoMessage(final ILoggingEvent event){
+        String formattedMsg = patternLayoutWithStartingLinebreak.doLayout(event);
+        Label label = new Label(formattedMsg);
+        label.getStyleClass().add("label_message");
+        label.getStyleClass().add(event.getLevel().levelStr.toLowerCase());
+        VBox infos = rootFrameController.svgWizardController.vBox_infos;
+        infos.getChildren().add(label);
+        rootFrameController.svgWizardController.button_Infos.setDisable(false);
+    }
+
+    private void renderWarnMessage(final ILoggingEvent event){
+        String formattedMsg = patternLayoutWithStartingLinebreak.doLayout(event);
+        Label label = new Label(formattedMsg);
+        label.getStyleClass().add("label_message");
+        label.getStyleClass().add(event.getLevel().levelStr.toLowerCase());
+        VBox warnings = rootFrameController.svgWizardController.vBox_warnings;
+        warnings.getChildren().add(label);
+        rootFrameController.svgWizardController.button_Warnings.setDisable(false);
     }
 }

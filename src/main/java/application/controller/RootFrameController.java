@@ -44,6 +44,7 @@ public class RootFrameController implements Initializable {
     private ResourceBundle bundle;
 
     private SvgStage currentStage;
+    public SVGWizardController svgWizardController;
 
 
     @Override
@@ -125,7 +126,8 @@ public class RootFrameController implements Initializable {
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
-            ((SVGWizardController) loader.getController()).setExtended(isExtended);
+            svgWizardController = ((SVGWizardController) loader.getController());
+            svgWizardController.setExtended(isExtended);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -138,5 +140,10 @@ public class RootFrameController implements Initializable {
         this.scrollPane_message.setVisible(false);
         this.scrollPane_message.getStyleClass().clear();
         this.vBox_messages.getChildren().clear();
+
+        try {
+            this.svgWizardController.vBox_infos.getChildren().clear();
+            this.svgWizardController.vBox_warnings.getChildren().clear();
+        }catch(Exception e){}
     }
 }

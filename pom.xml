@@ -58,6 +58,11 @@
             <artifactId>svgplot-1.0.0-Snapshot</artifactId>
             <version>1.0.0-Snapshot</version>
         </dependency>
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>8.40.14</version>
+        </dependency>
     </dependencies>
 
 
