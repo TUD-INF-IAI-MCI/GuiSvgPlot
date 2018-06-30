@@ -17,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.options.SvgPlotOptions;
@@ -41,6 +42,8 @@ public class SVGWizardController implements Initializable {
     protected Button button_Next;
     @FXML
     protected Button button_Cancel;
+    @FXML
+    protected Button button_Create;
     @FXML
     protected Label label_Headline;
     @FXML
@@ -120,9 +123,9 @@ public class SVGWizardController implements Initializable {
             else button_Back.setDisable(false);
 
             if (newVal.intValue() == stages.size() - 1) {
-                button_Next.setText(bundle.getString("create"));
+                button_Next.setDisable(true);
             } else {
-                button_Next.setText(bundle.getString("next"));
+                button_Next.setDisable(false);
             }
             if (newVal.intValue() > stages.size() - 1) {
                 currentStage.set(oldVal.intValue());
@@ -134,9 +137,7 @@ public class SVGWizardController implements Initializable {
             }
 
             borderPane_WizardContent.setCenter(stages.get(currentStage.get()));
-            GuiSvgPlott.getInstance().getRootFrameController().label_message.setVisible(false);
-            GuiSvgPlott.getInstance().getRootFrameController().label_message.getStyleClass().clear();
-            this.svgOptionsService.buildSVG(this.svgPlotOptions, this.webView_svg);
+            this.svgOptionsService.buildPreviewSVG(this.svgPlotOptions, this.webView_svg);
         });
 
         // increment the currentStage counter. Will trigger its changeListener
@@ -152,5 +153,22 @@ public class SVGWizardController implements Initializable {
             GuiSvgPlott.getInstance().getRootFrameController().label_message.setVisible(false);
             GuiSvgPlott.getInstance().closeWizard();
         });
+
+        // create chart
+        button_Create.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(userDir);
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Scalable Vector Graphics (SVG)", "*.svg");
+            fileChooser.getExtensionFilters().add(extFilter);
+            String title = this.svgPlotOptions.getTitle().isEmpty() ?  "untitled" : this.svgPlotOptions.getTitle();
+            fileChooser.setInitialFileName(title.toLowerCase() + ".svg");
+            File file = fileChooser.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
+            if (file != null) {
+                this.svgPlotOptions.setOutput(file);
+                this.svgOptionsService.buildSVG(svgPlotOptions);
+                GuiSvgPlott.getInstance().closeWizard();
+            }
+        });
     }
+
 }

@@ -114,6 +114,7 @@ public class RootFrameController implements Initializable {
     }
 
     private void startWizard(String fxmlPath, boolean isExtended) {
+        this.clearMessageLabel();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
         loader.setLocation(getClass().getResource(fxmlPath));
@@ -125,5 +126,12 @@ public class RootFrameController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void clearMessageLabel(){
+        this.label_message.setText("");
+        this.label_message.setVisible(false);
+        this.label_message.getStyleClass().clear();
     }
 }

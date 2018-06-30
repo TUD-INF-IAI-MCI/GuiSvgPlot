@@ -102,16 +102,6 @@
                                         <ChoiceBox fx:id="choiceBox_outputDevice" accessibleText="Ausgabegerät "
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
                                                    GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                                        <Label fx:id="label_outputPath" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%path_to_output" GridPane.rowIndex="3"/>
-                                        <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1"
-                                              GridPane.rowIndex="3">
-                                            <TextField fx:id="textField_outputPath"
-                                                       accessibleText="Pfad zur Ausgabedatei"
-                                                       promptText="%prompt_path_to_file" HBox.hgrow="ALWAYS"/>
-                                            <Button fx:id="button_OutputPath" accessibleText="Ausgabedatei auswählen"
-                                                    mnemonicParsing="false" text="..."/>
-                                        </HBox>
                                         <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0"
                                                prefWidth="200.0" text="%size_of_diagram" GridPane.rowIndex="4"/>
                                         <ChoiceBox fx:id="choiceBox_size" accessibleText="Größe des Diagramms"
@@ -513,6 +503,8 @@
                     <Button fx:id="button_Back" accessibleText="Vorheriger Schritt" mnemonicParsing="false" text="%back"
                             ButtonBar.buttonData="RIGHT"/>
                     <Button fx:id="button_Next" accessibleText="Nächster Schritt" mnemonicParsing="false" text="%next"
+                            ButtonBar.buttonData="RIGHT"/>
+                    <Button fx:id="button_Create" accessibleText="%diagram_create" mnemonicParsing="false" text="%create"
                             ButtonBar.buttonData="RIGHT"/>
                     <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT" cancelButton="true"
                             mnemonicParsing="false" text="%cancel" ButtonBar.buttonData="LEFT"/>

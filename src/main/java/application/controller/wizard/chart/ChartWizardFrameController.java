@@ -48,10 +48,6 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     public ChoiceBox<OutputDevice> choiceBox_outputDevice;
     @FXML
-    public TextField textField_outputPath;
-    @FXML
-    private Button button_OutputPath;
-    @FXML
     private ChoiceBox<PageSize> choiceBox_size;
 
     /* stage 2*/
@@ -149,10 +145,6 @@ public class ChartWizardFrameController extends SVGWizardController {
     private GridPane stage6;
     @FXML
     public TextField textField_cssFile;
-    //    @FXML
-//    public TextField textField_sizeWidth;
-//    @FXML
-//    public TextField textField_sizeHeight;
     @FXML
     public ChoiceBox<Color> choiceBox_color1;
     @FXML
@@ -173,7 +165,6 @@ public class ChartWizardFrameController extends SVGWizardController {
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES);
-        this.textField_outputPath.setText(userDir.getPath());
         this.xRange = new SimpleObjectProperty<>();
         this.yRange = new SimpleObjectProperty<>();
         this.initiateAllStages();
@@ -245,21 +236,6 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_outputDevice.getSelectionModel().select(0);
         this.choiceBox_outputDevice.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             svgPlotOptions.setOutputDevice(newValue);
-        });
-
-        // output path
-        this.textField_outputPath.setDisable(false);
-        this.textField_outputPath.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.svgPlotOptions.setOutput(new File(newValue));
-        });
-        this.button_OutputPath.setDisable(false);
-        this.button_OutputPath.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setInitialDirectory(userDir);
-            File file = fileChooser.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
-            if (file != null) {
-                this.textField_outputPath.setText(file.getAbsolutePath());
-            }
         });
 
         // size
@@ -427,7 +403,6 @@ public class ChartWizardFrameController extends SVGWizardController {
                         hide(label_trendline_forecast, textField_trendline_forecast);
                         hide(label_trendline_n, textField_trendline_n);
                         hide(label_hideOriginalPoints, checkbox_hideOriginalPoints);
-                        // TODO: this does not have any effect because SvgPlotOptions do not clear his private variable trendlineAlgorithm (SvgPlotOptions.parseTrendLine)
                         trendline.clear();
                         checkbox_hideOriginalPoints.setSelected(false);
                         break;
@@ -578,18 +553,6 @@ public class ChartWizardFrameController extends SVGWizardController {
     private void initStage6() {
         this.colors = new ArrayList<>();
         this.size = this.svgPlotOptions.getSize();
-
-//        // size
-//        this.textField_sizeWidth.setText(this.svgPlotOptions.getSize().x());
-//        this.textField_sizeWidth.textProperty().addListener((observable, oldValue, newValue) -> {
-//            size.setX(Double.parseDouble(newValue));
-//            svgPlotOptions.setSize(size);
-//        });
-//        this.textField_sizeHeight.setText(this.svgPlotOptions.getSize().y());
-//        this.textField_sizeHeight.textProperty().addListener((observable, oldValue, newValue) -> {
-//            size.setY(Double.parseDouble(newValue));
-//            svgPlotOptions.setSize(size);
-//        });
 
         // css file
         this.textField_cssFile.setText(this.svgPlotOptions.getCss());

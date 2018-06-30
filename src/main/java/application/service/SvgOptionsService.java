@@ -1,5 +1,6 @@
 package application.service;
 
+import application.GuiSvgPlott;
 import application.model.PageSize;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -96,18 +97,19 @@ public class SvgOptionsService {
     }
 
 
-
     /**
      * Builds the Svg.
      *
      * @param svgPlotOptions the {@link SvgPlotOptions}
      */
     public void buildSVG(SvgPlotOptions svgPlotOptions) {
+        GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
         svgPlotOptions.finalizeOptions();
 
         SvgCreator creator = svgPlotOptions.getDiagramType().getInstance(svgPlotOptions);
         try {
             creator.run();
+            logger.info(this.bundle.getString("chart_creation_success_message") + " " + svgPlotOptions.getOutput());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,15 +121,12 @@ public class SvgOptionsService {
      * @param svgPlotOptions the {@link SvgPlotOptions}
      * @param webView_svg    the {@link WebView}
      */
-    public void buildSVG(SvgPlotOptions svgPlotOptions, WebView webView_svg) {
-        File svg = svgPlotOptions.getOutput();
+    public void buildPreviewSVG(SvgPlotOptions svgPlotOptions, WebView webView_svg) {
+        GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
+        Path svgPath = Paths.get(System.getProperty("user.home") + "/svgPlot/svg.svg");
 
-        if (svg == null) {
-            Path svgPath = Paths.get(System.getProperty("user.home") + "/svgPlot/svg.svg");
-
-            svg = new File(svgPath.toString());
-            svgPlotOptions.setOutput(svg);
-        }
+        File svg = new File(svgPath.toString());
+        svgPlotOptions.setOutput(svg);
         svgPlotOptions.finalizeOptions();
 
         try {
@@ -162,7 +161,10 @@ public class SvgOptionsService {
             window.widthProperty().addListener(stageSizeListener);
             window.heightProperty().addListener(stageSizeListener);
 
-        } catch (Exception e) {
+        } catch (ClassCastException e) {
+            logger.warn(this.bundle.getString("preview_pointlist_warning"));
+            e.printStackTrace();
+        } catch (Exception e){
             logger.error(this.bundle.getString("preview_load_error"));
             e.printStackTrace();
         }

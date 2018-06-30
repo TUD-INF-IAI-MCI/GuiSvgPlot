@@ -7,6 +7,8 @@ $error-bg-color: #f2dede;
 $error-font-color: #a94442;
 $warning-bg-color: #fcf8e3;
 $warning-font-color: #8a6d3b;
+$info-bg-color: #dff0d8;
+$info-font-color: #3c763d;
 
 .menu-bar {
   -fx-background-color: $tud-blue;
@@ -65,13 +67,17 @@ Label {
     -fx-font-weight: bold;
 
     &.warn {
-      -fx-background-color: $warning-bg-color;
-      -fx-text-fill: $warning-font-color;
+      -fx-background-color: $warning-bg-color !important;
+      -fx-text-fill: $warning-font-color !important;
     }
 
     &.error {
-      -fx-background-color: $error-bg-color;
-      -fx-text-fill: $error-font-color;
+      -fx-background-color: $error-bg-color !important;
+      -fx-text-fill: $error-font-color !important;
+    }
+    &.info {
+      -fx-background-color: $info-bg-color;
+      -fx-text-fill: $info-font-color;
     }
   }
 }
