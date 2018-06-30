@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.AccessibleRole;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -44,8 +43,8 @@ public class SVGWizardController implements Initializable {
     protected Button button_Cancel;
     @FXML
     protected Button button_Create;
-    @FXML
-    protected Label label_Headline;
+//    @FXML
+//    protected Label label_Headline;
     @FXML
     protected TabPane tabPane_ContentHolder;
     @FXML
@@ -150,7 +149,7 @@ public class SVGWizardController implements Initializable {
 
         // closes the wizard
         button_Cancel.setOnAction(event -> {
-            GuiSvgPlott.getInstance().getRootFrameController().label_message.setVisible(false);
+            GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
             GuiSvgPlott.getInstance().closeWizard();
         });
 

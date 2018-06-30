@@ -6,7 +6,10 @@ import application.service.UTF8Control;
 import ch.qos.logback.classic.PatternLayout;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
 
 import java.util.ResourceBundle;
 
@@ -39,15 +42,23 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
     @Override
     protected void append(ILoggingEvent event) {
         String formattedMsg = patternLayout.doLayout(event);
-        Label label_message = rootFrameController.label_message;
-        if (!label_message.getText().equals("")){
-            formattedMsg = patternLayoutWithStartingLinebreak.doLayout(event);
-        }
+        VBox vBox_messages = rootFrameController.vBox_messages;
+//        if (vBox_messages.getChildren().size() > 0) {
+//            formattedMsg = patternLayoutWithStartingLinebreak.doLayout(event);
+//        }
         formattedMsg = formattedMsg.replace(event.getLevel().levelStr, this.bundle.getString(event.getLevel().levelStr.toLowerCase()));
-//        System.out.println(formattedMsg.replace(":", "="));
-        label_message.setText(label_message.getText() + formattedMsg);
-        label_message.setAccessibleText(formattedMsg);
-        label_message.setVisible(true);
-        label_message.getStyleClass().add(event.getLevel().levelStr.toLowerCase());
+
+        Label label = new Label(formattedMsg);
+        label.setAccessibleText(formattedMsg);
+        label.getStyleClass().add("label_message");
+        label.getStyleClass().add(event.getLevel().levelStr.toLowerCase());
+        label.setAlignment(Pos.CENTER);
+        label.setPrefWidth(rootFrameController.scrollPane_message.getWidth());
+
+
+        vBox_messages.getChildren().add(label);
+
+        ScrollPane scrollPane = rootFrameController.scrollPane_message;
+        scrollPane.setVisible(true);
     }
 }

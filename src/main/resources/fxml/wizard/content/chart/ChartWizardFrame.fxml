@@ -27,9 +27,9 @@
         <top>
             <VBox BorderPane.alignment="CENTER">
                 <children>
-                    <Label fx:id="label_Headline" alignment="CENTER" contentDisplay="CENTER"
-                           maxWidth="1.7976931348623157E308" minWidth="200.0" prefHeight="48.0" text="Label"
-                           textAlignment="CENTER"/>
+                    <!--<Label fx:id="label_Headline" alignment="CENTER" contentDisplay="CENTER"-->
+                           <!--maxWidth="1.7976931348623157E308" minWidth="200.0" prefHeight="48.0" text="Label"-->
+                           <!--textAlignment="CENTER"/>-->
                     <HBox fx:id="hBox_pagination" alignment="CENTER" prefHeight="48.0" prefWidth="600.0"/>
                 </children>
             </VBox>

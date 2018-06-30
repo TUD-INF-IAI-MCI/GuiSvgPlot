@@ -186,7 +186,7 @@ public class ChartWizardFrameController extends SVGWizardController {
      */
     private void initStage1() {
 
-        this.label_Headline.setText("");
+//        this.label_Headline.setText("");
 
         // diagram type
         ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());

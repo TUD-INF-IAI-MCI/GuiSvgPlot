@@ -61,7 +61,7 @@ WebView {
 Label {
   -fx-padding: 0 10 0 10;
 
-  &#label_message {
+  &.label_message {
     -fx-pref-height: 0;
     -fx-padding: 10 0 10 0;
     -fx-font-weight: bold;
@@ -80,4 +80,8 @@ Label {
       -fx-text-fill: $info-font-color;
     }
   }
+}
+
+.p-0{
+  -fx-padding: 0;
 }

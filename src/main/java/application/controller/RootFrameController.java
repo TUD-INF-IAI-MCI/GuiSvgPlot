@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,7 +33,10 @@ public class RootFrameController implements Initializable {
     public AnchorPane anchorPain_main;
 
     @FXML
-    public Label label_message;
+    public ScrollPane scrollPane_message;
+
+    @FXML
+    public VBox vBox_messages;
 
     private Node center;
 
@@ -130,8 +134,9 @@ public class RootFrameController implements Initializable {
 
 
     public void clearMessageLabel(){
-        this.label_message.setText("");
-        this.label_message.setVisible(false);
-        this.label_message.getStyleClass().clear();
+//        this.scrollPane_message.setContent(new Text());
+        this.scrollPane_message.setVisible(false);
+        this.scrollPane_message.getStyleClass().clear();
+        this.vBox_messages.getChildren().clear();
     }
 }

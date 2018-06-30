@@ -5,14 +5,9 @@ import application.model.PageSize;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Worker;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,7 +158,7 @@ public class SvgOptionsService {
 
         } catch (ClassCastException e) {
             logger.warn(this.bundle.getString("preview_pointlist_warning"));
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (Exception e){
             logger.error(this.bundle.getString("preview_load_error"));
             e.printStackTrace();
