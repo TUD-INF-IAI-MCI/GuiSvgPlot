@@ -45,16 +45,16 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
     protected void append(final ILoggingEvent event) {
         String formattedMsg = patternLayoutWithLevel.doLayout(event);
         // https://controlsfx.bitbucket.io/ --> NotificationPane/Notification
-        Notifications notifications = Notifications.create()
-                .title(this.bundle.getString(event.getLevel().levelStr.toLowerCase()))
-                .text(formattedMsg);
+//        Notifications notifications = Notifications.create()
+//                .title(this.bundle.getString(event.getLevel().levelStr.toLowerCase()))
+//                .text(formattedMsg);
            switch (event.getLevel().levelStr) {
             case "WARN":
                 renderWarnMessage(event);
-                notifications.showWarning();
+//                notifications.showWarning();
                 break;
             case "INFO":
-                notifications.showInformation();
+//                notifications.showInformation();
                 if(event.getLoggerName().equals(SvgOptionsService.getInstance().getLoggerName())){
                     renderMessage(event);
                 }else{
@@ -62,7 +62,7 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
                 }
                 break;
             default:
-                notifications.showError();
+//                notifications.showError();
                 renderMessage(event);
                 break;
         }

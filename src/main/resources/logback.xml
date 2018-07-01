@@ -13,9 +13,9 @@
 
     <root level="trace">
         <appender-ref ref="CONSOLE" />
+    </root>
+    <root level="info">
         <appender-ref ref="FORM" />
     </root>
-    <!--<root level="trace">-->
-    <!--</root>-->
 
 </configuration>
