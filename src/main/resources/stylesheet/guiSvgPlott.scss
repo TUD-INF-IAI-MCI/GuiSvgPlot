@@ -89,10 +89,11 @@ Label {
 
   &.label_message {
     -fx-pref-height: 0;
-    -fx-padding: 10 0 10 0;
+    -fx-padding: 8 0 8 0;
     -fx-font-weight: bold;
 
     &.warn {
+      -fx-background-color: $warning-bg-color;
       -fx-text-fill: $warning-font-color;
     }
 
@@ -100,7 +101,9 @@ Label {
       -fx-background-color: $error-bg-color;
       -fx-text-fill: $error-font-color;
     }
-    &.info {
+    &.info,
+    &.trace{
+      -fx-background-color: $info-bg-color;
       -fx-text-fill: $info-font-color;
     }
   }

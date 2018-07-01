@@ -232,4 +232,8 @@ public class SvgOptionsService {
             }
         }
     }
+
+    public static String getLoggerName() {
+        return logger.getName();
+    }
 }

@@ -144,6 +144,8 @@ public class RootFrameController implements Initializable {
         try {
             this.svgWizardController.vBox_infos.getChildren().clear();
             this.svgWizardController.vBox_warnings.getChildren().clear();
+            this.svgWizardController.button_Warnings.setDisable(true);
+            this.svgWizardController.button_Infos.setDisable(true);
         }catch(Exception e){}
     }
 }
