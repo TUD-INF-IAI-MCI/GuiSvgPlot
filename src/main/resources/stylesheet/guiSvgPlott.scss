@@ -99,9 +99,11 @@ Label {
   -fx-pref-height: 0;
   -fx-padding: 8 0 8 0;
   -fx-font-weight: bold;
-
+}
+.label_message,
+.scrollPane-message,
+.popover{
   &.warn {
-    -fx-padding: 8 10 8 0;
     -fx-background-color: $warning-bg-color;
     -fx-text-fill: $warning-font-color;
     -fx-fill: $warning-font-color;
@@ -112,19 +114,10 @@ Label {
     -fx-text-fill: $error-font-color;
     -fx-fill: $error-font-color;
   }
-  &.info,
-  &.trace {
+  &.info {
     -fx-background-color: $info-bg-color;
     -fx-text-fill: $info-font-color;
     -fx-fill: $info-font-color;
-  }
-}
-.scrollPane-message {
-  &.warn {
-    -fx-background-color: $warning-bg-color;
-  }
-  &.info {
-    -fx-background-color: $info-bg-color;
   }
 }
 .notification-circle {

@@ -3,6 +3,7 @@ package application.Wizard;
 import application.GuiSvgPlott;
 import application.model.GuiSvgOptions;
 import application.service.SvgOptionsService;
+import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -11,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.AccessibleRole;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
@@ -26,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -147,23 +150,34 @@ public class SVGWizardController implements Initializable {
 
 
         button_Infos.setOnAction(event -> {
+            ScrollPane infoScrollPane = new ScrollPane(vBox_infos);
+            infoScrollPane.getStyleClass().add("scrollPane-message");
+            infoScrollPane.getStyleClass().add("info");
+            infoScrollPane.setMaxSize(340,500);
+            infoScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
+            infoScrollPane.setPadding(new Insets(0, 10, 0,0));
+
             popOver_infos.setTitle("Informationen");
-            popOver_infos.setContentNode(vBox_infos);
+            popOver_warnings.getStyleClass().add("info");
+            popOver_infos.setHeaderAlwaysVisible(true);
+            popOver_infos.setContentNode(infoScrollPane);
             popOver_infos.show(button_Infos);
+            fixBlurryText(infoScrollPane);
         });
         button_Warnings.setOnAction(event -> {
-//            this is blurry:
-//
-//            ScrollPane warningScrollPane = new ScrollPane(vBox_warnings);
-//            warningScrollPane.getStyleClass().add("scrollPane-message");
-//            warningScrollPane.getStyleClass().add("warn");
-//            warningScrollPane.setMaxSize(340,500);
-//            warningScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
-//            warningScrollPane.setPadding(new Insets(0, 10, 0,0));
+            ScrollPane warningScrollPane = new ScrollPane(vBox_warnings);
+            warningScrollPane.getStyleClass().add("scrollPane-message");
+            warningScrollPane.getStyleClass().add("warn");
+            warningScrollPane.setMaxSize(340,500);
+            warningScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
+            warningScrollPane.setPadding(new Insets(0, 10, 0,0));
 
             popOver_warnings.setTitle("Warnungen");
-            popOver_warnings.setContentNode(vBox_warnings);
+            popOver_warnings.getStyleClass().add("warn");
+            popOver_warnings.setHeaderAlwaysVisible(true);
+            popOver_warnings.setContentNode(warningScrollPane);
             popOver_warnings.show(button_Warnings);
+            fixBlurryText(warningScrollPane);
         });
 
     }
@@ -249,5 +263,24 @@ public class SVGWizardController implements Initializable {
 
     public Glyph getInfoIcon() {
         return infoIcon;
+    }
+
+    /**
+     * Fixes blurry text issue of {@link ScrollPane} inside a {@link PopOver}.
+     * @param node the node
+     */
+    private static void fixBlurryText(Node node) {
+        try {
+            Field field = ScrollPaneSkin.class.getDeclaredField("viewRect");
+            field.setAccessible(true);
+
+            ScrollPane scrollPane = (ScrollPane) node.lookup(".scroll-pane");
+
+            StackPane stackPane = (StackPane) field.get(scrollPane.getSkin());
+            stackPane.setCache(false);
+
+        } catch (NoSuchFieldException | SecurityException |  IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }
