@@ -9,8 +9,10 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.AccessibleRole;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -139,8 +141,10 @@ public class SVGWizardController implements Initializable {
 
         vBox_infos = new VBox();
         vBox_infos.getStyleClass().add("info");
+
         vBox_warnings = new VBox();
         vBox_warnings.getStyleClass().add("warn");
+
 
         button_Infos.setOnAction(event -> {
             popOver_infos.setTitle("Informationen");
@@ -148,9 +152,18 @@ public class SVGWizardController implements Initializable {
             popOver_infos.show(button_Infos);
         });
         button_Warnings.setOnAction(event -> {
+//            this is blurry:
+//
+//            ScrollPane warningScrollPane = new ScrollPane(vBox_warnings);
+//            warningScrollPane.getStyleClass().add("scrollPane-message");
+//            warningScrollPane.getStyleClass().add("warn");
+//            warningScrollPane.setMaxSize(340,500);
+//            warningScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
+//            warningScrollPane.setPadding(new Insets(0, 10, 0,0));
+
             popOver_warnings.setTitle("Warnungen");
             popOver_warnings.setContentNode(vBox_warnings);
-            popOver_warnings.show(button_Infos);
+            popOver_warnings.show(button_Warnings);
         });
 
     }

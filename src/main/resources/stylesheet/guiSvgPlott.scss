@@ -33,11 +33,11 @@ HBox {
 VBox {
   -fx-padding: 10;
 
-  &.warn{
+  &.warn {
     -fx-background-color: $warning-bg-color;
   }
 
-  &.info{
+  &.info {
     -fx-background-color: $info-bg-color;
   }
 }
@@ -57,23 +57,23 @@ VBox {
   }
 }
 
-
 Button {
   &:focused {
     -fx-border-color: $tud-blue;
   }
 }
+
 .messageBtn {
   -fx-background-color: none;
   -fx-background-radius: 90, 90;
   -fx-pref-height: 50px;
   -fx-pref-width: 50px;
 
-  &#btn_infos{
+  &#btn_infos {
     //-fx-background-color: $info-bg-color;
     -fx-text-fill: $info-font-color;
   }
-  &#btn_warnings{
+  &#btn_warnings {
     //-fx-background-color: $warning-bg-color;
     -fx-text-fill: $warning-font-color;
   }
@@ -81,43 +81,57 @@ Button {
     -fx-border-color: none;
   }
 }
+
 WebView {
   -fx-min-width: 75%;
 }
 
 Label {
   -fx-padding: 0 10 0 10;
+  -fx-wrap-text: true;
 
-  &.label_message {
-    -fx-pref-height: 0;
-    -fx-padding: 8 0 8 0;
-    -fx-font-weight: bold;
-
-    &.warn {
-      -fx-background-color: $warning-bg-color;
-      -fx-text-fill: $warning-font-color;
-    }
-
-    &.error {
-      -fx-background-color: $error-bg-color;
-      -fx-text-fill: $error-font-color;
-    }
-    &.info,
-    &.trace{
-      -fx-background-color: $info-bg-color;
-      -fx-text-fill: $info-font-color;
-    }
-  }
-
-  &.notification{
+  &.notification {
     -fx-text-fill: $menu-font-color;
     -fx-font-weight: bold;
   }
 }
-.notification-circle{
+.label_message {
+  -fx-pref-height: 0;
+  -fx-padding: 8 0 8 0;
+  -fx-font-weight: bold;
+
+  &.warn {
+    -fx-padding: 8 10 8 0;
+    -fx-background-color: $warning-bg-color;
+    -fx-text-fill: $warning-font-color;
+    -fx-fill: $warning-font-color;
+  }
+
+  &.error {
+    -fx-background-color: $error-bg-color;
+    -fx-text-fill: $error-font-color;
+    -fx-fill: $error-font-color;
+  }
+  &.info,
+  &.trace {
+    -fx-background-color: $info-bg-color;
+    -fx-text-fill: $info-font-color;
+    -fx-fill: $info-font-color;
+  }
+}
+.scrollPane-message {
+  &.warn {
+    -fx-background-color: $warning-bg-color;
+  }
+  &.info {
+    -fx-background-color: $info-bg-color;
+  }
+}
+.notification-circle {
   -fx-fill: $notification-bg-color;
   -fx-stroke-width: 0;
 }
-.p-0{
+
+.p-0 {
   -fx-padding: 0;
 }

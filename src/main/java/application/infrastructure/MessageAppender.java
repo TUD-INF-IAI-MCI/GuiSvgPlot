@@ -16,6 +16,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import org.controlsfx.glyphfont.Glyph;
 
 import java.util.ResourceBundle;
@@ -93,13 +95,11 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
     }
 
     private void renderInfoMessage(final ILoggingEvent event) {
-        Button button_infos =  rootFrameController.svgWizardController.button_Infos;
-        String formattedMsg = patternLayoutOnlyMsg.doLayout(event);
-        Label label = new Label(formattedMsg);
-        label.getStyleClass().add("label_message");
-        label.getStyleClass().add(event.getLevel().levelStr.toLowerCase());
+        Button button_infos = rootFrameController.svgWizardController.button_Infos;
         VBox infos = rootFrameController.svgWizardController.vBox_infos;
-        infos.getChildren().add(label);
+
+        Text formattedMsg = getTextOfMessage(event, infos);
+        infos.getChildren().add(formattedMsg);
         button_infos.setDisable(false);
 
         createNotification(button_infos, "" + infos.getChildren().size(), rootFrameController.svgWizardController.getInfoIcon());
@@ -108,15 +108,27 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
     private void renderWarnMessage(final ILoggingEvent event) {
         Button button_warnings = rootFrameController.svgWizardController.button_Warnings;
         VBox warnings = rootFrameController.svgWizardController.vBox_warnings;
-        String formattedMsg = patternLayoutOnlyMsg.doLayout(event);
-        int numberOfWarn = warnings.getChildren().size() + 1;
-        Label label = new Label(numberOfWarn + ": " +formattedMsg);
-        label.getStyleClass().add("label_message");
-        label.getStyleClass().add(event.getLevel().levelStr.toLowerCase());
-        warnings.getChildren().add(label);
+
+        Text formattedMsg = getTextOfMessage(event, warnings);
+        warnings.getChildren().add(formattedMsg);
         button_warnings.setDisable(false);
 
         createNotification(button_warnings, "" + warnings.getChildren().size(), rootFrameController.svgWizardController.getWarnIcon());
+    }
+
+    private Text getTextOfMessage(final ILoggingEvent event, final VBox vBox) {
+        int numberOfWarn = vBox.getChildren().size() + 1;
+        String message = numberOfWarn + ": " + patternLayoutOnlyMsg.doLayout(event);
+        if (numberOfWarn > 1) {
+            message = "\n" + message;
+        }
+        Text formattedMsg = new Text(message);
+        formattedMsg.setWrappingWidth(300);
+        formattedMsg.getStyleClass().add("label_message");
+        formattedMsg.getStyleClass().add(event.getLevel().levelStr.toLowerCase());
+        formattedMsg.textAlignmentProperty().set(TextAlignment.JUSTIFY);
+
+        return formattedMsg;
     }
 
     private Node createNotification(Button button, String number, final Glyph icon) {
