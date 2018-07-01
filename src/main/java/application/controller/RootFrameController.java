@@ -89,21 +89,21 @@ public class RootFrameController implements Initializable {
     }
 
     private void startDiagram(ActionEvent event) {
-        startWizard("/fxml/wizard/content/chart/ChartWizardFrame.fxml", false );
+        startWizard("/fxml/wizard/content/chart/ChartWizardFrame.fxml", false);
     }
 
     @FXML
-    private void closeButtonAction(){
+    private void closeButtonAction() {
         System.exit(1);
     }
 
     @FXML
-    private void startPreset(ActionEvent event){
+    private void startPreset(ActionEvent event) {
         //TODO: will handle predefined preset functionality
     }
 
     @FXML
-    private void startPresetEditor(){
+    private void startPresetEditor() {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
@@ -111,8 +111,8 @@ public class RootFrameController implements Initializable {
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
-           // ((SettingsController) loader.getController()).testFunction();
-        } catch (IOException e){
+            // ((SettingsController) loader.getController()).testFunction();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -135,7 +135,7 @@ public class RootFrameController implements Initializable {
     }
 
 
-    public void clearMessageLabel(){
+    public void clearMessageLabel() {
 //        this.scrollPane_message.setContent(new Text());
         this.scrollPane_message.setVisible(false);
         this.scrollPane_message.getStyleClass().clear();
@@ -144,8 +144,11 @@ public class RootFrameController implements Initializable {
         try {
             this.svgWizardController.vBox_infos.getChildren().clear();
             this.svgWizardController.vBox_warnings.getChildren().clear();
+            this.svgWizardController.button_Warnings.setGraphic(this.svgWizardController.getWarnIcon());
             this.svgWizardController.button_Warnings.setDisable(true);
+            this.svgWizardController.button_Infos.setGraphic(this.svgWizardController.getInfoIcon());
             this.svgWizardController.button_Infos.setDisable(true);
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
     }
 }

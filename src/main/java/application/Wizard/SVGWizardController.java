@@ -13,6 +13,7 @@ import javafx.scene.AccessibleRole;
 import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import org.controlsfx.control.PopOver;
@@ -57,9 +58,11 @@ public class SVGWizardController implements Initializable {
     public Button button_Infos;
 
     public VBox vBox_warnings;
-    public PopOver popOver_warnings;
+    private PopOver popOver_warnings;
     public VBox vBox_infos;
-    public PopOver popOver_infos;
+    private PopOver popOver_infos;
+    private Glyph warnIcon;
+    private Glyph infoIcon;
 
     protected BooleanProperty isExtended;
     protected List<Button> stageBtns;
@@ -113,14 +116,18 @@ public class SVGWizardController implements Initializable {
 
         this.messageBtns = new ArrayList<>();
         hBox_pagination.getChildren().remove(this.button_Warnings);
-        this.button_Warnings = new Button("", new Glyph("FontAwesome", FontAwesome.Glyph.WARNING));
+        this.warnIcon = new Glyph("FontAwesome", FontAwesome.Glyph.WARNING);
+        this.warnIcon.setColor(Color.valueOf("#f0ad4e"));
+        this.button_Warnings = new Button("", warnIcon);
         this.button_Warnings.getStyleClass().add("messageBtn");
         this.button_Warnings.setId("btn_warnings");
         this.button_Warnings.setDisable(true);
         hBox_pagination.getChildren().add(this.button_Warnings);
 
         hBox_pagination.getChildren().remove(this.button_Infos);
-        this.button_Infos = new Button("", new Glyph("FontAwesome", FontAwesome.Glyph.INFO));
+        this.infoIcon = new Glyph("FontAwesome", FontAwesome.Glyph.INFO);
+        this.infoIcon.setColor(Color.valueOf("#002557"));
+        this.button_Infos = new Button("", infoIcon);
         this.button_Infos.getStyleClass().add("messageBtn");
         this.button_Infos.setId("btn_infos");
         this.button_Infos.setDisable(true);
@@ -199,6 +206,8 @@ public class SVGWizardController implements Initializable {
         button_Cancel.setOnAction(event -> {
             GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
             GuiSvgPlott.getInstance().closeWizard();
+            popOver_warnings.hide();
+            popOver_infos.hide();
         });
 
         // create chart
@@ -213,10 +222,19 @@ public class SVGWizardController implements Initializable {
             if (file != null) {
                 this.svgPlotOptions.setOutput(file);
                 this.svgOptionsService.buildSVG(svgPlotOptions);
+                popOver_warnings.hide();
+                popOver_infos.hide();
                 GuiSvgPlott.getInstance().closeWizard();
             }
         });
 
     }
 
+    public Glyph getWarnIcon() {
+        return warnIcon;
+    }
+
+    public Glyph getInfoIcon() {
+        return infoIcon;
+    }
 }

@@ -5,10 +5,11 @@ $stage-btn-font: $tud-blue;
 $stage-btn-font-active: #fff;
 $error-bg-color: #f2dede;
 $error-font-color: #a94442;
-$warning-bg-color: #fcf8e3;
-$warning-font-color: #8a6d3b;
-$info-bg-color: #dff0d8;
-$info-font-color: #3c763d;
+$warning-bg-color: #fff3cd;
+$warning-font-color: #856404;
+$info-bg-color: #cce5ff;
+$info-font-color: #tud-blue;
+$notification-bg-color: $error-font-color;
 
 .menu-bar {
   -fx-background-color: $tud-blue;
@@ -64,16 +65,16 @@ Button {
 }
 .messageBtn {
   -fx-background-color: none;
-  -fx-background-radius: 10, 10;
-  -fx-pref-height: 30px;
-  -fx-pref-width: 30px;
+  -fx-background-radius: 90, 90;
+  -fx-pref-height: 50px;
+  -fx-pref-width: 50px;
 
   &#btn_infos{
-    -fx-background-color: $info-bg-color;
+    //-fx-background-color: $info-bg-color;
     -fx-text-fill: $info-font-color;
   }
   &#btn_warnings{
-    -fx-background-color: $warning-bg-color;
+    //-fx-background-color: $warning-bg-color;
     -fx-text-fill: $warning-font-color;
   }
   &:focused {
@@ -107,8 +108,16 @@ Label {
       -fx-text-fill: $info-font-color;
     }
   }
-}
 
+  &.notification{
+    -fx-text-fill: $menu-font-color;
+    -fx-font-weight: bold;
+  }
+}
+.notification-circle{
+  -fx-fill: $notification-bg-color;
+  -fx-stroke-width: 0;
+}
 .p-0{
   -fx-padding: 0;
 }

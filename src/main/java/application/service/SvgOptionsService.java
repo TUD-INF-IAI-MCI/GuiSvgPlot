@@ -101,11 +101,12 @@ public class SvgOptionsService {
         GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
         svgPlotOptions.finalizeOptions();
 
-        SvgCreator creator = svgPlotOptions.getDiagramType().getInstance(svgPlotOptions);
         try {
+            SvgCreator creator = svgPlotOptions.getDiagramType().getInstance(svgPlotOptions);
             creator.run();
             logger.info(this.bundle.getString("chart_creation_success_message") + " " + svgPlotOptions.getOutput());
         } catch (Exception e) {
+            logger.error(this.bundle.getString("chart_creation_error"));
             e.printStackTrace();
         }
     }

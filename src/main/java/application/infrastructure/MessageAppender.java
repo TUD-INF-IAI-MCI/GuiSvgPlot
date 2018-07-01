@@ -8,10 +8,15 @@ import ch.qos.logback.classic.PatternLayout;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import org.controlsfx.control.Notifications;
+import javafx.scene.shape.Circle;
+import org.controlsfx.glyphfont.Glyph;
 
 import java.util.ResourceBundle;
 
@@ -48,16 +53,16 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
 //        Notifications notifications = Notifications.create()
 //                .title(this.bundle.getString(event.getLevel().levelStr.toLowerCase()))
 //                .text(formattedMsg);
-           switch (event.getLevel().levelStr) {
+        switch (event.getLevel().levelStr) {
             case "WARN":
                 renderWarnMessage(event);
 //                notifications.showWarning();
                 break;
             case "INFO":
 //                notifications.showInformation();
-                if(event.getLoggerName().equals(SvgOptionsService.getInstance().getLoggerName())){
+                if (event.getLoggerName().equals(SvgOptionsService.getInstance().getLoggerName())) {
                     renderMessage(event);
-                }else{
+                } else {
                     renderInfoMessage(event);
                 }
                 break;
@@ -87,23 +92,52 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
         scrollPane.setVisible(true);
     }
 
-    private void renderInfoMessage(final ILoggingEvent event){
+    private void renderInfoMessage(final ILoggingEvent event) {
+        Button button_infos =  rootFrameController.svgWizardController.button_Infos;
         String formattedMsg = patternLayoutOnlyMsg.doLayout(event);
         Label label = new Label(formattedMsg);
         label.getStyleClass().add("label_message");
         label.getStyleClass().add(event.getLevel().levelStr.toLowerCase());
         VBox infos = rootFrameController.svgWizardController.vBox_infos;
         infos.getChildren().add(label);
-        rootFrameController.svgWizardController.button_Infos.setDisable(false);
+        button_infos.setDisable(false);
+
+        createNotification(button_infos, "" + infos.getChildren().size(), rootFrameController.svgWizardController.getInfoIcon());
     }
 
-    private void renderWarnMessage(final ILoggingEvent event){
+    private void renderWarnMessage(final ILoggingEvent event) {
+        Button button_warnings = rootFrameController.svgWizardController.button_Warnings;
+        VBox warnings = rootFrameController.svgWizardController.vBox_warnings;
         String formattedMsg = patternLayoutOnlyMsg.doLayout(event);
-        Label label = new Label(formattedMsg);
+        int numberOfWarn = warnings.getChildren().size() + 1;
+        Label label = new Label(numberOfWarn + ": " +formattedMsg);
         label.getStyleClass().add("label_message");
         label.getStyleClass().add(event.getLevel().levelStr.toLowerCase());
-        VBox warnings = rootFrameController.svgWizardController.vBox_warnings;
         warnings.getChildren().add(label);
-        rootFrameController.svgWizardController.button_Warnings.setDisable(false);
+        button_warnings.setDisable(false);
+
+        createNotification(button_warnings, "" + warnings.getChildren().size(), rootFrameController.svgWizardController.getWarnIcon());
+    }
+
+    private Node createNotification(Button button, String number, final Glyph icon) {
+        HBox hBox = new HBox();
+        hBox.getStyleClass().add("hBox-0");
+        hBox.setSpacing(0);
+        Glyph iconCopy = icon.duplicate();
+        iconCopy.setStyle("-fx-padding: 12 0 0 10;");
+        hBox.getChildren().add(iconCopy);
+
+        StackPane stackPane = new StackPane();
+        Label numberLabel = new Label(number);
+        numberLabel.getStyleClass().add("notification");
+        numberLabel.setStyle("-fx-text-fill:white");
+        Circle circle = new Circle(8);//, Color.rgb(200, 0, 0, .9));
+        circle.getStyleClass().add("notification-circle");
+        circle.setSmooth(true);
+        stackPane.getChildren().addAll(circle, numberLabel);
+        stackPane.setStyle("-fx-padding: -15 -20 0 -20;");
+        hBox.getChildren().add(stackPane);
+        button.setGraphic(hBox);
+        return hBox;
     }
 }
