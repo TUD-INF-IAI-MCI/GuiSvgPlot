@@ -77,20 +77,20 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
 
-                            <Label text="Integral" />
+                            <Label text="%integral" />
                             <TextField fx:id="textField_Integral" GridPane.columnIndex="1" />
 
                             <Label text="Pi" GridPane.rowIndex="1" />
                             <CheckBox fx:id="checkBox_Pi" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
 
-                            <Label text="Diagram Typ" GridPane.rowIndex="2" />
+                            <Label text="%diagram_type" GridPane.rowIndex="2" />
                             <ComboBox fx:id="comboBox_DiagramType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
 
 
-                            <Label text="OriginalPunkte" GridPane.rowIndex="3" />
+                            <Label text="%original_points" GridPane.rowIndex="3" />
                             <CheckBox fx:id="checkBox_OriginalPoints" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
 
-                            <Label text="Sortierung" GridPane.rowIndex="5" />
+                            <Label text="%sorting" GridPane.rowIndex="5" />
                             <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                 <Button fx:id="button_Sort" mnemonicParsing="false" text="^" />
                                 <ComboBox fx:id="comboBox_Sort" prefWidth="150.0" />
@@ -98,12 +98,12 @@
 
 
                             <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.rowIndex="6">
-                                <Label text="Einheit X-Achse" />
+                                <Label text="%x_axis_unit" />
                                 <TextField fx:id="textField_UnitX" />
                             </HBox>
 
                             <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                <Label text="Einheit Y-Achse" />
+                                <Label text="%y_axis_unit" />
                                 <TextField fx:id="textField_UnitY" />
                             </HBox>
                         </GridPane>
