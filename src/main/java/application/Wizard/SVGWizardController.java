@@ -3,6 +3,7 @@ package application.Wizard;
 import application.GuiSvgPlott;
 import application.model.GuiSvgOptions;
 import application.service.SvgOptionsService;
+import application.util.SvgOptionsUtil;
 import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -79,10 +80,12 @@ public class SVGWizardController implements Initializable {
     protected GuiSvgOptions svgOptions;
     protected SvgPlotOptions svgPlotOptions;
     protected SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
+    protected SvgOptionsUtil svgOptionsUtil = SvgOptionsUtil.getInstance();
 
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
         this.svgOptionsService.setBundle(resources);
+        this.svgOptionsUtil.setBundle(resources);
         this.currentStage = new SimpleIntegerProperty();
         this.isExtended = new SimpleBooleanProperty(false);
         this.bundle = resources;

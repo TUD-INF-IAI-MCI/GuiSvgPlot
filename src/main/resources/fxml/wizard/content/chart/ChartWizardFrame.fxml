@@ -6,9 +6,11 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -18,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171"
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0"
@@ -28,11 +30,11 @@
             <VBox BorderPane.alignment="CENTER">
                 <children>
                     <!--<Label fx:id="label_Headline" alignment="CENTER" contentDisplay="CENTER"-->
-                           <!--maxWidth="1.7976931348623157E308" minWidth="200.0" prefHeight="48.0" text="Label"-->
-                           <!--textAlignment="CENTER"/>-->
+                    <!--maxWidth="1.7976931348623157E308" minWidth="200.0" prefHeight="48.0" text="Label"-->
+                    <!--textAlignment="CENTER"/>-->
                     <HBox fx:id="hBox_pagination" alignment="CENTER" prefHeight="48.0" prefWidth="600.0">
-                        <Button fx:id="button_Warnings" />
-                        <Button fx:id="button_Infos" />
+                        <Button fx:id="button_Warnings"/>
+                        <Button fx:id="button_Infos"/>
                     </HBox>
                 </children>
             </VBox>
@@ -158,17 +160,6 @@
                                                    accessibleText="CSV Typ" maxWidth="1.7976931348623157E308"
                                                    minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1"
                                                    GridPane.rowIndex="2"/>
-
-                                        <Label fx:id="label_Sorting" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%sorting" GridPane.rowIndex="4"/>
-                                        <ChoiceBox fx:id="choiceBox_Sorting" accessibleText="Sortierart"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
-                                                   GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-                                        <Label fx:id="label_SortDesc" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%sort_descending" GridPane.rowIndex="5"/>
-                                        <CheckBox fx:id="checkbox_SortDesc" accessibleText="Absteigend sortieren"
-                                                  mnemonicParsing="false" GridPane.columnIndex="1"
-                                                  GridPane.rowIndex="5"/>
                                     </children>
                                 </GridPane>
                             </Tab>
@@ -194,20 +185,35 @@
                                         <Insets left="10.0" right="10.0"/>
                                     </padding>
                                     <children>
+                                        <!--bar chart-->
                                         <Label fx:id="label_baraccumulation" contentDisplay="RIGHT" prefHeight="17.0"
                                                prefWidth="200.0" text="%acc" visible="false" GridPane.rowIndex="0"/>
                                         <ChoiceBox fx:id="choiceBox_baraccumulation"
                                                    accessibleText="Art, in der mehrere Datenreihen in Balkendiagrammen akkumuliert werden."
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
                                                    visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                        <Label fx:id="label_Sorting" contentDisplay="RIGHT" prefHeight="17.0"
+                                               prefWidth="200.0" text="%sorting" visible="false" GridPane.rowIndex="1"/>
+                                        <ChoiceBox fx:id="choiceBox_sorting" accessibleText="%sorting"
+                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
+                                                   visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                        <Label fx:id="label_SortDesc" contentDisplay="RIGHT" prefHeight="17.0"
+                                               prefWidth="200.0" text="%sort_descending" visible="false"
+                                               GridPane.rowIndex="2"/>
+                                        <CheckBox fx:id="checkbox_SortDesc" accessibleText="%sort_descending"
+                                                  mnemonicParsing="false" visible="false" GridPane.columnIndex="1"
+                                                  GridPane.rowIndex="2"/>
+
+                                        <!--line chart-->
                                         <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0"
                                                prefWidth="200.0" text="%mark_data" visible="false"
                                                GridPane.rowIndex="0"/>
-                                        <CheckBox fx:id="checkbox_linepoints"
-                                                  accessibleText="Datenpunkte auf Linien eines Liniendiagramms markieren"
-                                                  mnemonicParsing="false" text="%mark_data_on_line" visible="false"
-                                                  GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                                        <!--trendline-->
+                                        <ChoiceBox fx:id="choiceBox_linepoints" accessibleText="%mark_data_on_line"
+                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
+                                                   visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+
+                                        <!--scatter plot-->
                                         <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0"
                                                prefWidth="200.0" text="%trendline" visible="false"
                                                GridPane.rowIndex="0"/>
@@ -238,7 +244,7 @@
                                                GridPane.rowIndex="3"/>
                                         <CheckBox fx:id="checkbox_hideOriginalPoints"
                                                   accessibleText="%hideOriginalPoints" mnemonicParsing="false"
-                                                  text="%hideOriginalPoints" visible="false" GridPane.columnIndex="1"
+                                                  visible="false" GridPane.columnIndex="1"
                                                   GridPane.rowIndex="3"/>
 
                                     </children>
@@ -283,13 +289,28 @@
                                         <Label fx:id="label_Autoscale" contentDisplay="RIGHT"
                                                maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0"
                                                text="%scale_data" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                                        <CheckBox fx:id="checkbox_Autoscale" mnemonicParsing="false" prefWidth="600.0"
-                                                  text="%scale_to_data_area" GridPane.columnIndex="1"
-                                                  GridPane.rowIndex="2"/>
+
+
+                                        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                              prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                            <children>
+                                                <RadioButton fx:id="radioBtn_autoscale" mnemonicParsing="false"
+                                                             prefHeight="17.0" text="%scale_to_data_area"
+                                                             GridPane.valignment="CENTER">
+                                                    <toggleGroup>
+                                                        <ToggleGroup fx:id="autoscale"/>
+                                                    </toggleGroup>
+                                                </RadioButton>
+                                                <RadioButton fx:id="radioBtn_customScale" contentDisplay="RIGHT"
+                                                             mnemonicParsing="false" prefHeight="17.0"
+                                                             text="%custom_scale" toggleGroup="$autoscale"/>
+                                            </children>
+                                        </HBox>
+
 
                                         <Label fx:id="label_xfrom" contentDisplay="RIGHT"
                                                maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0"
-                                               text="%display_area_x_from" textAlignment="RIGHT"
+                                               text="%display_area_x_from_label" textAlignment="RIGHT"
                                                GridPane.halignment="LEFT" GridPane.rowIndex="3">
                                             <GridPane.margin>
                                                 <Insets/>
@@ -299,12 +320,12 @@
                                             </padding>
                                         </Label>
                                         <TextField fx:id="textField_xfrom"
-                                                   accessibleText="Darstellungsbereich der X-Achse von"
+                                                   accessibleText="%display_area_x_from"
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
                                                    GridPane.columnIndex="1" GridPane.rowIndex="3"/>
                                         <Label fx:id="label_xto" alignment="TOP_LEFT" contentDisplay="RIGHT"
                                                maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0"
-                                               text="%display_area_x_to" textAlignment="RIGHT"
+                                               text="%display_area_x_to_label" textAlignment="RIGHT"
                                                GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                                             <GridPane.margin>
                                                 <Insets/>
@@ -314,13 +335,13 @@
                                             </padding>
                                         </Label>
                                         <TextField fx:id="textField_xto"
-                                                   accessibleText="Darstellungsbereich der X-Achse bis"
+                                                   accessibleText="%display_area_x_to"
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
                                                    GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
                                         <Label fx:id="label_yfrom" alignment="TOP_LEFT" contentDisplay="RIGHT"
                                                maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0"
-                                               text="%display_area_y_from" textAlignment="RIGHT"
+                                               text="%display_area_y_from_label" textAlignment="RIGHT"
                                                GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                                             <GridPane.margin>
                                                 <Insets/>
@@ -330,19 +351,19 @@
                                             </padding>
                                         </Label>
                                         <TextField fx:id="textField_yfrom"
-                                                   accessibleText="Darstellungsbereich der Y-Achse von"
+                                                   accessibleText="%display_area_y_from"
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
                                                    GridPane.columnIndex="1" GridPane.rowIndex="5"/>
                                         <Label fx:id="label_yto" contentDisplay="RIGHT"
                                                maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0"
-                                               text="%display_area_y_to" textAlignment="RIGHT"
+                                               text="%display_area_y_to_label" textAlignment="RIGHT"
                                                GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                                             <padding>
                                                 <Insets right="10.0"/>
                                             </padding>
                                         </Label>
                                         <TextField fx:id="textField_yto"
-                                                   accessibleText="Darstellungsbereich der Y-Achse bis"
+                                                   accessibleText="%display_area_y_to"
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
                                                    GridPane.columnIndex="1" GridPane.rowIndex="6"/>
                                     </children>
@@ -372,41 +393,32 @@
                                     </padding>
                                     <children>
                                         <Label fx:id="label_grid" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%draw_grid"/>
-                                        <CheckBox fx:id="checkbox_hgrid" mnemonicParsing="false" text="%horizontal"
-                                                  GridPane.columnIndex="1"/>
-                                        <CheckBox fx:id="checkbox_vgrid" mnemonicParsing="false" text="%vertical"
-                                                  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                               prefWidth="200.0" text="%grid_style"/>
+                                        <ChoiceBox fx:id="choicebox_gridStyle" accessibleText="%horizontal"
+                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
+                                                   visible="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
                                         <Label fx:id="label_xlines" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%help_lines_x" GridPane.rowIndex="2"/>
+                                               prefWidth="200.0" text="%help_lines_x" GridPane.rowIndex="1"/>
                                         <TextField fx:id="textField_xlines"
                                                    accessibleText="X-Achsen-Punkte , durch die Hilflinien verlaufen sollen."
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
                                                    promptText="x1 x2 x3" GridPane.columnIndex="1"
-                                                   GridPane.columnSpan="2" GridPane.rowIndex="2"/>
+                                                   GridPane.columnSpan="2" GridPane.rowIndex="1"/>
 
                                         <Label fx:id="label_ylines" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%help_lines_y" GridPane.rowIndex="3"/>
+                                               prefWidth="200.0" text="%help_lines_y" GridPane.rowIndex="2"/>
                                         <TextField fx:id="textField_ylines"
                                                    accessibleText="Y-Achsen-Punkte, durch die Hilfslinien verlaufen sollen."
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
                                                    promptText="y1 y2 y3" GridPane.columnIndex="1"
-                                                   GridPane.columnSpan="2" GridPane.rowIndex="3"/>
+                                                   GridPane.rowIndex="2"/>
 
                                         <Label fx:id="label_dblaxes" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%double_axis" GridPane.rowIndex="4"/>
-                                        <CheckBox fx:id="checkbox_dblaxes" accessibleText="doppelte Achsen zeichnen"
-                                                  mnemonicParsing="false" prefHeight="17.0" text="%doubled_axis"
-                                                  GridPane.columnIndex="1" GridPane.columnSpan="2"
-                                                  GridPane.rowIndex="4"/>
-
-                                        <Label fx:id="label_pointsborderless" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%dot_symbol_w/o_border" GridPane.rowIndex="5"/>
-                                        <CheckBox fx:id="checkbox_pointsborderless"
-                                                  accessibleText="Randlose Punktsymbole zeichnen"
-                                                  mnemonicParsing="false" prefHeight="17.0" text="%borderless_dots"
-                                                  GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                                               prefWidth="200.0" text="%axis_style" GridPane.rowIndex="3"/>
+                                        <ChoiceBox fx:id="choicebox_dblaxes" accessibleText="%axis_style"
+                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
+                                                   GridPane.columnIndex="1" GridPane.rowIndex="3"/>
                                     </children>
                                 </GridPane>
                             </Tab>
@@ -437,33 +449,6 @@
                                         <TextField fx:id="textField_cssFile" accessibleText="Pfad zur CSS-Datei"
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
                                                    GridPane.columnIndex="1"/>
-
-                                        <!--<Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0"-->
-                                               <!--prefWidth="200.0" text="%size_of_diagram" GridPane.rowIndex="1"/>-->
-                                        <!--<Label fx:id="label_sizeWidth" alignment="CENTER_RIGHT" contentDisplay="RIGHT"-->
-                                               <!--prefHeight="18.0" prefWidth="200.0" text="%width" textAlignment="RIGHT"-->
-                                               <!--GridPane.halignment="RIGHT" GridPane.rowIndex="2">-->
-                                            <!--<padding>-->
-                                                <!--<Insets right="10.0"/>-->
-                                            <!--</padding>-->
-                                        <!--</Label>-->
-                                        <!--<TextField fx:id="textField_sizeWidth"-->
-                                                   <!--accessibleText="Breite des Diagramms in Millimeter"-->
-                                                   <!--maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"-->
-                                                   <!--GridPane.columnIndex="1" GridPane.rowIndex="2"/>-->
-
-                                        <!--<Label fx:id="label_sizeHeight" alignment="CENTER_RIGHT" contentDisplay="RIGHT"-->
-                                               <!--prefHeight="18.0" prefWidth="200.0" text="%height" textAlignment="RIGHT"-->
-                                               <!--GridPane.halignment="RIGHT" GridPane.rowIndex="3">-->
-                                            <!--<padding>-->
-                                                <!--<Insets right="10.0"/>-->
-                                            <!--</padding>-->
-                                        <!--</Label>-->
-                                        <!--<TextField fx:id="textField_sizeHeight"-->
-                                                   <!--accessibleText="Höhe des Diagramms in Millimeter"-->
-                                                   <!--maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"-->
-                                                   <!--GridPane.columnIndex="1" GridPane.rowIndex="3"/>-->
-
                                         <Label fx:id="label_colors" contentDisplay="RIGHT" prefHeight="17.0"
                                                prefWidth="200.0" text="%colors" GridPane.rowIndex="4"/>
                                         <Label fx:id="label_color1" alignment="CENTER_RIGHT" contentDisplay="RIGHT"
@@ -507,8 +492,8 @@
                             ButtonBar.buttonData="RIGHT"/>
                     <Button fx:id="button_Next" accessibleText="Nächster Schritt" mnemonicParsing="false" text="%next"
                             ButtonBar.buttonData="RIGHT"/>
-                    <Button fx:id="button_Create" accessibleText="%diagram_create" mnemonicParsing="false" text="%create"
-                            ButtonBar.buttonData="RIGHT"/>
+                    <Button fx:id="button_Create" accessibleText="%diagram_create" mnemonicParsing="false"
+                            text="%create" ButtonBar.buttonData="RIGHT"/>
                     <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT" cancelButton="true"
                             mnemonicParsing="false" text="%cancel" ButtonBar.buttonData="LEFT"/>
                 </buttons>

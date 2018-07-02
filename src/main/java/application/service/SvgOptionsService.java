@@ -41,56 +41,6 @@ public class SvgOptionsService {
         return INSTANCE;
     }
 
-    /**
-     * Builds a {@link StringConverter} which converts a {@link DiagramType} to a string from language bundle.
-     *
-     * @return the {@link StringConverter}
-     */
-    public StringConverter<DiagramType> getDiagramTypConverter() {
-        return new StringConverter<DiagramType>() {
-            @Override
-            public String toString(DiagramType diagramType) {
-                return bundle.getString(diagramType.toString());
-            }
-
-            @Override
-            public DiagramType fromString(String string) {
-                DiagramType diagramType = DiagramType.FunctionPlot;
-                for (DiagramType dt : FXCollections.observableArrayList(DiagramType.values())) {
-                    if (this.toString(dt).equals(string)) {
-                        diagramType = dt;
-                    }
-                }
-                return diagramType;
-            }
-        };
-    }
-
-    /**
-     * Builds a {@link StringConverter} which converts a {@link PageSize} to a string from language bundle.
-     *
-     * @return the {@link StringConverter}
-     */
-    public StringConverter<PageSize> getPageSizeConverter() {
-        return new StringConverter<PageSize>() {
-            @Override
-            public String toString(PageSize pageSize) {
-                return pageSize.getName() + " " + bundle.getString(pageSize.getPageOrientationName().toLowerCase());
-            }
-
-            @Override
-            public PageSize fromString(String string) {
-                PageSize pageSize = PageSize.A4;
-                for (PageSize ps : FXCollections.observableArrayList(PageSize.values())) {
-                    if (this.toString(ps).equals(string)) {
-                        pageSize = ps;
-                    }
-                }
-                return pageSize;
-            }
-        };
-    }
-
 
     /**
      * Builds the Svg.

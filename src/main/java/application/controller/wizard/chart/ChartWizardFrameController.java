@@ -2,6 +2,7 @@ package application.controller.wizard.chart;
 
 import application.GuiSvgPlott;
 import application.Wizard.SVGWizardController;
+import application.model.LinePointsOption;
 import application.model.PageSize;
 import application.model.TrendlineAlgorithm;
 import javafx.beans.property.ObjectProperty;
@@ -13,7 +14,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import tud.tangram.svgplot.coordinatesystem.Range;
@@ -23,8 +23,10 @@ import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
+import tud.tangram.svgplot.styles.AxisStyle;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.Color;
+import tud.tangram.svgplot.styles.GridStyle;
 
 import java.io.File;
 import java.net.URL;
@@ -62,10 +64,6 @@ public class ChartWizardFrameController extends SVGWizardController {
     public ChoiceBox<CsvOrientation> choiceBox_CsvOrientation;
     @FXML
     public ChoiceBox<CsvType> choiceBox_CsvType;
-    @FXML
-    public ChoiceBox<SortingType> choiceBox_Sorting;
-    @FXML
-    public CheckBox checkbox_SortDesc;
 
     /* stage 3 */
     @FXML
@@ -75,9 +73,23 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     public ChoiceBox<BarAccumulationStyle> choiceBox_baraccumulation;
     @FXML
+    public Label label_Sorting;
+    @FXML
+    public ChoiceBox<SortingType> choiceBox_sorting;
+    @FXML
+    public Label label_SortDesc;
+    @FXML
+    public CheckBox checkbox_SortDesc;
+    @FXML
     public Label label_linepoints;
     @FXML
-    public CheckBox checkbox_linepoints;
+    public ChoiceBox<LinePointsOption> choiceBox_linepoints;
+    //    @FXML
+//    public CheckBox checkbox_linepoints;
+//    @FXML
+//    public Label label_pointsborderless;
+//    @FXML
+//    public CheckBox checkbox_pointsborderless;
     @FXML
     private Label label_trendline;
     @FXML
@@ -107,7 +119,9 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     public TextField textField_yunit;
     @FXML
-    public CheckBox checkbox_Autoscale;
+    public RadioButton radioBtn_autoscale;
+    @FXML
+    public RadioButton radioBtn_customScale;
     @FXML
     public TextField textField_xfrom;
     @FXML
@@ -129,17 +143,13 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private GridPane stage5;
     @FXML
-    public CheckBox checkbox_hgrid;
-    @FXML
-    public CheckBox checkbox_vgrid;
+    public ChoiceBox<GridStyle> choicebox_gridStyle;
     @FXML
     public TextField textField_xlines;
     @FXML
     public TextField textField_ylines;
     @FXML
-    public CheckBox checkbox_dblaxes;
-    @FXML
-    public CheckBox checkbox_pointsborderless;
+    public ChoiceBox<AxisStyle> choicebox_dblaxes;
 
     /* stage 6 */
     @FXML
@@ -194,33 +204,15 @@ public class ChartWizardFrameController extends SVGWizardController {
         diagramTypeObservableList.remove(DiagramType.FunctionPlot);
         this.choiceBox_DiagramType.setItems(diagramTypeObservableList);
         // i18n
-        this.choiceBox_DiagramType.setConverter(svgOptionsService.getDiagramTypConverter());
+        this.choiceBox_DiagramType.setConverter(svgOptionsUtil.getDiagramTypeStringConverter());
         this.choiceBox_DiagramType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DiagramType>() {
+
             @Override
             public void changed(ObservableValue<? extends DiagramType> observable, DiagramType oldValue, DiagramType newValue) {
                 svgPlotOptions.setDiagramType(newValue);
-                if (newValue != null) {
-                    switch (newValue) {
-                        case BarChart:
-                            show(label_baraccumulation, choiceBox_baraccumulation);
-                            hide(label_linepoints, checkbox_linepoints);
-                            hide(label_trendline, choiceBox_trendline);
-                            break;
-                        case LineChart:
-                            show(label_linepoints, checkbox_linepoints);
-                            hide(label_baraccumulation, choiceBox_baraccumulation);
-                            hide(label_trendline, choiceBox_trendline);
-                            break;
-                        default:
-                            show(label_trendline, choiceBox_trendline);
-                            hide(label_baraccumulation, choiceBox_baraccumulation);
-                            hide(label_linepoints, checkbox_linepoints);
-                            break;
-                    }
-                } else {
-                    show(label_baraccumulation, choiceBox_baraccumulation);
-                    show(label_linepoints, checkbox_linepoints);
-                }
+                toggleBarChartOptions(newValue == DiagramType.BarChart);
+                toggleLineChartOptions(newValue == DiagramType.LineChart);
+                toggleScatterPlotOptions(newValue == DiagramType.ScatterPlot);
             }
 
         });
@@ -243,13 +235,14 @@ public class ChartWizardFrameController extends SVGWizardController {
         ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
         ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
         this.choiceBox_size.setItems(sortedPageSizes);
-        this.choiceBox_size.setConverter(svgOptionsService.getPageSizeConverter());
+        this.choiceBox_size.setConverter(svgOptionsUtil.getPageSizeStringConverter());
         this.choiceBox_size.getSelectionModel().select(PageSize.A4);
         this.choiceBox_size.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             Point size = new Point(newValue.getWidth(), newValue.getHeight());
             this.svgPlotOptions.setSize(size);
         });
     }
+
 
     /**
      * Will initiate the second stage. Depending on {@code extended}, some parts will be dis- or enabled.
@@ -291,24 +284,6 @@ public class ChartWizardFrameController extends SVGWizardController {
                 svgPlotOptions.setCsvType(newValue);
             }
         });
-
-        // sorting type
-        ObservableList<SortingType> sortingTypeObservableList = FXCollections.observableArrayList(SortingType.values());
-        this.choiceBox_Sorting.setItems(sortingTypeObservableList);
-        this.choiceBox_Sorting.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<SortingType>() {
-            @Override
-            public void changed(ObservableValue<? extends SortingType> observable, SortingType oldValue, SortingType newValue) {
-                svgPlotOptions.setSortingType(newValue);
-            }
-        });
-
-        // sort desc
-        this.checkbox_SortDesc.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                svgPlotOptions.setSortDescending(newValue);
-            }
-        });
     }
 
     /**
@@ -325,19 +300,40 @@ public class ChartWizardFrameController extends SVGWizardController {
                 svgPlotOptions.setBarAccumulationStyle(newValue);
             }
         });
-        // line points
-        String showLinePoints = this.svgPlotOptions.getShowLinePoints();
-        this.checkbox_linepoints.setSelected(showLinePoints != null && showLinePoints.equals("on"));
-        this.checkbox_linepoints.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        // sorting type
+        ObservableList<SortingType> sortingTypeObservableList = FXCollections.observableArrayList(SortingType.values());
+        this.choiceBox_sorting.setItems(sortingTypeObservableList);
+        this.choiceBox_sorting.getSelectionModel().select(SortingType.None);
+        this.choiceBox_sorting.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<SortingType>() {
             @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue) {
-                    svgPlotOptions.setShowLinePoints("on");
-                } else {
-                    svgPlotOptions.setShowLinePoints("off");
-                }
+            public void changed(ObservableValue<? extends SortingType> observable, SortingType oldValue, SortingType newValue) {
+                svgPlotOptions.setSortingType(newValue);
             }
         });
+
+        // sort desc
+        this.checkbox_SortDesc.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                svgPlotOptions.setSortDescending(newValue);
+            }
+        });
+
+        // line points
+        String showLinePoints = this.svgPlotOptions.getShowLinePoints();
+        ObservableList<LinePointsOption> linePointsOptionObservableList = FXCollections.observableArrayList(LinePointsOption.values());
+        this.choiceBox_linepoints.setItems(linePointsOptionObservableList);
+        this.choiceBox_linepoints.setConverter(svgOptionsUtil.getLinePointsOptionStringConverter());
+        LinePointsOption selected = showLinePoints != null && showLinePoints.equals("on") ? LinePointsOption.ShowWithBorder : LinePointsOption.Hide;
+        if (this.svgPlotOptions.isPointsBorderless()) {
+            selected = LinePointsOption.ShowBorderless;
+        }
+        this.choiceBox_linepoints.getSelectionModel().select(selected);
+        this.choiceBox_linepoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            svgPlotOptions.setPointsBorderless(newValue.isPointsborderless());
+            svgPlotOptions.setShowLinePoints(newValue.getShowLinePoints());
+        });
+
         // trendline and hide original points
         ObservableList<String> trendline = FXCollections.observableArrayList();
         this.textField_trendline_n.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -360,6 +356,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         });
         ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
         this.choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
+        this.choiceBox_trendline.setConverter(this.svgOptionsUtil.getTrendlineAlgorithmStringConverter());
         this.choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
         this.choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TrendlineAlgorithm>() {
             @Override
@@ -434,14 +431,14 @@ public class ChartWizardFrameController extends SVGWizardController {
         });
 
         // autoscale
-        this.checkbox_Autoscale.setSelected(this.svgPlotOptions.hasAutoScale());
-        this.checkbox_Autoscale.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        this.radioBtn_autoscale.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 svgPlotOptions.setAutoScale(newValue);
                 toggleAxesRanges(!newValue);
             }
         });
+        this.radioBtn_autoscale.setSelected(true);
 
         // xRange
         this.xRange.set(this.svgPlotOptions.getxRange());
@@ -458,7 +455,9 @@ public class ChartWizardFrameController extends SVGWizardController {
             xRange.get().setTo(Double.parseDouble(newValue));
         });
         this.xRange.addListener((args, oldVal, newVal) -> {
-            svgPlotOptions.setxRange(xRange.get());
+            if (!this.svgPlotOptions.hasAutoScale()) {
+                svgPlotOptions.setxRange(xRange.get());
+            }
         });
 
         // yRange
@@ -476,7 +475,10 @@ public class ChartWizardFrameController extends SVGWizardController {
             yRange.get().setTo(Double.parseDouble(newValue));
         });
         this.yRange.addListener((args, oldVal, newVal) -> {
-            svgPlotOptions.setxRange(yRange.get());
+            if (!this.svgPlotOptions.hasAutoScale()) {
+                System.out.println("set y range");
+                svgPlotOptions.setyRange(yRange.get());
+            }
         });
     }
 
@@ -484,33 +486,32 @@ public class ChartWizardFrameController extends SVGWizardController {
      * Will initiate the fifth stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage5() {
-        // horizontal grid
-        String showHorizontalGrid = this.svgPlotOptions.getShowHorizontalGrid();
-        this.checkbox_hgrid.setSelected(showHorizontalGrid != null && showHorizontalGrid.equals("on"));
-        this.checkbox_hgrid.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue) {
+        // grid
+        ObservableList<GridStyle> gridStyleObservableList = FXCollections.observableArrayList(GridStyle.values());
+        this.choicebox_gridStyle.setItems(gridStyleObservableList);
+        this.choicebox_gridStyle.setConverter(this.svgOptionsUtil.getGridStyleStringConverter());
+        this.choicebox_gridStyle.getSelectionModel().select(GridStyle.NONE);
+        this.choicebox_gridStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            switch (newValue) {
+                case FULL:
                     svgPlotOptions.setShowHorizontalGrid("on");
-                } else {
+                    svgPlotOptions.setShowVerticalGrid("on");
+                    break;
+                case VERTICAL:
                     svgPlotOptions.setShowHorizontalGrid("off");
-                }
+                    svgPlotOptions.setShowVerticalGrid("on");
+                    break;
+                case HORIZONTAL:
+                    svgPlotOptions.setShowHorizontalGrid("on");
+                    svgPlotOptions.setShowVerticalGrid("off");
+                    break;
+                case NONE:
+                    svgPlotOptions.setShowHorizontalGrid("off");
+                    svgPlotOptions.setShowVerticalGrid("off");
+                    break;
             }
         });
 
-        // vertical grid
-        String showVerticalGrid = this.svgPlotOptions.getShowVerticalGrid();
-        this.checkbox_vgrid.setSelected(showVerticalGrid != null && showVerticalGrid.equals("on"));
-        this.checkbox_vgrid.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue) {
-                    svgPlotOptions.setShowVerticalGrid("on");
-                } else {
-                    svgPlotOptions.setShowVerticalGrid("off");
-                }
-            }
-        });
 
         // xlines
         this.textField_xlines.setText(this.svgPlotOptions.getxLines());
@@ -526,24 +527,16 @@ public class ChartWizardFrameController extends SVGWizardController {
 
         // double axes
         String showDoubleAxes = this.svgPlotOptions.getShowDoubleAxes();
-        this.checkbox_dblaxes.setSelected(showDoubleAxes != null && showDoubleAxes.equals("on"));
-        this.checkbox_dblaxes.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue) {
-                    svgPlotOptions.setShowDoubleAxes("on");
-                } else {
-                    svgPlotOptions.setShowDoubleAxes("off");
-                }
-            }
-        });
-
-        // points borderless
-        this.checkbox_pointsborderless.setSelected(this.svgPlotOptions.isPointsBorderless());
-        this.checkbox_pointsborderless.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                svgPlotOptions.setPointsBorderless(newValue);
+        ObservableList<AxisStyle> axisStyleObservableList = FXCollections.observableArrayList(AxisStyle.values());
+        axisStyleObservableList.remove(AxisStyle.GRAPH);
+        this.choicebox_dblaxes.setItems(axisStyleObservableList);
+        this.choicebox_dblaxes.setConverter(this.svgOptionsUtil.getAxisStyleStringConverter());
+        this.choicebox_dblaxes.getSelectionModel().select((showDoubleAxes != null && showDoubleAxes.equals("on")) ? AxisStyle.BOX : AxisStyle.EDGE);
+        this.choicebox_dblaxes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == AxisStyle.EDGE) {
+                this.svgPlotOptions.setShowDoubleAxes("off");
+            } else {
+                this.svgPlotOptions.setShowDoubleAxes("on");
             }
         });
     }
@@ -649,4 +642,45 @@ public class ChartWizardFrameController extends SVGWizardController {
         }
     }
 
+
+    /**
+     * Show/Hides labels and input fields of BarChart Options.
+     *
+     * @param show if field and value should be visible.
+     */
+    private void toggleBarChartOptions(final boolean show) {
+        setVisible(show, label_baraccumulation, choiceBox_baraccumulation);
+        setVisible(show, label_Sorting, choiceBox_sorting);
+        setVisible(show, label_SortDesc, checkbox_SortDesc);
+    }
+
+    /**
+     * Show/Hides labels and input fields of LineChart Options.
+     *
+     * @param show if field and value should be visible.
+     */
+    private void toggleLineChartOptions(final boolean show) {
+        setVisible(show, label_linepoints, choiceBox_linepoints);
+    }
+
+    /**
+     * Show/Hides labels and input fields of ScatterPlot Options.
+     *
+     * @param show if field and value should be visible.
+     */
+    private void toggleScatterPlotOptions(final boolean show) {
+        if (show) {
+            show(label_trendline, choiceBox_trendline);
+            // show corresponding other fields
+            TrendlineAlgorithm trendlineAlgorithm = choiceBox_trendline.getValue();
+            this.choiceBox_trendline.setValue(TrendlineAlgorithm.None);
+            this.choiceBox_trendline.setValue(trendlineAlgorithm);
+        } else {
+            hide(label_trendline, choiceBox_trendline);
+            hide(label_trendline_alpha, textField_trendline_alpha);
+            hide(label_trendline_forecast, textField_trendline_forecast);
+            hide(label_trendline_n, textField_trendline_n);
+            hide(label_hideOriginalPoints, checkbox_hideOriginalPoints);
+        }
+    }
 }
