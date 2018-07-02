@@ -104,7 +104,6 @@ public class RootFrameController implements Initializable {
 
     @FXML
     private void startPresetEditor() {
-
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
         loader.setLocation(getClass().getResource("/fxml/wizard/SettingsFrame.fxml"));
@@ -115,7 +114,6 @@ public class RootFrameController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void startWizard(String fxmlPath, boolean isExtended) {

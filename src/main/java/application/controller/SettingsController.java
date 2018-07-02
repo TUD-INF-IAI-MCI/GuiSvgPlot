@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import tud.tangram.svgplot.options.DiagramType;
@@ -24,8 +26,6 @@ public class SettingsController implements Initializable {
     @FXML
     public GridPane settingsGridPane = new GridPane();
 
-    private Text text1 = new Text("Lorem Ipsum");
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
@@ -33,13 +33,8 @@ public class SettingsController implements Initializable {
         for (DiagramType diagram : diagramTypeObservableList) {
             System.out.println(diagram);
         }
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-
-        //settingsGridPane.add(text1,0,0);
-    }
-
-    public void testFunction(){
-        settingsGridPane.add(text1,0,0);
     }
 
 }
