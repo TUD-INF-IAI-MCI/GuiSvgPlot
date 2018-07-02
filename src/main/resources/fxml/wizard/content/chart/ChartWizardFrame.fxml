@@ -244,8 +244,7 @@
                                                GridPane.rowIndex="3"/>
                                         <CheckBox fx:id="checkbox_hideOriginalPoints"
                                                   accessibleText="%hideOriginalPoints" mnemonicParsing="false"
-                                                  visible="false" GridPane.columnIndex="1"
-                                                  GridPane.rowIndex="3"/>
+                                                  visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
                                     </children>
                                 </GridPane>
@@ -319,8 +318,7 @@
                                                 <Insets right="10.0"/>
                                             </padding>
                                         </Label>
-                                        <TextField fx:id="textField_xfrom"
-                                                   accessibleText="%display_area_x_from"
+                                        <TextField fx:id="textField_xfrom" accessibleText="%display_area_x_from"
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
                                                    GridPane.columnIndex="1" GridPane.rowIndex="3"/>
                                         <Label fx:id="label_xto" alignment="TOP_LEFT" contentDisplay="RIGHT"
@@ -334,8 +332,7 @@
                                                 <Insets right="10.0"/>
                                             </padding>
                                         </Label>
-                                        <TextField fx:id="textField_xto"
-                                                   accessibleText="%display_area_x_to"
+                                        <TextField fx:id="textField_xto" accessibleText="%display_area_x_to"
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
                                                    GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
@@ -350,8 +347,7 @@
                                                 <Insets right="10.0"/>
                                             </padding>
                                         </Label>
-                                        <TextField fx:id="textField_yfrom"
-                                                   accessibleText="%display_area_y_from"
+                                        <TextField fx:id="textField_yfrom" accessibleText="%display_area_y_from"
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
                                                    GridPane.columnIndex="1" GridPane.rowIndex="5"/>
                                         <Label fx:id="label_yto" contentDisplay="RIGHT"
@@ -362,8 +358,7 @@
                                                 <Insets right="10.0"/>
                                             </padding>
                                         </Label>
-                                        <TextField fx:id="textField_yto"
-                                                   accessibleText="%display_area_y_to"
+                                        <TextField fx:id="textField_yto" accessibleText="%display_area_y_to"
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
                                                    GridPane.columnIndex="1" GridPane.rowIndex="6"/>
                                     </children>
@@ -488,13 +483,16 @@
         <bottom>
             <ButtonBar maxWidth="1.7976931348623157E308" prefHeight="40.0" BorderPane.alignment="CENTER">
                 <buttons>
-                    <Button fx:id="button_Back" accessibleText="Vorheriger Schritt" mnemonicParsing="false" text="%back"
+                    <Button fx:id="button_rerenderPreview" accessibleText="%rerender_preview" cancelButton="true"
+                            maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%rerender_preview"
+                            ButtonBar.buttonData="RIGHT" styleClass="btn-preview"/>
+                    <Button fx:id="button_Back" accessibleText="%back_label" mnemonicParsing="false" text="%back"
                             ButtonBar.buttonData="RIGHT"/>
-                    <Button fx:id="button_Next" accessibleText="Nächster Schritt" mnemonicParsing="false" text="%next"
+                    <Button fx:id="button_Next" accessibleText="%next_label" mnemonicParsing="false" text="%next"
                             ButtonBar.buttonData="RIGHT"/>
                     <Button fx:id="button_Create" accessibleText="%diagram_create" mnemonicParsing="false"
                             text="%create" ButtonBar.buttonData="RIGHT"/>
-                    <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT" cancelButton="true"
+                    <Button fx:id="button_Cancel" accessibleText="%cancel" alignment="CENTER" cancelButton="true"
                             mnemonicParsing="false" text="%cancel" ButtonBar.buttonData="LEFT"/>
                 </buttons>
                 <padding>
