@@ -121,6 +121,8 @@ public class SVGWizardController implements Initializable {
                 currentStage.set(stageNumber);
             });
             hBox_pagination.getChildren().add(stageBtn);
+            hBox_pagination.setAccessibleRole(AccessibleRole.MENU);
+            stageBtn.accessibleRoleProperty().set(AccessibleRole.MENU_ITEM);
             this.stageBtns.add(stageBtn);
         }
 

@@ -32,7 +32,7 @@
                     <!--<Label fx:id="label_Headline" alignment="CENTER" contentDisplay="CENTER"-->
                     <!--maxWidth="1.7976931348623157E308" minWidth="200.0" prefHeight="48.0" text="Label"-->
                     <!--textAlignment="CENTER"/>-->
-                    <HBox fx:id="hBox_pagination" alignment="CENTER" prefHeight="48.0" prefWidth="600.0">
+                    <HBox fx:id="hBox_pagination" alignment="CENTER" prefHeight="48.0" prefWidth="600.0" accessibleRole="MENU_BAR">
                         <Button fx:id="button_Warnings"/>
                         <Button fx:id="button_Infos"/>
                     </HBox>
