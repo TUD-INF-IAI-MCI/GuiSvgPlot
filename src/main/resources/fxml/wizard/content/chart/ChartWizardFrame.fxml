@@ -150,13 +150,13 @@
 
                                         <Label fx:id="label_CsvOrientation" contentDisplay="RIGHT" prefHeight="17.0"
                                                prefWidth="200.0" text="%csv_orientation" GridPane.rowIndex="1"/>
-                                        <ChoiceBox id="choiceBox_CsvOrientation" fx:id="choiceBox_CsvOrientation"
+                                        <ChoiceBox id="choiceBox_CsvOrientation" fx:id="choiceBox_csvOrientation"
                                                    accessibleText="CSV Orientierung" maxWidth="1.7976931348623157E308"
                                                    minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1"
                                                    GridPane.rowIndex="1"/>
                                         <Label fx:id="label_Title1" contentDisplay="RIGHT" prefHeight="17.0"
                                                prefWidth="200.0" text="%csv_type" GridPane.rowIndex="2"/>
-                                        <ChoiceBox id="choiceBox_CsvType" fx:id="choiceBox_CsvType"
+                                        <ChoiceBox id="choiceBox_CsvType" fx:id="choiceBox_csvType"
                                                    accessibleText="CSV Typ" maxWidth="1.7976931348623157E308"
                                                    minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1"
                                                    GridPane.rowIndex="2"/>

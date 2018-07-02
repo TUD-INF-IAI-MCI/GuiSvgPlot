@@ -5,8 +5,13 @@ import application.model.PageSize;
 import application.model.TrendlineAlgorithm;
 import javafx.collections.FXCollections;
 import javafx.util.StringConverter;
+import tud.tangram.svgplot.data.parse.CsvOrientation;
+import tud.tangram.svgplot.data.parse.CsvType;
+import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
+import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.styles.AxisStyle;
+import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.GridStyle;
 
 import java.util.ResourceBundle;
@@ -148,6 +153,107 @@ public class SvgOptionsUtil {
                     }
                 }
                 return trendlineAlgorithm;
+            }
+        };
+    }
+
+    public StringConverter<CsvOrientation> getCsvOrientationStringConverter() {
+        return new StringConverter<CsvOrientation>() {
+            @Override
+            public String toString(CsvOrientation csvOrientation) {
+                return bundle.getString("csvOrientation_" + csvOrientation.toString().toLowerCase());
+            }
+
+            @Override
+            public CsvOrientation fromString(String string) {
+                CsvOrientation csvOrientation = CsvOrientation.HORIZONTAL;
+                for (CsvOrientation co : FXCollections.observableArrayList(CsvOrientation.values())) {
+                    if (this.toString(co).equals(string)) {
+                        csvOrientation = co;
+                    }
+                }
+                return csvOrientation;
+            }
+        };
+    }
+
+    public StringConverter<CsvType> getCsvTypeStringConverter() {
+        return new StringConverter<CsvType>() {
+            @Override
+            public String toString(CsvType csvType) {
+                return bundle.getString("csvType_" + csvType.toString().toLowerCase());
+            }
+
+            @Override
+            public CsvType fromString(String string) {
+                CsvType csvType = CsvType.DOTS;
+                for (CsvType ct : FXCollections.observableArrayList(CsvType.values())) {
+                    if (this.toString(ct).equals(string)) {
+                        csvType = ct;
+                    }
+                }
+                return csvType;
+            }
+        };
+    }
+
+    public StringConverter<BarAccumulationStyle> getBarAccumulationStyleStringConverter() {
+        return new StringConverter<BarAccumulationStyle>() {
+            @Override
+            public String toString(BarAccumulationStyle barAccumulationStyle) {
+                return bundle.getString("barAccumulationStyle_" + barAccumulationStyle.toString().toLowerCase());
+            }
+
+            @Override
+            public BarAccumulationStyle fromString(String string) {
+                BarAccumulationStyle barAccumulationStyle = BarAccumulationStyle.GROUPED;
+                for (BarAccumulationStyle bas : FXCollections.observableArrayList(BarAccumulationStyle.values())) {
+                    if (this.toString(bas).equals(string)) {
+                        barAccumulationStyle = bas;
+                    }
+                }
+                return barAccumulationStyle;
+            }
+        };
+    }
+
+    public StringConverter<SortingType> getSortingTypeStringConverter() {
+        return new StringConverter<SortingType>() {
+            @Override
+            public String toString(SortingType sortingType) {
+                return bundle.getString("sortingType_" + sortingType.toString().toLowerCase());
+            }
+
+            @Override
+            public SortingType fromString(String string) {
+                SortingType sortingType = SortingType.None;
+                for (SortingType st : FXCollections.observableArrayList(SortingType.values())) {
+                    if (this.toString(st).equals(string)) {
+                        sortingType = st;
+                    }
+                }
+                return sortingType;
+            }
+        };
+    }
+
+
+    public StringConverter<OutputDevice> getOutputDeviceStringConverter() {
+        return new StringConverter<OutputDevice>() {
+            @Override
+            public String toString(OutputDevice outputDevice) {
+                return bundle.getString("outputDevice_" + outputDevice.toString().toLowerCase());
+            }
+
+            @Override
+            public OutputDevice fromString(String string) {
+                OutputDevice outputDevice = OutputDevice.Default;
+                for (OutputDevice device : FXCollections.observableArrayList(OutputDevice.values())) {
+                    if (this.toString(device).equals(string)) {
+                        outputDevice = device;
+                    }
+                }
+                return outputDevice;
             }
         };
     }

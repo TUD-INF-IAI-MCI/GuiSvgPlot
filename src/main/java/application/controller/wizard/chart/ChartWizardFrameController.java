@@ -61,9 +61,9 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private Button button_CsvPath;
     @FXML
-    public ChoiceBox<CsvOrientation> choiceBox_CsvOrientation;
+    public ChoiceBox<CsvOrientation> choiceBox_csvOrientation;
     @FXML
-    public ChoiceBox<CsvType> choiceBox_CsvType;
+    public ChoiceBox<CsvType> choiceBox_csvType;
 
     /* stage 3 */
     @FXML
@@ -226,6 +226,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         // output device
         ObservableList<OutputDevice> outputDevices = FXCollections.observableArrayList(OutputDevice.values());
         this.choiceBox_outputDevice.setItems(outputDevices);
+        this.choiceBox_outputDevice.setConverter(this.svgOptionsUtil.getOutputDeviceStringConverter());
         this.choiceBox_outputDevice.getSelectionModel().select(0);
         this.choiceBox_outputDevice.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             svgPlotOptions.setOutputDevice(newValue);
@@ -267,8 +268,10 @@ public class ChartWizardFrameController extends SVGWizardController {
 
         // csv orientation
         ObservableList<CsvOrientation> csvOrientationObservableList = FXCollections.observableArrayList(CsvOrientation.values());
-        this.choiceBox_CsvOrientation.setItems(csvOrientationObservableList);
-        this.choiceBox_CsvOrientation.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CsvOrientation>() {
+        this.choiceBox_csvOrientation.setItems(csvOrientationObservableList);
+        this.choiceBox_csvOrientation.setConverter(this.svgOptionsUtil.getCsvOrientationStringConverter());
+        this.choiceBox_csvOrientation.getSelectionModel().select(CsvOrientation.HORIZONTAL);
+        this.choiceBox_csvOrientation.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CsvOrientation>() {
             @Override
             public void changed(ObservableValue<? extends CsvOrientation> observable, CsvOrientation oldValue, CsvOrientation newValue) {
                 svgPlotOptions.setCsvOrientation(newValue);
@@ -277,8 +280,10 @@ public class ChartWizardFrameController extends SVGWizardController {
 
         // csv type
         ObservableList<CsvType> csvTypeObservableList = FXCollections.observableArrayList(CsvType.values());
-        this.choiceBox_CsvType.setItems(csvTypeObservableList);
-        this.choiceBox_CsvType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CsvType>() {
+        this.choiceBox_csvType.setItems(csvTypeObservableList);
+        this.choiceBox_csvType.setConverter(this.svgOptionsUtil.getCsvTypeStringConverter());
+        this.choiceBox_csvType.getSelectionModel().select(CsvType.DOTS);
+        this.choiceBox_csvType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CsvType>() {
             @Override
             public void changed(ObservableValue<? extends CsvType> observable, CsvType oldValue, CsvType newValue) {
                 svgPlotOptions.setCsvType(newValue);
@@ -293,6 +298,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         // baraccumulation
         ObservableList<BarAccumulationStyle> csvOrientationObservableList = FXCollections.observableArrayList(BarAccumulationStyle.values());
         this.choiceBox_baraccumulation.setItems(csvOrientationObservableList);
+        this.choiceBox_baraccumulation.setConverter(this.svgOptionsUtil.getBarAccumulationStyleStringConverter());
         this.choiceBox_baraccumulation.setValue(this.svgPlotOptions.getBarAccumulationStyle());
         this.choiceBox_baraccumulation.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<BarAccumulationStyle>() {
             @Override
@@ -303,6 +309,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         // sorting type
         ObservableList<SortingType> sortingTypeObservableList = FXCollections.observableArrayList(SortingType.values());
         this.choiceBox_sorting.setItems(sortingTypeObservableList);
+        this.choiceBox_sorting.setConverter(this.svgOptionsUtil.getSortingTypeStringConverter());
         this.choiceBox_sorting.getSelectionModel().select(SortingType.None);
         this.choiceBox_sorting.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<SortingType>() {
             @Override
