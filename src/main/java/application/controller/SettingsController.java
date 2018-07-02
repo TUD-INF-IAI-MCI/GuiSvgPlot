@@ -24,7 +24,7 @@ public class SettingsController implements Initializable {
     @FXML
     public GridPane settingsGridPane = new GridPane();
 
-    private Text text1 = new Text("Hitler");
+    private Text text1 = new Text("Lorem Ipsum");
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
