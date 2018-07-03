@@ -35,8 +35,8 @@ public class SvgOptionsUtil {
     public StringConverter<DiagramType> getDiagramTypeStringConverter() {
         return new StringConverter<DiagramType>() {
             @Override
-            public String toString(DiagramType diagramType) {
-                return bundle.getString(diagramType.toString());
+            public String toString(DiagramType diagramType){
+                return bundle.getString("diagramType_" + diagramType.toString().toLowerCase());
             }
 
             @Override
