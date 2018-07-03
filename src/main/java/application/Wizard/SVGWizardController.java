@@ -3,6 +3,7 @@ package application.Wizard;
 import application.GuiSvgPlott;
 import application.model.GuiSvgOptions;
 import application.service.SvgOptionsService;
+import application.util.SvgOptionsUtil;
 import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -50,6 +51,8 @@ public class SVGWizardController implements Initializable {
     protected Button button_Cancel;
     @FXML
     protected Button button_Create;
+    @FXML
+    public Button button_rerenderPreview;
     //    @FXML
 //    protected Label label_Headline;
     @FXML
@@ -79,10 +82,12 @@ public class SVGWizardController implements Initializable {
     protected GuiSvgOptions svgOptions;
     protected SvgPlotOptions svgPlotOptions;
     protected SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
+    protected SvgOptionsUtil svgOptionsUtil = SvgOptionsUtil.getInstance();
 
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
         this.svgOptionsService.setBundle(resources);
+        this.svgOptionsUtil.setBundle(resources);
         this.currentStage = new SimpleIntegerProperty();
         this.isExtended = new SimpleBooleanProperty(false);
         this.bundle = resources;
@@ -116,6 +121,8 @@ public class SVGWizardController implements Initializable {
                 currentStage.set(stageNumber);
             });
             hBox_pagination.getChildren().add(stageBtn);
+            hBox_pagination.setAccessibleRole(AccessibleRole.MENU);
+            stageBtn.accessibleRoleProperty().set(AccessibleRole.MENU_ITEM);
             this.stageBtns.add(stageBtn);
         }
 
@@ -153,9 +160,9 @@ public class SVGWizardController implements Initializable {
             ScrollPane infoScrollPane = new ScrollPane(vBox_infos);
             infoScrollPane.getStyleClass().add("scrollPane-message");
             infoScrollPane.getStyleClass().add("info");
-            infoScrollPane.setMaxSize(340,500);
+            infoScrollPane.setMaxSize(340, 500);
             infoScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
-            infoScrollPane.setPadding(new Insets(0, 10, 0,0));
+            infoScrollPane.setPadding(new Insets(0, 10, 0, 0));
 
             popOver_infos.setTitle("Informationen");
             popOver_warnings.getStyleClass().add("info");
@@ -168,9 +175,9 @@ public class SVGWizardController implements Initializable {
             ScrollPane warningScrollPane = new ScrollPane(vBox_warnings);
             warningScrollPane.getStyleClass().add("scrollPane-message");
             warningScrollPane.getStyleClass().add("warn");
-            warningScrollPane.setMaxSize(340,500);
+            warningScrollPane.setMaxSize(340, 500);
             warningScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
-            warningScrollPane.setPadding(new Insets(0, 10, 0,0));
+            warningScrollPane.setPadding(new Insets(0, 10, 0, 0));
 
             popOver_warnings.setTitle("Warnungen");
             popOver_warnings.getStyleClass().add("warn");
@@ -255,6 +262,11 @@ public class SVGWizardController implements Initializable {
             }
         });
 
+        // rerender preview
+        button_rerenderPreview.setOnAction(event ->
+                this.svgOptionsService.buildPreviewSVG(this.svgPlotOptions, this.webView_svg)
+        );
+
     }
 
     public Glyph getWarnIcon() {
@@ -267,6 +279,7 @@ public class SVGWizardController implements Initializable {
 
     /**
      * Fixes blurry text issue of {@link ScrollPane} inside a {@link PopOver}.
+     *
      * @param node the node
      */
     private static void fixBlurryText(Node node) {
@@ -279,7 +292,7 @@ public class SVGWizardController implements Initializable {
             StackPane stackPane = (StackPane) field.get(scrollPane.getSkin());
             stackPane.setCache(false);
 
-        } catch (NoSuchFieldException | SecurityException |  IllegalAccessException e) {
+        } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }

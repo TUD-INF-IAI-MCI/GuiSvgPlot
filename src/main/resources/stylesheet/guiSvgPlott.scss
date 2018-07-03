@@ -61,6 +61,10 @@ Button {
   &:focused {
     -fx-border-color: $tud-blue;
   }
+
+  &.btn-preview {
+    -fx-pref-width: 150px;
+  }
 }
 
 .messageBtn {

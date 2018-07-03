@@ -1,11 +1,11 @@
 package application.model;
 
 public enum TrendlineAlgorithm {
+    None,
     MovingAverage,
     ExponentialSmoothing,
     BrownLES,
-    LinearRegression,
-    None;
+    LinearRegression;
 
 
     private TrendlineAlgorithm(){}
