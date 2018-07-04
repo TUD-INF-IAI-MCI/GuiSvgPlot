@@ -136,14 +136,14 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
         hBox.getStyleClass().add("hBox-0");
         hBox.setSpacing(0);
         Glyph iconCopy = icon.duplicate();
-        iconCopy.setStyle("-fx-padding: 12 0 0 10;");
+        iconCopy.setStyle("-fx-padding: 12 0 0 15;");
         hBox.getChildren().add(iconCopy);
 
         StackPane stackPane = new StackPane();
         Label numberLabel = new Label(number);
         numberLabel.getStyleClass().add("notification");
         numberLabel.setStyle("-fx-text-fill:white");
-        Circle circle = new Circle(8);//, Color.rgb(200, 0, 0, .9));
+        Circle circle = new Circle(8);
         circle.getStyleClass().add("notification-circle");
         circle.setSmooth(true);
         stackPane.getChildren().addAll(circle, numberLabel);

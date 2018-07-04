@@ -11,10 +11,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" stylesheets="/stylesheet/guiSvgPlott.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.RootFrameController">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" stylesheets="/stylesheet/guiSvgPlott.css" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.RootFrameController">
     <BorderPane fx:id="borderPane_Content" layoutX="311.0" layoutY="100.0" prefHeight="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
-            <VBox maxWidth="1.7976931348623157E308" minHeight="25.0" prefHeight="100.0" styleClass="p-0">
+            <VBox maxWidth="1.7976931348623157E308" minHeight="25.0" prefHeight="75.0" styleClass="p-0">
                 <MenuBar BorderPane.alignment="CENTER">
                     <menus>
                         <Menu mnemonicParsing="false" text="%file">
@@ -43,9 +43,9 @@
                         </Menu>
                     </menus>
                 </MenuBar>
-                <ScrollPane fx:id="scrollPane_message" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="1000.0" visible="false">
+                <ScrollPane fx:id="scrollPane_message" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxWidth="1.7976931348623157E308" prefHeight="100.0" visible="false">
                     <content>
-                        <VBox fx:id="vBox_messages" styleClass="p-0" alignment="center" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="984.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+                        <VBox fx:id="vBox_messages" alignment="center" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="984.0" styleClass="p-0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
                             <children>
                             </children>
                         </VBox>

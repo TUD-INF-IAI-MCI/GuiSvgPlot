@@ -19,7 +19,7 @@ $notification-bg-color: $error-font-color;
 .menu .label {
   -fx-text-fill: $menu-font-color;
   -fx-font-weight: bold;
-  -fx-font-scale: 20;
+  -fx-font-scale: 1em;
 }
 
 .menu-item .label {
@@ -46,9 +46,10 @@ VBox {
   -fx-background-color: $stage-btn-color;
   -fx-background-radius: 0, 0;
   -fx-text-fill: $stage-btn-font;
-  -fx-pref-width: 100px;
+  -fx-pref-width: 125px;
   -fx-pref-height: 75px;
   -fx-vgap: 10;
+  -fx-font-scale: 1em;
 
   &.active {
     -fx-background-color: $tud-blue;
@@ -63,7 +64,7 @@ Button {
   }
 
   &.btn-preview {
-    -fx-pref-width: 150px;
+    -fx-pref-width: 175px;
   }
 }
 
@@ -71,7 +72,7 @@ Button {
   -fx-background-color: none;
   -fx-background-radius: 90, 90;
   -fx-pref-height: 50px;
-  -fx-pref-width: 50px;
+  -fx-pref-width: 60px;
 
   &#btn_infos {
     //-fx-background-color: $info-bg-color;
