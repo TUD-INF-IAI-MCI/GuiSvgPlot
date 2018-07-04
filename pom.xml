@@ -39,7 +39,7 @@
         <!-- before you can include this subproject, you have to install the jar
             into local Maven repository:
 
-            mvn install:install-file -Dfile=svgplot.jar -DgroupId=svgplott -DartifactId=svgplot-1.0.0-Snapshot -Dversion=1.0.0-Snapshot -Dpackaging=jar
+            mvn install:install-file -Dfile=svg-plott.jar -DgroupId=svgplott -DartifactId=svgplot-1.0.0-Snapshot -Dversion=1.0.0-Snapshot -Dpackaging=jar
 
             you can get the svg-plott.jar from: https://github.com/TUD-INF-IAI-MCI/SVG-Plott
         -->

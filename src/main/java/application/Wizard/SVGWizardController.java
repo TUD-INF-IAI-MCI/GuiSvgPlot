@@ -19,6 +19,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import org.controlsfx.control.PopOver;
@@ -111,6 +112,8 @@ public class SVGWizardController implements Initializable {
         this.stageBtns = new ArrayList<>();
         for (int stage = 0; stage < AMOUNTOFSTAGES; stage++) {
             Button stageBtn = new Button(bundle.getString("chart_stage" + stage));
+//            stageBtn.wrapTextProperty().setValue(true);
+            stageBtn.setTextAlignment(TextAlignment.CENTER);
             stageBtn.getStyleClass().add("stageBtn");
             if (this.currentStage.get() == stage) {
                 stageBtn.getStyleClass().add("active");
