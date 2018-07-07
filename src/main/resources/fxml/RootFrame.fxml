@@ -14,7 +14,7 @@
 <AnchorPane prefHeight="700.0" prefWidth="1000.0" stylesheets="/stylesheet/guiSvgPlott.css" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.RootFrameController">
     <BorderPane fx:id="borderPane_Content" layoutX="311.0" layoutY="100.0" prefHeight="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
-            <VBox maxWidth="1.7976931348623157E308" minHeight="25.0" prefHeight="75.0" styleClass="p-0">
+            <VBox maxWidth="1.7976931348623157E308" minHeight="25.0" prefHeight="90.0" styleClass="p-0">
                 <MenuBar BorderPane.alignment="CENTER">
                     <menus>
                         <Menu mnemonicParsing="false" text="%file">

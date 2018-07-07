@@ -1,8 +1,6 @@
 package application.util;
 
-import application.model.LinePointsOption;
-import application.model.PageSize;
-import application.model.TrendlineAlgorithm;
+import application.model.*;
 import javafx.collections.FXCollections;
 import javafx.util.StringConverter;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
@@ -254,6 +252,46 @@ public class SvgOptionsUtil {
                     }
                 }
                 return outputDevice;
+            }
+        };
+    }
+
+    public StringConverter<SortOrder> getSortOrderStringConverter() {
+        return new StringConverter<SortOrder>() {
+            @Override
+            public String toString(SortOrder sortOrder) {
+                return bundle.getString("sortOrder_" + sortOrder.toString().toLowerCase());
+            }
+
+            @Override
+            public SortOrder fromString(String string) {
+                SortOrder sortOrder = SortOrder.ASC;
+                for (SortOrder so : FXCollections.observableArrayList(SortOrder.values())) {
+                    if (this.toString(so).equals(string)) {
+                        sortOrder = so;
+                    }
+                }
+                return sortOrder;
+            }
+        };
+    }
+
+    public StringConverter<VisibilityOfDataPoints> getVisibilityOfDataPointsStringConverter() {
+        return new StringConverter<VisibilityOfDataPoints>() {
+            @Override
+            public String toString(VisibilityOfDataPoints visibilityOfDataPoints) {
+                return bundle.getString("visibilityOfDataPoints_" + visibilityOfDataPoints.toString().toLowerCase());
+            }
+
+            @Override
+            public VisibilityOfDataPoints fromString(String string) {
+                VisibilityOfDataPoints visibilityOfDataPoints = VisibilityOfDataPoints.SHOW;
+                for (VisibilityOfDataPoints visibility : FXCollections.observableArrayList(VisibilityOfDataPoints.values())) {
+                    if (this.toString(visibility).equals(string)) {
+                        visibilityOfDataPoints = visibility;
+                    }
+                }
+                return visibilityOfDataPoints;
             }
         };
     }
