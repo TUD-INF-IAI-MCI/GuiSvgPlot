@@ -77,8 +77,13 @@
 
                                         <Label fx:id="label_outputDevice" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%output_device" GridPane.rowIndex="2" />
                                         <ChoiceBox fx:id="choiceBox_outputDevice" accessibleText="Ausgabegerät " maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
                                         <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%size_of_diagram" GridPane.rowIndex="4" />
                                         <ChoiceBox fx:id="choiceBox_size" accessibleText="Größe des Diagramms" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                        <Label fx:id="label_customSizeWidth" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%size_of_diagram_width_label" GridPane.rowIndex="5" GridPane.columnIndex="0" visible="false"/>
+                                        <TextField fx:id="textField_customSizeWidth" accessibleText="%size_of_diagram_width" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_width" GridPane.columnIndex="1" GridPane.rowIndex="5" visible="false"/>
+                                        <Label fx:id="label_customSizeHeight" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%size_of_diagram_height_label" GridPane.rowIndex="6" GridPane.columnIndex="0" visible="false"/>
+                                        <TextField fx:id="textField_customSizeHeight" accessibleText="%size_of_diagram_height" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_height" GridPane.columnIndex="1" GridPane.rowIndex="6" visible="false"/>
                                     </children>
                                 </GridPane>
                             </Tab>
@@ -156,9 +161,7 @@
                                         <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%trendline_n" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                                         <TextField fx:id="textField_trendline_n" accessibleText="%trendline_n" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                         <Label fx:id="label_originalPoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%hideOriginalPoints" visible="false" GridPane.rowIndex="3" />
-                                        <ChoiceBox fx:id="choiceBox_originalPoints" accessibleText="%hideOriginalPoints" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" />
-
-                                    </children>
+                                        <ChoiceBox fx:id="choiceBox_originalPoints" accessibleText="%hideOriginalPoints" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" />                                    </children>
                                 </GridPane>
                             </Tab>
                             <Tab text="Stage4">

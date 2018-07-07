@@ -59,6 +59,9 @@ public class SvgOptionsUtil {
         return new StringConverter<PageSize>() {
             @Override
             public String toString(PageSize pageSize) {
+                if(pageSize == PageSize.CUSTOM) {
+                    return bundle.getString(pageSize.getName().toLowerCase() + "_scale");
+                }
                 return pageSize.getName() + " " + bundle.getString(pageSize.getPageOrientationName().toLowerCase());
             }
 

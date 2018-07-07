@@ -50,7 +50,14 @@ public class ChartWizardFrameController extends SVGWizardController {
     public ChoiceBox<OutputDevice> choiceBox_outputDevice;
     @FXML
     private ChoiceBox<PageSize> choiceBox_size;
-
+    @FXML
+    private Label label_customSizeWidth;
+    @FXML
+    private TextField textField_customSizeWidth;
+    @FXML
+    private Label label_customSizeHeight;
+    @FXML
+    private TextField textField_customSizeHeight;
     /* stage 2*/
     @FXML
     private GridPane stage2;
@@ -176,6 +183,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES);
         this.xRange = new SimpleObjectProperty<>();
         this.yRange = new SimpleObjectProperty<>();
+        this.size = new Point(PageSize.A4.getWidth(), PageSize.A4.getHeight());
         this.initiateAllStages();
     }
 
@@ -237,9 +245,26 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_size.setConverter(svgOptionsUtil.getPageSizeStringConverter());
         this.choiceBox_size.getSelectionModel().select(PageSize.A4);
         this.choiceBox_size.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            Point size = new Point(newValue.getWidth(), newValue.getHeight());
-            this.svgPlotOptions.setSize(size);
+            if (newValue != PageSize.CUSTOM) {
+                this.size = new Point(newValue.getWidth(), newValue.getHeight());
+                this.svgPlotOptions.setSize(this.size);
+
+            }
+            toggleCustomSize(newValue == PageSize.CUSTOM);
         });
+
+        // custom size
+        this.textField_customSizeWidth.setText(this.size.x());
+        this.textField_customSizeWidth.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.size.setX(Integer.parseInt(newValue));
+            this.svgPlotOptions.setSize(this.size);
+        });
+        this.textField_customSizeHeight.setText(this.size.y());
+        this.textField_customSizeHeight.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.size.setY(Integer.parseInt(newValue));
+            this.svgPlotOptions.setSize(this.size);
+        });
+
     }
 
 
@@ -698,6 +723,17 @@ public class ChartWizardFrameController extends SVGWizardController {
             hide(label_trendline_forecast, textField_trendline_forecast);
             hide(label_trendline_n, textField_trendline_n);
             hide(label_originalPoints, choiceBox_originalPoints);
+        }
+    }
+
+    private void toggleCustomSize(final boolean show) {
+        setVisible(show, label_customSizeWidth, textField_customSizeWidth);
+        setVisible(show, label_customSizeHeight, textField_customSizeHeight);
+
+        if (show){
+            this.textField_customSizeWidth.setText(this.size.x());
+            this.textField_customSizeWidth.requestFocus();
+            this.textField_customSizeHeight.setText(this.size.y());
         }
     }
 }
