@@ -2,9 +2,7 @@ package application.controller.wizard.chart;
 
 import application.GuiSvgPlott;
 import application.Wizard.SVGWizardController;
-import application.model.LinePointsOption;
-import application.model.PageSize;
-import application.model.TrendlineAlgorithm;
+import application.model.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -52,7 +50,14 @@ public class ChartWizardFrameController extends SVGWizardController {
     public ChoiceBox<OutputDevice> choiceBox_outputDevice;
     @FXML
     private ChoiceBox<PageSize> choiceBox_size;
-
+    @FXML
+    private Label label_customSizeWidth;
+    @FXML
+    private TextField textField_customSizeWidth;
+    @FXML
+    private Label label_customSizeHeight;
+    @FXML
+    private TextField textField_customSizeHeight;
     /* stage 2*/
     @FXML
     private GridPane stage2;
@@ -73,13 +78,13 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     public ChoiceBox<BarAccumulationStyle> choiceBox_baraccumulation;
     @FXML
-    public Label label_Sorting;
+    public Label label_sorting;
     @FXML
     public ChoiceBox<SortingType> choiceBox_sorting;
     @FXML
-    public Label label_SortDesc;
+    public Label label_sortOrder;
     @FXML
-    public CheckBox checkbox_SortDesc;
+    public ChoiceBox<SortOrder> choicebox_sortOrder;
     @FXML
     public Label label_linepoints;
     @FXML
@@ -107,9 +112,9 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     public TextField textField_trendline_n;
     @FXML
-    public Label label_hideOriginalPoints;
+    public Label label_originalPoints;
     @FXML
-    public CheckBox checkbox_hideOriginalPoints;
+    public ChoiceBox<VisibilityOfDataPoints> choiceBox_originalPoints;
 
     /* stage 4 */
     @FXML
@@ -178,6 +183,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES);
         this.xRange = new SimpleObjectProperty<>();
         this.yRange = new SimpleObjectProperty<>();
+        this.size = new Point(PageSize.A4.getWidth(), PageSize.A4.getHeight());
         this.initiateAllStages();
     }
 
@@ -239,9 +245,26 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_size.setConverter(svgOptionsUtil.getPageSizeStringConverter());
         this.choiceBox_size.getSelectionModel().select(PageSize.A4);
         this.choiceBox_size.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            Point size = new Point(newValue.getWidth(), newValue.getHeight());
-            this.svgPlotOptions.setSize(size);
+            if (newValue != PageSize.CUSTOM) {
+                this.size = new Point(newValue.getWidth(), newValue.getHeight());
+                this.svgPlotOptions.setSize(this.size);
+
+            }
+            toggleCustomSize(newValue == PageSize.CUSTOM);
         });
+
+        // custom size
+        this.textField_customSizeWidth.setText(this.size.x());
+        this.textField_customSizeWidth.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.size.setX(Integer.parseInt(newValue));
+            this.svgPlotOptions.setSize(this.size);
+        });
+        this.textField_customSizeHeight.setText(this.size.y());
+        this.textField_customSizeHeight.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.size.setY(Integer.parseInt(newValue));
+            this.svgPlotOptions.setSize(this.size);
+        });
+
     }
 
 
@@ -315,14 +338,23 @@ public class ChartWizardFrameController extends SVGWizardController {
             @Override
             public void changed(ObservableValue<? extends SortingType> observable, SortingType oldValue, SortingType newValue) {
                 svgPlotOptions.setSortingType(newValue);
+
+                setVisible(newValue != SortingType.None, label_sortOrder, choicebox_sortOrder);
+                if ( newValue == SortingType.None) {
+                    choicebox_sortOrder.getSelectionModel().select(SortOrder.ASC);
+                }
             }
         });
 
         // sort desc
-        this.checkbox_SortDesc.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        ObservableList<SortOrder> sortOrderObservableList = FXCollections.observableArrayList(SortOrder.values());
+        this.choicebox_sortOrder.setItems(sortOrderObservableList);
+        this.choicebox_sortOrder.setConverter(this.svgOptionsUtil.getSortOrderStringConverter());
+        this.choicebox_sortOrder.getSelectionModel().select(SortOrder.ASC);
+        this.choicebox_sortOrder.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<SortOrder>() {
             @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                svgPlotOptions.setSortDescending(newValue);
+            public void changed(ObservableValue<? extends SortOrder> observable, SortOrder oldValue, SortOrder newValue) {
+                svgPlotOptions.setSortDescending(newValue.equals(SortOrder.DESC));
             }
         });
 
@@ -355,11 +387,12 @@ public class ChartWizardFrameController extends SVGWizardController {
             trendline.add(2, newValue);
             svgPlotOptions.setTrendLine(trendline);
         });
-        this.checkbox_hideOriginalPoints.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                svgPlotOptions.setHideOriginalPoints(newValue);
-            }
+        ObservableList<VisibilityOfDataPoints> visibilityOfDataPointsObservableList = FXCollections.observableArrayList(VisibilityOfDataPoints.values());
+        this.choiceBox_originalPoints.setItems(visibilityOfDataPointsObservableList);
+        this.choiceBox_originalPoints.setConverter(this.svgOptionsUtil.getVisibilityOfDataPointsStringConverter());
+        this.choiceBox_originalPoints.getSelectionModel().select(VisibilityOfDataPoints.SHOW);
+        this.choiceBox_originalPoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.svgPlotOptions.setHideOriginalPoints(newValue == VisibilityOfDataPoints.HIDE);
         });
         ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
         this.choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
@@ -373,7 +406,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                 switch (newValue) {
                     case MovingAverage:
                         show(label_trendline_n, textField_trendline_n);
-                        show(label_hideOriginalPoints, checkbox_hideOriginalPoints);
+                        show(label_originalPoints, choiceBox_originalPoints);
                         hide(label_trendline_alpha, textField_trendline_alpha);
                         hide(label_trendline_forecast, textField_trendline_forecast);
                         // default n
@@ -382,7 +415,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                     case BrownLES:
                         show(label_trendline_alpha, textField_trendline_alpha);
                         show(label_trendline_forecast, textField_trendline_forecast);
-                        show(label_hideOriginalPoints, checkbox_hideOriginalPoints);
+                        show(label_originalPoints, choiceBox_originalPoints);
                         hide(label_trendline_n, textField_trendline_n);
                         // default alpha
                         textField_trendline_alpha.setText("0.0");
@@ -391,14 +424,14 @@ public class ChartWizardFrameController extends SVGWizardController {
                         break;
                     case ExponentialSmoothing:
                         show(label_trendline_alpha, textField_trendline_alpha);
-                        show(label_hideOriginalPoints, checkbox_hideOriginalPoints);
+                        show(label_originalPoints, choiceBox_originalPoints);
                         hide(label_trendline_forecast, textField_trendline_forecast);
                         hide(label_trendline_n, textField_trendline_n);
                         // default alpha
                         textField_trendline_alpha.setText("0.0");
                         break;
                     case LinearRegression:
-                        show(label_hideOriginalPoints, checkbox_hideOriginalPoints);
+                        show(label_originalPoints, choiceBox_originalPoints);
                         hide(label_trendline_alpha, textField_trendline_alpha);
                         hide(label_trendline_forecast, textField_trendline_forecast);
                         hide(label_trendline_n, textField_trendline_n);
@@ -407,9 +440,9 @@ public class ChartWizardFrameController extends SVGWizardController {
                         hide(label_trendline_alpha, textField_trendline_alpha);
                         hide(label_trendline_forecast, textField_trendline_forecast);
                         hide(label_trendline_n, textField_trendline_n);
-                        hide(label_hideOriginalPoints, checkbox_hideOriginalPoints);
+                        hide(label_originalPoints, choiceBox_originalPoints);
                         trendline.clear();
-                        checkbox_hideOriginalPoints.setSelected(false);
+                        choiceBox_originalPoints.getSelectionModel().select(VisibilityOfDataPoints.SHOW);
                         break;
                 }
                 svgPlotOptions.setTrendLine(trendline);
@@ -657,8 +690,10 @@ public class ChartWizardFrameController extends SVGWizardController {
      */
     private void toggleBarChartOptions(final boolean show) {
         setVisible(show, label_baraccumulation, choiceBox_baraccumulation);
-        setVisible(show, label_Sorting, choiceBox_sorting);
-        setVisible(show, label_SortDesc, checkbox_SortDesc);
+        setVisible(show, label_sorting, choiceBox_sorting);
+        if (!show) {
+            hide(label_sortOrder, choicebox_sortOrder);
+        }
     }
 
     /**
@@ -687,7 +722,18 @@ public class ChartWizardFrameController extends SVGWizardController {
             hide(label_trendline_alpha, textField_trendline_alpha);
             hide(label_trendline_forecast, textField_trendline_forecast);
             hide(label_trendline_n, textField_trendline_n);
-            hide(label_hideOriginalPoints, checkbox_hideOriginalPoints);
+            hide(label_originalPoints, choiceBox_originalPoints);
+        }
+    }
+
+    private void toggleCustomSize(final boolean show) {
+        setVisible(show, label_customSizeWidth, textField_customSizeWidth);
+        setVisible(show, label_customSizeHeight, textField_customSizeHeight);
+
+        if (show){
+            this.textField_customSizeWidth.setText(this.size.x());
+            this.textField_customSizeWidth.requestFocus();
+            this.textField_customSizeHeight.setText(this.size.y());
         }
     }
 }
