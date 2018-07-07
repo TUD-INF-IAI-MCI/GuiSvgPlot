@@ -1,8 +1,7 @@
 package application.controller;
 
-import application.Wizard.SVGWizardController;
+import application.controller.wizard.SVGWizardController;
 import application.model.SvgStage;
-import application.service.ButtonService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,7 +39,6 @@ public class RootFrameController implements Initializable {
 
     private Node center;
 
-    private ButtonService buttonService = ButtonService.getInstance();
     private ResourceBundle bundle;
 
     private SvgStage currentStage;

@@ -1,7 +1,7 @@
 package application;
 
 import application.controller.RootFrameController;
-import application.service.UTF8Control;
+import application.infrastructure.UTF8Control;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
