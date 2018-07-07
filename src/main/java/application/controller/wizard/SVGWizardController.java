@@ -478,7 +478,8 @@ public class SVGWizardController implements Initializable {
         this.warnIcon = new Glyph("FontAwesome", FontAwesome.Glyph.WARNING);
         this.warnIcon.setColor(Color.valueOf("#f0ad4e"));
         this.button_Warnings = new Button("", warnIcon);
-        this.button_Warnings.getStyleClass().add("messageBtn");
+        this.button_Warnings.getStyleClass().add("notification");
+        this.button_Warnings.getStyleClass().add("notification-btn");
         this.button_Warnings.setId("btn_warnings");
         this.button_Warnings.setDisable(true);
         hBox_pagination.getChildren().add(this.button_Warnings);
@@ -487,7 +488,8 @@ public class SVGWizardController implements Initializable {
         this.infoIcon = new Glyph("FontAwesome", FontAwesome.Glyph.INFO);
         this.infoIcon.setColor(Color.valueOf("#002557"));
         this.button_Infos = new Button("", infoIcon);
-        this.button_Infos.getStyleClass().add("messageBtn");
+        this.button_Infos.getStyleClass().add("notification");
+        this.button_Infos.getStyleClass().add("notification-btn");
         this.button_Infos.setId("btn_infos");
         this.button_Infos.setDisable(true);
         hBox_pagination.getChildren().add(this.button_Infos);
@@ -497,21 +499,25 @@ public class SVGWizardController implements Initializable {
         popOver_infos = new PopOver();
 
         vBox_infos = new VBox();
+        vBox_infos.getStyleClass().add("notification");
         vBox_infos.getStyleClass().add("info");
 
         vBox_warnings = new VBox();
+        vBox_warnings.getStyleClass().add("notification");
         vBox_warnings.getStyleClass().add("warn");
 
 
         button_Infos.setOnAction(event -> {
             ScrollPane infoScrollPane = new ScrollPane(vBox_infos);
-            infoScrollPane.getStyleClass().add("scrollPane-message");
+            infoScrollPane.getStyleClass().add("notification");
+            infoScrollPane.getStyleClass().add("notification-scrollPane");
             infoScrollPane.getStyleClass().add("info");
             infoScrollPane.setMaxSize(340, 500);
             infoScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
             infoScrollPane.setPadding(new Insets(0, 10, 0, 0));
 
             popOver_infos.setTitle("Informationen");
+            popOver_warnings.getStyleClass().add("notification");
             popOver_warnings.getStyleClass().add("info");
             popOver_infos.setHeaderAlwaysVisible(true);
             popOver_infos.setContentNode(infoScrollPane);
@@ -520,13 +526,15 @@ public class SVGWizardController implements Initializable {
         });
         button_Warnings.setOnAction(event -> {
             ScrollPane warningScrollPane = new ScrollPane(vBox_warnings);
-            warningScrollPane.getStyleClass().add("scrollPane-message");
+            warningScrollPane.getStyleClass().add("notification");
+            warningScrollPane.getStyleClass().add("notification-scrollPane");
             warningScrollPane.getStyleClass().add("warn");
             warningScrollPane.setMaxSize(340, 500);
             warningScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
             warningScrollPane.setPadding(new Insets(0, 10, 0, 0));
 
             popOver_warnings.setTitle("Warnungen");
+            popOver_warnings.getStyleClass().add("notification");
             popOver_warnings.getStyleClass().add("warn");
             popOver_warnings.setHeaderAlwaysVisible(true);
             popOver_warnings.setContentNode(warningScrollPane);

@@ -1,0 +1,44 @@
+HBox {
+  -fx-spacing: 10;
+}
+
+VBox {
+  -fx-padding: 10;
+
+  &.warn {
+    -fx-background-color: $warning-bg-color;
+  }
+
+  &.info {
+    -fx-background-color: $info-bg-color;
+  }
+}
+
+
+
+WebView {
+  -fx-min-width: 75%;
+}
+
+
+TextField,
+ChoiceBox {
+  -fx-border-radius: 3;
+  &:focused {
+    -fx-border-color: $tud-blue;
+  }
+  &.invalid{
+    -fx-border-color: $error-font-color;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3;
+  }
+}
+Label {
+  -fx-padding: 0 10 0 10;
+  -fx-wrap-text: true;
+
+  &.invalid {
+    -fx-text-fill: $error-font-color;
+    -fx-font-weight: bold;
+  }
+}

@@ -98,7 +98,7 @@
                             <source>
                                 <directory>${project.basedir}/src/main/resources/stylesheet</directory>
                                 <includes>
-                                    <include>**/*.scss</include>
+                                    <include>*.scss</include>
                                 </includes>
                             </source>
                             <relativeOutputDirectory>..</relativeOutputDirectory>

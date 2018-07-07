@@ -1,0 +1,15 @@
+
+.menu-bar {
+  -fx-background-color: $tud-blue;
+  -fx-use-system-menu-bar: true;
+}
+
+.menu .label {
+  -fx-text-fill: $menu-font-color;
+  -fx-font-weight: bold;
+  -fx-font-scale: 1em;
+}
+
+.menu-item .label {
+  -fx-text-fill: #000;
+}

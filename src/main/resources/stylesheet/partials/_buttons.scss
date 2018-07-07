@@ -1,0 +1,27 @@
+
+Button {
+  &:focused {
+    -fx-border-color: $tud-blue;
+  }
+
+  &.btn-preview {
+    -fx-pref-width: 175px;
+  }
+
+  &.stageBtn {
+    -fx-background-color: $stage-btn-color;
+    -fx-background-radius: 0, 0;
+    -fx-text-fill: $stage-btn-font;
+    -fx-pref-width: 125px;
+    -fx-pref-height: 75px;
+    -fx-vgap: 10;
+    -fx-font-scale: 1em;
+
+    &.active {
+      -fx-background-color: $tud-blue;
+      -fx-text-fill: $stage-btn-font-active;
+      -fx-font-weight: bold;
+    }
+  }
+}
+

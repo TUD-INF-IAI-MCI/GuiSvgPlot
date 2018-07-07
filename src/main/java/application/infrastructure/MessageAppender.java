@@ -82,7 +82,8 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
 
         Label label = new Label(formattedMsg);
         label.setAccessibleText(formattedMsg);
-        label.getStyleClass().add("label_message");
+        label.getStyleClass().add("notification");
+        label.getStyleClass().add("notification-label");
         label.getStyleClass().add(event.getLevel().levelStr.toLowerCase());
         label.setAlignment(Pos.CENTER);
         label.setPrefWidth(rootFrameController.scrollPane_message.getWidth());
@@ -123,7 +124,8 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
         }
         Text formattedMsg = new Text(message);
         formattedMsg.setWrappingWidth(300);
-        formattedMsg.getStyleClass().add("label_message");
+        formattedMsg.getStyleClass().add("notification");
+        formattedMsg.getStyleClass().add("notification-label");
         formattedMsg.getStyleClass().add(event.getLevel().levelStr.toLowerCase());
         formattedMsg.textAlignmentProperty().set(TextAlignment.JUSTIFY);
 
@@ -140,10 +142,10 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
 
         StackPane stackPane = new StackPane();
         Label numberLabel = new Label(number);
-        numberLabel.getStyleClass().add("notification");
+        numberLabel.getStyleClass().add("notification-marker");
         numberLabel.setStyle("-fx-text-fill:white");
         Circle circle = new Circle(8);
-        circle.getStyleClass().add("notification-circle");
+        circle.getStyleClass().add("notification-marker-circle");
         circle.setSmooth(true);
         stackPane.getChildren().addAll(circle, numberLabel);
         stackPane.setStyle("-fx-padding: -15 -20 0 -20;");
