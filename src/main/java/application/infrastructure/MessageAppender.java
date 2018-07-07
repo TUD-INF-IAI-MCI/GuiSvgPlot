@@ -86,7 +86,7 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
         label.getStyleClass().add(event.getLevel().levelStr.toLowerCase());
         label.setAlignment(Pos.CENTER);
         label.setPrefWidth(rootFrameController.scrollPane_message.getWidth());
-        vBox_messages.getChildren().add(label);
+        vBox_messages.getChildren().add(0, label);
 
         // TODO: set accassible help text
         ScrollPane scrollPane = rootFrameController.scrollPane_message;

@@ -99,6 +99,11 @@ Label {
     -fx-text-fill: $menu-font-color;
     -fx-font-weight: bold;
   }
+
+  &.invalid{
+    -fx-text-fill: $error-font-color;
+    -fx-font-weight: bold;
+  }
 }
 .label_message {
   -fx-pref-height: 0;
@@ -132,4 +137,17 @@ Label {
 
 .p-0 {
   -fx-padding: 0;
+}
+
+TextField,
+ChoiceBox {
+  -fx-border-radius: 3;
+  &:focused {
+    -fx-border-color: $tud-blue;
+  }
+  &.invalid{
+    -fx-border-color: $error-font-color;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3;
+  }
 }

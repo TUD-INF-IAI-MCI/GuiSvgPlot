@@ -5,6 +5,7 @@ import application.model.GuiSvgOptions;
 import application.model.PageSize;
 import application.service.SvgOptionsService;
 import application.util.SvgOptionsUtil;
+import application.util.TextFieldUtil;
 import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
@@ -162,6 +163,7 @@ public class SVGWizardController implements Initializable {
     protected SvgPlotOptions svgPlotOptions;
     protected SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
     protected SvgOptionsUtil svgOptionsUtil = SvgOptionsUtil.getInstance();
+    protected TextFieldUtil textFieldUtil = TextFieldUtil.getInstance();
     private ObjectProperty<Range> xRange;
     private ObjectProperty<Range> yRange;
 
@@ -170,6 +172,7 @@ public class SVGWizardController implements Initializable {
         this.bundle = resources;
         this.svgOptionsService.setBundle(resources);
         this.svgOptionsUtil.setBundle(resources);
+        this.textFieldUtil.setBundle(resources);
         this.currentStage = new SimpleIntegerProperty();
         this.isExtended = new SimpleBooleanProperty(false);
         this.bundle = resources;
@@ -222,11 +225,13 @@ public class SVGWizardController implements Initializable {
 
         // custom size
         this.textField_customSizeWidth.setText(this.size.x());
+        this.textFieldUtil.addMinimumIntegerValidationWithMinimum(this.textField_customSizeWidth, 1);
         this.textField_customSizeWidth.textProperty().addListener((observable, oldValue, newValue) -> {
             this.size.setX(Integer.parseInt(newValue));
             this.svgPlotOptions.setSize(this.size);
         });
         this.textField_customSizeHeight.setText(this.size.y());
+        this.textFieldUtil.addMinimumIntegerValidationWithMinimum(this.textField_customSizeHeight, 1);
         this.textField_customSizeHeight.textProperty().addListener((observable, oldValue, newValue) -> {
             this.size.setY(Integer.parseInt(newValue));
             this.svgPlotOptions.setSize(this.size);
@@ -235,7 +240,6 @@ public class SVGWizardController implements Initializable {
     }
 
     protected void initAxisFieldListeners() {
-        //TODO: validate text input
         // x unit
         this.textField_xunit.setText(this.svgPlotOptions.getxUnit());
         this.textField_xunit.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -266,11 +270,17 @@ public class SVGWizardController implements Initializable {
         this.textField_xfrom.setText("" + this.xRange.get().getFrom());
         this.textField_xto.setText("" + this.xRange.get().getTo());
 
+        this.textFieldUtil.addDoubleValidation(this.textField_xfrom, this.label_xfrom);
         this.textField_xfrom.textProperty().addListener((observable, oldValue, newValue) -> {
-            xRange.get().setFrom(Double.parseDouble(newValue));
+            if (!newValue.equals("-")){
+                xRange.get().setFrom(Double.parseDouble(newValue));
+            }
         });
+        this.textFieldUtil.addDoubleValidation(this.textField_xto, this.label_xto);
         this.textField_xto.textProperty().addListener((observable, oldValue, newValue) -> {
-            xRange.get().setTo(Double.parseDouble(newValue));
+            if (!newValue.equals("-")) {
+                xRange.get().setTo(Double.parseDouble(newValue));
+            }
         });
         this.xRange.addListener((args, oldVal, newVal) -> {
             if (!this.svgPlotOptions.hasAutoScale()) {
@@ -286,15 +296,20 @@ public class SVGWizardController implements Initializable {
         this.textField_yfrom.setText("" + this.yRange.get().getFrom());
         this.textField_yto.setText("" + this.yRange.get().getTo());
 
+        this.textFieldUtil.addDoubleValidation(this.textField_yfrom, this.label_yfrom);
         this.textField_yfrom.textProperty().addListener((observable, oldValue, newValue) -> {
-            yRange.get().setFrom(Double.parseDouble(newValue));
+            if (!newValue.equals("-")) {
+                yRange.get().setFrom(Double.parseDouble(newValue));
+            }
         });
+        this.textFieldUtil.addDoubleValidation(this.textField_yto, this.label_yto);
         this.textField_yto.textProperty().addListener((observable, oldValue, newValue) -> {
-            yRange.get().setTo(Double.parseDouble(newValue));
+            if (!newValue.equals("-")) {
+                yRange.get().setTo(Double.parseDouble(newValue));
+            }
         });
         this.yRange.addListener((args, oldVal, newVal) -> {
             if (!this.svgPlotOptions.hasAutoScale()) {
-                System.out.println("set y range");
                 svgPlotOptions.setyRange(yRange.get());
             }
         });
@@ -381,7 +396,7 @@ public class SVGWizardController implements Initializable {
         });
     }
 
-    protected void initSpecialFieldListeners(){
+    protected void initSpecialFieldListeners() {
         // grid
         ObservableList<GridStyle> gridStyleObservableList = FXCollections.observableArrayList(GridStyle.values());
         this.choicebox_gridStyle.setItems(gridStyleObservableList);
@@ -436,6 +451,7 @@ public class SVGWizardController implements Initializable {
             }
         });
     }
+
     protected void initiatePagination(final HBox hBox_pagination, final int AMOUNTOFSTAGES) {
         this.stageBtns = new ArrayList<>();
         for (int stage = 0; stage < AMOUNTOFSTAGES; stage++) {
