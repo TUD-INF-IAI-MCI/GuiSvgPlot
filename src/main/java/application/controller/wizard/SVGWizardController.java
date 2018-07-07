@@ -1,6 +1,7 @@
 package application.controller.wizard;
 
 import application.GuiSvgPlott;
+import application.model.CssType;
 import application.model.GuiSvgOptions;
 import application.model.PageSize;
 import application.service.SvgOptionsService;
@@ -11,6 +12,7 @@ import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,10 +21,10 @@ import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
+import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -35,6 +37,7 @@ import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.styles.AxisStyle;
+import tud.tangram.svgplot.styles.Color;
 import tud.tangram.svgplot.styles.GridStyle;
 
 import java.io.File;
@@ -127,16 +130,28 @@ public class SVGWizardController implements Initializable {
     protected Label label_yto;
     // styling fields
     @FXML
-    public TextField textField_cssFile;
+    public ChoiceBox<CssType> choiceBox_cssType;
     @FXML
-    public ChoiceBox<tud.tangram.svgplot.styles.Color> choiceBox_color1;
+    public Label label_cssPath;
     @FXML
-    public ChoiceBox<tud.tangram.svgplot.styles.Color> choiceBox_color2;
+    public TextField textField_cssPath;
+    @FXML
+    private Button button_cssPath;
+    @FXML
+    private HBox hBox_cssPath;
+    @FXML
+    public Label label_cssCustom;
+    @FXML
+    public TextArea textArea_cssCustom;
+    @FXML
+    public Label label_colors;
+    @FXML
+    public CheckComboBox<Color> checkComboBox_color;
     // csv fields
     @FXML
-    public TextField textField_CsvPath;
+    public TextField textField_csvPath;
     @FXML
-    private Button button_CsvPath;
+    private Button button_csvPath;
     @FXML
     public ChoiceBox<CsvOrientation> choiceBox_csvOrientation;
     @FXML
@@ -206,6 +221,8 @@ public class SVGWizardController implements Initializable {
         this.choiceBox_outputDevice.getSelectionModel().select(0);
         this.choiceBox_outputDevice.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             svgPlotOptions.setOutputDevice(newValue);
+            boolean isColorDevice = newValue == OutputDevice.ScreenColor;
+            toggleVisibility(isColorDevice, label_colors, checkComboBox_color);
         });
 
         // size
@@ -272,7 +289,7 @@ public class SVGWizardController implements Initializable {
 
         this.textFieldUtil.addDoubleValidation(this.textField_xfrom, this.label_xfrom);
         this.textField_xfrom.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.equals("-")){
+            if (!newValue.equals("-")) {
                 xRange.get().setFrom(Double.parseDouble(newValue));
             }
         });
@@ -316,38 +333,61 @@ public class SVGWizardController implements Initializable {
     }
 
     protected void initStylingFieldListeners() {
-        this.colors = new ArrayList<>();
+        ObservableList<CssType> cssTypeObservableList = FXCollections.observableArrayList(CssType.values());
+        this.choiceBox_cssType.setItems(cssTypeObservableList);
+        this.choiceBox_cssType.setConverter(svgOptionsUtil.getCssTypeStringConverter());
+        this.choiceBox_cssType.getSelectionModel().select(CssType.NONE);
+        this.choiceBox_cssType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            toggleVisibility(newValue == CssType.FILE, label_cssPath, hBox_cssPath);
+            toggleVisibility(newValue == CssType.CUSTOM, label_cssCustom, textArea_cssCustom);
+            if (newValue == CssType.NONE) this.svgPlotOptions.setCss("");
+        });
 
         // css file
-        this.textField_cssFile.setText(this.svgPlotOptions.getCss());
-        this.textField_cssFile.textProperty().addListener((observable, oldValue, newValue) -> {
-            svgPlotOptions.setCss(newValue);
+        this.textField_cssPath.setText(this.svgPlotOptions.getCss());
+        this.textField_cssPath.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.svgPlotOptions.setCss(newValue);
         });
-
-        // colors
-        ObservableList<tud.tangram.svgplot.styles.Color> sortingTypeObservableList = FXCollections.observableArrayList(tud.tangram.svgplot.styles.Color.values());
-        this.choiceBox_color1.setItems(sortingTypeObservableList);
-        this.choiceBox_color2.setItems(sortingTypeObservableList);
-        if (this.svgPlotOptions.getCustomColors().size() == 2) {
-            tud.tangram.svgplot.styles.Color color1 = tud.tangram.svgplot.styles.Color.fromString(this.svgPlotOptions.getCustomColors().get(0));
-            this.colors.add(color1.getName());
-            this.choiceBox_color1.setValue(color1);
-
-            tud.tangram.svgplot.styles.Color color2 = tud.tangram.svgplot.styles.Color.fromString(this.svgPlotOptions.getCustomColors().get(1));
-            this.colors.add(color2.getName());
-            this.choiceBox_color2.setValue(color2);
-        }
-        this.choiceBox_color1.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<tud.tangram.svgplot.styles.Color>() {
-            @Override
-            public void changed(ObservableValue<? extends tud.tangram.svgplot.styles.Color> observable, tud.tangram.svgplot.styles.Color oldValue, tud.tangram.svgplot.styles.Color newValue) {
-                colors.add(newValue.getName());
-                svgPlotOptions.setCustomColors(colors);
+        this.button_cssPath.setDisable(false);
+        this.button_cssPath.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(userDir);
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSS files (*.css)", "*.css");
+            fileChooser.getExtensionFilters().add(extFilter);
+            File file = fileChooser.showOpenDialog(GuiSvgPlott.getInstance().getPrimaryStage());
+            if (file != null) {
+                this.textField_cssPath.setText(file.getAbsolutePath());
             }
         });
-        this.choiceBox_color2.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<tud.tangram.svgplot.styles.Color>() {
-            @Override
-            public void changed(ObservableValue<? extends tud.tangram.svgplot.styles.Color> observable, tud.tangram.svgplot.styles.Color oldValue, tud.tangram.svgplot.styles.Color newValue) {
-                colors.add(newValue.getName());
+
+        // custom css
+        this.textArea_cssCustom.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.svgPlotOptions.setCss(newValue.replace("\n", ""));
+        });
+
+
+        // colors
+        this.colors = new ArrayList<>();
+        ObservableList<Color> sortingTypeObservableList = FXCollections.observableArrayList(Color.values());
+        this.checkComboBox_color.getItems().addAll(sortingTypeObservableList);
+        this.checkComboBox_color.getCheckModel().getCheckedItems().addListener(new ListChangeListener<Color>() {
+            public void onChanged(ListChangeListener.Change<? extends Color> c) {
+//                colors.clear();
+                ObservableList<Color> checkedItems = checkComboBox_color.getCheckModel().getCheckedItems();
+                ObservableList<Color> newItems =
+                        checkedItems.filtered(color -> !colors.contains(color.getName()));
+                ObservableList<Color> oldItems =
+                        sortingTypeObservableList.filtered(color -> !checkedItems.contains(color) && colors.contains(color.getName()));
+                if (newItems.size() > 0) {
+                    for (Color color : newItems) {
+                        colors.add(color.getName());
+                    }
+                }
+                if (oldItems.size() > 0) {
+                    for (Color color : oldItems) {
+                        colors.remove(color.getName());
+                    }
+                }
                 svgPlotOptions.setCustomColors(colors);
             }
         });
@@ -355,19 +395,19 @@ public class SVGWizardController implements Initializable {
 
     protected void initCsvFieldListeners() {
         // csv path
-        this.textField_CsvPath.setDisable(false);
-        this.textField_CsvPath.textProperty().addListener((observable, oldValue, newValue) -> {
+        this.textField_csvPath.setDisable(false);
+        this.textField_csvPath.textProperty().addListener((observable, oldValue, newValue) -> {
             this.svgPlotOptions.setCsvPath(newValue);
         });
-        this.button_CsvPath.setDisable(false);
-        this.button_CsvPath.setOnAction(event -> {
+        this.button_csvPath.setDisable(false);
+        this.button_csvPath.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setInitialDirectory(userDir);
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
             fileChooser.getExtensionFilters().add(extFilter);
             File file = fileChooser.showOpenDialog(GuiSvgPlott.getInstance().getPrimaryStage());
             if (file != null) {
-                this.textField_CsvPath.setText(file.getAbsolutePath());
+                this.textField_csvPath.setText(file.getAbsolutePath());
             }
         });
 
@@ -476,7 +516,7 @@ public class SVGWizardController implements Initializable {
         this.messageBtns = new ArrayList<>();
         hBox_pagination.getChildren().remove(this.button_Warnings);
         this.warnIcon = new Glyph("FontAwesome", FontAwesome.Glyph.WARNING);
-        this.warnIcon.setColor(Color.valueOf("#f0ad4e"));
+        this.warnIcon.setColor(javafx.scene.paint.Color.valueOf("#f0ad4e"));
         this.button_Warnings = new Button("", warnIcon);
         this.button_Warnings.getStyleClass().add("notification");
         this.button_Warnings.getStyleClass().add("notification-btn");
@@ -486,7 +526,7 @@ public class SVGWizardController implements Initializable {
 
         hBox_pagination.getChildren().remove(this.button_Infos);
         this.infoIcon = new Glyph("FontAwesome", FontAwesome.Glyph.INFO);
-        this.infoIcon.setColor(Color.valueOf("#002557"));
+        this.infoIcon.setColor(javafx.scene.paint.Color.valueOf("#002557"));
         this.button_Infos = new Button("", infoIcon);
         this.button_Infos.getStyleClass().add("notification");
         this.button_Infos.getStyleClass().add("notification-btn");
@@ -682,7 +722,7 @@ public class SVGWizardController implements Initializable {
      * @param label   the {@link Label}
      * @param field   the the field {@link Node}
      */
-    protected void setVisible(boolean visible, Label label, Node field) {
+    protected void toggleVisibility(boolean visible, Label label, Node field) {
         if (visible) {
             show(label, field);
         } else {
@@ -696,8 +736,8 @@ public class SVGWizardController implements Initializable {
      * @param show if field and label should be visible.
      */
     protected void toggleCustomSize(final boolean show) {
-        setVisible(show, label_customSizeWidth, textField_customSizeWidth);
-        setVisible(show, label_customSizeHeight, textField_customSizeHeight);
+        toggleVisibility(show, label_customSizeWidth, textField_customSizeWidth);
+        toggleVisibility(show, label_customSizeHeight, textField_customSizeHeight);
 
         if (show) {
             this.textField_customSizeWidth.setText(this.size.x());
@@ -722,10 +762,10 @@ public class SVGWizardController implements Initializable {
         }
 
 
-        setVisible(enabled, label_xfrom, textField_xfrom);
-        setVisible(enabled, label_xto, textField_xto);
-        setVisible(enabled, label_yfrom, textField_yfrom);
-        setVisible(enabled, label_yto, textField_yto);
+        toggleVisibility(enabled, label_xfrom, textField_xfrom);
+        toggleVisibility(enabled, label_xto, textField_xto);
+        toggleVisibility(enabled, label_yfrom, textField_yfrom);
+        toggleVisibility(enabled, label_yto, textField_yto);
     }
 
 }

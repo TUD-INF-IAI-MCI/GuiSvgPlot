@@ -299,6 +299,26 @@ public class SvgOptionsUtil {
         };
     }
 
+    public StringConverter<CssType> getCssTypeStringConverter() {
+        return new StringConverter<CssType>() {
+            @Override
+            public String toString(CssType cssType) {
+                return bundle.getString("cssType_" + cssType.toString().toLowerCase());
+            }
+
+            @Override
+            public CssType fromString(String string) {
+                CssType cssType = CssType.NONE;
+                for (CssType type : FXCollections.observableArrayList(CssType.values())) {
+                    if (this.toString(type).equals(string)) {
+                        cssType = type;
+                    }
+                }
+                return cssType;
+            }
+        };
+    }
+
     /**
      * Sets the {@link ResourceBundle}
      *

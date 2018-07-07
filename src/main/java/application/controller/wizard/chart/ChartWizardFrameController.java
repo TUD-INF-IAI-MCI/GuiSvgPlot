@@ -174,7 +174,7 @@ public class ChartWizardFrameController extends SVGWizardController {
             public void changed(ObservableValue<? extends SortingType> observable, SortingType oldValue, SortingType newValue) {
                 svgPlotOptions.setSortingType(newValue);
 
-                setVisible(newValue != SortingType.None, label_sortOrder, choicebox_sortOrder);
+                toggleVisibility(newValue != SortingType.None, label_sortOrder, choicebox_sortOrder);
                 if (newValue == SortingType.None) {
                     choicebox_sortOrder.getSelectionModel().select(SortOrder.ASC);
                 }
@@ -315,8 +315,8 @@ public class ChartWizardFrameController extends SVGWizardController {
      * @param show if field and value should be visible.
      */
     private void toggleBarChartOptions(final boolean show) {
-        setVisible(show, label_baraccumulation, choiceBox_baraccumulation);
-        setVisible(show, label_sorting, choiceBox_sorting);
+        toggleVisibility(show, label_baraccumulation, choiceBox_baraccumulation);
+        toggleVisibility(show, label_sorting, choiceBox_sorting);
         if (!show) {
             hide(label_sortOrder, choicebox_sortOrder);
         }
@@ -328,7 +328,7 @@ public class ChartWizardFrameController extends SVGWizardController {
      * @param show if field and value should be visible.
      */
     private void toggleLineChartOptions(final boolean show) {
-        setVisible(show, label_linepoints, choiceBox_linepoints);
+        toggleVisibility(show, label_linepoints, choiceBox_linepoints);
     }
 
     /**
