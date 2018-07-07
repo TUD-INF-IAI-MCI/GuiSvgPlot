@@ -61,7 +61,7 @@ public class TextFieldUtil {
                             errorMessageLabel = errorMessage;
                         }
                     }
-                    if (!errorMessageLabel.getText().isEmpty()){
+                    if (!errorMessageLabel.getText().isEmpty() || textField.getStyleClass().contains("invalid")){
                         messages.getChildren().remove(errorMessageLabel);
                         textField.getStyleClass().remove("invalid");
                         label.getStyleClass().remove("invalid");
