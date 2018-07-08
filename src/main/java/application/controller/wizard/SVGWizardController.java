@@ -429,7 +429,7 @@ public class SVGWizardController implements Initializable {
         ObservableList<GridStyle> gridStyleObservableList = FXCollections.observableArrayList(GridStyle.values());
         this.choicebox_gridStyle.setItems(gridStyleObservableList);
         this.choicebox_gridStyle.setConverter(this.svgOptionsUtil.getGridStyleStringConverter());
-        this.choicebox_gridStyle.getSelectionModel().select(GridStyle.NONE);
+        this.choicebox_gridStyle.getSelectionModel().select(this.guiSvgOptions.getGridStyle());
         this.choicebox_gridStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.guiSvgOptions.setGridStyle(newValue);
         });

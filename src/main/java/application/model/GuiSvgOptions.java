@@ -155,24 +155,8 @@ public class GuiSvgOptions {
             this.options.setShowLinePoints(newValue.getShowLinePoints());
         });
         this.gridStyle.addListener((observable, oldValue, newValue) -> {
-            switch (newValue) {
-                case FULL:
-                    this.options.setShowHorizontalGrid("on");
-                    this.options.setShowVerticalGrid("on");
-                    break;
-                case VERTICAL:
-                    this.options.setShowHorizontalGrid("off");
-                    this.options.setShowVerticalGrid("on");
-                    break;
-                case HORIZONTAL:
-                    this.options.setShowHorizontalGrid("on");
-                    this.options.setShowVerticalGrid("off");
-                    break;
-                case NONE:
-                    this.options.setShowHorizontalGrid("off");
-                    this.options.setShowVerticalGrid("off");
-                    break;
-            }
+            this.options.setShowHorizontalGrid(newValue.showHorizontal() ? "on" : "off");
+            this.options.setShowVerticalGrid(newValue.showVertical() ? "on" : "off");
         });
         this.axisStyle.addListener((observable, oldValue, newValue) -> {
             if (newValue.getAxisStyle() != null) {
