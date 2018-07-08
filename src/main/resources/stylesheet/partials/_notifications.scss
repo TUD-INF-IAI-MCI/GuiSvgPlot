@@ -6,6 +6,7 @@
   }
 
   &.error {
+    -fx-focus-traversable: true;
     -fx-background-color: $error-bg-color;
     -fx-text-fill: $error-font-color;
     -fx-fill: $error-font-color;

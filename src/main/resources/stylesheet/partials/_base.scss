@@ -28,13 +28,18 @@ Label {
     -fx-text-fill: $error-font-color;
     -fx-font-weight: bold;
   }
+
 }
 
-ChoiceBox {
+ChoiceBox,
+CheckComboBox{
   @extend Label;
+  -fx-cursor: hand;
   -fx-mark-color: $tud-blue;
   -fx-min-width: 50px;
   -fx-pref-height: 25px;
+  -fx-focus-color: $tud-blue;
+  //-fx-faint-focus-color: transparentize($tud-blue, 0.5);
 
   .menu-item:focused {
     -fx-background-color: $tud-blue;
@@ -52,10 +57,9 @@ ChoiceBox {
 
 TextField {
   @extend ChoiceBox;;
+  -fx-cursor: text;
   -fx-border-radius: 3;
-  &:focused {
-    -fx-border-color: $tud-blue;
-  }
+
   &.invalid {
     -fx-border-color: $error-font-color;
     -fx-border-width: 2px;
@@ -64,6 +68,7 @@ TextField {
 }
 
 RadioButton {
+  -fx-cursor: hand;
   -fx-mark-color: $tud-blue;
   .radio {
     -fx-background-color: white;
@@ -78,4 +83,17 @@ RadioButton {
       -fx-border-color: $tud-blue;
     }
   }
+}
+
+AnchorPane.preview-container {
+  //prefHeight="210.0"
+  //prefWidth="297.0"
+  -fx-focus-color: $tud-blue;
+  -fx-focus-traversable: false;
+
+  > WebView {
+    -fx-focus-traversable: true;
+    -fx-focus-color: $tud-blue;
+  }
+
 }

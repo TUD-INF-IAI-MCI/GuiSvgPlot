@@ -541,11 +541,12 @@ public class SVGWizardController implements Initializable {
         vBox_infos = new VBox();
         vBox_infos.getStyleClass().add("notification");
         vBox_infos.getStyleClass().add("info");
+        vBox_infos.setFocusTraversable(true);
 
         vBox_warnings = new VBox();
         vBox_warnings.getStyleClass().add("notification");
         vBox_warnings.getStyleClass().add("warn");
-
+        vBox_warnings.setFocusTraversable(true);
 
         button_Infos.setOnAction(event -> {
             ScrollPane infoScrollPane = new ScrollPane(vBox_infos);
@@ -562,6 +563,7 @@ public class SVGWizardController implements Initializable {
             popOver_infos.setHeaderAlwaysVisible(true);
             popOver_infos.setContentNode(infoScrollPane);
             popOver_infos.show(button_Infos);
+            vBox_infos.getChildren().get(0).requestFocus();
             fixBlurryText(infoScrollPane);
         });
         button_Warnings.setOnAction(event -> {
@@ -579,6 +581,7 @@ public class SVGWizardController implements Initializable {
             popOver_warnings.setHeaderAlwaysVisible(true);
             popOver_warnings.setContentNode(warningScrollPane);
             popOver_warnings.show(button_Warnings);
+            vBox_warnings.getChildren().get(0).requestFocus();
             fixBlurryText(warningScrollPane);
         });
 
@@ -592,6 +595,7 @@ public class SVGWizardController implements Initializable {
         tabPane_ContentHolder.getTabs().forEach(tab -> stages.add((GridPane) tab.getContent()));
         currentStage.set(0);
         borderPane_WizardContent.setCenter(stages.get(0));
+        stages.get(0).getChildren().get(0).requestFocus();
         button_Back.setDisable(true);
     }
 
@@ -620,6 +624,7 @@ public class SVGWizardController implements Initializable {
             }
 
             borderPane_WizardContent.setCenter(stages.get(currentStage.get()));
+            borderPane_WizardContent.getCenter().requestFocus();
             this.svgOptionsService.buildPreviewSVG(this.svgPlotOptions, this.webView_svg);
         });
 

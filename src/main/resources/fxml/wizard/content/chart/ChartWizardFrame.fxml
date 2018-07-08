@@ -164,7 +164,7 @@
                                             <TextField fx:id="textField_csvPath" accessibleText="Pfad zur CSV Datei"
                                                        promptText="%prompt_path_to_csv" HBox.hgrow="ALWAYS"/>
                                             <Button fx:id="button_csvPath" accessibleText="CSV Datei auswählen"
-                                                    mnemonicParsing="false" text="..."/>
+                                                    mnemonicParsing="false" styleClass="btn-upload" text="..."/>
                                         </HBox>
 
                                         <Label fx:id="label_CsvOrientation" contentDisplay="RIGHT" prefHeight="17.0"
@@ -446,7 +446,7 @@
                                             <TextField fx:id="textField_cssPath" accessibleText="Pfad zur CSS-Datei"
                                                        promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS"/>
                                             <Button fx:id="button_cssPath" accessibleText="CSS Datei auswählen"
-                                                    mnemonicParsing="false" text="..."/>
+                                                    mnemonicParsing="false" styleClass="btn-upload" text="..."/>
                                         </HBox>
                                         <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0"
                                                prefWidth="200.0" text="%css_custom_label" visible="false"
@@ -472,10 +472,13 @@
                         </TabPane>
                     </center>
                 </BorderPane>
-                <WebView fx:id="webView_svg" minHeight="-Infinity" minWidth="-Infinity" prefHeight="210.0"
-                         prefWidth="297.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                         AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" GridPane.columnIndex="1"
-                         GridPane.rowIndex="0"/>
+                <AnchorPane styleClass="preview-container" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <children>
+                        <WebView fx:id="webView_svg" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0"
+                                 prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                    </children>
+                </AnchorPane>
             </GridPane>
 
         </center>

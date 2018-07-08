@@ -1,12 +1,21 @@
 
 Button {
+  -fx-cursor: hand;
+  -fx-pref-width: 100px;
+
   &:focused {
     -fx-border-color: $tud-blue;
   }
 
-  &.btn-preview {
-    -fx-pref-width: 175px;
+  &.btn{
+    &-preview {
+      -fx-pref-width: 175px;
+    }
+    &-upload {
+      -fx-pref-width: 10px;
+    }
   }
+
 
   &.stageBtn {
     -fx-background-color: $stage-btn-color;

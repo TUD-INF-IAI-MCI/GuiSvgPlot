@@ -98,7 +98,6 @@ public class SvgOptionsService {
             Path descPath = Paths.get(svg.getParentFile().getPath() + "/" + svg.getName().replace(".svg", "_desc.html"));
             String description = loadDescription(descPath.toString());
             webView_svg.setAccessibleHelp(bundle.getString("preview") + ": " + description);
-
             // reset zoom
             ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
                 adjustScaleOfWebView(webView_svg);
@@ -106,7 +105,6 @@ public class SvgOptionsService {
             Window window = webView_svg.getScene().getWindow();
             window.widthProperty().addListener(stageSizeListener);
             window.heightProperty().addListener(stageSizeListener);
-
         } catch (ClassCastException e) {
             logger.warn(this.bundle.getString("preview_pointlist_warning"));
 //            e.printStackTrace();

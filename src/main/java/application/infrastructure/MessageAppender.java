@@ -7,6 +7,7 @@ import ch.qos.logback.classic.PatternLayout;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 import javafx.geometry.Pos;
+import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -92,15 +93,19 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
         // TODO: set accassible help text
         ScrollPane scrollPane = rootFrameController.scrollPane_message;
         scrollPane.setVisible(true);
+        label.setFocusTraversable(true);
     }
 
     private void renderInfoMessage(final ILoggingEvent event) {
         Button button_infos = rootFrameController.svgWizardController.button_Infos;
         VBox infos = rootFrameController.svgWizardController.vBox_infos;
 
-        Text formattedMsg = getTextOfMessage(event, infos);
+        Text formattedMsg = getTextOfMessage(event, infos, "info");
         infos.getChildren().add(formattedMsg);
         button_infos.setDisable(false);
+        button_infos.setAccessibleText(this.bundle.getString("info_message") + ":" + infos.getChildren().size() );
+        button_infos.setAccessibleHelp(this.bundle.getString("info_message_help"));
+        button_infos.setAccessibleRole(AccessibleRole.MENU_ITEM);
 
         createNotification(button_infos, "" + infos.getChildren().size(), rootFrameController.svgWizardController.getInfoIcon());
     }
@@ -109,16 +114,19 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
         Button button_warnings = rootFrameController.svgWizardController.button_Warnings;
         VBox warnings = rootFrameController.svgWizardController.vBox_warnings;
 
-        Text formattedMsg = getTextOfMessage(event, warnings);
+        Text formattedMsg = getTextOfMessage(event, warnings, "warn");
         warnings.getChildren().add(formattedMsg);
         button_warnings.setDisable(false);
+        button_warnings.setAccessibleText(this.bundle.getString("warn_message") + ":" + warnings.getChildren().size());
+        button_warnings.setAccessibleHelp(this.bundle.getString("warn_message_help"));
+        button_warnings.setAccessibleRole(AccessibleRole.MENU_ITEM);
 
         createNotification(button_warnings, "" + warnings.getChildren().size(), rootFrameController.svgWizardController.getWarnIcon());
     }
 
-    private Text getTextOfMessage(final ILoggingEvent event, final VBox vBox) {
+    private Text getTextOfMessage(final ILoggingEvent event, final VBox vBox, final String bundleKey) {
         int numberOfWarn = vBox.getChildren().size() + 1;
-        String message = numberOfWarn + ": " + patternLayoutOnlyMsg.doLayout(event);
+        String message = numberOfWarn + ". " + patternLayoutOnlyMsg.doLayout(event);
         if (numberOfWarn > 1) {
             message = "\n" + message;
         }
@@ -128,6 +136,8 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
         formattedMsg.getStyleClass().add("notification-label");
         formattedMsg.getStyleClass().add(event.getLevel().levelStr.toLowerCase());
         formattedMsg.textAlignmentProperty().set(TextAlignment.JUSTIFY);
+        formattedMsg.setFocusTraversable(true);
+        formattedMsg.setAccessibleText(numberOfWarn + ". " + bundle.getString(bundleKey) + ": " + patternLayoutOnlyMsg.doLayout(event));
 
         return formattedMsg;
     }
