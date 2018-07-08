@@ -98,17 +98,17 @@ public class SvgOptionsUtil {
        };
     }
 
-    public StringConverter<AxisStyle> getAxisStyleStringConverter() {
-        return new StringConverter<AxisStyle>() {
+    public StringConverter<GuiAxisStyle> getAxisStyleStringConverter() {
+        return new StringConverter<GuiAxisStyle>() {
             @Override
-            public String toString(AxisStyle axisStyle) {
+            public String toString(GuiAxisStyle axisStyle) {
                 return bundle.getString("axisstyle_" + axisStyle.toString().toLowerCase());
             }
 
             @Override
-            public AxisStyle fromString(String string) {
-                AxisStyle axisStyle = AxisStyle.GRAPH;
-                for (AxisStyle as : FXCollections.observableArrayList(AxisStyle.values())) {
+            public GuiAxisStyle fromString(String string) {
+                GuiAxisStyle axisStyle = GuiAxisStyle.Default;
+                for (GuiAxisStyle as : FXCollections.observableArrayList(GuiAxisStyle.values())) {
                     if (this.toString(as).equals(string)) {
                         axisStyle = as;
                     }

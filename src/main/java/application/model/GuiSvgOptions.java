@@ -14,6 +14,7 @@ import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.plotting.Function;
+import tud.tangram.svgplot.styles.AxisStyle;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.GridStyle;
 
@@ -22,7 +23,7 @@ import java.io.File;
 public class GuiSvgOptions {
 
 
-    public SvgPlotOptions options;
+    private SvgPlotOptions options;
 
     private ObjectProperty<DiagramType> diagramType;
     private ObjectProperty<CsvOrientation> csvOrientation;
@@ -37,10 +38,10 @@ public class GuiSvgOptions {
     private ObjectProperty<VisibilityOfDataPoints> hideOriginalPoints;
     private ObjectProperty<LinePointsOption> linePointsOption;
     private ObjectProperty<GridStyle> gridStyle;
+    private ObjectProperty<GuiAxisStyle> axisStyle;
 
     private BooleanProperty pi;
     private BooleanProperty autoScale;
-    private BooleanProperty showDoubleAxes;
 
     private ObservableList<Function> functions;
     private ObservableList<String> colors;
@@ -73,6 +74,7 @@ public class GuiSvgOptions {
         this.hideOriginalPoints = new SimpleObjectProperty<>(this.options.isHideOriginalPoints() ? VisibilityOfDataPoints.HIDE : VisibilityOfDataPoints.SHOW);
         this.linePointsOption = new SimpleObjectProperty<>(LinePointsOption.getLinePointsOption(this.options.getShowLinePoints(), options.isPointsBorderless()));
         this.gridStyle = new SimpleObjectProperty<>(GridStyle.NONE);
+        this.axisStyle = new SimpleObjectProperty<>(GuiAxisStyle.Default);
         initSimpleObjectListeners();
 
 
@@ -90,7 +92,6 @@ public class GuiSvgOptions {
 
         this.pi = new SimpleBooleanProperty(this.options.isPi());
         this.autoScale = new SimpleBooleanProperty(this.options.hasAutoScale());
-        this.showDoubleAxes = new SimpleBooleanProperty(this.convertStringToBoolean(this.options.getShowDoubleAxes()));
         initSimpleBooleanListeners();
 
 
@@ -99,10 +100,6 @@ public class GuiSvgOptions {
         this.trendLine = FXCollections.observableArrayList();
         initObservableListListeners();
 
-    }
-
-    private boolean convertStringToBoolean(final String booleanString) {
-        return booleanString != null && booleanString.equals("on");
     }
 
     private void initSimpleObjectListeners() {
@@ -177,6 +174,13 @@ public class GuiSvgOptions {
                     break;
             }
         });
+        this.axisStyle.addListener((observable, oldValue, newValue) -> {
+            if (newValue.getAxisStyle() != null) {
+                this.options.setShowDoubleAxes(newValue.getAxisStyle().equals(AxisStyle.BOX) ? "on" : "off");
+            } else {
+                this.options.setShowDoubleAxes(null);
+            }
+        });
     }
 
     private void initSimpleStringListerners() {
@@ -213,9 +217,6 @@ public class GuiSvgOptions {
         this.autoScale.addListener((observable, oldValue, newValue) -> {
             this.options.setAutoScale(newValue);
         });
-        this.showDoubleAxes.addListener((observable, oldValue, newValue) -> {
-            this.options.setShowDoubleAxes(newValue ? "on" : "off");
-        });
     }
 
     private void initObservableListListeners() {
@@ -244,25 +245,20 @@ public class GuiSvgOptions {
     }
 
     private void setLineChartDefaultOptions() {
-        if (this.options.getShowDoubleAxes() == null) {
-            this.showDoubleAxes.set(true);
-        }
         if (this.options.getShowHorizontalGrid() == null && this.options.getShowVerticalGrid() == null) {
             this.gridStyle.set(GridStyle.FULL);
         }
     }
 
     private void setScatterPlotDefaultOptions() {
-        if (this.options.getShowDoubleAxes() == null) {
-            this.showDoubleAxes.set(true);
-        }
+
     }
 
     private void setBarChartDefaultOptions() {
-        if (this.options.getShowDoubleAxes() == null) {
-            this.showDoubleAxes.set(true);
-        }
         this.csvType.set(CsvType.X_ALIGNED_CATEGORIES);
+        if (this.options.getShowHorizontalGrid() == null) {
+            this.gridStyle.set(GridStyle.HORIZONTAL);
+        }
     }
 
     public SvgPlotOptions getOptions() {
@@ -429,6 +425,18 @@ public class GuiSvgOptions {
         this.gridStyle.set(gridStyle);
     }
 
+    public GuiAxisStyle getAxisStyle() {
+        return axisStyle.get();
+    }
+
+    public ObjectProperty<GuiAxisStyle> axisStyleProperty() {
+        return axisStyle;
+    }
+
+    public void setAxisStyle(final GuiAxisStyle axisStyle) {
+        this.axisStyle.set(axisStyle);
+    }
+
     public boolean isPi() {
         return pi.get();
     }
@@ -451,18 +459,6 @@ public class GuiSvgOptions {
 
     public void setAutoScale(final boolean autoScale) {
         this.autoScale.set(autoScale);
-    }
-
-    public boolean isShowDoubleAxes() {
-        return showDoubleAxes.get();
-    }
-
-    public BooleanProperty showDoubleAxesProperty() {
-        return showDoubleAxes;
-    }
-
-    public void setShowDoubleAxes(final boolean showDoubleAxes) {
-        this.showDoubleAxes.set(showDoubleAxes);
     }
 
     public ObservableList<Function> getFunctions() {

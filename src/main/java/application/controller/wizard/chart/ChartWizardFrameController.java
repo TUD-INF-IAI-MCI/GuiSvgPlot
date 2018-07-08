@@ -287,10 +287,10 @@ public class ChartWizardFrameController extends SVGWizardController {
      * @param show if field and value should be visible.
      */
     private void toggleBarChartOptions(final boolean show) {
-        toggleVisibility(show, label_baraccumulation, choiceBox_baraccumulation);
-        toggleVisibility(show, label_sorting, choiceBox_sorting);
+        this.toggleVisibility(show, this.label_baraccumulation, this.choiceBox_baraccumulation);
+        this.toggleVisibility(show, this.label_sorting, this.choiceBox_sorting);
         if (!show) {
-            hide(label_sortOrder, choicebox_sortOrder);
+            this.hide(this.label_sortOrder, this.choicebox_sortOrder);
         }
     }
 

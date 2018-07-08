@@ -2,6 +2,7 @@ package application.controller.wizard;
 
 import application.GuiSvgPlott;
 import application.model.CssType;
+import application.model.GuiAxisStyle;
 import application.model.GuiSvgOptions;
 import application.model.PageSize;
 import application.service.SvgOptionsService;
@@ -34,7 +35,6 @@ import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
-import tud.tangram.svgplot.styles.AxisStyle;
 import tud.tangram.svgplot.styles.Color;
 import tud.tangram.svgplot.styles.GridStyle;
 
@@ -99,7 +99,7 @@ public class SVGWizardController implements Initializable {
     @FXML
     public TextField textField_ylines;
     @FXML
-    public ChoiceBox<AxisStyle> choicebox_dblaxes;
+    public ChoiceBox<GuiAxisStyle> choicebox_dblaxes;
 
     // general axis options
     @FXML
@@ -448,18 +448,12 @@ public class SVGWizardController implements Initializable {
         });
 
         // double axes
-        boolean showDoubleAxes = this.guiSvgOptions.isShowDoubleAxes();
-        ObservableList<AxisStyle> axisStyleObservableList = FXCollections.observableArrayList(AxisStyle.values());
-        axisStyleObservableList.remove(AxisStyle.GRAPH);
+        ObservableList<GuiAxisStyle> axisStyleObservableList = FXCollections.observableArrayList(GuiAxisStyle.values());
         this.choicebox_dblaxes.setItems(axisStyleObservableList);
         this.choicebox_dblaxes.setConverter(this.svgOptionsUtil.getAxisStyleStringConverter());
-        this.choicebox_dblaxes.getSelectionModel().select((showDoubleAxes) ? AxisStyle.BOX : AxisStyle.EDGE);
+        this.choicebox_dblaxes.getSelectionModel().select(this.guiSvgOptions.getAxisStyle());
         this.choicebox_dblaxes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == AxisStyle.EDGE) {
-                this.guiSvgOptions.setShowDoubleAxes(false);
-            } else {
-                this.guiSvgOptions.setShowDoubleAxes(true);
-            }
+            this.guiSvgOptions.setAxisStyle(newValue);
         });
     }
 
@@ -749,8 +743,8 @@ public class SVGWizardController implements Initializable {
         this.guiSvgOptions.gridStyleProperty().addListener((observable, oldValue, newValue) -> {
             this.choicebox_gridStyle.getSelectionModel().select(newValue);
         });
-        this.guiSvgOptions.showDoubleAxesProperty().addListener((observable, oldValue, newValue) -> {
-            this.choicebox_dblaxes.getSelectionModel().select(newValue ? AxisStyle.BOX : AxisStyle.EDGE);
+        this.guiSvgOptions.axisStyleProperty().addListener((observable, oldValue, newValue) -> {
+            this.choicebox_dblaxes.getSelectionModel().select(newValue);
         });
         this.guiSvgOptions.csvTypeProperty().addListener((observable, oldValue, newValue) -> {
             this.choiceBox_csvType.getSelectionModel().select(newValue);
