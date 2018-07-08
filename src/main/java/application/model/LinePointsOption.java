@@ -17,7 +17,19 @@ public enum LinePointsOption {
         return showLinePoints;
     }
 
+    public boolean isShowLinePoints() {
+        return showLinePoints.equals("on");
+    }
+
     public boolean isPointsborderless() {
         return pointsborderless;
+    }
+
+    public static LinePointsOption getLinePointsOption(final String showLinePoints, final boolean pointsborderless) {
+        LinePointsOption linePointsOption = showLinePoints != null && showLinePoints.equals("on") ? ShowWithBorder : Hide;
+        if (linePointsOption.equals(ShowWithBorder) && pointsborderless){
+            linePointsOption = ShowBorderless;
+        }
+        return linePointsOption;
     }
 }

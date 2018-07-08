@@ -1,7 +1,6 @@
 package application.controller;
 
 import application.controller.wizard.SVGWizardController;
-import application.model.SvgStage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +40,6 @@ public class RootFrameController implements Initializable {
 
     private ResourceBundle bundle;
 
-    private SvgStage currentStage;
     public SVGWizardController svgWizardController;
 
 

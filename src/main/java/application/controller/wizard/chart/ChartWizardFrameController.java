@@ -5,8 +5,6 @@ import application.model.LinePointsOption;
 import application.model.SortOrder;
 import application.model.TrendlineAlgorithm;
 import application.model.VisibilityOfDataPoints;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,7 +29,7 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private GridPane stage1;
     @FXML
-    public ChoiceBox<DiagramType> choiceBox_DiagramType;
+    public ChoiceBox<DiagramType> choiceBox_diagramType;
 
     /* stage 2*/
     @FXML
@@ -124,21 +122,16 @@ public class ChartWizardFrameController extends SVGWizardController {
         // diagram type
         ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());
         diagramTypeObservableList.remove(DiagramType.FunctionPlot);
-        this.choiceBox_DiagramType.setItems(diagramTypeObservableList);
+        this.choiceBox_diagramType.setItems(diagramTypeObservableList);
         // i18n
-        this.choiceBox_DiagramType.setConverter(svgOptionsUtil.getDiagramTypeStringConverter());
-        this.choiceBox_DiagramType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DiagramType>() {
-
-            @Override
-            public void changed(ObservableValue<? extends DiagramType> observable, DiagramType oldValue, DiagramType newValue) {
-                svgPlotOptions.setDiagramType(newValue);
-                toggleBarChartOptions(newValue == DiagramType.BarChart);
-                toggleLineChartOptions(newValue == DiagramType.LineChart);
-                toggleScatterPlotOptions(newValue == DiagramType.ScatterPlot);
-            }
-
+        this.choiceBox_diagramType.setConverter(this.svgOptionsUtil.getDiagramTypeStringConverter());
+        this.choiceBox_diagramType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            guiSvgOptions.setDiagramType(newValue);
+            toggleBarChartOptions(newValue == DiagramType.BarChart);
+            toggleLineChartOptions(newValue == DiagramType.LineChart);
+            toggleScatterPlotOptions(newValue == DiagramType.ScatterPlot);
         });
-        this.choiceBox_DiagramType.getSelectionModel().select(0);
+        this.choiceBox_diagramType.getSelectionModel().select(0);
     }
 
 
@@ -157,27 +150,21 @@ public class ChartWizardFrameController extends SVGWizardController {
         ObservableList<BarAccumulationStyle> csvOrientationObservableList = FXCollections.observableArrayList(BarAccumulationStyle.values());
         this.choiceBox_baraccumulation.setItems(csvOrientationObservableList);
         this.choiceBox_baraccumulation.setConverter(this.svgOptionsUtil.getBarAccumulationStyleStringConverter());
-        this.choiceBox_baraccumulation.setValue(this.svgPlotOptions.getBarAccumulationStyle());
-        this.choiceBox_baraccumulation.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<BarAccumulationStyle>() {
-            @Override
-            public void changed(ObservableValue<? extends BarAccumulationStyle> observable, BarAccumulationStyle oldValue, BarAccumulationStyle newValue) {
-                svgPlotOptions.setBarAccumulationStyle(newValue);
-            }
+        this.choiceBox_baraccumulation.setValue(this.guiSvgOptions.getBarAccumulationStyle());
+        this.choiceBox_baraccumulation.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            guiSvgOptions.setBarAccumulationStyle(newValue);
         });
         // sorting type
         ObservableList<SortingType> sortingTypeObservableList = FXCollections.observableArrayList(SortingType.values());
         this.choiceBox_sorting.setItems(sortingTypeObservableList);
         this.choiceBox_sorting.setConverter(this.svgOptionsUtil.getSortingTypeStringConverter());
         this.choiceBox_sorting.getSelectionModel().select(SortingType.None);
-        this.choiceBox_sorting.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<SortingType>() {
-            @Override
-            public void changed(ObservableValue<? extends SortingType> observable, SortingType oldValue, SortingType newValue) {
-                svgPlotOptions.setSortingType(newValue);
+        this.choiceBox_sorting.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            guiSvgOptions.setSortingType(newValue);
 
-                toggleVisibility(newValue != SortingType.None, label_sortOrder, choicebox_sortOrder);
-                if (newValue == SortingType.None) {
-                    choicebox_sortOrder.getSelectionModel().select(SortOrder.ASC);
-                }
+            toggleVisibility(newValue != SortingType.None, label_sortOrder, choicebox_sortOrder);
+            if (newValue == SortingType.None) {
+                choicebox_sortOrder.getSelectionModel().select(SortOrder.ASC);
             }
         });
 
@@ -186,106 +173,91 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choicebox_sortOrder.setItems(sortOrderObservableList);
         this.choicebox_sortOrder.setConverter(this.svgOptionsUtil.getSortOrderStringConverter());
         this.choicebox_sortOrder.getSelectionModel().select(SortOrder.ASC);
-        this.choicebox_sortOrder.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<SortOrder>() {
-            @Override
-            public void changed(ObservableValue<? extends SortOrder> observable, SortOrder oldValue, SortOrder newValue) {
-                svgPlotOptions.setSortDescending(newValue.equals(SortOrder.DESC));
-            }
+        this.choicebox_sortOrder.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            guiSvgOptions.setSortOrder(newValue);
         });
 
         // line points
-        String showLinePoints = this.svgPlotOptions.getShowLinePoints();
         ObservableList<LinePointsOption> linePointsOptionObservableList = FXCollections.observableArrayList(LinePointsOption.values());
         this.choiceBox_linepoints.setItems(linePointsOptionObservableList);
         this.choiceBox_linepoints.setConverter(svgOptionsUtil.getLinePointsOptionStringConverter());
-        LinePointsOption selected = showLinePoints != null && showLinePoints.equals("on") ? LinePointsOption.ShowWithBorder : LinePointsOption.Hide;
-        if (this.svgPlotOptions.isPointsBorderless()) {
-            selected = LinePointsOption.ShowBorderless;
-        }
-        this.choiceBox_linepoints.getSelectionModel().select(selected);
+        this.choiceBox_linepoints.getSelectionModel().select(this.guiSvgOptions.getLinePointsOption());
         this.choiceBox_linepoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            svgPlotOptions.setPointsBorderless(newValue.isPointsborderless());
-            svgPlotOptions.setShowLinePoints(newValue.getShowLinePoints());
+            guiSvgOptions.setLinePointsOption(newValue);
         });
 
         // trendline and hide original points
         ObservableList<String> trendline = FXCollections.observableArrayList();
         this.textField_trendline_n.textProperty().addListener((observable, oldValue, newValue) -> {
             trendline.add(1, newValue);
-            svgPlotOptions.setTrendLine(trendline);
+            guiSvgOptions.setTrendLine(trendline);
         });
         this.textField_trendline_alpha.textProperty().addListener((observable, oldValue, newValue) -> {
             trendline.add(1, newValue);
-            svgPlotOptions.setTrendLine(trendline);
+            guiSvgOptions.setTrendLine(trendline);
         });
         this.textField_trendline_forecast.textProperty().addListener((observable, oldValue, newValue) -> {
             trendline.add(2, newValue);
-            svgPlotOptions.setTrendLine(trendline);
+            guiSvgOptions.setTrendLine(trendline);
         });
         ObservableList<VisibilityOfDataPoints> visibilityOfDataPointsObservableList = FXCollections.observableArrayList(VisibilityOfDataPoints.values());
         this.choiceBox_originalPoints.setItems(visibilityOfDataPointsObservableList);
         this.choiceBox_originalPoints.setConverter(this.svgOptionsUtil.getVisibilityOfDataPointsStringConverter());
         this.choiceBox_originalPoints.getSelectionModel().select(VisibilityOfDataPoints.SHOW);
         this.choiceBox_originalPoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            this.svgPlotOptions.setHideOriginalPoints(newValue == VisibilityOfDataPoints.HIDE);
+            this.guiSvgOptions.setHideOriginalPoints(newValue);
         });
         ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
         this.choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
         this.choiceBox_trendline.setConverter(this.svgOptionsUtil.getTrendlineAlgorithmStringConverter());
         this.choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
-        this.choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TrendlineAlgorithm>() {
-            @Override
-            public void changed(ObservableValue<? extends TrendlineAlgorithm> observable, TrendlineAlgorithm oldValue, TrendlineAlgorithm newValue) {
-                trendline.clear();
-                trendline.add(0, newValue.toString());
-                switch (newValue) {
-                    case MovingAverage:
-                        show(label_trendline_n, textField_trendline_n);
-                        show(label_originalPoints, choiceBox_originalPoints);
-                        hide(label_trendline_alpha, textField_trendline_alpha);
-                        hide(label_trendline_forecast, textField_trendline_forecast);
-                        // default n
-                        textField_trendline_n.setText("1");
-                        break;
-                    case BrownLES:
-                        show(label_trendline_alpha, textField_trendline_alpha);
-                        show(label_trendline_forecast, textField_trendline_forecast);
-                        show(label_originalPoints, choiceBox_originalPoints);
-                        hide(label_trendline_n, textField_trendline_n);
-                        // default alpha
-                        textField_trendline_alpha.setText("0.0");
-                        // default forecast
-                        textField_trendline_forecast.setText("1");
-                        break;
-                    case ExponentialSmoothing:
-                        show(label_trendline_alpha, textField_trendline_alpha);
-                        show(label_originalPoints, choiceBox_originalPoints);
-                        hide(label_trendline_forecast, textField_trendline_forecast);
-                        hide(label_trendline_n, textField_trendline_n);
-                        // default alpha
-                        textField_trendline_alpha.setText("0.0");
-                        break;
-                    case LinearRegression:
-                        show(label_originalPoints, choiceBox_originalPoints);
-                        hide(label_trendline_alpha, textField_trendline_alpha);
-                        hide(label_trendline_forecast, textField_trendline_forecast);
-                        hide(label_trendline_n, textField_trendline_n);
-                        break;
-                    case None:
-                        hide(label_trendline_alpha, textField_trendline_alpha);
-                        hide(label_trendline_forecast, textField_trendline_forecast);
-                        hide(label_trendline_n, textField_trendline_n);
-                        hide(label_originalPoints, choiceBox_originalPoints);
-                        trendline.clear();
-                        choiceBox_originalPoints.getSelectionModel().select(VisibilityOfDataPoints.SHOW);
-                        break;
-                }
-                svgPlotOptions.setTrendLine(trendline);
-
+        this.choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            trendline.clear();
+            trendline.add(0, newValue.toString());
+            switch (newValue) {
+                case MovingAverage:
+                    show(label_trendline_n, textField_trendline_n);
+                    show(label_originalPoints, choiceBox_originalPoints);
+                    hide(label_trendline_alpha, textField_trendline_alpha);
+                    hide(label_trendline_forecast, textField_trendline_forecast);
+                    // default n
+                    textField_trendline_n.setText("1");
+                    break;
+                case BrownLES:
+                    show(label_trendline_alpha, textField_trendline_alpha);
+                    show(label_trendline_forecast, textField_trendline_forecast);
+                    show(label_originalPoints, choiceBox_originalPoints);
+                    hide(label_trendline_n, textField_trendline_n);
+                    // default alpha
+                    textField_trendline_alpha.setText("0.0");
+                    // default forecast
+                    textField_trendline_forecast.setText("1");
+                    break;
+                case ExponentialSmoothing:
+                    show(label_trendline_alpha, textField_trendline_alpha);
+                    show(label_originalPoints, choiceBox_originalPoints);
+                    hide(label_trendline_forecast, textField_trendline_forecast);
+                    hide(label_trendline_n, textField_trendline_n);
+                    // default alpha
+                    textField_trendline_alpha.setText("0.0");
+                    break;
+                case LinearRegression:
+                    show(label_originalPoints, choiceBox_originalPoints);
+                    hide(label_trendline_alpha, textField_trendline_alpha);
+                    hide(label_trendline_forecast, textField_trendline_forecast);
+                    hide(label_trendline_n, textField_trendline_n);
+                    break;
+                case None:
+                    hide(label_trendline_alpha, textField_trendline_alpha);
+                    hide(label_trendline_forecast, textField_trendline_forecast);
+                    hide(label_trendline_n, textField_trendline_n);
+                    hide(label_originalPoints, choiceBox_originalPoints);
+                    trendline.clear();
+                    choiceBox_originalPoints.getSelectionModel().select(VisibilityOfDataPoints.SHOW);
+                    break;
             }
+            guiSvgOptions.setTrendLine(trendline);
         });
-
-
     }
 
     /**

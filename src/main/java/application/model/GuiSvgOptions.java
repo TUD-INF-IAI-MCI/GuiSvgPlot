@@ -3,7 +3,9 @@ package application.model;
 import application.GuiSvgPlott;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.data.Point;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
@@ -12,15 +14,15 @@ import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.plotting.Function;
-import tud.tangram.svgplot.plotting.Gnuplot;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
+import tud.tangram.svgplot.styles.GridStyle;
 
-import java.util.ArrayList;
+import java.io.File;
 
 public class GuiSvgOptions {
 
 
-    private SvgPlotOptions options;
+    public SvgPlotOptions options;
 
     private ObjectProperty<DiagramType> diagramType;
     private ObjectProperty<CsvOrientation> csvOrientation;
@@ -29,15 +31,20 @@ public class GuiSvgOptions {
     private ObjectProperty<BarAccumulationStyle> barAccumulationStyle;
     private ObjectProperty<SortingType> sortingType;
     private ObjectProperty<CsvType> csvType;
+    private ObjectProperty<Range> xRange;
+    private ObjectProperty<Range> yRange;
+    private ObjectProperty<SortOrder> sortOrder;
+    private ObjectProperty<VisibilityOfDataPoints> hideOriginalPoints;
+    private ObjectProperty<LinePointsOption> linePointsOption;
+    private ObjectProperty<GridStyle> gridStyle;
 
     private BooleanProperty pi;
-    private BooleanProperty pointsBorderless;
-    private BooleanProperty hideOriginalPoints;
-    private BooleanProperty sortDescending;
+    private BooleanProperty autoScale;
+    private BooleanProperty showDoubleAxes;
 
     private ObservableList<Function> functions;
     private ObservableList<String> colors;
-    private ObservableList<String> trendLinie;
+    private ObservableList<String> trendLine;
 
     private final StringProperty xLines;
     private final StringProperty yLines;
@@ -46,42 +53,217 @@ public class GuiSvgOptions {
     private final StringProperty css;
     private final StringProperty output;
     private final StringProperty csvPath;
-
+    private final StringProperty xUnit;
+    private final StringProperty yUnit;
 
     public GuiSvgOptions(SvgPlotOptions options) {
 
         this.options = options;
 
-        this.diagramType = new SimpleObjectProperty<>(options.getDiagramType());
-        this.outputDevice = new SimpleObjectProperty<>(options.getOutputDevice());
-        this.csvOrientation = new SimpleObjectProperty<>(options.getCsvOrientation());
-        this.barAccumulationStyle = new SimpleObjectProperty<>(options.getBarAccumulationStyle());
-        this.size = new SimpleObjectProperty<>(options.getSize());
-        this.csvType = new SimpleObjectProperty<>(options.getCsvType());
-        this.sortingType = new SimpleObjectProperty<>(options.getSortingType());
+        this.diagramType = new SimpleObjectProperty<>(this.options.getDiagramType());
+        this.outputDevice = new SimpleObjectProperty<>(this.options.getOutputDevice());
+        this.csvType = new SimpleObjectProperty<>(this.options.getCsvType());
+        this.csvOrientation = new SimpleObjectProperty<>(this.options.getCsvOrientation());
+        this.size = new SimpleObjectProperty<>(this.options.getSize());
+        this.xRange = new SimpleObjectProperty<>(this.options.getxRange());
+        this.yRange = new SimpleObjectProperty<>(this.options.getyRange());
+        this.barAccumulationStyle = new SimpleObjectProperty<>(this.options.getBarAccumulationStyle());
+        this.sortingType = new SimpleObjectProperty<>(this.options.getSortingType());
+        this.sortOrder = new SimpleObjectProperty<>(this.options.isSortDescending() ? SortOrder.DESC : SortOrder.ASC);
+        this.hideOriginalPoints = new SimpleObjectProperty<>(this.options.isHideOriginalPoints() ? VisibilityOfDataPoints.HIDE : VisibilityOfDataPoints.SHOW);
+        this.linePointsOption = new SimpleObjectProperty<>(LinePointsOption.getLinePointsOption(this.options.getShowLinePoints(), options.isPointsBorderless()));
+        this.gridStyle = new SimpleObjectProperty<>(GridStyle.NONE);
+        initSimpleObjectListeners();
 
 
-        this.xLines = new SimpleStringProperty(options.getxLines());
-        this.yLines = new SimpleStringProperty(options.getyLines());
-        this.title = new SimpleStringProperty(options.getTitle());
         this.gnuplot = new SimpleStringProperty(GuiSvgPlott.getInstance().getGnuPlot());
-        this.css = new SimpleStringProperty(options.getCss());
-        this.output = new SimpleStringProperty(options.getOutput() != null ? options.getOutput().getAbsolutePath() : "");
-        this.csvPath = new SimpleStringProperty(options.getCsvPath());
+        this.title = new SimpleStringProperty(this.options.getTitle());
+        this.output = new SimpleStringProperty(this.options.getOutput() != null ? options.getOutput().getAbsolutePath() : "");
+        this.csvPath = new SimpleStringProperty(this.options.getCsvPath());
+        this.xLines = new SimpleStringProperty(this.options.getxLines());
+        this.yLines = new SimpleStringProperty(this.options.getyLines());
+        this.xUnit = new SimpleStringProperty(this.options.getxUnit());
+        this.yUnit = new SimpleStringProperty(this.options.getyUnit());
+        this.css = new SimpleStringProperty(this.options.getCss());
+        initSimpleStringListerners();
 
 
-        this.pointsBorderless = new SimpleBooleanProperty(options.isPointsBorderless());
-        this.pi = new SimpleBooleanProperty(options.isPi());
-        this.hideOriginalPoints = new SimpleBooleanProperty(options.isHideOriginalPoints());
-        this.sortDescending = new SimpleBooleanProperty(options.isSortDescending());
+        this.pi = new SimpleBooleanProperty(this.options.isPi());
+        this.autoScale = new SimpleBooleanProperty(this.options.hasAutoScale());
+        this.showDoubleAxes = new SimpleBooleanProperty(this.convertStringToBoolean(this.options.getShowDoubleAxes()));
+        initSimpleBooleanListeners();
 
 
         this.functions = FXCollections.observableArrayList();
         this.colors = FXCollections.observableArrayList();
-        this.trendLinie = FXCollections.observableArrayList();
+        this.trendLine = FXCollections.observableArrayList();
+        initObservableListListeners();
 
     }
 
+    private boolean convertStringToBoolean(final String booleanString) {
+        return booleanString != null && booleanString.equals("on");
+    }
+
+    private void initSimpleObjectListeners() {
+        this.diagramType.addListener((observable, oldValue, newValue) -> {
+            this.options.setDiagramType(newValue);
+            switch (newValue) {
+                case FunctionPlot:
+                    this.setFunctionPlotDefaultOptions();
+                    break;
+                case LineChart:
+                    this.setLineChartDefaultOptions();
+                    break;
+                case BarChart:
+                    this.setBarChartDefaultOptions();
+                    break;
+                case ScatterPlot:
+                    this.setScatterPlotDefaultOptions();
+                    break;
+            }
+        });
+        this.outputDevice.addListener((observable, oldValue, newValue) -> {
+            this.options.setOutputDevice(newValue);
+        });
+        this.csvType.addListener((observable, oldValue, newValue) -> {
+            this.options.setCsvType(newValue);
+        });
+        this.csvOrientation.addListener((observable, oldValue, newValue) -> {
+            this.options.setCsvOrientation(newValue);
+        });
+        this.size.addListener((observable, oldValue, newValue) -> {
+            this.options.setSize(newValue);
+        });
+        this.xRange.addListener((observable, oldValue, newValue) -> {
+            this.options.setxRange(newValue);
+        });
+        this.yRange.addListener((observable, oldValue, newValue) -> {
+            this.options.setyRange(newValue);
+        });
+        this.barAccumulationStyle.addListener((observable, oldValue, newValue) -> {
+            this.options.setBarAccumulationStyle(newValue);
+        });
+        this.sortingType.addListener((observable, oldValue, newValue) -> {
+            this.options.setSortingType(newValue);
+        });
+        this.sortOrder.addListener((observable, oldValue, newValue) -> {
+            this.options.setSortDescending(newValue.equals(SortOrder.DESC));
+        });
+        this.hideOriginalPoints.addListener((observable, oldValue, newValue) -> {
+            this.options.setHideOriginalPoints(newValue.equals(VisibilityOfDataPoints.HIDE));
+        });
+        this.linePointsOption.addListener((observable, oldValue, newValue) -> {
+            this.options.setPointsBorderless(newValue.isPointsborderless());
+            this.options.setShowLinePoints(newValue.getShowLinePoints());
+        });
+        this.gridStyle.addListener((observable, oldValue, newValue) -> {
+            switch (newValue) {
+                case FULL:
+                    this.options.setShowHorizontalGrid("on");
+                    this.options.setShowVerticalGrid("on");
+                    break;
+                case VERTICAL:
+                    this.options.setShowHorizontalGrid("off");
+                    this.options.setShowVerticalGrid("on");
+                    break;
+                case HORIZONTAL:
+                    this.options.setShowHorizontalGrid("on");
+                    this.options.setShowVerticalGrid("off");
+                    break;
+                case NONE:
+                    this.options.setShowHorizontalGrid("off");
+                    this.options.setShowVerticalGrid("off");
+                    break;
+            }
+        });
+    }
+
+    private void initSimpleStringListerners() {
+        this.title.addListener((observable, oldValue, newValue) -> {
+            this.options.setTitle(newValue);
+        });
+        this.output.addListener((observable, oldValue, newValue) -> {
+            this.options.setOutput(new File(newValue));
+        });
+        this.csvPath.addListener((observable, oldValue, newValue) -> {
+            this.options.setCsvPath(newValue);
+        });
+        this.xLines.addListener((observable, oldValue, newValue) -> {
+            this.options.setxLines(newValue);
+        });
+        this.yLines.addListener((observable, oldValue, newValue) -> {
+            this.options.setyLines(newValue);
+        });
+        this.xUnit.addListener((observable, oldValue, newValue) -> {
+            this.options.setxUnit(newValue);
+        });
+        this.yUnit.addListener((observable, oldValue, newValue) -> {
+            this.options.setyUnit(newValue);
+        });
+        this.css.addListener((observable, oldValue, newValue) -> {
+            this.options.setCss(newValue);
+        });
+    }
+
+    private void initSimpleBooleanListeners() {
+        this.pi.addListener((observable, oldValue, newValue) -> {
+            this.options.setPi(newValue);
+        });
+        this.autoScale.addListener((observable, oldValue, newValue) -> {
+            this.options.setAutoScale(newValue);
+        });
+        this.showDoubleAxes.addListener((observable, oldValue, newValue) -> {
+            this.options.setShowDoubleAxes(newValue ? "on" : "off");
+        });
+    }
+
+    private void initObservableListListeners() {
+        this.functions.addListener(new ListChangeListener<Function>() {
+            @Override
+            public void onChanged(Change<? extends Function> c) {
+                options.setFunctions(functions);
+            }
+        });
+        this.colors.addListener(new ListChangeListener<String>() {
+            @Override
+            public void onChanged(Change<? extends String> c) {
+                options.setCustomColors(colors);
+            }
+        });
+        this.trendLine.addListener(new ListChangeListener<String>() {
+            @Override
+            public void onChanged(Change<? extends String> c) {
+                options.setTrendLine(trendLine);
+            }
+        });
+    }
+
+    private void setFunctionPlotDefaultOptions() {
+        // TODO
+    }
+
+    private void setLineChartDefaultOptions() {
+        if (this.options.getShowDoubleAxes() == null) {
+            this.showDoubleAxes.set(true);
+        }
+        if (this.options.getShowHorizontalGrid() == null && this.options.getShowVerticalGrid() == null) {
+            this.gridStyle.set(GridStyle.FULL);
+        }
+    }
+
+    private void setScatterPlotDefaultOptions() {
+        if (this.options.getShowDoubleAxes() == null) {
+            this.showDoubleAxes.set(true);
+        }
+    }
+
+    private void setBarChartDefaultOptions() {
+        if (this.options.getShowDoubleAxes() == null) {
+            this.showDoubleAxes.set(true);
+        }
+        this.csvType.set(CsvType.X_ALIGNED_CATEGORIES);
+    }
 
     public SvgPlotOptions getOptions() {
         return options;
@@ -99,7 +281,7 @@ public class GuiSvgOptions {
         return diagramType;
     }
 
-    public void setDiagramType(DiagramType diagramType) {
+    public void setDiagramType(final DiagramType diagramType) {
         this.diagramType.set(diagramType);
     }
 
@@ -111,7 +293,7 @@ public class GuiSvgOptions {
         return csvOrientation;
     }
 
-    public void setCsvOrientation(CsvOrientation csvOrientation) {
+    public void setCsvOrientation(final CsvOrientation csvOrientation) {
         this.csvOrientation.set(csvOrientation);
     }
 
@@ -123,7 +305,7 @@ public class GuiSvgOptions {
         return outputDevice;
     }
 
-    public void setOutputDevice(OutputDevice outputDevice) {
+    public void setOutputDevice(final OutputDevice outputDevice) {
         this.outputDevice.set(outputDevice);
     }
 
@@ -135,7 +317,7 @@ public class GuiSvgOptions {
         return size;
     }
 
-    public void setSize(Point size) {
+    public void setSize(final Point size) {
         this.size.set(size);
     }
 
@@ -147,7 +329,7 @@ public class GuiSvgOptions {
         return barAccumulationStyle;
     }
 
-    public void setBarAccumulationStyle(BarAccumulationStyle barAccumulationStyle) {
+    public void setBarAccumulationStyle(final BarAccumulationStyle barAccumulationStyle) {
         this.barAccumulationStyle.set(barAccumulationStyle);
     }
 
@@ -159,7 +341,7 @@ public class GuiSvgOptions {
         return sortingType;
     }
 
-    public void setSortingType(SortingType sortingType) {
+    public void setSortingType(final SortingType sortingType) {
         this.sortingType.set(sortingType);
     }
 
@@ -171,8 +353,80 @@ public class GuiSvgOptions {
         return csvType;
     }
 
-    public void setCsvType(CsvType csvType) {
+    public void setCsvType(final CsvType csvType) {
         this.csvType.set(csvType);
+    }
+
+    public Range getxRange() {
+        return xRange.get();
+    }
+
+    public ObjectProperty<Range> xRangeProperty() {
+        return xRange;
+    }
+
+    public void setxRange(final Range xRange) {
+        this.xRange.set(xRange);
+    }
+
+    public Range getyRange() {
+        return yRange.get();
+    }
+
+    public ObjectProperty<Range> yRangeProperty() {
+        return yRange;
+    }
+
+    public void setyRange(final Range yRange) {
+        this.yRange.set(yRange);
+    }
+
+    public SortOrder getSortOrder() {
+        return sortOrder.get();
+    }
+
+    public ObjectProperty<SortOrder> sortOrderProperty() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(final SortOrder sortOrder) {
+        this.sortOrder.set(sortOrder);
+    }
+
+    public VisibilityOfDataPoints getHideOriginalPoints() {
+        return hideOriginalPoints.get();
+    }
+
+    public ObjectProperty<VisibilityOfDataPoints> hideOriginalPointsProperty() {
+        return hideOriginalPoints;
+    }
+
+    public void setHideOriginalPoints(final VisibilityOfDataPoints hideOriginalPoints) {
+        this.hideOriginalPoints.set(hideOriginalPoints);
+    }
+
+    public LinePointsOption getLinePointsOption() {
+        return linePointsOption.get();
+    }
+
+    public ObjectProperty<LinePointsOption> linePointsOptionProperty() {
+        return linePointsOption;
+    }
+
+    public void setLinePointsOption(final LinePointsOption linePointsOption) {
+        this.linePointsOption.set(linePointsOption);
+    }
+
+    public GridStyle getGridStyle() {
+        return gridStyle.get();
+    }
+
+    public ObjectProperty<GridStyle> gridStyleProperty() {
+        return gridStyle;
+    }
+
+    public void setGridStyle(final GridStyle gridStyle) {
+        this.gridStyle.set(gridStyle);
     }
 
     public boolean isPi() {
@@ -183,51 +437,39 @@ public class GuiSvgOptions {
         return pi;
     }
 
-    public void setPi(boolean pi) {
+    public void setPi(final boolean pi) {
         this.pi.set(pi);
     }
 
-    public boolean isPointsBorderless() {
-        return pointsBorderless.get();
+    public boolean isAutoScale() {
+        return autoScale.get();
     }
 
-    public BooleanProperty pointsBorderlessProperty() {
-        return pointsBorderless;
+    public BooleanProperty autoScaleProperty() {
+        return autoScale;
     }
 
-    public void setPointsBorderless(boolean pointsBorderless) {
-        this.pointsBorderless.set(pointsBorderless);
+    public void setAutoScale(final boolean autoScale) {
+        this.autoScale.set(autoScale);
     }
 
-    public boolean isHideOriginalPoints() {
-        return hideOriginalPoints.get();
+    public boolean isShowDoubleAxes() {
+        return showDoubleAxes.get();
     }
 
-    public BooleanProperty hideOriginalPointsProperty() {
-        return hideOriginalPoints;
+    public BooleanProperty showDoubleAxesProperty() {
+        return showDoubleAxes;
     }
 
-    public void setHideOriginalPoints(boolean hideOriginalPoints) {
-        this.hideOriginalPoints.set(hideOriginalPoints);
-    }
-
-    public boolean isSortDescending() {
-        return sortDescending.get();
-    }
-
-    public BooleanProperty sortDescendingProperty() {
-        return sortDescending;
-    }
-
-    public void setSortDescending(boolean sortDescending) {
-        this.sortDescending.set(sortDescending);
+    public void setShowDoubleAxes(final boolean showDoubleAxes) {
+        this.showDoubleAxes.set(showDoubleAxes);
     }
 
     public ObservableList<Function> getFunctions() {
         return functions;
     }
 
-    public void setFunctions(ObservableList<Function> functions) {
+    public void setFunctions(final ObservableList<Function> functions) {
         this.functions = functions;
     }
 
@@ -235,16 +477,16 @@ public class GuiSvgOptions {
         return colors;
     }
 
-    public void setColors(ObservableList<String> colors) {
+    public void setColors(final ObservableList<String> colors) {
         this.colors = colors;
     }
 
-    public ObservableList<String> getTrendLinie() {
-        return trendLinie;
+    public ObservableList<String> getTrendLine() {
+        return trendLine;
     }
 
-    public void setTrendLinie(ObservableList<String> trendLinie) {
-        this.trendLinie = trendLinie;
+    public void setTrendLine(final ObservableList<String> trendLine) {
+        this.trendLine = trendLine;
     }
 
     public String getxLines() {
@@ -255,7 +497,7 @@ public class GuiSvgOptions {
         return xLines;
     }
 
-    public void setxLines(String xLines) {
+    public void setxLines(final String xLines) {
         this.xLines.set(xLines);
     }
 
@@ -267,7 +509,7 @@ public class GuiSvgOptions {
         return yLines;
     }
 
-    public void setyLines(String yLines) {
+    public void setyLines(final String yLines) {
         this.yLines.set(yLines);
     }
 
@@ -279,7 +521,7 @@ public class GuiSvgOptions {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title.set(title);
     }
 
@@ -291,7 +533,7 @@ public class GuiSvgOptions {
         return gnuplot;
     }
 
-    public void setGnuplot(String gnuplot) {
+    public void setGnuplot(final String gnuplot) {
         this.gnuplot.set(gnuplot);
     }
 
@@ -303,7 +545,7 @@ public class GuiSvgOptions {
         return css;
     }
 
-    public void setCss(String css) {
+    public void setCss(final String css) {
         this.css.set(css);
     }
 
@@ -315,7 +557,7 @@ public class GuiSvgOptions {
         return output;
     }
 
-    public void setOutput(String output) {
+    public void setOutput(final String output) {
         this.output.set(output);
     }
 
@@ -327,7 +569,31 @@ public class GuiSvgOptions {
         return csvPath;
     }
 
-    public void setCsvPath(String csvPath) {
+    public void setCsvPath(final String csvPath) {
         this.csvPath.set(csvPath);
+    }
+
+    public String getxUnit() {
+        return xUnit.get();
+    }
+
+    public StringProperty xUnitProperty() {
+        return xUnit;
+    }
+
+    public void setxUnit(final String xUnit) {
+        this.xUnit.set(xUnit);
+    }
+
+    public String getyUnit() {
+        return yUnit.get();
+    }
+
+    public StringProperty yUnitProperty() {
+        return yUnit;
+    }
+
+    public void setyUnit(final String yUnit) {
+        this.yUnit.set(yUnit);
     }
 }

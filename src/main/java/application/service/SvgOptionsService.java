@@ -19,9 +19,8 @@ import tud.tangram.svgplot.svgcreator.SvgCreator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
@@ -63,7 +62,7 @@ public class SvgOptionsService {
 
     /**
      * Build Svg and load it into {@link WebView}.
-     *
+     * TODO: include legend
      * @param svgPlotOptions the {@link SvgPlotOptions}
      * @param webView_svg    the {@link WebView}
      */
@@ -79,20 +78,17 @@ public class SvgOptionsService {
             SvgCreator creator = svgPlotOptions.getDiagramType().getInstance(svgPlotOptions);
             creator.run();
 
-            /* show created svg */
-            BufferedReader br = new BufferedReader(new FileReader(svg));
-            String line;
-            StringBuilder sb = new StringBuilder();
-            while ((line = br.readLine()) != null) {
-                sb.append(line.trim());
-            }
             WebEngine webEngine = webView_svg.getEngine();
             webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
                 if (newState == Worker.State.SUCCEEDED) {
                     adjustScaleOfWebView(webView_svg);
                 }
             });
-            webEngine.loadContent(sb.toString());
+            URL url = svg.toURI().toURL();
+            webEngine.load(url.toExternalForm());
+//            webEngine.load("https://www.google.com/maps/");
+            webView_svg.setFocusTraversable(true);
+            webView_svg.requestFocus();
 
             // accessibility
             Path descPath = Paths.get(svg.getParentFile().getPath() + "/" + svg.getName().replace(".svg", "_desc.html"));
@@ -157,9 +153,12 @@ public class SvgOptionsService {
     private void adjustScaleOfWebView(WebView webView) {
         webView.setZoom(1.0);
         WebEngine webEngine = webView.getEngine();
-
-        double docHeight = Double.parseDouble(webEngine.executeScript("document.height").toString());
-        double docWidth = Double.parseDouble(webEngine.executeScript("document.width").toString());
+        //http://endmemo.com/sconvert/millimeterpixel.php
+        double oneMMinPixel = 3.779528;
+        String heightScript = "document.getElementsByTagName('svg')[0].getAttribute('height').split('mm')[0]";
+        double docHeight = Double.parseDouble(webEngine.executeScript(heightScript).toString()) * oneMMinPixel;
+        String widthScript = "document.getElementsByTagName('svg')[0].getAttribute('width').split('mm')[0]";
+        double docWidth = Double.parseDouble(webEngine.executeScript(widthScript).toString()) * oneMMinPixel;
 
         if (docHeight > docWidth) {
             double zoom = 1.0;

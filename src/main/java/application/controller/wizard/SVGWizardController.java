@@ -9,8 +9,6 @@ import application.util.SvgOptionsUtil;
 import application.util.TextFieldUtil;
 import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
 import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -80,7 +78,7 @@ public class SVGWizardController implements Initializable {
 
     // generell Options
     @FXML
-    protected TextField textField_Title;
+    protected TextField textField_title;
     @FXML
     protected ChoiceBox<OutputDevice> choiceBox_outputDevice;
     @FXML
@@ -157,7 +155,7 @@ public class SVGWizardController implements Initializable {
     @FXML
     public ChoiceBox<CsvType> choiceBox_csvType;
 
-    private List<String> colors;
+    private ObservableList<String> colors;
 
     public VBox vBox_warnings;
     private PopOver popOver_warnings;
@@ -174,8 +172,7 @@ public class SVGWizardController implements Initializable {
     protected IntegerProperty currentStage;
     protected File userDir;
     protected ArrayList<GridPane> stages;
-    protected GuiSvgOptions svgOptions;
-    protected SvgPlotOptions svgPlotOptions;
+    protected GuiSvgOptions guiSvgOptions;
     protected SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
     protected SvgOptionsUtil svgOptionsUtil = SvgOptionsUtil.getInstance();
     protected TextFieldUtil textFieldUtil = TextFieldUtil.getInstance();
@@ -195,13 +192,13 @@ public class SVGWizardController implements Initializable {
         this.xRange = new SimpleObjectProperty<>();
         this.yRange = new SimpleObjectProperty<>();
         this.userDir = new File(System.getProperty("user.home"));
-        this.svgPlotOptions = new SvgPlotOptions();
-        this.svgOptions = new GuiSvgOptions(svgPlotOptions);
-        this.webView_svg.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
+        this.guiSvgOptions = new GuiSvgOptions(new SvgPlotOptions());
+        this.webView_svg.setAccessibleRole(AccessibleRole.PAGE_ITEM);
         this.webView_svg.setAccessibleHelp(this.bundle.getString("preview"));
 
-        initListener();
-        preProcessContent();
+        this.initListener();
+        this.initOptionListeners();
+        this.preProcessContent();
     }
 
     public void setExtended(boolean isExtended) {
@@ -210,8 +207,8 @@ public class SVGWizardController implements Initializable {
 
     protected void initGeneralFieldListeners() {
         // title
-        this.textField_Title.textProperty().addListener((observable, oldValue, newValue) -> {
-            svgPlotOptions.setTitle(newValue);
+        this.textField_title.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.guiSvgOptions.setTitle(newValue);
         });
 
         // output device
@@ -220,24 +217,24 @@ public class SVGWizardController implements Initializable {
         this.choiceBox_outputDevice.setConverter(this.svgOptionsUtil.getOutputDeviceStringConverter());
         this.choiceBox_outputDevice.getSelectionModel().select(0);
         this.choiceBox_outputDevice.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            svgPlotOptions.setOutputDevice(newValue);
+            this.guiSvgOptions.setOutputDevice(newValue);
             boolean isColorDevice = newValue == OutputDevice.ScreenColor;
-            toggleVisibility(isColorDevice, label_colors, checkComboBox_color);
+            this.toggleVisibility(isColorDevice, this.label_colors, this.checkComboBox_color);
         });
 
         // size
         ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
         ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
         this.choiceBox_size.setItems(sortedPageSizes);
-        this.choiceBox_size.setConverter(svgOptionsUtil.getPageSizeStringConverter());
+        this.choiceBox_size.setConverter(this.svgOptionsUtil.getPageSizeStringConverter());
         this.choiceBox_size.getSelectionModel().select(PageSize.A4);
         this.choiceBox_size.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != PageSize.CUSTOM) {
                 this.size = new Point(newValue.getWidth(), newValue.getHeight());
-                this.svgPlotOptions.setSize(this.size);
+                this.guiSvgOptions.setSize(this.size);
 
             }
-            toggleCustomSize(newValue == PageSize.CUSTOM);
+            this.toggleCustomSize(newValue == PageSize.CUSTOM);
         });
 
         // custom size
@@ -245,42 +242,39 @@ public class SVGWizardController implements Initializable {
         this.textFieldUtil.addMinimumIntegerValidationWithMinimum(this.textField_customSizeWidth, 1);
         this.textField_customSizeWidth.textProperty().addListener((observable, oldValue, newValue) -> {
             this.size.setX(Integer.parseInt(newValue));
-            this.svgPlotOptions.setSize(this.size);
+            this.guiSvgOptions.setSize(this.size);
         });
         this.textField_customSizeHeight.setText(this.size.y());
         this.textFieldUtil.addMinimumIntegerValidationWithMinimum(this.textField_customSizeHeight, 1);
         this.textField_customSizeHeight.textProperty().addListener((observable, oldValue, newValue) -> {
             this.size.setY(Integer.parseInt(newValue));
-            this.svgPlotOptions.setSize(this.size);
+            this.guiSvgOptions.setSize(this.size);
         });
 
     }
 
     protected void initAxisFieldListeners() {
         // x unit
-        this.textField_xunit.setText(this.svgPlotOptions.getxUnit());
+        this.textField_xunit.setText(this.guiSvgOptions.getxUnit());
         this.textField_xunit.textProperty().addListener((observable, oldValue, newValue) -> {
-            svgPlotOptions.setxUnit(newValue);
+            this.guiSvgOptions.setxUnit(newValue);
         });
 
         // y unit
-        this.textField_yunit.setText(this.svgPlotOptions.getyUnit());
+        this.textField_yunit.setText(this.guiSvgOptions.getyUnit());
         this.textField_yunit.textProperty().addListener((observable, oldValue, newValue) -> {
-            svgPlotOptions.setyUnit(newValue);
+            this.guiSvgOptions.setyUnit(newValue);
         });
 
         // autoscale
-        this.radioBtn_autoscale.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                svgPlotOptions.setAutoScale(newValue);
-                toggleAxesRanges(!newValue);
-            }
+        this.radioBtn_autoscale.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            this.guiSvgOptions.setAutoScale(newValue);
+            this.toggleAxesRanges(!newValue);
         });
         this.radioBtn_autoscale.setSelected(true);
 
         // xRange
-        this.xRange.set(this.svgPlotOptions.getxRange());
+        this.xRange.set(this.guiSvgOptions.getxRange());
         if (this.xRange.get() == null) {
             this.xRange.set(new Range(-8, 8));
         }
@@ -290,23 +284,23 @@ public class SVGWizardController implements Initializable {
         this.textFieldUtil.addDoubleValidation(this.textField_xfrom, this.label_xfrom);
         this.textField_xfrom.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals("-")) {
-                xRange.get().setFrom(Double.parseDouble(newValue));
+                this.xRange.get().setFrom(Double.parseDouble(newValue));
             }
         });
         this.textFieldUtil.addDoubleValidation(this.textField_xto, this.label_xto);
         this.textField_xto.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals("-")) {
-                xRange.get().setTo(Double.parseDouble(newValue));
+                this.xRange.get().setTo(Double.parseDouble(newValue));
             }
         });
         this.xRange.addListener((args, oldVal, newVal) -> {
-            if (!this.svgPlotOptions.hasAutoScale()) {
-                svgPlotOptions.setxRange(xRange.get());
+            if (!this.guiSvgOptions.isAutoScale()) {
+                this.guiSvgOptions.setxRange(xRange.get());
             }
         });
 
         // yRange
-        this.yRange.set(this.svgPlotOptions.getyRange());
+        this.yRange.set(this.guiSvgOptions.getyRange());
         if (this.yRange.get() == null) {
             this.yRange.set(new Range(-8, 8));
         }
@@ -316,18 +310,18 @@ public class SVGWizardController implements Initializable {
         this.textFieldUtil.addDoubleValidation(this.textField_yfrom, this.label_yfrom);
         this.textField_yfrom.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals("-")) {
-                yRange.get().setFrom(Double.parseDouble(newValue));
+                this.yRange.get().setFrom(Double.parseDouble(newValue));
             }
         });
         this.textFieldUtil.addDoubleValidation(this.textField_yto, this.label_yto);
         this.textField_yto.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals("-")) {
-                yRange.get().setTo(Double.parseDouble(newValue));
+                this.yRange.get().setTo(Double.parseDouble(newValue));
             }
         });
         this.yRange.addListener((args, oldVal, newVal) -> {
-            if (!this.svgPlotOptions.hasAutoScale()) {
-                svgPlotOptions.setyRange(yRange.get());
+            if (!this.guiSvgOptions.isAutoScale()) {
+                this.guiSvgOptions.setyRange(this.yRange.get());
             }
         });
     }
@@ -335,23 +329,23 @@ public class SVGWizardController implements Initializable {
     protected void initStylingFieldListeners() {
         ObservableList<CssType> cssTypeObservableList = FXCollections.observableArrayList(CssType.values());
         this.choiceBox_cssType.setItems(cssTypeObservableList);
-        this.choiceBox_cssType.setConverter(svgOptionsUtil.getCssTypeStringConverter());
+        this.choiceBox_cssType.setConverter(this.svgOptionsUtil.getCssTypeStringConverter());
         this.choiceBox_cssType.getSelectionModel().select(CssType.NONE);
         this.choiceBox_cssType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            toggleVisibility(newValue == CssType.FILE, label_cssPath, hBox_cssPath);
-            toggleVisibility(newValue == CssType.CUSTOM, label_cssCustom, textArea_cssCustom);
-            if (newValue == CssType.NONE) this.svgPlotOptions.setCss("");
+            this.toggleVisibility(newValue == CssType.FILE, this.label_cssPath, this.hBox_cssPath);
+            this.toggleVisibility(newValue == CssType.CUSTOM, this.label_cssCustom, this.textArea_cssCustom);
+            if (newValue == CssType.NONE) this.guiSvgOptions.setCss("");
         });
 
         // css file
-        this.textField_cssPath.setText(this.svgPlotOptions.getCss());
+        this.textField_cssPath.setText(this.guiSvgOptions.getCss());
         this.textField_cssPath.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.svgPlotOptions.setCss(newValue);
+            this.guiSvgOptions.setCss(newValue);
         });
         this.button_cssPath.setDisable(false);
         this.button_cssPath.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setInitialDirectory(userDir);
+            fileChooser.setInitialDirectory(this.userDir);
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSS files (*.css)", "*.css");
             fileChooser.getExtensionFilters().add(extFilter);
             File file = fileChooser.showOpenDialog(GuiSvgPlott.getInstance().getPrimaryStage());
@@ -362,12 +356,12 @@ public class SVGWizardController implements Initializable {
 
         // custom css
         this.textArea_cssCustom.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.svgPlotOptions.setCss(newValue.replace("\n", ""));
+            this.guiSvgOptions.setCss(newValue.replace("\n", ""));
         });
 
 
         // colors
-        this.colors = new ArrayList<>();
+        this.colors = guiSvgOptions.getColors();
         ObservableList<Color> sortingTypeObservableList = FXCollections.observableArrayList(Color.values());
         this.checkComboBox_color.getItems().addAll(sortingTypeObservableList);
         this.checkComboBox_color.getCheckModel().getCheckedItems().addListener(new ListChangeListener<Color>() {
@@ -388,7 +382,7 @@ public class SVGWizardController implements Initializable {
                         colors.remove(color.getName());
                     }
                 }
-                svgPlotOptions.setCustomColors(colors);
+                guiSvgOptions.setColors(colors);
             }
         });
     }
@@ -397,12 +391,12 @@ public class SVGWizardController implements Initializable {
         // csv path
         this.textField_csvPath.setDisable(false);
         this.textField_csvPath.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.svgPlotOptions.setCsvPath(newValue);
+            this.guiSvgOptions.setCsvPath(newValue);
         });
         this.button_csvPath.setDisable(false);
         this.button_csvPath.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setInitialDirectory(userDir);
+            fileChooser.setInitialDirectory(this.userDir);
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
             fileChooser.getExtensionFilters().add(extFilter);
             File file = fileChooser.showOpenDialog(GuiSvgPlott.getInstance().getPrimaryStage());
@@ -416,11 +410,8 @@ public class SVGWizardController implements Initializable {
         this.choiceBox_csvOrientation.setItems(csvOrientationObservableList);
         this.choiceBox_csvOrientation.setConverter(this.svgOptionsUtil.getCsvOrientationStringConverter());
         this.choiceBox_csvOrientation.getSelectionModel().select(CsvOrientation.HORIZONTAL);
-        this.choiceBox_csvOrientation.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CsvOrientation>() {
-            @Override
-            public void changed(ObservableValue<? extends CsvOrientation> observable, CsvOrientation oldValue, CsvOrientation newValue) {
-                svgPlotOptions.setCsvOrientation(newValue);
-            }
+        this.choiceBox_csvOrientation.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.guiSvgOptions.setCsvOrientation(newValue);
         });
 
         // csv type
@@ -428,11 +419,8 @@ public class SVGWizardController implements Initializable {
         this.choiceBox_csvType.setItems(csvTypeObservableList);
         this.choiceBox_csvType.setConverter(this.svgOptionsUtil.getCsvTypeStringConverter());
         this.choiceBox_csvType.getSelectionModel().select(CsvType.DOTS);
-        this.choiceBox_csvType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CsvType>() {
-            @Override
-            public void changed(ObservableValue<? extends CsvType> observable, CsvType oldValue, CsvType newValue) {
-                svgPlotOptions.setCsvType(newValue);
-            }
+        this.choiceBox_csvType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.guiSvgOptions.setCsvType(newValue);
         });
     }
 
@@ -443,51 +431,34 @@ public class SVGWizardController implements Initializable {
         this.choicebox_gridStyle.setConverter(this.svgOptionsUtil.getGridStyleStringConverter());
         this.choicebox_gridStyle.getSelectionModel().select(GridStyle.NONE);
         this.choicebox_gridStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            switch (newValue) {
-                case FULL:
-                    svgPlotOptions.setShowHorizontalGrid("on");
-                    svgPlotOptions.setShowVerticalGrid("on");
-                    break;
-                case VERTICAL:
-                    svgPlotOptions.setShowHorizontalGrid("off");
-                    svgPlotOptions.setShowVerticalGrid("on");
-                    break;
-                case HORIZONTAL:
-                    svgPlotOptions.setShowHorizontalGrid("on");
-                    svgPlotOptions.setShowVerticalGrid("off");
-                    break;
-                case NONE:
-                    svgPlotOptions.setShowHorizontalGrid("off");
-                    svgPlotOptions.setShowVerticalGrid("off");
-                    break;
-            }
+            this.guiSvgOptions.setGridStyle(newValue);
         });
 
 
         // xlines
-        this.textField_xlines.setText(this.svgPlotOptions.getxLines());
+        this.textField_xlines.setText(this.guiSvgOptions.getxLines());
         this.textField_xlines.textProperty().addListener((observable, oldValue, newValue) -> {
-            svgPlotOptions.setxLines(newValue);
+            this.guiSvgOptions.setxLines(newValue);
         });
 
         // ylines
-        this.textField_ylines.setText(this.svgPlotOptions.getyLines());
+        this.textField_ylines.setText(this.guiSvgOptions.getyLines());
         this.textField_ylines.textProperty().addListener((observable, oldValue, newValue) -> {
-            svgPlotOptions.setyLines(newValue);
+            this.guiSvgOptions.setyLines(newValue);
         });
 
         // double axes
-        String showDoubleAxes = this.svgPlotOptions.getShowDoubleAxes();
+        boolean showDoubleAxes = this.guiSvgOptions.isShowDoubleAxes();
         ObservableList<AxisStyle> axisStyleObservableList = FXCollections.observableArrayList(AxisStyle.values());
         axisStyleObservableList.remove(AxisStyle.GRAPH);
         this.choicebox_dblaxes.setItems(axisStyleObservableList);
         this.choicebox_dblaxes.setConverter(this.svgOptionsUtil.getAxisStyleStringConverter());
-        this.choicebox_dblaxes.getSelectionModel().select((showDoubleAxes != null && showDoubleAxes.equals("on")) ? AxisStyle.BOX : AxisStyle.EDGE);
+        this.choicebox_dblaxes.getSelectionModel().select((showDoubleAxes) ? AxisStyle.BOX : AxisStyle.EDGE);
         this.choicebox_dblaxes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == AxisStyle.EDGE) {
-                this.svgPlotOptions.setShowDoubleAxes("off");
+                this.guiSvgOptions.setShowDoubleAxes(false);
             } else {
-                this.svgPlotOptions.setShowDoubleAxes("on");
+                this.guiSvgOptions.setShowDoubleAxes(true);
             }
         });
     }
@@ -505,7 +476,7 @@ public class SVGWizardController implements Initializable {
 
             final int stageNumber = stage;
             stageBtn.setOnAction(event -> {
-                currentStage.set(stageNumber);
+                this.currentStage.set(stageNumber);
             });
             hBox_pagination.getChildren().add(stageBtn);
             hBox_pagination.setAccessibleRole(AccessibleRole.MENU);
@@ -535,21 +506,21 @@ public class SVGWizardController implements Initializable {
         hBox_pagination.getChildren().add(this.button_Infos);
         this.messageBtns.add(this.button_Infos);
 
-        popOver_warnings = new PopOver();
-        popOver_infos = new PopOver();
+        this.popOver_warnings = new PopOver();
+        this.popOver_infos = new PopOver();
 
-        vBox_infos = new VBox();
-        vBox_infos.getStyleClass().add("notification");
-        vBox_infos.getStyleClass().add("info");
-        vBox_infos.setFocusTraversable(true);
+        this.vBox_infos = new VBox();
+        this.vBox_infos.getStyleClass().add("notification");
+        this.vBox_infos.getStyleClass().add("info");
+        this.vBox_infos.setFocusTraversable(true);
 
-        vBox_warnings = new VBox();
-        vBox_warnings.getStyleClass().add("notification");
-        vBox_warnings.getStyleClass().add("warn");
-        vBox_warnings.setFocusTraversable(true);
+        this.vBox_warnings = new VBox();
+        this.vBox_warnings.getStyleClass().add("notification");
+        this.vBox_warnings.getStyleClass().add("warn");
+        this.vBox_warnings.setFocusTraversable(true);
 
-        button_Infos.setOnAction(event -> {
-            ScrollPane infoScrollPane = new ScrollPane(vBox_infos);
+        this.button_Infos.setOnAction(event -> {
+            ScrollPane infoScrollPane = new ScrollPane(this.vBox_infos);
             infoScrollPane.getStyleClass().add("notification");
             infoScrollPane.getStyleClass().add("notification-scrollPane");
             infoScrollPane.getStyleClass().add("info");
@@ -557,17 +528,17 @@ public class SVGWizardController implements Initializable {
             infoScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
             infoScrollPane.setPadding(new Insets(0, 10, 0, 0));
 
-            popOver_infos.setTitle("Informationen");
-            popOver_warnings.getStyleClass().add("notification");
-            popOver_warnings.getStyleClass().add("info");
-            popOver_infos.setHeaderAlwaysVisible(true);
-            popOver_infos.setContentNode(infoScrollPane);
-            popOver_infos.show(button_Infos);
-            vBox_infos.getChildren().get(0).requestFocus();
-            fixBlurryText(infoScrollPane);
+            this.popOver_infos.setTitle("Informationen");
+            this.popOver_warnings.getStyleClass().add("notification");
+            this.popOver_warnings.getStyleClass().add("info");
+            this.popOver_infos.setHeaderAlwaysVisible(true);
+            this.popOver_infos.setContentNode(infoScrollPane);
+            this.popOver_infos.show(this.button_Infos);
+            this.vBox_infos.getChildren().get(0).requestFocus();
+            this.fixBlurryText(infoScrollPane);
         });
         button_Warnings.setOnAction(event -> {
-            ScrollPane warningScrollPane = new ScrollPane(vBox_warnings);
+            ScrollPane warningScrollPane = new ScrollPane(this.vBox_warnings);
             warningScrollPane.getStyleClass().add("notification");
             warningScrollPane.getStyleClass().add("notification-scrollPane");
             warningScrollPane.getStyleClass().add("warn");
@@ -575,14 +546,14 @@ public class SVGWizardController implements Initializable {
             warningScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
             warningScrollPane.setPadding(new Insets(0, 10, 0, 0));
 
-            popOver_warnings.setTitle("Warnungen");
-            popOver_warnings.getStyleClass().add("notification");
-            popOver_warnings.getStyleClass().add("warn");
-            popOver_warnings.setHeaderAlwaysVisible(true);
-            popOver_warnings.setContentNode(warningScrollPane);
-            popOver_warnings.show(button_Warnings);
-            vBox_warnings.getChildren().get(0).requestFocus();
-            fixBlurryText(warningScrollPane);
+            this.popOver_warnings.setTitle("Warnungen");
+            this.popOver_warnings.getStyleClass().add("notification");
+            this.popOver_warnings.getStyleClass().add("warn");
+            this.popOver_warnings.setHeaderAlwaysVisible(true);
+            this.popOver_warnings.setContentNode(warningScrollPane);
+            this.popOver_warnings.show(this.button_Warnings);
+            this.vBox_warnings.getChildren().get(0).requestFocus();
+            this.fixBlurryText(warningScrollPane);
         });
 
     }
@@ -591,12 +562,12 @@ public class SVGWizardController implements Initializable {
      * content-preprocessing. Will "hide" the content-tabPane and shows the first stage
      */
     protected void preProcessContent() {
-        stages = new ArrayList<>();
-        tabPane_ContentHolder.getTabs().forEach(tab -> stages.add((GridPane) tab.getContent()));
-        currentStage.set(0);
-        borderPane_WizardContent.setCenter(stages.get(0));
-        stages.get(0).getChildren().get(0).requestFocus();
-        button_Back.setDisable(true);
+        this.stages = new ArrayList<>();
+        this.tabPane_ContentHolder.getTabs().forEach(tab -> this.stages.add((GridPane) tab.getContent()));
+        this.currentStage.set(0);
+        this.borderPane_WizardContent.setCenter(this.stages.get(0));
+        this.stages.get(0).getChildren().get(0).requestFocus();
+        this.button_Back.setDisable(true);
     }
 
     /**
@@ -604,67 +575,67 @@ public class SVGWizardController implements Initializable {
      */
     protected void initListener() {
         // indicator for current stage. changes will automatically render the chosen stage
-        currentStage.addListener((args, oldVal, newVal) -> {
+        this.currentStage.addListener((args, oldVal, newVal) -> {
 
-            if (newVal.intValue() < 1) button_Back.setDisable(true);
-            else button_Back.setDisable(false);
+            if (newVal.intValue() < 1) this.button_Back.setDisable(true);
+            else this.button_Back.setDisable(false);
 
             if (newVal.intValue() == stages.size() - 1) {
-                button_Next.setDisable(true);
+                this.button_Next.setDisable(true);
             } else {
-                button_Next.setDisable(false);
+                this.button_Next.setDisable(false);
             }
             if (newVal.intValue() > stages.size() - 1) {
-                currentStage.set(oldVal.intValue());
+                this.currentStage.set(oldVal.intValue());
             }
 
             if (oldVal.intValue() < this.stageBtns.size()) {
                 this.stageBtns.get(oldVal.intValue()).getStyleClass().remove("active");
-                this.stageBtns.get(currentStage.get()).getStyleClass().add("active");
+                this.stageBtns.get(this.currentStage.get()).getStyleClass().add("active");
             }
 
-            borderPane_WizardContent.setCenter(stages.get(currentStage.get()));
-            borderPane_WizardContent.getCenter().requestFocus();
-            this.svgOptionsService.buildPreviewSVG(this.svgPlotOptions, this.webView_svg);
+            this.borderPane_WizardContent.setCenter(this.stages.get(this.currentStage.get()));
+            this.borderPane_WizardContent.getCenter().requestFocus();
+            this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions.getOptions(), this.webView_svg);
         });
 
         // increment the currentStage counter. Will trigger its changeListener
-        button_Next.setOnAction(event -> {
-            currentStage.set(currentStage.get() + 1);
+        this.button_Next.setOnAction(event -> {
+            this.currentStage.set(this.currentStage.get() + 1);
         });
 
         // decrement the currentStage counter. Will trigger its changeListener
-        button_Back.setOnAction(event -> currentStage.set(currentStage.get() - 1));
+        this.button_Back.setOnAction(event -> this.currentStage.set(this.currentStage.get() - 1));
 
         // closes the wizard
-        button_Cancel.setOnAction(event -> {
+        this.button_Cancel.setOnAction(event -> {
             GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
             GuiSvgPlott.getInstance().closeWizard();
-            popOver_warnings.hide();
-            popOver_infos.hide();
+            this.popOver_warnings.hide();
+            this.popOver_infos.hide();
         });
 
         // create chart
-        button_Create.setOnAction(event -> {
+        this.button_Create.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setInitialDirectory(userDir);
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Scalable Vector Graphics (SVG)", "*.svg");
             fileChooser.getExtensionFilters().add(extFilter);
-            String title = this.svgPlotOptions.getTitle().isEmpty() ? "untitled" : this.svgPlotOptions.getTitle();
+            String title = this.guiSvgOptions.getTitle().isEmpty() ? "untitled" : this.guiSvgOptions.getTitle();
             fileChooser.setInitialFileName(title.toLowerCase() + ".svg");
             File file = fileChooser.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
             if (file != null) {
-                this.svgPlotOptions.setOutput(file);
-                this.svgOptionsService.buildSVG(svgPlotOptions);
-                popOver_warnings.hide();
-                popOver_infos.hide();
+                this.guiSvgOptions.setOutput(file.getAbsolutePath());
+                this.svgOptionsService.buildSVG(guiSvgOptions.getOptions());
+                this.popOver_infos.hide();
+                this.popOver_warnings.hide();
                 GuiSvgPlott.getInstance().closeWizard();
             }
         });
 
         // rerender preview
-        button_rerenderPreview.setOnAction(event ->
-                this.svgOptionsService.buildPreviewSVG(this.svgPlotOptions, this.webView_svg)
+        this.button_rerenderPreview.setOnAction(event ->
+                this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions.getOptions(), this.webView_svg)
         );
 
     }
@@ -729,9 +700,9 @@ public class SVGWizardController implements Initializable {
      */
     protected void toggleVisibility(boolean visible, Label label, Node field) {
         if (visible) {
-            show(label, field);
+            this.show(label, field);
         } else {
-            hide(label, field);
+            this.hide(label, field);
         }
     }
 
@@ -741,8 +712,8 @@ public class SVGWizardController implements Initializable {
      * @param show if field and label should be visible.
      */
     protected void toggleCustomSize(final boolean show) {
-        toggleVisibility(show, label_customSizeWidth, textField_customSizeWidth);
-        toggleVisibility(show, label_customSizeHeight, textField_customSizeHeight);
+        this.toggleVisibility(show, this.label_customSizeWidth, this.textField_customSizeWidth);
+        this.toggleVisibility(show, this.label_customSizeHeight, this.textField_customSizeHeight);
 
         if (show) {
             this.textField_customSizeWidth.setText(this.size.x());
@@ -767,10 +738,22 @@ public class SVGWizardController implements Initializable {
         }
 
 
-        toggleVisibility(enabled, label_xfrom, textField_xfrom);
-        toggleVisibility(enabled, label_xto, textField_xto);
-        toggleVisibility(enabled, label_yfrom, textField_yfrom);
-        toggleVisibility(enabled, label_yto, textField_yto);
+        this.toggleVisibility(enabled, this.label_xfrom, this.textField_xfrom);
+        this.toggleVisibility(enabled, this.label_xto, this.textField_xto);
+        this.toggleVisibility(enabled, this.label_yfrom, this.textField_yfrom);
+        this.toggleVisibility(enabled, this.label_yto, this.textField_yto);
     }
 
+
+    private void initOptionListeners(){
+        this.guiSvgOptions.gridStyleProperty().addListener((observable, oldValue, newValue) -> {
+            this.choicebox_gridStyle.getSelectionModel().select(newValue);
+        });
+        this.guiSvgOptions.showDoubleAxesProperty().addListener((observable, oldValue, newValue) -> {
+            this.choicebox_dblaxes.getSelectionModel().select(newValue ? AxisStyle.BOX : AxisStyle.EDGE);
+        });
+        this.guiSvgOptions.csvTypeProperty().addListener((observable, oldValue, newValue) -> {
+            this.choiceBox_csvType.getSelectionModel().select(newValue);
+        });
+    }
 }
