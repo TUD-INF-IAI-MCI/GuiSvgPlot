@@ -56,8 +56,8 @@
         <center>
             <ButtonBar buttonMinWidth="350.0" maxWidth="-Infinity" prefHeight="543.0" prefWidth="730.0" BorderPane.alignment="CENTER">
                 <buttons>
-                    <Button fx:id="button_StartFunction" accessibleText="Funktion erstellen" mnemonicParsing="false" prefHeight="103.0" text="%function_create" ButtonBar.buttonData="LEFT" />
-                    <Button fx:id="button_StartDiagram" accessibleText="Diagramm erstellen" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="103.0" text="%diagram_create" ButtonBar.buttonData="RIGHT" />
+                    <Button fx:id="button_StartFunction" accessibleText="Funktion erstellen" mnemonicParsing="false" prefHeight="103.0" text="%button_function_create" ButtonBar.buttonData="LEFT" />
+                    <Button fx:id="button_StartDiagram" accessibleText="Diagramm erstellen" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="103.0" text="%button_diagram_create" ButtonBar.buttonData="RIGHT" />
                 </buttons>
                 <BorderPane.margin>
                     <Insets />
