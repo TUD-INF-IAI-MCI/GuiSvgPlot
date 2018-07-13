@@ -22,9 +22,9 @@
         <bottom>
             <ButtonBar maxWidth="1.7976931348623157E308" prefHeight="40.0" BorderPane.alignment="CENTER">
                 <buttons>
-                    <Button fx:id="button_Back" accessibleText="Vorheriger Schritt" mnemonicParsing="false" text="%back" ButtonBar.buttonData="RIGHT" />
-                    <Button fx:id="button_Next" accessibleText="Nächster Scritt" mnemonicParsing="false" text="%next" ButtonBar.buttonData="RIGHT" />
-                    <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT" cancelButton="true" mnemonicParsing="false" text="%cancel" ButtonBar.buttonData="LEFT" />
+                    <Button fx:id="button_Back" accessibleText="Vorheriger Schritt" mnemonicParsing="false" text="%button_back" ButtonBar.buttonData="RIGHT" />
+                    <Button fx:id="button_Next" accessibleText="Nächster Scritt" mnemonicParsing="false" text="%button_next" ButtonBar.buttonData="RIGHT" />
+                    <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT" cancelButton="true" mnemonicParsing="false" text="%button_cancel" ButtonBar.buttonData="LEFT" />
                 </buttons>
                 <padding>
                     <Insets left="10.0" right="10.0" />
@@ -48,7 +48,7 @@
                                 <RowConstraints vgrow="SOMETIMES" />
                             </rowConstraints>
                             <Label text="%title" />
-                            <Label text="%output_device" GridPane.rowIndex="1" />
+                            <Label text="%label_output_device" GridPane.rowIndex="1" />
                             <Label text="%path_to_output" GridPane.rowIndex="2" />
                             <TextField fx:id="textField_Title" GridPane.columnIndex="1" />
                             <ComboBox fx:id="comboBox_OutputDevice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
@@ -83,14 +83,14 @@
                             <Label text="Pi" GridPane.rowIndex="1" />
                             <CheckBox fx:id="checkBox_Pi" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
 
-                            <Label text="%diagram_type" GridPane.rowIndex="2" />
+                            <Label text="%label_diagram_type" GridPane.rowIndex="2" />
                             <ComboBox fx:id="comboBox_DiagramType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
 
 
                             <Label text="%original_points" GridPane.rowIndex="3" />
                             <CheckBox fx:id="checkBox_OriginalPoints" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
 
-                            <Label text="%sorting" GridPane.rowIndex="5" />
+                            <Label text="%label_sorting" GridPane.rowIndex="5" />
                             <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                 <Button fx:id="button_Sort" mnemonicParsing="false" text="^" />
                                 <ComboBox fx:id="comboBox_Sort" prefWidth="150.0" />
@@ -98,12 +98,12 @@
 
 
                             <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.rowIndex="6">
-                                <Label text="%x_axis_unit" />
+                                <Label text="%label_x_axis_title" />
                                 <TextField fx:id="textField_UnitX" />
                             </HBox>
 
                             <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                <Label text="%y_axis_unit" />
+                                <Label text="%label_y_axis_title" />
                                 <TextField fx:id="textField_UnitY" />
                             </HBox>
                         </GridPane>
@@ -122,17 +122,17 @@
                                 <RowConstraints vgrow="SOMETIMES" />
                                 <RowConstraints vgrow="SOMETIMES" />
                             </rowConstraints>
-                            <Label text="%csv_type" />
+                            <Label text="%label_csv_type" />
                             <ComboBox fx:id="comboBox_CsvType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
 
 
-                            <Label text="%csv_orientation" GridPane.rowIndex="1" />
+                            <Label text="%label_csv_orientation" GridPane.rowIndex="1" />
                             <HBox alignment="CENTER" spacing="70.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                 <RadioButton fx:id="radio_Horizontal" mnemonicParsing="false" text="%horizontal" />
                                 <RadioButton fx:id="radio_Vertical" mnemonicParsing="false" text="%vertical" />
                             </HBox>
 
-                            <Label text="%csv_path" GridPane.rowIndex="2" />
+                            <Label text="%label_csv_path" GridPane.rowIndex="2" />
                             <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                 <TextField fx:id="textField_CsvPath" HBox.hgrow="ALWAYS" />
                                 <Button fx:id="button_CsvPath" mnemonicParsing="false" text="..." />
@@ -156,7 +156,7 @@
                                 <RowConstraints vgrow="SOMETIMES" />
                             </rowConstraints>
                             <Label text="%title" />
-                            <Label text="%output_device" GridPane.rowIndex="1" />
+                            <Label text="%label_output_device" GridPane.rowIndex="1" />
                             <Label text="%path_to_output" GridPane.rowIndex="2" />
                             <TextField fx:id="textField_Title1" GridPane.columnIndex="1" />
                             <ComboBox fx:id="comboBox_OutputDevice1" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />

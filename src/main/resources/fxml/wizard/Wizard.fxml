@@ -16,12 +16,12 @@
         <bottom>
             <ButtonBar maxWidth="1.7976931348623157E308" prefHeight="40.0" BorderPane.alignment="CENTER">
                 <buttons>
-                    <Button fx:id="button_Back" accessibleText="Vorheriger Schritt" mnemonicParsing="false" text="%back"
+                    <Button fx:id="button_Back" accessibleText="Vorheriger Schritt" mnemonicParsing="false" text="%button_back"
                             ButtonBar.buttonData="RIGHT"/>
-                    <Button fx:id="button_Next" accessibleText="Nächster Scritt" mnemonicParsing="false" text="%next"
+                    <Button fx:id="button_Next" accessibleText="Nächster Scritt" mnemonicParsing="false" text="%button_next"
                             ButtonBar.buttonData="RIGHT"/>
                     <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT" cancelButton="true"
-                            mnemonicParsing="false" text="%cancel" ButtonBar.buttonData="LEFT"/>
+                            mnemonicParsing="false" text="%button_cancel" ButtonBar.buttonData="LEFT"/>
                 </buttons>
                 <padding>
                     <Insets left="10.0" right="10.0"/>

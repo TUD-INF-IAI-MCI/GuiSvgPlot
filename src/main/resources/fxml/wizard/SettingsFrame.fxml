@@ -23,7 +23,7 @@
                <children>
                   <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <buttons>
-                      <Button fx:id="button_Cancel" mnemonicParsing="false" text="%back" />
+                      <Button fx:id="button_Cancel" mnemonicParsing="false" text="%button_back" />
                     </buttons>
                   </ButtonBar>
                </children>
@@ -52,78 +52,80 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="%diagram_type" GridPane.rowIndex="1">
+                  <Label text="%label_diagram_type" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label layoutX="10.0" layoutY="15.0" text="%diagram_title" GridPane.rowIndex="2">
+                  <Label layoutX="10.0" layoutY="15.0" text="%label_diagram_title" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label layoutX="10.0" layoutY="40.0" text="%output_device" GridPane.rowIndex="3">
+                  <Label layoutX="10.0" layoutY="40.0" text="%label_output_device" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label layoutX="10.0" layoutY="65.0" text="%path_to_output" GridPane.rowIndex="4">
+                  <Label layoutX="10.0" layoutY="65.0" text="%label_size_of_diagram" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label layoutX="10.0" layoutY="90.0" text="%csv_file" GridPane.rowIndex="5">
+                  <Label layoutX="10.0" layoutY="90.0" text="%label_csv_file" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="%csv_orientation" GridPane.rowIndex="6">
+                  <Label text="%label_csv_orientation" GridPane.rowIndex="6">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="%csv_type" GridPane.rowIndex="7">
+                  <Label text="%label_csv_type" GridPane.rowIndex="7">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="%sorting" GridPane.rowIndex="8">
+                  <Label text="%label_sorting" GridPane.rowIndex="8">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="%sort_descending" GridPane.rowIndex="9">
+                  <Label text="%label_sort_order" GridPane.rowIndex="9">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="%trendline" GridPane.rowIndex="10">
+                  <Label text="%label_trendline" GridPane.rowIndex="10">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="%x_axis_unit" GridPane.rowIndex="11">
+                  <Label text="%label_x_axis_title" GridPane.rowIndex="11">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="%y_axis_unit" GridPane.rowIndex="12">
+                  <Label text="%label_y_axis_title" GridPane.rowIndex="12">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="%scale_data" GridPane.rowIndex="13">
+                  <Label text="%label_scale_data" GridPane.rowIndex="13">
                      <GridPane.margin>
                         <Insets left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <ChoiceBox prefHeight="26.0" prefWidth="388.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ChoiceBox prefHeight="26.0" prefWidth="388.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin></ChoiceBox>
                   <TextField fx:id="textField_Title" accessibleText="Diagramm Titel" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%prompt_title" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <ChoiceBox layoutX="310.0" layoutY="10.0" prefHeight="26.0" prefWidth="388.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <children>
-                        <TextField fx:id="textField_Title1" accessibleText="Diagramm Titel" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="26.0" prefWidth="315.0" promptText="%prompt_path_to_file" />
-                        <Button fx:id="button_CsvPath" accessibleText="CSV Datei auswählen" alignment="TOP_RIGHT" mnemonicParsing="false" prefHeight="26.0" prefWidth="0.0" text="..." />
+                        <ChoiceBox prefWidth="388.0" />
                      </children>
                   </HBox>
                   <HBox layoutX="310.0" layoutY="87.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
@@ -135,14 +137,15 @@
                   <ChoiceBox prefHeight="26.0" prefWidth="297.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   <ChoiceBox prefHeight="26.0" prefWidth="356.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                   <ChoiceBox prefHeight="26.0" prefWidth="444.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                  <RadioButton mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="9">
-                     <padding>
-                        <Insets left="5.0" />
-                     </padding>
-                  </RadioButton>
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="12" />
-                  <RadioButton mnemonicParsing="false" text="%scale_to_data_area" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                     <children>
+                        <RadioButton mnemonicParsing="false" text="%radio_ascending" />
+                        <RadioButton contentDisplay="CENTER" mnemonicParsing="false" text="%radio_descending" />
+                     </children>
+                  </HBox>
+                  <TextField promptText="%prompt_x_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                  <TextField promptText="%prompt_y_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                  <RadioButton mnemonicParsing="false" text="%radio_scale_to_data_area" GridPane.columnIndex="1" GridPane.rowIndex="13">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -165,8 +168,8 @@
                      <children>
                         <ComboBox layoutX="30.0" layoutY="13.0" maxHeight="-Infinity" prefWidth="100.0" promptText="%type" />
                         <ComboBox layoutY="100.0" prefWidth="150.0" promptText="%configuration" />
-                        <Button mnemonicParsing="false" text="%set_delete" />
-                        <Button mnemonicParsing="false" text="%set_new" />
+                        <Button mnemonicParsing="false" text="%button_delete" />
+                        <Button mnemonicParsing="false" text="%button_new" />
                      </children>
                      <padding>
                         <Insets left="20.0" right="20.0" />
