@@ -1,4 +1,4 @@
-package application.model;
+package application.model.Options;
 
 public enum CssType {
     NONE,

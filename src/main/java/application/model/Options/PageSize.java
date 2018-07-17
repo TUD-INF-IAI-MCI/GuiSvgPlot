@@ -1,4 +1,4 @@
-package application.model;
+package application.model.Options;
 
 public enum PageSize {
     CUSTOM("custom", null, 210, 297),

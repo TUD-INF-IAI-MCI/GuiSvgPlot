@@ -1,10 +1,10 @@
 package application.controller.wizard;
 
 import application.GuiSvgPlott;
-import application.model.CssType;
-import application.model.GuiAxisStyle;
+import application.model.Options.CssType;
+import application.model.Options.GuiAxisStyle;
 import application.model.GuiSvgOptions;
-import application.model.PageSize;
+import application.model.Options.PageSize;
 import application.service.SvgOptionsService;
 import application.util.SvgOptionsUtil;
 import application.util.TextFieldUtil;

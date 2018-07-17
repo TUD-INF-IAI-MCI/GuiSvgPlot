@@ -1,19 +1,15 @@
 package application.service;
 
 import application.GuiSvgPlott;
-import application.model.PageSize;
 import javafx.beans.value.ChangeListener;
-import javafx.collections.FXCollections;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Window;
-import javafx.util.StringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.svgcreator.SvgCreator;
 

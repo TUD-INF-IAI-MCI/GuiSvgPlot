@@ -1,6 +1,6 @@
 package application.util;
 
-import application.model.*;
+import application.model.Options.*;
 import javafx.collections.FXCollections;
 import javafx.util.StringConverter;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
@@ -8,7 +8,6 @@ import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
-import tud.tangram.svgplot.styles.AxisStyle;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.GridStyle;
 

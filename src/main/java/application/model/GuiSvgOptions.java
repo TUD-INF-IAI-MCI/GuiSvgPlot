@@ -1,6 +1,10 @@
 package application.model;
 
 import application.GuiSvgPlott;
+import application.model.Options.GuiAxisStyle;
+import application.model.Options.LinePointsOption;
+import application.model.Options.SortOrder;
+import application.model.Options.VisibilityOfDataPoints;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;

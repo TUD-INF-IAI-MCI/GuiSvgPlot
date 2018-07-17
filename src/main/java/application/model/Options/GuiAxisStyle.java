@@ -1,4 +1,4 @@
-package application.model;
+package application.model.Options;
 
 import tud.tangram.svgplot.styles.AxisStyle;
 

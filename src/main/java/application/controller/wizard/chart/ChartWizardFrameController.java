@@ -1,10 +1,10 @@
 package application.controller.wizard.chart;
 
 import application.controller.wizard.SVGWizardController;
-import application.model.LinePointsOption;
-import application.model.SortOrder;
-import application.model.TrendlineAlgorithm;
-import application.model.VisibilityOfDataPoints;
+import application.model.Options.LinePointsOption;
+import application.model.Options.SortOrder;
+import application.model.Options.TrendlineAlgorithm;
+import application.model.Options.VisibilityOfDataPoints;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
