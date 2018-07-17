@@ -59,7 +59,7 @@ public class SvgOptionsUtil {
             @Override
             public String toString(PageSize pageSize) {
                 if(pageSize == PageSize.CUSTOM) {
-                    return bundle.getString(pageSize.getName().toLowerCase() + "_scale");
+                    return bundle.getString("radio_custom_scale");
                 }
                 return pageSize.getName() + " " + bundle.getString(pageSize.getPageOrientationName().toLowerCase());
             }
