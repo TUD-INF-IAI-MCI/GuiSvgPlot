@@ -1,36 +1,21 @@
 package application.controller.wizard.functions;
 
 import application.GuiSvgPlott;
-import application.Wizard.SVGWizardController;
+import application.controller.wizard.SVGWizardController;
 import application.model.GuiSvgOptions;
-import application.model.PageSize;
-import application.model.TrendlineAlgorithm;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import tud.tangram.svgplot.data.Point;
-import tud.tangram.svgplot.data.parse.CsvOrientation;
-import tud.tangram.svgplot.data.parse.CsvType;
-import tud.tangram.svgplot.data.sorting.SortingType;
-import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
-import tud.tangram.svgplot.styles.BarAccumulationStyle;
-import tud.tangram.svgplot.styles.Color;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -39,123 +24,88 @@ import java.util.stream.Stream;
 public class FunctionWizardFrameController extends SVGWizardController {
 
 
-    public BorderPane borderPane_Wizard;
-    public Label label_Headline;
+    // WIZARD
+    @FXML
+    private Button button_Back;
+    @FXML
+    private BorderPane borderPane_Wizard;
+    @FXML
+    private Button button_Next;
+    @FXML
+    private Button button_Cancel;
+    @FXML
+    private Label label_Headline;
+
+    @FXML
+    private TabPane tabPane_ContentHolder;
+
+    //STAGE 1
+    @FXML
+    private AnchorPane stage1;
+
+    @FXML
+    private TextField textField_Title;
+    @FXML
+    private ComboBox<String> comboBox_OutputDevice;
+    @FXML
+    private TextField textField_OutputPath;
+    @FXML
+    private Button button_OutputPath;
 
 
-    /* stage 1 */
+    //STAGE 2
     @FXML
-    private GridPane stage1;
-    @FXML
-    public ChoiceBox<DiagramType> choiceBox_FunctionType;
-    @FXML
-    public TextField textField_Title;
-    @FXML
-    public ChoiceBox<OutputDevice> choiceBox_outputDevice;
-    @FXML
-    private ChoiceBox<PageSize> choiceBox_size;
+    private AnchorPane stage2;
 
-    /* stage 2*/
     @FXML
-    private GridPane stage2;
+    private TextField textField_Integral;
     @FXML
-    public TextField textField_CsvPath;
+    private CheckBox checkBox_Pi;
+    @FXML
+    private ComboBox comboBox_DiagramType;
+    @FXML
+    private CheckBox checkBox_OriginalPoints;
+    @FXML
+    private Button button_Sort;
+    @FXML
+    private ComboBox comboBox_Sort;
+    @FXML
+    private TextField textField_UnitX;
+    @FXML
+    private TextField textField_UnitY;
+
+
+    // STAGE 3
+    @FXML
+    private AnchorPane stage3;
+
+    @FXML
+    private ComboBox comboBox_CsvType;
+    @FXML
+    private RadioButton radio_Horizontal;
+    @FXML
+    private RadioButton radio_Vertical;
+    @FXML
+    private TextField textField_CsvPath;
     @FXML
     private Button button_CsvPath;
-    @FXML
-    public ChoiceBox<CsvOrientation> choiceBox_CsvOrientation;
-    @FXML
-    public ChoiceBox<CsvType> choiceBox_CsvType;
-    @FXML
-    public ChoiceBox<SortingType> choiceBox_Sorting;
-    @FXML
-    public CheckBox checkbox_SortDesc;
 
-    /* stage 3 */
+    // STAGE 4
     @FXML
-    private GridPane stage3;
-    @FXML
-    public Label label_baraccumulation;
-    @FXML
-    public ChoiceBox<BarAccumulationStyle> choiceBox_baraccumulation;
-    @FXML
-    public Label label_linepoints;
-    @FXML
-    public CheckBox checkbox_linepoints;
-    @FXML
-    private Label label_trendline;
-    @FXML
-    private ChoiceBox<TrendlineAlgorithm> choiceBox_trendline;
-    @FXML
-    public Label label_trendline_alpha;
-    @FXML
-    public TextField textField_trendline_alpha;
-    @FXML
-    public Label label_trendline_forecast;
-    @FXML
-    public TextField textField_trendline_forecast;
-    @FXML
-    public Label label_trendline_n;
-    @FXML
-    public TextField textField_trendline_n;
-    @FXML
-    public Label label_hideOriginalPoints;
-    @FXML
-    public CheckBox checkbox_hideOriginalPoints;
+    private AnchorPane stage4;
 
-    /* stage 4 */
-    @FXML
-    private GridPane stage4;
-    @FXML
-    public TextField textField_xunit;
-    @FXML
-    public TextField textField_yunit;
-    @FXML
-    public CheckBox checkbox_Autoscale;
-    @FXML
-    public TextField textField_xfrom;
-    @FXML
-    public Label label_xfrom;
-    @FXML
-    public TextField textField_xto;
-    @FXML
-    public Label label_xto;
-    @FXML
-    public TextField textField_yfrom;
-    @FXML
-    public Label label_yfrom;
-    @FXML
-    public TextField textField_yto;
-    @FXML
-    public Label label_yto;
 
-    /* stage 5 */
     @FXML
-    private GridPane stage5;
+    private Button button_OutputPath1;
     @FXML
-    public CheckBox checkbox_hgrid;
+    private TextField textField_OutputPath1;
     @FXML
-    public CheckBox checkbox_vgrid;
+    private ComboBox comboBox_OutputDevice1;
     @FXML
-    public TextField textField_xlines;
-    @FXML
-    public TextField textField_ylines;
-    @FXML
-    public CheckBox checkbox_dblaxes;
-    @FXML
-    public CheckBox checkbox_pointsborderless;
+    private TextField textField_Title1;
 
-    /* stage 6 */
-    @FXML
-    private GridPane stage6;
-    @FXML
-    public TextField textField_cssFile;
-    @FXML
-    public ChoiceBox<Color> choiceBox_color1;
-    @FXML
-    public ChoiceBox<Color> choiceBox_color2;
 
-    //    // ############# Options / Fields / Helper ########################
+//    // ############# Options / Fields / Helper ########################
 //
 //    private File userDir;
 //    private IntegerProperty currentStage;
@@ -170,11 +120,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
     public void initialize(URL location, ResourceBundle resources) {
 
         userDir = new File(System.getProperty("user.home"));
+        textField_OutputPath.setText(userDir.getPath());
 
-
-        this.svgOptionsService.setBundle(resources);
-        this.svgOptions = new GuiSvgOptions(new SvgPlotOptions());
-        this.svgPlotOptions = new SvgPlotOptions();
+        svgOptions = new GuiSvgOptions(new SvgPlotOptions());
 
         this.currentStage = new SimpleIntegerProperty();
         this.isExtended = new SimpleBooleanProperty(false);
@@ -190,13 +138,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
     private void initiateAllStages() {
         initStage1();
         initStage2();
-        initStage3();
         initStage4();
-        initStage5();
-        initStage6();
-
+        initStage3();
     }
-
 
     /**
      * sets the {@code isExtended} value for the wizard
@@ -225,39 +169,32 @@ public class FunctionWizardFrameController extends SVGWizardController {
      */
     private void initStage1() {
 
+        textField_Title.setText("");
 
-        if (!choiceBox_FunctionType.getItems().contains(DiagramType.FunctionPlot))
-            choiceBox_FunctionType.getItems().add(DiagramType.FunctionPlot);
-        if (!choiceBox_FunctionType.getItems().contains(DiagramType.ScatterPlot))
-            choiceBox_FunctionType.getItems().add(DiagramType.ScatterPlot);
+        List<String> outputDevices = (Stream.of(OutputDevice.values()).map(Enum::name).collect(Collectors.toList()));
+        comboBox_OutputDevice.setDisable(!isExtended.get());
+        comboBox_OutputDevice.getItems().clear();
+        comboBox_OutputDevice.getItems().addAll(outputDevices);
+        comboBox_OutputDevice.getSelectionModel().select(0);
 
-        choiceBox_outputDevice.getItems().addAll(OutputDevice.values());
+        button_OutputPath.setDisable(!isExtended.get());
+        textField_OutputPath.setDisable(!isExtended.get());
 
-        ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
-        ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
-        this.choiceBox_size.setItems(sortedPageSizes);
-        this.choiceBox_size.setConverter(svgOptionsService.getPageSizeConverter());
-        this.choiceBox_size.getSelectionModel().select(PageSize.A4);
 
-        this.choiceBox_size.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            Point size = new Point(newValue.getWidth(), newValue.getHeight());
-            this.svgPlotOptions.setSize(size);
+        button_OutputPath.setOnAction(event -> {
+            FileChooser fc = new FileChooser();
+            fc.setInitialDirectory(userDir);
+            File f = fc.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
+            if (f != null)
+                textField_OutputPath.setText(f.getAbsolutePath());
+
         });
-
-
     }
 
     /**
      * Will initiate the second stage. Depending on {@code isExtended}, some parts will dis- or enabled
      */
     private void initStage2() {
-
-        textField_CsvPath.onDragDroppedProperty().addListener(event -> {
-            System.out.println(event);
-
-        });
-
-
     }
 
     /**
@@ -270,12 +207,6 @@ public class FunctionWizardFrameController extends SVGWizardController {
      * Will initiate the fourth stage. Depending on {@code isExtended}, some parts will dis- or enabled
      */
     private void initStage4() {
-    }
-
-    private void initStage5() {
-    }
-
-    private void initStage6() {
     }
 
 
@@ -321,7 +252,19 @@ public class FunctionWizardFrameController extends SVGWizardController {
         });
 
 
-    }
+        button_OutputPath.setOnAction(event -> {
 
+        });
+
+        button_OutputPath1.setOnAction(event -> {
+
+        });
+
+
+        button_Sort.setOnAction(event -> {
+
+        });
+
+    }
 
 }

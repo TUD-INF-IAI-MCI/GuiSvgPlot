@@ -1,0 +1,99 @@
+HBox {
+  -fx-spacing: 10;
+}
+
+VBox {
+  -fx-padding: 10;
+
+  &.warn {
+    -fx-background-color: $warning-bg-color;
+  }
+
+  &.info {
+    -fx-background-color: $info-bg-color;
+  }
+}
+
+WebView {
+  -fx-min-width: 75%;
+}
+
+Label {
+  -fx-padding: 0 10 0 10;
+  -fx-wrap-text: true;
+  -fx-pref-height: 17px;
+  -fx-max-width: 1.7976931348623157E308;
+
+  &.invalid {
+    -fx-text-fill: $error-font-color;
+    -fx-font-weight: bold;
+  }
+
+}
+
+ChoiceBox,
+CheckComboBox{
+  @extend Label;
+  -fx-cursor: hand;
+  -fx-mark-color: $tud-blue;
+  -fx-min-width: 50px;
+  -fx-pref-height: 25px;
+  -fx-focus-color: $tud-blue;
+  //-fx-faint-focus-color: transparentize($tud-blue, 0.5);
+
+  .menu-item:focused {
+    -fx-background-color: $tud-blue;
+    .label {
+      -fx-text-fill: $menu-font-color;
+      -fx-font-weight: bold;
+    }
+
+  }
+  .context-menu {
+    -fx-min-width: 210px;
+    -fx-max-width: 1.7976931348623157E308;
+  }
+}
+
+TextField {
+  @extend ChoiceBox;;
+  -fx-cursor: text;
+  -fx-border-radius: 3;
+
+  &.invalid {
+    -fx-border-color: $error-font-color;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3;
+  }
+}
+
+RadioButton {
+  -fx-cursor: hand;
+  -fx-mark-color: $tud-blue;
+  .radio {
+    -fx-background-color: white;
+    //-fx-background-image: null;
+    -fx-border-width: 1px;
+    -fx-border-color: lighten(grey, 10%);
+    -fx-border-radius: 15px;
+  }
+
+  &:focused {
+    .radio {
+      -fx-border-color: $tud-blue;
+    }
+  }
+}
+
+AnchorPane.preview-container {
+  //prefHeight="210.0"
+  //prefWidth="297.0"
+  -fx-focus-color: $tud-blue;
+  -fx-focus-traversable: false;
+
+  > WebView {
+    -fx-focus-traversable: true;
+    -fx-focus-color: $tud-blue;
+  }
+
+}

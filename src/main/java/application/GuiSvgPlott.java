@@ -1,7 +1,7 @@
 package application;
 
 import application.controller.RootFrameController;
-import application.service.UTF8Control;
+import application.infrastructure.UTF8Control;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -9,10 +9,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
 
 import java.io.File;
 import java.io.FileReader;
@@ -63,8 +66,9 @@ public class GuiSvgPlott extends Application {
         Scene scene = new Scene(anchorPane);
         this.primaryStage = primaryStage;
         primaryStage.setResizable(true);
-        primaryStage.setTitle("FXML Welcome");
+        primaryStage.setTitle("SVG Plott");
         primaryStage.setScene(scene);
+        primaryStage.getIcons().add(new Image(getClass().getResource("/images/barchart_circle.png").toExternalForm()));
         primaryStage.show();
 
     }

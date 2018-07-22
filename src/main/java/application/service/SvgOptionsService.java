@@ -1,19 +1,15 @@
 package application.service;
 
 import application.GuiSvgPlott;
-import application.model.PageSize;
 import javafx.beans.value.ChangeListener;
-import javafx.collections.FXCollections;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Window;
-import javafx.util.StringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.svgcreator.SvgCreator;
 
@@ -64,12 +60,13 @@ public class SvgOptionsService {
     /**
      * Build Svg and load it into {@link WebView}.
      *
-     * @param svgPlotOptions the {@link SvgPlotOptions}
+     *  @param svgPlotOptions the {@link SvgPlotOptions}
      * @param webView_svg    the {@link WebView}
      */
     public void buildPreviewSVG(SvgPlotOptions svgPlotOptions, WebView webView_svg) {
         GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
         Path svgPath = Paths.get(System.getProperty("user.home") + "/svgPlot/svg.svg");
+        Path legendPath = Paths.get(System.getProperty("user.home") + "/svgPlot/svg_legend.svg");
 
         File svg = new File(svgPath.toString());
         svgPlotOptions.setOutput(svg);
@@ -79,26 +76,60 @@ public class SvgOptionsService {
             SvgCreator creator = svgPlotOptions.getDiagramType().getInstance(svgPlotOptions);
             creator.run();
 
-            /* show created svg */
+            /* show created svg and legend. */
             BufferedReader br = new BufferedReader(new FileReader(svg));
             String line;
             StringBuilder sb = new StringBuilder();
+
+            double width = svgPlotOptions.getSize().getX();
+            double height = svgPlotOptions.getSize().getY();
+            String svgSizeAttr;
+
+            if (svgPlotOptions.getSize().getX() > svgPlotOptions.getSize().getY()) { // querformat
+                height = height * 2;
+                svgSizeAttr = "y=\"" + svgPlotOptions.getSize().getY() + "mm\">";
+            }else {
+                width = width * 2;
+                svgSizeAttr = "x=\"" + svgPlotOptions.getSize().getX() + "mm\">";
+            }
+
             while ((line = br.readLine()) != null) {
+                if (line.contains("<svg") && line.contains("width=\"" + svgPlotOptions.getSize().x())) {
+                    sb.append("<svg width=\"" + width + "mm\" height=\"" + height + "mm\" version=\"1.1\">");
+                }
                 sb.append(line.trim());
             }
+            String line_legend;
+            BufferedReader br_legend = new BufferedReader(new FileReader(legendPath.toString()));
+            while ((line_legend = br_legend.readLine()) != null) {
+                if (!line_legend.contains("<?xml") && !line_legend.contains("<!DOCTYPE svg")) {
+                    String tempLine = line_legend;
+                    if (line_legend.contains("<svg xmlns=")) {
+                        tempLine = line_legend.split(">")[0] + svgSizeAttr;
+                    }
+                    sb.append(tempLine.trim());
+                }
+            }
+            sb.append("</svg>");
+
             WebEngine webEngine = webView_svg.getEngine();
             webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
                 if (newState == Worker.State.SUCCEEDED) {
                     adjustScaleOfWebView(webView_svg);
                 }
             });
+
+//            URL url = svg.toURI().toURL();
+//            webEngine.load(url.toExternalForm());
+//            webEngine.load("https://w>ww.google.com/maps/");
             webEngine.loadContent(sb.toString());
+            webView_svg.setFocusTraversable(true);
+            webView_svg.requestFocus();
 
             // accessibility
             Path descPath = Paths.get(svg.getParentFile().getPath() + "/" + svg.getName().replace(".svg", "_desc.html"));
             String description = loadDescription(descPath.toString());
             webView_svg.setAccessibleHelp(bundle.getString("preview") + ": " + description);
-
             // reset zoom
             ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
                 adjustScaleOfWebView(webView_svg);
@@ -106,11 +137,9 @@ public class SvgOptionsService {
             Window window = webView_svg.getScene().getWindow();
             window.widthProperty().addListener(stageSizeListener);
             window.heightProperty().addListener(stageSizeListener);
-
         } catch (ClassCastException e) {
             logger.warn(this.bundle.getString("preview_pointlist_warning"));
-//            e.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.error(this.bundle.getString("preview_load_error"));
             e.printStackTrace();
         }
@@ -159,29 +188,31 @@ public class SvgOptionsService {
     private void adjustScaleOfWebView(WebView webView) {
         webView.setZoom(1.0);
         WebEngine webEngine = webView.getEngine();
+        //http://endmemo.com/sconvert/millimeterpixel.php
+        double oneMMinPixel = 3.779528;
+        String heightScript = "document.getElementsByTagName('svg')[1].getAttribute('height').split('mm')[0]";
+        double docHeight = Double.parseDouble(webEngine.executeScript(heightScript).toString()) * oneMMinPixel;
+        String widthScript = "document.getElementsByTagName('svg')[1].getAttribute('width').split('mm')[0]";
+        double docWidth = Double.parseDouble(webEngine.executeScript(widthScript).toString()) * oneMMinPixel;
 
-        double docHeight = Double.parseDouble(webEngine.executeScript("document.height").toString());
-        double docWidth = Double.parseDouble(webEngine.executeScript("document.width").toString());
-
+        double scrollBar = 20; // im not sure what unit is, but 20 seems to fit. (maybe pixels?)
+        double webViewHeight = webView.getHeight() - scrollBar;
+        double webViewWidth = webView.getWidth() - scrollBar;
+        double zoom;
         if (docHeight > docWidth) {
-            double zoom = 1.0;
-            if (docHeight > webView.getHeight()) {
-                zoom = webView.getHeight() / docHeight;
-                webView.setZoom(zoom);
-            } else if (docHeight != webView.getHeight()) {
-                zoom = docHeight / webView.getHeight();
-                webView.setZoom(zoom);
+            if (docHeight > webViewHeight) {
+                zoom = webViewHeight / docHeight;
+            } else {
+                zoom = docHeight / webViewHeight;
             }
         } else {
-            double zoom = 1.0;
-            if (docWidth > webView.getWidth()) {
-                zoom = webView.getWidth() / docWidth;
-                webView.setZoom(zoom);
-            } else if (docHeight != webView.getHeight()) {
-                zoom = docWidth / webView.getWidth();
-                webView.setZoom(zoom);
+            if (docWidth > webViewWidth) {
+                zoom = webViewWidth / docWidth;
+            } else {
+                zoom = docWidth / webViewWidth;
             }
         }
+        webView.setZoom(zoom);
     }
 
     public static String getLoggerName() {

@@ -1,4 +1,4 @@
-package application.service;
+package application.infrastructure;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,8 +1,6 @@
 package application.util;
 
-import application.model.LinePointsOption;
-import application.model.PageSize;
-import application.model.TrendlineAlgorithm;
+import application.model.Options.*;
 import javafx.collections.FXCollections;
 import javafx.util.StringConverter;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
@@ -10,7 +8,6 @@ import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
-import tud.tangram.svgplot.styles.AxisStyle;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.GridStyle;
 
@@ -35,8 +32,8 @@ public class SvgOptionsUtil {
     public StringConverter<DiagramType> getDiagramTypeStringConverter() {
         return new StringConverter<DiagramType>() {
             @Override
-            public String toString(DiagramType diagramType) {
-                return bundle.getString(diagramType.toString());
+            public String toString(DiagramType diagramType){
+                return bundle.getString("diagramType_" + diagramType.toString().toLowerCase());
             }
 
             @Override
@@ -61,6 +58,9 @@ public class SvgOptionsUtil {
         return new StringConverter<PageSize>() {
             @Override
             public String toString(PageSize pageSize) {
+                if(pageSize == PageSize.CUSTOM) {
+                    return bundle.getString("radio_custom_scale");
+                }
                 return pageSize.getName() + " " + bundle.getString(pageSize.getPageOrientationName().toLowerCase());
             }
 
@@ -97,17 +97,17 @@ public class SvgOptionsUtil {
        };
     }
 
-    public StringConverter<AxisStyle> getAxisStyleStringConverter() {
-        return new StringConverter<AxisStyle>() {
+    public StringConverter<GuiAxisStyle> getAxisStyleStringConverter() {
+        return new StringConverter<GuiAxisStyle>() {
             @Override
-            public String toString(AxisStyle axisStyle) {
+            public String toString(GuiAxisStyle axisStyle) {
                 return bundle.getString("axisstyle_" + axisStyle.toString().toLowerCase());
             }
 
             @Override
-            public AxisStyle fromString(String string) {
-                AxisStyle axisStyle = AxisStyle.GRAPH;
-                for (AxisStyle as : FXCollections.observableArrayList(AxisStyle.values())) {
+            public GuiAxisStyle fromString(String string) {
+                GuiAxisStyle axisStyle = GuiAxisStyle.Default;
+                for (GuiAxisStyle as : FXCollections.observableArrayList(GuiAxisStyle.values())) {
                     if (this.toString(as).equals(string)) {
                         axisStyle = as;
                     }
@@ -254,6 +254,66 @@ public class SvgOptionsUtil {
                     }
                 }
                 return outputDevice;
+            }
+        };
+    }
+
+    public StringConverter<SortOrder> getSortOrderStringConverter() {
+        return new StringConverter<SortOrder>() {
+            @Override
+            public String toString(SortOrder sortOrder) {
+                return bundle.getString("sortOrder_" + sortOrder.toString().toLowerCase());
+            }
+
+            @Override
+            public SortOrder fromString(String string) {
+                SortOrder sortOrder = SortOrder.ASC;
+                for (SortOrder so : FXCollections.observableArrayList(SortOrder.values())) {
+                    if (this.toString(so).equals(string)) {
+                        sortOrder = so;
+                    }
+                }
+                return sortOrder;
+            }
+        };
+    }
+
+    public StringConverter<VisibilityOfDataPoints> getVisibilityOfDataPointsStringConverter() {
+        return new StringConverter<VisibilityOfDataPoints>() {
+            @Override
+            public String toString(VisibilityOfDataPoints visibilityOfDataPoints) {
+                return bundle.getString("visibilityOfDataPoints_" + visibilityOfDataPoints.toString().toLowerCase());
+            }
+
+            @Override
+            public VisibilityOfDataPoints fromString(String string) {
+                VisibilityOfDataPoints visibilityOfDataPoints = VisibilityOfDataPoints.SHOW;
+                for (VisibilityOfDataPoints visibility : FXCollections.observableArrayList(VisibilityOfDataPoints.values())) {
+                    if (this.toString(visibility).equals(string)) {
+                        visibilityOfDataPoints = visibility;
+                    }
+                }
+                return visibilityOfDataPoints;
+            }
+        };
+    }
+
+    public StringConverter<CssType> getCssTypeStringConverter() {
+        return new StringConverter<CssType>() {
+            @Override
+            public String toString(CssType cssType) {
+                return bundle.getString("cssType_" + cssType.toString().toLowerCase());
+            }
+
+            @Override
+            public CssType fromString(String string) {
+                CssType cssType = CssType.NONE;
+                for (CssType type : FXCollections.observableArrayList(CssType.values())) {
+                    if (this.toString(type).equals(string)) {
+                        cssType = type;
+                    }
+                }
+                return cssType;
             }
         };
     }

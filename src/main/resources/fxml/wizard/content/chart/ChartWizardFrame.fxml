@@ -3,12 +3,12 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,486 +19,320 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
+<?import org.controlsfx.control.CheckComboBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
-    <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0"
-                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                AnchorPane.topAnchor="0.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
+    <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
             <VBox BorderPane.alignment="CENTER">
                 <children>
                     <!--<Label fx:id="label_Headline" alignment="CENTER" contentDisplay="CENTER"-->
                     <!--maxWidth="1.7976931348623157E308" minWidth="200.0" prefHeight="48.0" text="Label"-->
                     <!--textAlignment="CENTER"/>-->
-                    <HBox fx:id="hBox_pagination" alignment="CENTER" prefHeight="48.0" prefWidth="600.0" accessibleRole="MENU_BAR">
-                        <Button fx:id="button_Warnings"/>
-                        <Button fx:id="button_Infos"/>
+                    <HBox fx:id="hBox_pagination" accessibleRole="MENU_BAR" alignment="CENTER" prefHeight="48.0" prefWidth="600.0">
+                        <Button fx:id="button_Warnings" />
+                        <Button fx:id="button_Infos" />
                     </HBox>
                 </children>
             </VBox>
         </top>
 
         <center>
-            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="264.0"
-                      prefWidth="503.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="264.0" prefWidth="503.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <columnConstraints>
-                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                       minWidth="100.0" prefWidth="0.0"/>
-                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                       minWidth="100.0" prefWidth="0.0"/>
+                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="0.0" />
+                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="0.0" />
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <padding>
-                    <Insets left="10.0" right="10.0"/>
+                    <Insets left="10.0" right="10.0" />
                 </padding>
-                <BorderPane fx:id="borderPane_WizardContent" maxHeight="1.7976931348623157E308"
-                            maxWidth="1.7976931348623157E308" prefWidth="500.0" AnchorPane.bottomAnchor="0"
-                            AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0"
-                            GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <BorderPane fx:id="borderPane_WizardContent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="500.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                     <center>
-                        <TabPane fx:id="tabPane_ContentHolder" layoutX="177.0" layoutY="112.0"
-                                 maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="312.0"
-                                 tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0"
-                                 AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TabPane fx:id="tabPane_ContentHolder" layoutX="177.0" layoutY="112.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="312.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <Tab text="Stage1">
-                                <GridPane fx:id="stage1" maxHeight="1.7976931348623157E308"
-                                          maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0"
-                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                          AnchorPane.topAnchor="0.0">
+                                <GridPane fx:id="stage1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308"
-                                                           minWidth="10.0"/>
-                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                                           minWidth="10.0"/>
+                                        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <padding>
-                                        <Insets left="10.0" right="10.0"/>
+                                        <Insets left="10.0" right="10.0" />
                                     </padding>
                                     <children>
-                                        <Label fx:id="label_DiagramType" contentDisplay="RIGHT"
-                                               maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="17.0"
-                                               prefWidth="200.0" text="%diagram_type" GridPane.rowIndex="0"/>
-                                        <ChoiceBox fx:id="choiceBox_DiagramType" accessibleText="Diagrammtyp auswählen"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
-                                                   GridPane.columnIndex="1"/>
-                                        <Label fx:id="label_Title" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%diagram_title" GridPane.rowIndex="1"/>
-                                        <TextField fx:id="textField_Title" accessibleText="Diagramm Titel"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
-                                                   promptText="%prompt_title" GridPane.columnIndex="1"
-                                                   GridPane.rowIndex="1"/>
+                                        <Label fx:id="label_diagramType" contentDisplay="RIGHT" text="%label_diagram_type" GridPane.rowIndex="0" />
+                                        <ChoiceBox fx:id="choiceBox_diagramType" accessibleText="Diagrammtyp auswählen" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" />
+                                        <Label fx:id="label_title" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_diagram_title" GridPane.rowIndex="1" />
+                                        <TextField fx:id="textField_title" accessibleText="Diagramm Titel" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%prompt_title" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                                        <Label fx:id="label_outputDevice" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%output_device" GridPane.rowIndex="2"/>
-                                        <ChoiceBox fx:id="choiceBox_outputDevice" accessibleText="Ausgabegerät "
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
-                                                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                                        <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%size_of_diagram" GridPane.rowIndex="4"/>
-                                        <ChoiceBox fx:id="choiceBox_size" accessibleText="Größe des Diagramms"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
-                                                   GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                        <Label fx:id="label_outputDevice" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_output_device" GridPane.rowIndex="2" />
+                                        <ChoiceBox fx:id="choiceBox_outputDevice" accessibleText="Ausgabegerät " maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                                        <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram" GridPane.rowIndex="4" />
+                                        <ChoiceBox fx:id="choiceBox_size" accessibleText="Größe des Diagramms" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                        <Label fx:id="label_customSizeWidth" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_width" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                        <TextField fx:id="textField_customSizeWidth" accessibleText="%size_of_diagram_width" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_width" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                        <Label fx:id="label_customSizeHeight" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_height" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                                        <TextField fx:id="textField_customSizeHeight" accessibleText="%size_of_diagram_height" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_height" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                     </children>
                                 </GridPane>
                             </Tab>
                             <Tab text="Stage2">
-                                <GridPane fx:id="stage2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <GridPane fx:id="stage2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308"
-                                                           minWidth="10.0"/>
-                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                                           minWidth="10.0"/>
+                                        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <padding>
-                                        <Insets left="10.0" right="10.0"/>
+                                        <Insets left="10.0" right="10.0" />
                                     </padding>
                                     <children>
-                                        <Label id="label_CsvFile" fx:id="label_CsvFile" contentDisplay="RIGHT"
-                                               prefHeight="17.0" prefWidth="200.0" text="%csv_file"
-                                               GridPane.rowIndex="0"/>
-                                        <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1"
-                                              GridPane.rowIndex="0">
-                                            <TextField fx:id="textField_CsvPath" accessibleText="Pfad zur CSV Datei"
-                                                       promptText="%prompt_path_to_csv" HBox.hgrow="ALWAYS"/>
-                                            <Button fx:id="button_CsvPath" accessibleText="CSV Datei auswählen"
-                                                    mnemonicParsing="false" text="..."/>
+                                        <Label id="label_CsvFile" fx:id="label_CsvFile" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_file" GridPane.rowIndex="0" />
+                                        <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                            <TextField fx:id="textField_csvPath" accessibleText="Pfad zur CSV Datei" promptText="%prompt_path_to_csv" HBox.hgrow="ALWAYS" />
+                                            <Button fx:id="button_csvPath" accessibleText="CSV Datei auswählen" mnemonicParsing="false" styleClass="btn-upload" text="..." />
                                         </HBox>
 
-                                        <Label fx:id="label_CsvOrientation" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%csv_orientation" GridPane.rowIndex="1"/>
-                                        <ChoiceBox id="choiceBox_CsvOrientation" fx:id="choiceBox_csvOrientation"
-                                                   accessibleText="CSV Orientierung" maxWidth="1.7976931348623157E308"
-                                                   minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1"
-                                                   GridPane.rowIndex="1"/>
-                                        <Label fx:id="label_Title1" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%csv_type" GridPane.rowIndex="2"/>
-                                        <ChoiceBox id="choiceBox_CsvType" fx:id="choiceBox_csvType"
-                                                   accessibleText="CSV Typ" maxWidth="1.7976931348623157E308"
-                                                   minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1"
-                                                   GridPane.rowIndex="2"/>
+                                        <Label fx:id="label_CsvOrientation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_orientation" GridPane.rowIndex="1" />
+                                        <ChoiceBox id="choiceBox_CsvOrientation" fx:id="choiceBox_csvOrientation" accessibleText="CSV Orientierung" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <Label fx:id="label_Title1" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_type" GridPane.rowIndex="2" />
+                                        <ChoiceBox id="choiceBox_CsvType" fx:id="choiceBox_csvType" accessibleText="CSV Typ" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     </children>
                                 </GridPane>
                             </Tab>
                             <Tab text="Stage3">
-                                <GridPane fx:id="stage3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <GridPane fx:id="stage3" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308"
-                                                           minWidth="10.0"/>
-                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                                           minWidth="10.0"/>
+                                        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <padding>
-                                        <Insets left="10.0" right="10.0"/>
+                                        <Insets left="10.0" right="10.0" />
                                     </padding>
                                     <children>
                                         <!--bar chart-->
-                                        <Label fx:id="label_baraccumulation" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%acc" visible="false" GridPane.rowIndex="0"/>
-                                        <ChoiceBox fx:id="choiceBox_baraccumulation"
-                                                   accessibleText="Art, in der mehrere Datenreihen in Balkendiagrammen akkumuliert werden."
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
-                                                   visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                                        <Label fx:id="label_Sorting" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%sorting" visible="false" GridPane.rowIndex="1"/>
-                                        <ChoiceBox fx:id="choiceBox_sorting" accessibleText="%sorting"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
-                                                   visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                                        <Label fx:id="label_SortDesc" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%sort_descending" visible="false"
-                                               GridPane.rowIndex="2"/>
-                                        <CheckBox fx:id="checkbox_SortDesc" accessibleText="%sort_descending"
-                                                  mnemonicParsing="false" visible="false" GridPane.columnIndex="1"
-                                                  GridPane.rowIndex="2"/>
+                                        <Label fx:id="label_baraccumulation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_acc" visible="false" GridPane.rowIndex="0" />
+                                        <ChoiceBox fx:id="choiceBox_baraccumulation" accessibleText="Art, in der mehrere Datenreihen in Balkendiagrammen akkumuliert werden." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                        <Label fx:id="label_sorting" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sorting" visible="false" GridPane.rowIndex="1" />
+                                        <ChoiceBox fx:id="choiceBox_sorting" accessibleText="%label_sorting" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <Label fx:id="label_sortOrder" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sort_order" visible="false" GridPane.rowIndex="2" />
+                                        <ChoiceBox fx:id="choicebox_sortOrder" accessibleText="%label_sort_order" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                                         <!--line chart-->
-                                        <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%mark_data" visible="false"
-                                               GridPane.rowIndex="0"/>
-                                        <ChoiceBox fx:id="choiceBox_linepoints" accessibleText="%mark_data_on_line"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
-                                                   visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                        <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_mark_data" visible="false" GridPane.rowIndex="0" />
+                                        <ChoiceBox fx:id="choiceBox_linepoints" accessibleText="%mark_data_on_line" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
 
                                         <!--scatter plot-->
-                                        <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%trendline" visible="false"
-                                               GridPane.rowIndex="0"/>
-                                        <ChoiceBox fx:id="choiceBox_trendline" accessibleText="Trendlinienalgorithmus"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
-                                                   visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                                        <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%trendline_alpha" visible="false"
-                                               GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                                        <TextField fx:id="textField_trendline_alpha" accessibleText="%trendline_alpha"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
-                                                   visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                                        <Label fx:id="label_trendline_forecast" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%trendline_forecast" visible="false"
-                                               GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                                        <TextField fx:id="textField_trendline_forecast"
-                                                   accessibleText="%trendline_forecast"
-                                                   maxWidth="1.7976931348623157E308" prefHeight="17.0" visible="false"
-                                                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                                        <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%trendline_n" visible="false"
-                                               GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                                        <TextField fx:id="textField_trendline_n" accessibleText="%trendline_n"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
-                                                   visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                                        <Label fx:id="label_hideOriginalPoints" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%hideOriginalPoints" visible="false"
-                                               GridPane.rowIndex="3"/>
-                                        <CheckBox fx:id="checkbox_hideOriginalPoints"
-                                                  accessibleText="%hideOriginalPoints" mnemonicParsing="false"
-                                                  visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-
+                                        <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="0" />
+                                        <ChoiceBox fx:id="choiceBox_trendline" accessibleText="Trendlinienalgorithmus" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                        <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                        <TextField fx:id="textField_trendline_alpha" accessibleText="%label_trendline_alpha" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <Label fx:id="label_trendline_forecast" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_forecast" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                        <TextField fx:id="textField_trendline_forecast" accessibleText="%label_trendline_forecast" maxWidth="1.7976931348623157E308" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_n" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                        <TextField fx:id="textField_trendline_n" accessibleText="%label_trendline_n" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <Label fx:id="label_originalPoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_hide_original_points" visible="false" GridPane.rowIndex="3" />
+                                        <ChoiceBox fx:id="choiceBox_originalPoints" accessibleText="%label_hide_original_points" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     </children>
                                 </GridPane>
                             </Tab>
                             <Tab text="Stage4">
-                                <GridPane fx:id="stage4" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
-                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                          AnchorPane.topAnchor="0.0">
+                                <GridPane fx:id="stage4" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308"
-                                                           minWidth="10.0"/>
-                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                                           minWidth="10.0" prefWidth="136.0"/>
+                                        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="136.0" />
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <padding>
-                                        <Insets left="10.0" right="10.0"/>
+                                        <Insets left="10.0" right="10.0" />
                                     </padding>
                                     <children>
-                                        <Label fx:id="label_xunit" contentDisplay="RIGHT"
-                                               maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0"
-                                               text="%x_axis_unit" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                                        <TextField fx:id="textField_xunit" accessibleText="Einheit der X-Achse"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
-                                                   GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                                        <Label fx:id="label_yunit" contentDisplay="RIGHT"
-                                               maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0"
-                                               text="%y_axis_unit" GridPane.rowIndex="1"/>
-                                        <TextField fx:id="textField_yunit" accessibleText="Einheit der Y-Achse"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
-                                                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                        <Label fx:id="label_xunit" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_x_axis_title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                        <TextField fx:id="textField_xunit" accessibleText="Einheit der X-Achse" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="%prompt_x_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                        <Label fx:id="label_yunit" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_y_axis_title" GridPane.rowIndex="1" />
+                                        <TextField fx:id="textField_yunit" accessibleText="Einheit der Y-Achse" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="%prompt_y_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                                        <Label fx:id="label_Autoscale" contentDisplay="RIGHT"
-                                               maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0"
-                                               text="%scale_data" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-
-
-                                        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                              prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                        <Label fx:id="label_Autoscale" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_scale_data" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                             <children>
-                                                <RadioButton fx:id="radioBtn_autoscale" mnemonicParsing="false"
-                                                             prefHeight="17.0" text="%scale_to_data_area"
-                                                             GridPane.valignment="CENTER">
+                                                <RadioButton fx:id="radioBtn_autoscale" mnemonicParsing="false" prefHeight="17.0" text="%radio_scale_to_data_area" GridPane.valignment="CENTER">
                                                     <toggleGroup>
-                                                        <ToggleGroup fx:id="autoscale"/>
+                                                        <ToggleGroup fx:id="autoScale" />
                                                     </toggleGroup>
                                                 </RadioButton>
-                                                <RadioButton fx:id="radioBtn_customScale" contentDisplay="RIGHT"
-                                                             mnemonicParsing="false" prefHeight="17.0"
-                                                             text="%custom_scale" toggleGroup="$autoscale"/>
+                                                <RadioButton fx:id="radioBtn_customScale" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$autoScale" />
                                             </children>
                                         </HBox>
 
 
-                                        <Label fx:id="label_xfrom" contentDisplay="RIGHT"
-                                               maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0"
-                                               text="%display_area_x_from_label" textAlignment="RIGHT"
-                                               GridPane.halignment="LEFT" GridPane.rowIndex="3">
-                                            <GridPane.margin>
-                                                <Insets/>
-                                            </GridPane.margin>
-                                            <padding>
-                                                <Insets right="10.0"/>
-                                            </padding>
-                                        </Label>
-                                        <TextField fx:id="textField_xfrom" accessibleText="%display_area_x_from"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
-                                                   GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                                        <Label fx:id="label_xto" alignment="TOP_LEFT" contentDisplay="RIGHT"
-                                               maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0"
-                                               text="%display_area_x_to_label" textAlignment="RIGHT"
-                                               GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-                                            <GridPane.margin>
-                                                <Insets/>
-                                            </GridPane.margin>
-                                            <padding>
-                                                <Insets right="10.0"/>
-                                            </padding>
-                                        </Label>
-                                        <TextField fx:id="textField_xto" accessibleText="%display_area_x_to"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
-                                                   GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                        <Label fx:id="label_xfrom" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_from" textAlignment="RIGHT" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
+                                        <TextField fx:id="textField_xfrom" accessibleText="%display_area_x_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        <Label fx:id="label_xto" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_to" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                                        <TextField fx:id="textField_xto" accessibleText="%display_area_x_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                                        <Label fx:id="label_yfrom" alignment="TOP_LEFT" contentDisplay="RIGHT"
-                                               maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0"
-                                               text="%display_area_y_from_label" textAlignment="RIGHT"
-                                               GridPane.halignment="RIGHT" GridPane.rowIndex="5">
-                                            <GridPane.margin>
-                                                <Insets/>
-                                            </GridPane.margin>
-                                            <padding>
-                                                <Insets right="10.0"/>
-                                            </padding>
-                                        </Label>
-                                        <TextField fx:id="textField_yfrom" accessibleText="%display_area_y_from"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
-                                                   GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                                        <Label fx:id="label_yto" contentDisplay="RIGHT"
-                                               maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0"
-                                               text="%display_area_y_to_label" textAlignment="RIGHT"
-                                               GridPane.halignment="RIGHT" GridPane.rowIndex="6">
-                                            <padding>
-                                                <Insets right="10.0"/>
-                                            </padding>
-                                        </Label>
-                                        <TextField fx:id="textField_yto" accessibleText="%display_area_y_to"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
-                                                   GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                                        <Label fx:id="label_yfrom" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_from" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                                        <TextField fx:id="textField_yfrom" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                        <Label fx:id="label_yto" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_to" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+                                        <TextField fx:id="textField_yto" accessibleText="%display_area_y_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                     </children>
                                 </GridPane>
                             </Tab>
                             <Tab text="Stage5">
-                                <GridPane fx:id="stage5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <GridPane fx:id="stage5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308"
-                                                           minWidth="10.0"/>
-                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                                           minWidth="10.0"/>
-                                        <ColumnConstraints/>
+                                        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                        <ColumnConstraints />
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <padding>
-                                        <Insets left="10.0" right="10.0"/>
+                                        <Insets left="10.0" right="10.0" />
                                     </padding>
                                     <children>
-                                        <Label fx:id="label_grid" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%grid_style"/>
-                                        <ChoiceBox fx:id="choicebox_gridStyle" accessibleText="%horizontal"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
-                                                   visible="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                        <Label fx:id="label_grid" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_grid_style" />
+                                        <ChoiceBox fx:id="choicebox_gridStyle" accessibleText="%radio_horizontal" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                                        <Label fx:id="label_xlines" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%help_lines_x" GridPane.rowIndex="1"/>
-                                        <TextField fx:id="textField_xlines"
-                                                   accessibleText="X-Achsen-Punkte , durch die Hilflinien verlaufen sollen."
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
-                                                   promptText="x1 x2 x3" GridPane.columnIndex="1"
-                                                   GridPane.columnSpan="2" GridPane.rowIndex="1"/>
+                                        <Label fx:id="label_xlines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_x" GridPane.rowIndex="1" />
+                                        <TextField fx:id="textField_xlines" accessibleText="X-Achsen-Punkte , durch die Hilflinien verlaufen sollen." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="x1 x2 x3" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
 
-                                        <Label fx:id="label_ylines" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%help_lines_y" GridPane.rowIndex="2"/>
-                                        <TextField fx:id="textField_ylines"
-                                                   accessibleText="Y-Achsen-Punkte, durch die Hilfslinien verlaufen sollen."
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
-                                                   promptText="y1 y2 y3" GridPane.columnIndex="1"
-                                                   GridPane.rowIndex="2"/>
+                                        <Label fx:id="label_ylines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_y" GridPane.rowIndex="2" />
+                                        <TextField fx:id="textField_ylines" accessibleText="Y-Achsen-Punkte, durch die Hilfslinien verlaufen sollen." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="y1 y2 y3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                                        <Label fx:id="label_dblaxes" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%axis_style" GridPane.rowIndex="3"/>
-                                        <ChoiceBox fx:id="choicebox_dblaxes" accessibleText="%axis_style"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
-                                                   GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                        <Label fx:id="label_dblaxes" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_axis_style" GridPane.rowIndex="3" />
+                                        <ChoiceBox fx:id="choicebox_dblaxes" accessibleText="%label_axis_style" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     </children>
                                 </GridPane>
                             </Tab>
                             <Tab text="Stage6">
-                                <GridPane fx:id="stage6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <GridPane fx:id="stage6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308"
-                                                           minWidth="10.0"/>
-                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                                           minWidth="10.0"/>
+                                        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                        <ColumnConstraints />
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <padding>
-                                        <Insets left="10.0" right="10.0"/>
+                                        <Insets left="10.0" right="10.0" />
                                     </padding>
                                     <children>
-                                        <Label fx:id="label_cssFile" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%css_file"/>
-                                        <TextField fx:id="textField_cssFile" accessibleText="Pfad zur CSS-Datei"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
-                                                   GridPane.columnIndex="1"/>
-                                        <Label fx:id="label_colors" contentDisplay="RIGHT" prefHeight="17.0"
-                                               prefWidth="200.0" text="%colors" GridPane.rowIndex="4"/>
-                                        <Label fx:id="label_color1" alignment="CENTER_RIGHT" contentDisplay="RIGHT"
-                                               prefHeight="18.0" prefWidth="200.0" text="%color1" textAlignment="RIGHT"
-                                               GridPane.halignment="RIGHT" GridPane.rowIndex="5">
-                                            <padding>
-                                                <Insets right="10.0"/>
-                                            </padding>
-                                        </Label>
-                                        <ChoiceBox fx:id="choiceBox_color1" accessibleText="Farbe 1 auswählen"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
-                                                   GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                                        <Label fx:id="label_css" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_csstype" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                        <ChoiceBox fx:id="choiceBox_cssType" accessibleText="%label_csstype" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                                        <Label fx:id="label_color2" alignment="CENTER_RIGHT" contentDisplay="RIGHT"
-                                               prefHeight="18.0" prefWidth="200.0" text="%color2" textAlignment="RIGHT"
-                                               GridPane.halignment="RIGHT" GridPane.rowIndex="6">
-                                            <padding>
-                                                <Insets right="10.0"/>
-                                            </padding>
-                                        </Label>
-                                        <ChoiceBox fx:id="choiceBox_color2" accessibleText="Farbe 2 auswählen"
-                                                   maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
-                                                   GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                                        <Label fx:id="label_cssPath" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_file" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                        <HBox fx:id="hBox_cssPath" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                            <TextField fx:id="textField_cssPath" accessibleText="Pfad zur CSS-Datei" promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS" />
+                                            <Button fx:id="button_cssPath" accessibleText="CSS Datei auswählen" mnemonicParsing="false" styleClass="btn-upload" text="..." />
+                                        </HBox>
+                                        <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                        <TextArea fx:id="textArea_cssCustom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                            <GridPane.margin>
+                                                <Insets top="10.0" />
+                                            </GridPane.margin>
+                                        </TextArea>
+
+
+                                        <Label fx:id="label_colors" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_colors" visible="false" GridPane.rowIndex="2" />
+                                        <CheckComboBox fx:id="checkComboBox_color" accessibleText="Farbe auswählen" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     </children>
                                 </GridPane>
                             </Tab>
                         </TabPane>
                     </center>
                 </BorderPane>
-                <WebView fx:id="webView_svg" minHeight="-Infinity" minWidth="-Infinity" prefHeight="210.0"
-                         prefWidth="297.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                         AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" GridPane.columnIndex="1"
-                         GridPane.rowIndex="0"/>
+                <AnchorPane styleClass="preview-container" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <children>
+                        <WebView fx:id="webView_svg" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                    </children>
+                </AnchorPane>
             </GridPane>
 
         </center>
         <bottom>
-            <ButtonBar maxWidth="1.7976931348623157E308" prefHeight="40.0" BorderPane.alignment="CENTER">
-                <buttons>
-                    <Button fx:id="button_rerenderPreview" accessibleText="%rerender_preview" cancelButton="true"
-                            maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%rerender_preview"
-                            ButtonBar.buttonData="RIGHT" styleClass="btn-preview"/>
-                    <Button fx:id="button_Back" accessibleText="%back_label" mnemonicParsing="false" text="%back"
-                            ButtonBar.buttonData="RIGHT"/>
-                    <Button fx:id="button_Next" accessibleText="%next_label" mnemonicParsing="false" text="%next"
-                            ButtonBar.buttonData="RIGHT"/>
-                    <Button fx:id="button_Create" accessibleText="%diagram_create" mnemonicParsing="false"
-                            text="%create" ButtonBar.buttonData="RIGHT"/>
-                    <Button fx:id="button_Cancel" accessibleText="%cancel" alignment="CENTER" cancelButton="true"
-                            mnemonicParsing="false" text="%cancel" ButtonBar.buttonData="LEFT"/>
-                </buttons>
-                <padding>
-                    <Insets left="10.0" right="10.0"/>
-                </padding>
-            </ButtonBar>
+            <AnchorPane BorderPane.alignment="CENTER">
+                <children>
+                    <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <children>
+                            <ButtonBar HBox.hgrow="NEVER">
+                                <buttons>
+                                    <Button fx:id="button_Cancel" accessibleText="%button_cancel" cancelButton="true" mnemonicParsing="false" text="%button_cancel" ButtonBar.buttonData="LEFT" />
+                                </buttons>
+                            </ButtonBar>
+                            <ButtonBar HBox.hgrow="ALWAYS">
+                                <buttons>
+                                    <Button fx:id="button_rerenderPreview" accessibleText="%button_rerender_preview" mnemonicParsing="false" styleClass="btn-preview" text="%button_rerender_preview" />
+                                </buttons>
+                            </ButtonBar>
+                            <ButtonBar HBox.hgrow="ALWAYS">
+                                <buttons>
+                                    <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back" />
+                                    <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next" />
+                                    <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create" />
+                                </buttons>
+                            </ButtonBar>
+                        </children>
+                        <opaqueInsets>
+                            <Insets />
+                        </opaqueInsets>
+                        <padding>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
+                        </padding>
+                    </HBox>
+                </children>
+            </AnchorPane>
         </bottom>
 
     </BorderPane>

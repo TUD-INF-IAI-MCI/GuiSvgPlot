@@ -1,6 +1,7 @@
-package application.model;
+package application.model.Options;
 
 public enum PageSize {
+    CUSTOM("custom", null, 210, 297),
     A0("A0", PageOrientation.PORTRAIT, 841, 1189),
     A1("A1", PageOrientation.PORTRAIT, 594, 841),
     A2("A2", PageOrientation.PORTRAIT, 420, 594),

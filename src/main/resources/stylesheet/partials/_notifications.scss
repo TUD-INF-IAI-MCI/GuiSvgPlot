@@ -1,0 +1,45 @@
+.notification {
+  &.warn {
+    -fx-background-color: $warning-bg-color;
+    -fx-text-fill: $warning-font-color;
+    -fx-fill: $warning-font-color;
+  }
+
+  &.error {
+    -fx-focus-traversable: true;
+    -fx-background-color: $error-bg-color;
+    -fx-text-fill: $error-font-color;
+    -fx-fill: $error-font-color;
+  }
+  &.info {
+    -fx-background-color: $info-bg-color;
+    -fx-text-fill: $info-font-color;
+    -fx-fill: $info-font-color;
+  }
+
+  &-label {
+    -fx-pref-height: 0;
+    -fx-padding: 8 0 8 0;
+    -fx-font-weight: bold;
+  }
+
+  &-btn {
+    -fx-background-color: none;
+    -fx-background-radius: 90, 90;
+    -fx-pref-height: 50px;
+    -fx-pref-width: 60px;
+
+    &:focused {
+      -fx-border-color: none;
+    }
+
+  }
+
+  &-marker {
+    &-circle {
+      -fx-fill: $notification-bg-color;
+      -fx-stroke-width: 0;
+    }
+  }
+
+}
