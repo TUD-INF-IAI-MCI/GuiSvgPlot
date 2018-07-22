@@ -1,69 +1,121 @@
 package application.controller;
 
 import application.GuiSvgPlott;
+import application.model.GuiSvgOptions;
 import application.model.Preset;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.util.Callback;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class SettingsController implements Initializable {
 
     private ResourceBundle bundle;
-    private ArrayList<Preset> presets;
+    private ObservableList<Preset> presets;
+    private Preset currentPreset;
+    private GuiSvgOptions currentOptions;
+    private final ToggleGroup group = new ToggleGroup();
+    @FXML
+    private ListView<Preset> presetNames = new ListView<>();
+
+
+
 
 
     @FXML
-    public Button button_newPreset;
-    public Button button_Cancel;
-    public Button button_deletePreset;
-    public GridPane settingsGridPane = new GridPane();
+    private GridPane settingsGridPane = new GridPane();
+    @FXML
+    private RadioButton radio_Ascending;
+    @FXML
+    private RadioButton radio_Descending;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
-        System.out.println("test");
-
-
         /*ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());
         for (DiagramType diagram : diagramTypeObservableList) {
             System.out.println(diagram);
         }*/
-        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-    }
+        radio_Ascending.setToggleGroup(group);
+        radio_Ascending.setSelected(true);
+        radio_Descending.setToggleGroup(group);
+        presets = FXCollections.observableArrayList();
+
+        presetNames.setCellFactory(new Callback<ListView<Preset>, ListCell<Preset>>() {
+            @Override
+            public ListCell<Preset> call(ListView<Preset> param) {
+
+                ListCell cell = new ListCell<Preset>(){
+
+                    @Override
+                    protected void updateItem(Preset item, boolean empty) {
+                        super.updateItem(item, empty);
+
+
+                        if(item == null || empty){
+                            setText("");
+                            return;
+                        }
+
+                        setText(item.getPresetName());
+                    }
+                };
+
+                return cell;
+            }
+        });
+        presetNames.setItems(presets);
+        }
+
 
 
     @FXML
     private void createNewPreset(){
-        button_newPreset.setOnAction(event -> {
-            TextInputDialog dialog = new TextInputDialog("Bitte hier den Namen ihrer Voreinstellung eingeben");
-            dialog.setTitle("Text Input Dialog");
-            dialog.setHeaderText("Look, a Text Input Dialog");
-            dialog.setContentText("Please enter your name:");
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Voreinstellungsname");
+            dialog.setResizable(true);
+            dialog.setHeaderText("Hier bitte den Namen ihrer Voreinstellung eingeben");
+            dialog.setContentText("Name ihrer Voreinstellung:");
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent()){
-                System.out.println("Your name: " + result.get());
+                currentPreset = new Preset(currentOptions, result.get());
+                presets.add(currentPreset);
+                presetNames.setItems(presets);
             }
-
-// The Java 8 way to get the response value (with lambda expression).
-            result.ifPresent(name -> System.out.println("Your name: " + name));
-        });
     }
     @FXML
     private void quitToMainMenu(){
-        button_Cancel.setOnAction(event -> {
-            System.out.println("are you even working?!");
-            GuiSvgPlott.getInstance().closeWizard();
-        });
+        GuiSvgPlott.getInstance().closeWizard();
     }
     @FXML
     private void deletePreset(){
-        System.out.println("why u no delete");
+        if(presets.size() == 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE+100);
+            alert.setTitle("Fehler in der Matrix");
+            alert.setHeaderText("Es gibt keine löschbaren Voreinstellungen!");
+            alert.setContentText("Allerdings schön dass Sie mal getestet haben, ob wir den Fehler abfangen! Tschüss, bis zum nächsten Edgecase!");
+            alert.showAndWait();
+        }else{
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Bestätigung erforderlich");
+        alert.setHeaderText("Sie löschen hiermit die gewählte Voreinstellung!");
+        alert.setContentText("Sind Sie sicher?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == ButtonType.OK){
+            presets.remove(presetNames.getSelectionModel().getSelectedItem());
+        } else {
+            // ... user chose CANCEL or closed the dialog, hence do nothing
+        }}
     }
 
 
