@@ -8,17 +8,21 @@ import application.model.Options.PageSize;
 import application.service.SvgOptionsService;
 import application.util.SvgOptionsUtil;
 import application.util.TextFieldUtil;
-import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
+//import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
@@ -143,8 +147,8 @@ public class SVGWizardController implements Initializable {
     public TextArea textArea_cssCustom;
     @FXML
     public Label label_colors;
-    @FXML
-    public CheckComboBox<Color> checkComboBox_color;
+
+    public CheckComboBox<Color> checkComboBox_color = new CheckComboBox<>();
     // csv fields
     @FXML
     public TextField textField_csvPath;
@@ -342,6 +346,15 @@ public class SVGWizardController implements Initializable {
         this.textField_cssPath.textProperty().addListener((observable, oldValue, newValue) -> {
             this.guiSvgOptions.setCss(newValue);
         });
+
+        textField_cssPath.setOnDragOver(dragOverHandler(".css"));
+        textField_cssPath.setOnDragDropped(event -> {
+
+            String path = event.getDragboard().getFiles().get(0).getAbsolutePath();
+            textField_cssPath.setText(path);
+
+        });
+
         this.button_cssPath.setDisable(false);
         this.button_cssPath.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
@@ -393,6 +406,14 @@ public class SVGWizardController implements Initializable {
         this.textField_csvPath.textProperty().addListener((observable, oldValue, newValue) -> {
             this.guiSvgOptions.setCsvPath(newValue);
         });
+
+        textField_csvPath.setOnDragOver(dragOverHandler(".csv"));
+        textField_csvPath.setOnDragDropped(event -> {
+            String path = event.getDragboard().getFiles().get(0).getAbsolutePath();
+            textField_csvPath.setText(path);
+        });
+
+
         this.button_csvPath.setDisable(false);
         this.button_csvPath.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
@@ -648,18 +669,18 @@ public class SVGWizardController implements Initializable {
      * @param node the node
      */
     private static void fixBlurryText(Node node) {
-        try {
-            Field field = ScrollPaneSkin.class.getDeclaredField("viewRect");
-            field.setAccessible(true);
-
-            ScrollPane scrollPane = (ScrollPane) node.lookup(".scroll-pane");
-
-            StackPane stackPane = (StackPane) field.get(scrollPane.getSkin());
-            stackPane.setCache(false);
-
-        } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Field field = ScrollPaneSkin.class.getDeclaredField("viewRect");
+//            field.setAccessible(true);
+//
+//            ScrollPane scrollPane = (ScrollPane) node.lookup(".scroll-pane");
+//
+//            StackPane stackPane = (StackPane) field.get(scrollPane.getSkin());
+//            stackPane.setCache(false);
+//
+//        } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
     }
 
 
@@ -739,7 +760,7 @@ public class SVGWizardController implements Initializable {
     }
 
 
-    private void initOptionListeners(){
+    private void initOptionListeners() {
         this.guiSvgOptions.gridStyleProperty().addListener((observable, oldValue, newValue) -> {
             this.choicebox_gridStyle.getSelectionModel().select(newValue);
         });
@@ -750,4 +771,25 @@ public class SVGWizardController implements Initializable {
             this.choiceBox_csvType.getSelectionModel().select(newValue);
         });
     }
+
+
+    private EventHandler<? super DragEvent> dragOverHandler(String file) {
+
+        EventHandler<? super DragEvent> dragOverHandler = (EventHandler<DragEvent>) event -> {
+
+            Dragboard board = event.getDragboard();
+
+            if (board.getFiles().size() == 1 && board.getFiles().get(0).getName().endsWith(file)) {
+                event.acceptTransferModes(TransferMode.LINK);
+            } else {
+                event.acceptTransferModes(TransferMode.NONE);
+            }
+        };
+
+        return dragOverHandler;
+
+
+    }
+
+
 }
