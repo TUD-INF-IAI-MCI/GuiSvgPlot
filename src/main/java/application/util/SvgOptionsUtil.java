@@ -8,6 +8,7 @@ import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
+import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.GridStyle;
 
@@ -318,6 +319,25 @@ public class SvgOptionsUtil {
         };
     }
 
+    public StringConverter<Texture> getTextureStringConverter(){
+        return new StringConverter<Texture>() {
+            @Override
+            public String toString(Texture texture) {
+                return bundle.getString("texture_" + texture.toString().toLowerCase());
+            }
+
+            @Override
+            public Texture fromString(String string) {
+                Texture texture = Texture.black;
+                for (Texture t : FXCollections.observableArrayList(Texture.values())) {
+                    if (this.toString(t).equals(string)) {
+                        texture = t;
+                    }
+                }
+                return texture;
+            }
+        };
+    }
     /**
      * Sets the {@link ResourceBundle}
      *

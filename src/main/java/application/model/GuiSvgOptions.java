@@ -18,6 +18,7 @@ import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.plotting.Function;
+import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.AxisStyle;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.GridStyle;
@@ -49,6 +50,7 @@ public class GuiSvgOptions {
 
     private ObservableList<Function> functions;
     private ObservableList<String> colors;
+    private ObservableList<Texture> textures;
     private ObservableList<String> trendLine;
 
     private final StringProperty xLines;
@@ -102,6 +104,7 @@ public class GuiSvgOptions {
         this.functions = FXCollections.observableArrayList();
         this.colors = FXCollections.observableArrayList();
         this.trendLine = FXCollections.observableArrayList();
+        this.textures = FXCollections.observableArrayList();
         initObservableListListeners();
 
     }
@@ -226,6 +229,12 @@ public class GuiSvgOptions {
                 options.setTrendLine(trendLine);
             }
         });
+        this.textures.addListener(new ListChangeListener<Texture>() {
+            @Override
+            public void onChanged(final Change<? extends Texture> c) {
+                options.setTextures(textures);
+            }
+        });
     }
 
     private void setFunctionPlotDefaultOptions() {
@@ -242,7 +251,10 @@ public class GuiSvgOptions {
 
     }
 
-    private void setBarChartDefaultOptions() {
+    private void setBarChartDefaultOptions(){
+        if (this.textures.size() == 0) {
+            this.textures.addAll(Texture.black, Texture.dotted_pattern, Texture.diagonal_line1_sp_t);
+        }
         this.csvType.set(CsvType.X_ALIGNED_CATEGORIES);
         if (this.options.getShowHorizontalGrid() == null) {
             this.gridStyle.set(GridStyle.HORIZONTAL);
@@ -315,6 +327,17 @@ public class GuiSvgOptions {
 
     public void setBarAccumulationStyle(final BarAccumulationStyle barAccumulationStyle) {
         this.barAccumulationStyle.set(barAccumulationStyle);
+    }
+
+    public ObservableList<Texture> getTextures() {
+        return textures;
+    }
+
+    public void setTextures(final ObservableList<Texture> textures) {
+        this.textures = textures;
+    }
+    public ObservableList<Texture> textureProperty() {
+        return textures;
     }
 
     public SortingType getSortingType() {

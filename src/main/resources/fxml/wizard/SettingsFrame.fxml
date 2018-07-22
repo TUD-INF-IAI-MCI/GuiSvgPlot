@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -139,8 +140,8 @@
                   <ChoiceBox prefHeight="26.0" prefWidth="444.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
                      <children>
-                        <RadioButton mnemonicParsing="false" text="%radio_ascending" />
-                        <RadioButton contentDisplay="CENTER" mnemonicParsing="false" text="%radio_descending" />
+                        <RadioButton fx:id="radio_Ascending" mnemonicParsing="false" text="%radio_ascending" />
+                        <RadioButton fx:id="radio_Descending" contentDisplay="CENTER" mnemonicParsing="false" text="%radio_descending" />
                      </children>
                   </HBox>
                   <TextField promptText="%prompt_x_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="11" />
@@ -167,7 +168,6 @@
                   <HBox alignment="CENTER_LEFT" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <ComboBox layoutX="30.0" layoutY="13.0" maxHeight="-Infinity" prefWidth="100.0" promptText="%combo_title_type" />
-                        <ComboBox layoutY="100.0" prefWidth="150.0" promptText="%combo_title_configuration" />
                         <Button fx:id="button_deletePreset" mnemonicParsing="false" onAction="#deletePreset" text="%button_delete" />
                         <Button fx:id="button_newPreset" mnemonicParsing="false" onAction="#createNewPreset" text="%button_newPreset" />
                      </children>
@@ -178,6 +178,9 @@
                </children>
             </AnchorPane>
          </top>
+         <right>
+            <ListView fx:id="presetNames" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </right>
       </BorderPane>
    </children>
 </AnchorPane>
