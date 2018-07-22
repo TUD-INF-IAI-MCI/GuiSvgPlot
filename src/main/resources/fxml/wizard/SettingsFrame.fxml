@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -139,8 +140,8 @@
                   <ChoiceBox prefHeight="26.0" prefWidth="444.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
                      <children>
-                        <RadioButton mnemonicParsing="false" text="%radio_ascending" />
-                        <RadioButton contentDisplay="CENTER" mnemonicParsing="false" text="%radio_descending" />
+                        <RadioButton fx:id="radio_Ascending" mnemonicParsing="false" text="%radio_ascending" />
+                        <RadioButton fx:id="radio_Descending" contentDisplay="CENTER" mnemonicParsing="false" text="%radio_descending" />
                      </children>
                   </HBox>
                   <TextField promptText="%prompt_x_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="11" />
@@ -178,6 +179,9 @@
                </children>
             </AnchorPane>
          </top>
+         <right>
+            <ListView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" fx:id="presetNames"/>
+         </right>
       </BorderPane>
    </children>
 </AnchorPane>
