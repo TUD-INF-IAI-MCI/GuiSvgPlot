@@ -1,5 +1,7 @@
 package application.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Preset {
@@ -8,9 +10,9 @@ public class Preset {
     private Date creationDate;
     private String presetName;
 
-    public Preset(GuiSvgOptions options, Date creationDate, String presetName) {
+    public Preset(GuiSvgOptions options, String presetName) {
         this.options = options;
-        this.creationDate = creationDate;
+        this.creationDate = Calendar.getInstance().getTime();
         this.presetName = presetName;
     }
 
@@ -32,9 +34,5 @@ public class Preset {
 
     public Date getCreationDate() {
         return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
     }
 }

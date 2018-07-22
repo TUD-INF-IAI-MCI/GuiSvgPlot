@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.SettingsController">
    <children>
       <BorderPane layoutY="-100.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
@@ -23,7 +23,7 @@
                <children>
                   <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <buttons>
-                      <Button fx:id="button_Cancel" mnemonicParsing="false" text="%button_back" />
+                        <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT" cancelButton="true" mnemonicParsing="false" onAction="#quitToMainMenu" text="%button_cancel" ButtonBar.buttonData="LEFT" />
                     </buttons>
                   </ButtonBar>
                </children>
@@ -168,8 +168,8 @@
                      <children>
                         <ComboBox layoutX="30.0" layoutY="13.0" maxHeight="-Infinity" prefWidth="100.0" promptText="%combo_title_type" />
                         <ComboBox layoutY="100.0" prefWidth="150.0" promptText="%combo_title_configuration" />
-                        <Button mnemonicParsing="false" text="%button_delete" />
-                        <Button mnemonicParsing="false" text="%button_new" />
+                        <Button fx:id="button_deletePreset" mnemonicParsing="false" onAction="#deletePreset" text="%button_delete" />
+                        <Button fx:id="button_newPreset" mnemonicParsing="false" onAction="#createNewPreset" text="%button_newPreset" />
                      </children>
                      <padding>
                         <Insets left="20.0" right="20.0" />

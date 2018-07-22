@@ -42,6 +42,8 @@ public class RootFrameController implements Initializable {
 
     public SVGWizardController svgWizardController;
 
+    public SettingsController settingsController;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -106,7 +108,8 @@ public class RootFrameController implements Initializable {
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
-            // ((SettingsController) loader.getController()).testFunction();
+            settingsController = loader.getController();
+            //System.out.println(settingsController);
         } catch (IOException e) {
             e.printStackTrace();
         }
