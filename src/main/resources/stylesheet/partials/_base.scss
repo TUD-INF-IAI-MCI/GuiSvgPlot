@@ -32,7 +32,7 @@ Label {
 }
 
 ChoiceBox,
-CheckComboBox{
+.check-combo-box > .combo-box {
   @extend Label;
   -fx-cursor: hand;
   -fx-mark-color: $tud-blue;

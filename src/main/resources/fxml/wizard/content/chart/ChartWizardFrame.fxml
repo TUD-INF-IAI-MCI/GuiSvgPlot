@@ -142,10 +142,18 @@
                                         <!--bar chart-->
                                         <Label fx:id="label_baraccumulation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_acc" visible="false" GridPane.rowIndex="0" />
                                         <ChoiceBox fx:id="choiceBox_baraccumulation" accessibleText="Art, in der mehrere Datenreihen in Balkendiagrammen akkumuliert werden." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                        <Label fx:id="label_sorting" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sorting" visible="false" GridPane.rowIndex="1" />
-                                        <ChoiceBox fx:id="choiceBox_sorting" accessibleText="%label_sorting" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                        <Label fx:id="label_sortOrder" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sort_order" visible="false" GridPane.rowIndex="2" />
-                                        <ChoiceBox fx:id="choicebox_sortOrder" accessibleText="%label_sort_order" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                                        <Label fx:id="label_firstTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_first_bar" visible="false" GridPane.rowIndex="1" />
+                                        <ChoiceBox fx:id="choiceBox_firstTexture" accessibleText="%texture_first_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <Label fx:id="label_secondTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_second_bar" visible="false" GridPane.rowIndex="2" />
+                                        <ChoiceBox fx:id="choiceBox_secondTexture" accessibleText="%texture_second_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        <Label fx:id="label_thirdTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_third_bar" visible="false" GridPane.rowIndex="3" />
+                                        <ChoiceBox fx:id="choiceBox_thirdTexture" accessibleText="%texture_third_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                                        <Label fx:id="label_sorting" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sorting" visible="false" GridPane.rowIndex="4" />
+                                        <ChoiceBox fx:id="choiceBox_sorting" accessibleText="%label_sorting" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                        <Label fx:id="label_sortOrder" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sort_order" visible="false" GridPane.rowIndex="5" />
+                                        <ChoiceBox fx:id="choicebox_sortOrder" accessibleText="%label_sort_order" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
                                         <!--line chart-->
                                         <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_mark_data" visible="false" GridPane.rowIndex="0" />

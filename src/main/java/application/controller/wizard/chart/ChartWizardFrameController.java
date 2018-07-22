@@ -6,20 +6,25 @@ import application.model.Options.SortOrder;
 import application.model.Options.TrendlineAlgorithm;
 import application.model.Options.VisibilityOfDataPoints;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
+import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ChartWizardFrameController extends SVGWizardController {
+    private static final Logger logger = LoggerFactory.getLogger(ChartWizardFrameController.class);
 
     private static final int AMOUNTOFSTAGES = 6;
 
@@ -42,6 +47,18 @@ public class ChartWizardFrameController extends SVGWizardController {
     public Label label_baraccumulation;
     @FXML
     public ChoiceBox<BarAccumulationStyle> choiceBox_baraccumulation;
+    @FXML
+    public Label label_firstTexture;
+    @FXML
+    public ChoiceBox<Texture> choiceBox_firstTexture;
+    @FXML
+    public Label label_secondTexture;
+    @FXML
+    public ChoiceBox<Texture> choiceBox_secondTexture;
+    @FXML
+    public Label label_thirdTexture;
+    @FXML
+    public ChoiceBox<Texture> choiceBox_thirdTexture;
     @FXML
     public Label label_sorting;
     @FXML
@@ -88,6 +105,7 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private GridPane stage6;
 
+    private ObservableList<Texture> textures;
     /*End: FXML Nodes*/
 
     public ChartWizardFrameController() {
@@ -99,6 +117,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         super.initialize(location, resources);
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES);
         this.initiateAllStages();
+        this.initOptionListeners();
     }
 
 
@@ -154,6 +173,31 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_baraccumulation.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             guiSvgOptions.setBarAccumulationStyle(newValue);
         });
+
+        this.textures = guiSvgOptions.getTextures();
+        this.textures.addListener(new ListChangeListener<Texture>() {
+            @Override
+            public void onChanged(final Change<? extends Texture> c) {
+                guiSvgOptions.setTextures(textures);
+            }
+        });
+        ObservableList<Texture> textureObservableList = FXCollections.observableArrayList(Texture.values());
+        this.choiceBox_firstTexture.setItems(textureObservableList);
+        this.choiceBox_firstTexture.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        this.choiceBox_firstTexture.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.textures.set(0, newValue);
+        });
+        this.choiceBox_secondTexture.setItems(textureObservableList);
+        this.choiceBox_secondTexture.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        this.choiceBox_secondTexture.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.textures.set(1, newValue);
+        });
+        this.choiceBox_thirdTexture.setItems(textureObservableList);
+        this.choiceBox_thirdTexture.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        this.choiceBox_thirdTexture.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.textures.set(2, newValue);
+        });
+
         // sorting type
         ObservableList<SortingType> sortingTypeObservableList = FXCollections.observableArrayList(SortingType.values());
         this.choiceBox_sorting.setItems(sortingTypeObservableList);
@@ -289,6 +333,9 @@ public class ChartWizardFrameController extends SVGWizardController {
     private void toggleBarChartOptions(final boolean show) {
         this.toggleVisibility(show, this.label_baraccumulation, this.choiceBox_baraccumulation);
         this.toggleVisibility(show, this.label_sorting, this.choiceBox_sorting);
+        this.toggleVisibility(show, this.label_firstTexture, this.choiceBox_firstTexture);
+        this.toggleVisibility(show, this.label_secondTexture, this.choiceBox_secondTexture);
+        this.toggleVisibility(show, this.label_thirdTexture, this.choiceBox_thirdTexture);
         if (!show) {
             this.hide(this.label_sortOrder, this.choicebox_sortOrder);
         }
@@ -322,5 +369,16 @@ public class ChartWizardFrameController extends SVGWizardController {
             hide(label_trendline_n, textField_trendline_n);
             hide(label_originalPoints, choiceBox_originalPoints);
         }
+    }
+
+    private void initOptionListeners() {
+        this.guiSvgOptions.textureProperty().addListener(new ListChangeListener<Texture>() {
+            @Override
+            public void onChanged(final Change<? extends Texture> c) {
+                choiceBox_firstTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(0));
+                choiceBox_secondTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(1));
+                choiceBox_thirdTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(2));
+            }
+        });
     }
 }

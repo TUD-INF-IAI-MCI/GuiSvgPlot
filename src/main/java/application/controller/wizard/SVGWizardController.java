@@ -35,6 +35,7 @@ import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
+import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.Color;
 import tud.tangram.svgplot.styles.GridStyle;
 
@@ -362,8 +363,8 @@ public class SVGWizardController implements Initializable {
 
         // colors
         this.colors = guiSvgOptions.getColors();
-        ObservableList<Color> sortingTypeObservableList = FXCollections.observableArrayList(Color.values());
-        this.checkComboBox_color.getItems().addAll(sortingTypeObservableList);
+        ObservableList<Color> colorsObservableList = FXCollections.observableArrayList(Color.values());
+        this.checkComboBox_color.getItems().addAll(colorsObservableList);
         this.checkComboBox_color.getCheckModel().getCheckedItems().addListener(new ListChangeListener<Color>() {
             public void onChanged(ListChangeListener.Change<? extends Color> c) {
 //                colors.clear();
@@ -371,7 +372,7 @@ public class SVGWizardController implements Initializable {
                 ObservableList<Color> newItems =
                         checkedItems.filtered(color -> !colors.contains(color.getName()));
                 ObservableList<Color> oldItems =
-                        sortingTypeObservableList.filtered(color -> !checkedItems.contains(color) && colors.contains(color.getName()));
+                        colorsObservableList.filtered(color -> !checkedItems.contains(color) && colors.contains(color.getName()));
                 if (newItems.size() > 0) {
                     for (Color color : newItems) {
                         colors.add(color.getName());
