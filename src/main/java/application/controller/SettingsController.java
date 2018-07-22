@@ -4,13 +4,12 @@ import application.GuiSvgPlott;
 import application.model.GuiSvgOptions;
 import application.model.Preset;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.AccessibleAction;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.util.Callback;
 
 import java.net.URL;
@@ -90,9 +89,7 @@ public class SettingsController implements Initializable {
                 currentPreset = new Preset(currentOptions, result.get());
                 presets.add(currentPreset);
                 presetNames.setItems(presets);
-
             }
-
     }
     @FXML
     private void quitToMainMenu(){
@@ -100,6 +97,14 @@ public class SettingsController implements Initializable {
     }
     @FXML
     private void deletePreset(){
+        if(presets.size() == 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE+100);
+            alert.setTitle("Fehler in der Matrix");
+            alert.setHeaderText("Es gibt keine löschbaren Voreinstellungen!");
+            alert.setContentText("Allerdings schön dass Sie mal getestet haben, ob wir den Fehler abfangen! Tschüss, bis zum nächsten Edgecase!");
+            alert.showAndWait();
+        }else{
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Bestätigung erforderlich");
         alert.setHeaderText("Sie löschen hiermit die gewählte Voreinstellung!");
@@ -107,11 +112,10 @@ public class SettingsController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == ButtonType.OK){
-            //TODO: get selected listview item
             presets.remove(presetNames.getSelectionModel().getSelectedItem());
         } else {
             // ... user chose CANCEL or closed the dialog, hence do nothing
-        }
+        }}
     }
 
 
