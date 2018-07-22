@@ -2,9 +2,7 @@ package application;
 
 import application.controller.RootFrameController;
 import application.infrastructure.UTF8Control;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,9 +15,8 @@ import javafx.stage.Window;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import javax.xml.transform.sax.SAXSource;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -91,7 +88,7 @@ public class GuiSvgPlott extends Application {
             System.out.println("empty settings File");
         }
 
-        if (!settings.has("gnu-path")) {
+        if (!settings.has("gnu-path") || settings.get("gnu-path").getAsString().isEmpty()) {
             Alert a = new Alert(Alert.AlertType.WARNING);
             a.setTitle("missing gnu path");
             a.setHeaderText("GNU-Plot Pfad muss zuerst ausgewählt werden");
@@ -102,6 +99,14 @@ public class GuiSvgPlott extends Application {
             FileChooser fc = new FileChooser();
             File gnuFile = fc.showOpenDialog(primaryStage);
             settings.addProperty("gnu-path", gnuFile != null ? gnuFile.getAbsolutePath() : "");
+
+
+            try (Writer writer = new FileWriter(path.toString())) {
+                Gson gson = new GsonBuilder().create();
+                gson.toJson(settings, writer);
+            }
+
+
         }
     }
 
