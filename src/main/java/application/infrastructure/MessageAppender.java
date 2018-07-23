@@ -94,6 +94,7 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
         ScrollPane scrollPane = rootFrameController.scrollPane_message;
         scrollPane.setVisible(true);
         label.setFocusTraversable(true);
+        label.requestFocus();
     }
 
     private void renderInfoMessage(final ILoggingEvent event) {

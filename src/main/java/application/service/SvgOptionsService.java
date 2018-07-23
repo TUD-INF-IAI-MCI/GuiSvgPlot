@@ -124,7 +124,7 @@ public class SvgOptionsService {
 //            webEngine.load("https://w>ww.google.com/maps/");
             webEngine.loadContent(sb.toString());
             webView_svg.setFocusTraversable(true);
-            webView_svg.requestFocus();
+//            webView_svg.requestFocus();
 
             // accessibility
             Path descPath = Paths.get(svg.getParentFile().getPath() + "/" + svg.getName().replace(".svg", "_desc.html"));
@@ -137,6 +137,7 @@ public class SvgOptionsService {
             Window window = webView_svg.getScene().getWindow();
             window.widthProperty().addListener(stageSizeListener);
             window.heightProperty().addListener(stageSizeListener);
+
         } catch (ClassCastException e) {
             logger.warn(this.bundle.getString("preview_pointlist_warning"));
         } catch (Exception e) {

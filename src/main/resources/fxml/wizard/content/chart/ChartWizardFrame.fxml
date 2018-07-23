@@ -201,25 +201,25 @@
                                         <Label fx:id="label_Autoscale" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_scale_data" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                                         <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                             <children>
-                                                <RadioButton fx:id="radioBtn_autoscale" mnemonicParsing="false" prefHeight="17.0" text="%radio_scale_to_data_area" GridPane.valignment="CENTER">
+                                                <RadioButton fx:id="radioBtn_autoscale" mnemonicParsing="false" prefHeight="17.0" text="%radio_scale_to_data_area" GridPane.valignment="CENTER" accessibleText="%help_radio_scale_to_data_area">
                                                     <toggleGroup>
                                                         <ToggleGroup fx:id="autoScale" />
                                                     </toggleGroup>
                                                 </RadioButton>
-                                                <RadioButton fx:id="radioBtn_customScale" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$autoScale" />
+                                                <RadioButton fx:id="radioBtn_customScale" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$autoScale" accessibleText="%help_radio_custom_scale"/>
                                             </children>
                                         </HBox>
 
 
                                         <Label fx:id="label_xfrom" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_from" textAlignment="RIGHT" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
-                                        <TextField fx:id="textField_xfrom" accessibleText="%display_area_x_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        <TextField fx:id="textField_xfrom" accessibleHelp="%display_area_x_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                         <Label fx:id="label_xto" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_to" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                                        <TextField fx:id="textField_xto" accessibleText="%display_area_x_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                        <TextField fx:id="textField_xto" accessibleHelp="%display_area_x_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
                                         <Label fx:id="label_yfrom" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_from" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                                        <TextField fx:id="textField_yfrom" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                        <TextField fx:id="textField_yfrom" accessibleHelp="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                         <Label fx:id="label_yto" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_to" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                                        <TextField fx:id="textField_yto" accessibleText="%display_area_y_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                        <TextField fx:id="textField_yto" accessibleHelp="%display_area_y_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                     </children>
                                 </GridPane>
                             </Tab>

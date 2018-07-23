@@ -8,7 +8,7 @@ import application.model.Options.PageSize;
 import application.service.SvgOptionsService;
 import application.util.SvgOptionsUtil;
 import application.util.TextFieldUtil;
-//import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
+import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -39,7 +39,6 @@ import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
-import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.Color;
 import tud.tangram.svgplot.styles.GridStyle;
 
@@ -192,7 +191,6 @@ public class SVGWizardController implements Initializable {
         this.textFieldUtil.setBundle(resources);
         this.currentStage = new SimpleIntegerProperty();
         this.isExtended = new SimpleBooleanProperty(false);
-        this.bundle = resources;
         this.size = new Point(PageSize.A4.getWidth(), PageSize.A4.getHeight());
         this.xRange = new SimpleObjectProperty<>();
         this.yRange = new SimpleObjectProperty<>();
@@ -670,18 +668,18 @@ public class SVGWizardController implements Initializable {
      * @param node the node
      */
     private static void fixBlurryText(Node node) {
-//        try {
-//            Field field = ScrollPaneSkin.class.getDeclaredField("viewRect");
-//            field.setAccessible(true);
-//
-//            ScrollPane scrollPane = (ScrollPane) node.lookup(".scroll-pane");
-//
-//            StackPane stackPane = (StackPane) field.get(scrollPane.getSkin());
-//            stackPane.setCache(false);
-//
-//        } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Field field = ScrollPaneSkin.class.getDeclaredField("viewRect");
+            field.setAccessible(true);
+
+            ScrollPane scrollPane = (ScrollPane) node.lookup(".scroll-pane");
+
+            StackPane stackPane = (StackPane) field.get(scrollPane.getSkin());
+            stackPane.setCache(false);
+
+        } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
 
