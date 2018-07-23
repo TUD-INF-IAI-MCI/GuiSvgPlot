@@ -52,6 +52,7 @@ public class RootFrameController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
         //TODO: fill menu with previously locally saved presets
+        // dummy preset
         MenuItem add = new MenuItem("Preset 1");
         menu_Presets.getItems().add(1, add);
     }
