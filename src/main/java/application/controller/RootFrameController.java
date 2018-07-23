@@ -31,6 +31,9 @@ public class RootFrameController implements Initializable {
     public AnchorPane anchorPain_main;
 
     @FXML
+    public Menu menu_Presets = new Menu();
+
+    @FXML
     public ScrollPane scrollPane_message;
 
     @FXML
@@ -48,6 +51,9 @@ public class RootFrameController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
+        //TODO: fill menu with previously locally saved presets
+        MenuItem add = new MenuItem("Preset 1");
+        menu_Presets.getItems().add(1, add);
     }
 
     public void init() {

@@ -7,11 +7,12 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" stylesheets="/stylesheet/guiSvgPlott.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.RootFrameController">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" stylesheets="/stylesheet/guiSvgPlott.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.RootFrameController">
     <BorderPane fx:id="borderPane_Content" layoutX="311.0" layoutY="100.0" prefHeight="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
             <VBox maxWidth="1.7976931348623157E308" minHeight="25.0" prefHeight="90.0" styleClass="p-0">
@@ -27,12 +28,10 @@
                                 <MenuItem mnemonicParsing="false" text="%menu_edit_delete" />
                             </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="%menu_presets">
+                        <Menu fx:id="menu_Presets" mnemonicParsing="false" text="%menu_presets">
                             <items>
                                 <MenuItem fx:id="menuItem_Preset_default" mnemonicParsing="false" onAction="#startPreset" text="%menu_preset_defaultpreset" />
-                                <MenuItem fx:id="menuItem_Preset_1" mnemonicParsing="false" onAction="#startPreset" text="%preset_1" />
-                                <MenuItem fx:id="menuItem_Preset_2" mnemonicParsing="false" onAction="#startPreset" text="%preset_2" />
-                                <MenuItem fx:id="menuItem_Preset_3" mnemonicParsing="false" onAction="#startPreset" text="%preset_3" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                                 <MenuItem fx:id="menuItem_Preset_Editor" mnemonicParsing="false" onAction="#startPresetEditor" text="%button_preset" />
                             </items>
                         </Menu>

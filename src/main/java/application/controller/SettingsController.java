@@ -1,7 +1,9 @@
 package application.controller;
 
 import application.GuiSvgPlott;
+import application.controller.wizard.SVGWizardController;
 import application.model.GuiSvgOptions;
+import application.model.Options.PageSize;
 import application.model.Preset;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,32 +12,53 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
+import org.controlsfx.control.spreadsheet.Grid;
+import tud.tangram.svgplot.options.DiagramType;
+import tud.tangram.svgplot.options.OutputDevice;
+import tud.tangram.svgplot.options.SvgPlotOptions;
 
+import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class SettingsController implements Initializable {
+public class SettingsController extends SVGWizardController implements Initializable {
 
     private ResourceBundle bundle;
     private ObservableList<Preset> presets;
     private Preset currentPreset;
-    private GuiSvgOptions currentOptions;
-    private final ToggleGroup group = new ToggleGroup();
+    private GuiSvgOptions currentOptions = new GuiSvgOptions(new SvgPlotOptions());
+    private final ToggleGroup sortGroup = new ToggleGroup();
+    private final ToggleGroup scaleGroup = new ToggleGroup();
+    private ArrayList<String> savedPresetNames;
+
     @FXML
     private ListView<Preset> presetNames = new ListView<>();
-
-
-
+    @FXML
+    private ObservableList<String> chartTypeObservableList = FXCollections.observableArrayList();
+    @FXML
+    private ComboBox combo_Type = new ComboBox();
+    @FXML
+    private ChoiceBox choiceBox_diagramType = new ChoiceBox();
+    @FXML
+    private Button button_CsvPath = new Button();
 
 
     @FXML
-    private GridPane settingsGridPane = new GridPane();
+    private RadioButton radioBtn_Scale_to_Data;
     @FXML
-    private RadioButton radio_Ascending;
+    private RadioButton radioBtn_customScale;
     @FXML
-    private RadioButton radio_Descending;
+    private RadioButton radioBtn_Ascending;
+    @FXML
+    private RadioButton radioBtn_Descending;
+    //TODO: make settingsgridpane dynamically filled with help of colleagues
+    @FXML
+    private GridPane settingsGridPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,10 +67,36 @@ public class SettingsController implements Initializable {
         for (DiagramType diagram : diagramTypeObservableList) {
             System.out.println(diagram);
         }*/
-        radio_Ascending.setToggleGroup(group);
-        radio_Ascending.setSelected(true);
-        radio_Descending.setToggleGroup(group);
+        chartTypeObservableList.add(resources.getString("combo_diagram"));
+        chartTypeObservableList.add(resources.getString("combo_function"));
+        combo_Type.setItems(chartTypeObservableList);
+        ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());
+        choiceBox_diagramType.setItems(diagramTypeObservableList);
+        ObservableList<OutputDevice> outputDevices = FXCollections.observableArrayList(OutputDevice.values());
+        choiceBox_outputDevice.setItems(outputDevices);
+        ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
+        ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
+        choiceBox_size.setItems(sortedPageSizes);
+        choiceBox_size.getSelectionModel().select(PageSize.A4);
+        button_CsvPath.setDisable(false);
+        button_CsvPath.setOnAction(event -> {
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.setInitialDirectory(this.userDir);
+                    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+                    fileChooser.getExtensionFilters().add(extFilter);
+                    File file = fileChooser.showOpenDialog(GuiSvgPlott.getInstance().getPrimaryStage());
+                    if (file != null) {
+                        this.textField_csvPath.setText(file.getAbsolutePath());
+                    }});
+
+        radioBtn_Ascending.setToggleGroup(sortGroup);
+        radioBtn_Ascending.setSelected(true);
+        radioBtn_Descending.setToggleGroup(sortGroup);
+        radioBtn_Scale_to_Data.setToggleGroup(scaleGroup);
+        radioBtn_Scale_to_Data.setSelected(true);
+        radioBtn_customScale.setToggleGroup(scaleGroup);
         presets = FXCollections.observableArrayList();
+        savedPresetNames = new ArrayList<>();
 
         presetNames.setCellFactory(new Callback<ListView<Preset>, ListCell<Preset>>() {
             @Override
@@ -85,12 +134,27 @@ public class SettingsController implements Initializable {
             dialog.setHeaderText("Hier bitte den Namen ihrer Voreinstellung eingeben");
             dialog.setContentText("Name ihrer Voreinstellung:");
             Optional<String> result = dialog.showAndWait();
-            if (result.isPresent()){
+            if (result.isPresent() && !savedPresetNames.contains(result.get())){
                 currentPreset = new Preset(currentOptions, result.get());
                 presets.add(currentPreset);
+                savedPresetNames.add(currentPreset.getPresetName());
                 presetNames.setItems(presets);
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Voreinstellungsduplikat entdeckt");
+                alert.setHeaderText("Eine Voreinstellung mit dem Namen " + result.get() + " existiert bereits.");
+                alert.setContentText("Bitte wählen sie einen anderen Namen aus.");
+                alert.showAndWait();
             }
     }
+
+    private void listViewController(){
+        //TODO: implement functionality upon clicketyclick
+    }
+    private void gridPaneController(){
+        //TODO: implement functionality on filling the gridpane
+    }
+
     @FXML
     private void quitToMainMenu(){
         GuiSvgPlott.getInstance().closeWizard();
@@ -102,20 +166,22 @@ public class SettingsController implements Initializable {
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE+100);
             alert.setTitle("Fehler in der Matrix");
             alert.setHeaderText("Es gibt keine löschbaren Voreinstellungen!");
-            alert.setContentText("Allerdings schön dass Sie mal getestet haben, ob wir den Fehler abfangen! Tschüss, bis zum nächsten Edgecase!");
+            alert.setContentText("Aber schön, dass Sie mal getestet haben, ob wir den Fehler abfangen! Tschüss, bis zum nächsten Edgecase!");
             alert.showAndWait();
-        }else{
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Bestätigung erforderlich");
-        alert.setHeaderText("Sie löschen hiermit die gewählte Voreinstellung!");
-        alert.setContentText("Sind Sie sicher?");
-        Optional<ButtonType> result = alert.showAndWait();
+        }else if(presetNames.getSelectionModel().getSelectedItem() != null){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Bestätigung erforderlich");
+            alert.setHeaderText("Sie löschen hiermit die gewählte Voreinstellung!");
+            alert.setContentText("Sind Sie sicher dass Sie " + presetNames.getSelectionModel().getSelectedItem().getPresetName() + " löschen wollen?");
+            Optional<ButtonType> result = alert.showAndWait();
 
-        if (result.get() == ButtonType.OK){
-            presets.remove(presetNames.getSelectionModel().getSelectedItem());
-        } else {
+            if (result.get() == ButtonType.OK){
+                savedPresetNames.remove(presetNames.getSelectionModel().getSelectedItem().getPresetName());
+                presets.remove(presetNames.getSelectionModel().getSelectedItem());
+            } else {
             // ... user chose CANCEL or closed the dialog, hence do nothing
-        }}
+            }
+        }
     }
 
 
