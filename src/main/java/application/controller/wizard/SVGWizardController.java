@@ -1,6 +1,8 @@
 package application.controller.wizard;
 
 import application.GuiSvgPlott;
+import application.controller.wizard.chart.ChartWizardFrameController;
+import application.controller.wizard.functions.FunctionWizardFrameController;
 import application.model.Options.CssType;
 import application.model.Options.GuiAxisStyle;
 import application.model.GuiSvgOptions;
@@ -269,12 +271,20 @@ public class SVGWizardController implements Initializable {
             this.guiSvgOptions.setyUnit(newValue);
         });
 
-        // autoscale
-        this.radioBtn_autoscale.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setAutoScale(newValue);
-            this.toggleAxesRanges(!newValue);
-        });
-        this.radioBtn_autoscale.setSelected(true);
+        // no autoscaling on function plot
+        if (this instanceof ChartWizardFrameController) {
+            // autoscale
+            this.radioBtn_autoscale.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                this.guiSvgOptions.setAutoScale(newValue);
+                this.toggleAxesRanges(!newValue);
+            });
+
+            this.radioBtn_autoscale.setSelected(true);
+
+        } else {
+            this.toggleAxesRanges(true);
+        }
+
 
         // xRange
         this.xRange.set(this.guiSvgOptions.getxRange());
@@ -467,14 +477,17 @@ public class SVGWizardController implements Initializable {
             this.guiSvgOptions.setyLines(newValue);
         });
 
-        // double axes
-        ObservableList<GuiAxisStyle> axisStyleObservableList = FXCollections.observableArrayList(GuiAxisStyle.values());
-        this.choicebox_dblaxes.setItems(axisStyleObservableList);
-        this.choicebox_dblaxes.setConverter(this.svgOptionsUtil.getAxisStyleStringConverter());
-        this.choicebox_dblaxes.getSelectionModel().select(this.guiSvgOptions.getAxisStyle());
-        this.choicebox_dblaxes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setAxisStyle(newValue);
-        });
+        // no use for FunctionPlot
+        if (this instanceof ChartWizardFrameController) {
+            // double axes
+            ObservableList<GuiAxisStyle> axisStyleObservableList = FXCollections.observableArrayList(GuiAxisStyle.values());
+            this.choicebox_dblaxes.setItems(axisStyleObservableList);
+            this.choicebox_dblaxes.setConverter(this.svgOptionsUtil.getAxisStyleStringConverter());
+            this.choicebox_dblaxes.getSelectionModel().select(this.guiSvgOptions.getAxisStyle());
+            this.choicebox_dblaxes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                this.guiSvgOptions.setAxisStyle(newValue);
+            });
+        }
     }
 
     protected void initiatePagination(final HBox hBox_pagination, final int AMOUNTOFSTAGES) {
@@ -772,22 +785,24 @@ public class SVGWizardController implements Initializable {
     }
 
 
-    private EventHandler<? super DragEvent> dragOverHandler(String file) {
+    /**
+     * DragHandler for Path-TextFields. Only one dragged File is acceptable.
+     *
+     * @param fileType determines which kind of files can be used for dragging
+     * @return
+     */
+    private EventHandler<? super DragEvent> dragOverHandler(String fileType) {
 
         EventHandler<? super DragEvent> dragOverHandler = (EventHandler<DragEvent>) event -> {
 
             Dragboard board = event.getDragboard();
-
-            if (board.getFiles().size() == 1 && board.getFiles().get(0).getName().endsWith(file)) {
+            if (board.getFiles().size() == 1 && board.getFiles().get(0).getName().endsWith(fileType)) {
                 event.acceptTransferModes(TransferMode.LINK);
             } else {
                 event.acceptTransferModes(TransferMode.NONE);
             }
         };
-
         return dragOverHandler;
-
-
     }
 
 
