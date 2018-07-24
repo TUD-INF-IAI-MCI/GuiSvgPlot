@@ -30,6 +30,10 @@ public class RootFrameController implements Initializable {
     @FXML
     public AnchorPane anchorPain_main;
 
+    public Menu getMenu_Presets() {
+        return menu_Presets;
+    }
+
     @FXML
     public Menu menu_Presets = new Menu();
 

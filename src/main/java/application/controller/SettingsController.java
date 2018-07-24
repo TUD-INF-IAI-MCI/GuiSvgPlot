@@ -87,9 +87,6 @@ public class SettingsController extends SVGWizardController implements Initializ
     private TextField textField_helpLinesX = new TextField();
     @FXML
     private TextField textField_helpLinesY = new TextField();
-    @FXML
-    private Button button_LoadPreset = new Button();
-
 
     @FXML
     private RadioButton radioBtn_Scale_to_Data;
@@ -241,6 +238,8 @@ public class SettingsController extends SVGWizardController implements Initializ
                 presets.add(currentPreset);
                 savedPresetNames.add(currentPreset.getPresetName());
                 presetNames.setItems(presets);
+                MenuItem newEntry = new MenuItem(currentPreset.getPresetName());
+                GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().add(3, newEntry);
             }else{
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Voreinstellungsduplikat entdeckt");
