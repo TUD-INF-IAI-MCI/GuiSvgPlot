@@ -53,8 +53,9 @@ public class RootFrameController implements Initializable {
         this.bundle = resources;
         //TODO: fill menu with previously locally saved presets
         // dummy preset
-        MenuItem add = new MenuItem("Preset 1");
-        menu_Presets.getItems().add(1, add);
+        MenuItem add = new MenuItem("Dummy Preset");
+        // always added above the lowest separatoritem
+        menu_Presets.getItems().add(menu_Presets.getItems().size()-2, add);
     }
 
     public void init() {
@@ -103,8 +104,13 @@ public class RootFrameController implements Initializable {
     }
 
     @FXML
-    private void startPreset(ActionEvent event) {
-        //TODO: will handle predefined preset functionality
+    private void startDiagramDefaultPreset() {
+        startWizard("/fxml/wizard/content/chart/ChartWizardFrame.fxml", false);
+    }
+
+    @FXML
+    private void startFunctionDefaultPreset(){
+        startWizard("/fxml/wizard/content/functions/FunctionWizardFrame.fxml", false);
     }
 
     @FXML

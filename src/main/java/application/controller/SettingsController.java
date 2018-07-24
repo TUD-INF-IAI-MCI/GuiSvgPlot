@@ -8,6 +8,7 @@ import application.model.Options.GuiAxisStyle;
 import application.model.Options.PageSize;
 import application.model.Options.TrendlineAlgorithm;
 import application.model.Preset;
+import com.google.gson.JsonObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,7 +18,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-import org.controlsfx.control.spreadsheet.Grid;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.options.DiagramType;
@@ -41,6 +41,8 @@ public class SettingsController extends SVGWizardController implements Initializ
     private final ToggleGroup sortGroup = new ToggleGroup();
     private final ToggleGroup scaleGroup = new ToggleGroup();
     private ArrayList<String> savedPresetNames;
+    private JsonObject settingsJSON = new JsonObject();
+    private ArrayList flags = new ArrayList();
 
     @FXML
     private ListView<Preset> presetNames = new ListView<>();
@@ -64,6 +66,27 @@ public class SettingsController extends SVGWizardController implements Initializ
     private ChoiceBox choiceBox_dblaxes = new ChoiceBox();
     @FXML
     private ChoiceBox choiceBox_cssType = new ChoiceBox();
+    @FXML
+    private TextField textField_Title = new TextField();
+    @FXML
+    private TextField textField_Csvpath = new TextField();
+    @FXML
+    private TextField textField_xAxisTitle = new TextField();
+    @FXML
+    private TextField textField_yAxisTitle = new TextField();
+    @FXML
+    private TextField textField_displayAreaXfrom = new TextField();
+    @FXML
+    private TextField textField_displayAreaXto = new TextField();
+    @FXML
+    private TextField textField_displayAreaYfrom = new TextField();
+    @FXML
+    private TextField textField_displayAreaYto = new TextField();
+    @FXML
+    private TextField textField_helpLinesX = new TextField();
+    @FXML
+    private TextField textField_helpLinesY = new TextField();
+
 
     @FXML
     private RadioButton radioBtn_Scale_to_Data;
@@ -75,60 +98,36 @@ public class SettingsController extends SVGWizardController implements Initializ
     private RadioButton radioBtn_Descending;*/
     //TODO: make settingsgridpane dynamically filled with help of colleagues
     @FXML
-    private GridPane settingsGridPane;
+    private GridPane settingsDiagramGridPane = new GridPane();
+    @FXML
+    private GridPane settingsFunctionGridPane = new GridPane();
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
+        // can potentially cause problems upon i18n implementations, see this.line+7 and this.line+13
         chartTypeObservableList.add(resources.getString("combo_diagram"));
         chartTypeObservableList.add(resources.getString("combo_function"));
         combo_Type.setItems(chartTypeObservableList);
-        ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());
-        choiceBox_diagramType.setItems(diagramTypeObservableList);
-        choiceBox_diagramType.getSelectionModel().select(0);
-        ObservableList<OutputDevice> outputDevices = FXCollections.observableArrayList(OutputDevice.values());
-        choiceBox_outputDevice.setItems(outputDevices);
-        choiceBox_outputDevice.getSelectionModel().select(0);
-        ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
-        ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
-        choiceBox_size.setItems(sortedPageSizes);
-        choiceBox_size.getSelectionModel().select(PageSize.A4);
-        button_CsvPath.setDisable(false);
-        button_CsvPath.setOnAction(event -> {
-                    FileChooser fileChooser = new FileChooser();
-                    fileChooser.setInitialDirectory(this.userDir);
-                    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
-                    fileChooser.getExtensionFilters().add(extFilter);
-                    File file = fileChooser.showOpenDialog(GuiSvgPlott.getInstance().getPrimaryStage());
-                    if (file != null) {
-                        this.textField_csvPath.setText(file.getAbsolutePath());
-                    }});
-        ObservableList<CsvOrientation> csvOrientationObservableList = FXCollections.observableArrayList(CsvOrientation.values());
-        choiceBox_csvOrientation.setItems(csvOrientationObservableList);
-        ObservableList<CsvType> csvTypeObservableList = FXCollections.observableArrayList(CsvType.values());
-        choiceBox_csvType.setItems(csvTypeObservableList);
-        ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
-        choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
-        choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
-        ObservableList<GridStyle> gridStyleObservableList = FXCollections.observableArrayList(GridStyle.values());
-        choiceBox_gridStyle.setItems(gridStyleObservableList);
-        choiceBox_gridStyle.getSelectionModel().select(GridStyle.NONE);
-        ObservableList<GuiAxisStyle> axisStyleObservableList = FXCollections.observableArrayList(GuiAxisStyle.values());
-        choiceBox_dblaxes.setItems(axisStyleObservableList);
-        choiceBox_dblaxes.getSelectionModel().select(GuiAxisStyle.Default);
-        ObservableList<CssType> cssTypeObservableList = FXCollections.observableArrayList(CssType.values());
-        choiceBox_cssType.setItems(cssTypeObservableList);
-        choiceBox_cssType.getSelectionModel().select(CssType.NONE);
+        settingsDiagramGridPane.setVisible(false);
+        //System.out.println(chartTypeObservableList);
+        combo_Type.setOnAction(event -> {
+            if (combo_Type.getSelectionModel().getSelectedItem().equals("Diagramm")){
+                if(!settingsDiagramGridPane.isVisible()){
+                    settingsDiagramGridPane.setVisible(true);
+                    settingsFunctionGridPane.setVisible(false);
+                    initDiagram();
+                }
+            }else if(combo_Type.getSelectionModel().getSelectedItem().equals("Funktion")){
+                if(!settingsFunctionGridPane.isVisible()){
+                    settingsFunctionGridPane.setVisible(true);
+                    settingsDiagramGridPane.setVisible(false);
+                    initFunction();
+                }
 
-
-        // Radiobutton groupings
-        /*radioBtn_Ascending.setToggleGroup(sortGroup);
-        radioBtn_Ascending.setSelected(true);
-        radioBtn_Descending.setToggleGroup(sortGroup);*/
-        radioBtn_Scale_to_Data.setToggleGroup(scaleGroup);
-        radioBtn_Scale_to_Data.setSelected(true);
-        radioBtn_customScale.setToggleGroup(scaleGroup);
+            }
+        });
 
         presets = FXCollections.observableArrayList();
         savedPresetNames = new ArrayList<>();
@@ -159,7 +158,71 @@ public class SettingsController extends SVGWizardController implements Initializ
         presetNames.setItems(presets);
         }
 
+    private void initDiagram(){
+        ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());
+        choiceBox_diagramType.setItems(diagramTypeObservableList);
+        choiceBox_diagramType.getSelectionModel().select(0);
+        flags.add(choiceBox_diagramType);
+        ObservableList<OutputDevice> outputDevices = FXCollections.observableArrayList(OutputDevice.values());
+        choiceBox_outputDevice.setItems(outputDevices);
+        choiceBox_outputDevice.getSelectionModel().select(0);
+        flags.add(choiceBox_outputDevice);
+        ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
+        ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
+        choiceBox_size.setItems(sortedPageSizes);
+        choiceBox_size.getSelectionModel().select(PageSize.A4);
+        flags.add(choiceBox_size);
+        button_CsvPath.setDisable(false);
+        button_CsvPath.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(this.userDir);
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+            fileChooser.getExtensionFilters().add(extFilter);
+            File file = fileChooser.showOpenDialog(GuiSvgPlott.getInstance().getPrimaryStage());
+            if (file != null) {
+                this.textField_csvPath.setText(file.getAbsolutePath());
+            }});
+        flags.add(button_CsvPath);
+        ObservableList<CsvOrientation> csvOrientationObservableList = FXCollections.observableArrayList(CsvOrientation.values());
+        choiceBox_csvOrientation.setItems(csvOrientationObservableList);
+        choiceBox_csvOrientation.getSelectionModel().select(0);
+        flags.add(choiceBox_csvOrientation);
+        ObservableList<CsvType> csvTypeObservableList = FXCollections.observableArrayList(CsvType.values());
+        choiceBox_csvType.setItems(csvTypeObservableList);
+        choiceBox_csvType.getSelectionModel().select(0);
+        flags.add(choiceBox_csvType);
+        ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
+        choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
+        choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
+        flags.add(choiceBox_trendline);
+        ObservableList<GridStyle> gridStyleObservableList = FXCollections.observableArrayList(GridStyle.values());
+        choiceBox_gridStyle.setItems(gridStyleObservableList);
+        choiceBox_gridStyle.getSelectionModel().select(GridStyle.NONE);
+        flags.add(choiceBox_gridStyle);
+        ObservableList<GuiAxisStyle> axisStyleObservableList = FXCollections.observableArrayList(GuiAxisStyle.values());
+        choiceBox_dblaxes.setItems(axisStyleObservableList);
+        choiceBox_dblaxes.getSelectionModel().select(GuiAxisStyle.Default);
+        flags.add(choiceBox_dblaxes);
+        ObservableList<CssType> cssTypeObservableList = FXCollections.observableArrayList(CssType.values());
+        choiceBox_cssType.setItems(cssTypeObservableList);
+        choiceBox_cssType.getSelectionModel().select(CssType.NONE);
+        flags.add(choiceBox_cssType);
 
+
+        // Radiobutton groupings
+        /*radioBtn_Ascending.setToggleGroup(sortGroup);
+        radioBtn_Ascending.setSelected(true);
+        radioBtn_Descending.setToggleGroup(sortGroup);*/
+        radioBtn_Scale_to_Data.setToggleGroup(scaleGroup);
+        radioBtn_Scale_to_Data.setSelected(true);
+        radioBtn_customScale.setToggleGroup(scaleGroup);
+
+    }
+
+    private void initFunction(){
+        //TODO upon function completeness
+        // also: dont know how to put function gridpane alongside in FXML
+    }
 
     @FXML
     private void createNewPreset(){
@@ -170,6 +233,7 @@ public class SettingsController extends SVGWizardController implements Initializ
             dialog.setContentText("Name ihrer Voreinstellung:");
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent() && !savedPresetNames.contains(result.get())){
+                flagChecker();
                 currentPreset = new Preset(currentOptions, result.get());
                 presets.add(currentPreset);
                 savedPresetNames.add(currentPreset.getPresetName());
@@ -184,6 +248,55 @@ public class SettingsController extends SVGWizardController implements Initializ
     }
 
     private void flagChecker(){
+        settingsJSON.addProperty("diagram_type", choiceBox_diagramType.getSelectionModel().getSelectedItem().toString());
+        currentOptions.setDiagramType((DiagramType)choiceBox_diagramType.getSelectionModel().getSelectedItem());
+        settingsJSON.addProperty("diagram_title", textField_Title.getText());
+        currentOptions.setTitle(textField_Title.getText());
+        settingsJSON.addProperty("output_device", choiceBox_outputDevice.getSelectionModel().getSelectedItem().toString());
+        currentOptions.setOutputDevice(choiceBox_outputDevice.getSelectionModel().getSelectedItem());
+        settingsJSON.addProperty("size_of_diagram", choiceBox_size.getSelectionModel().getSelectedItem().getName());
+        //TODO: not yet implemented -> implement page sizes in GuiSVGOptions
+        //currentOptions.setPageSize(choiceBox_size.getSelectionModel().getSelectedItem().getName());
+        settingsJSON.addProperty("csv_file_path", textField_Csvpath.getText());
+        currentOptions.setCsvPath(textField_Csvpath.getText());
+        settingsJSON.addProperty("csv_orientation", choiceBox_csvOrientation.getSelectionModel().getSelectedItem().toString());
+        // TODO: not sure if this works
+        currentOptions.setCsvOrientation((CsvOrientation) choiceBox_csvOrientation.getSelectionModel().getSelectedItem());
+        settingsJSON.addProperty("csv_type", choiceBox_csvType.getSelectionModel().getSelectedItem().toString());
+        currentOptions.setCsvType((CsvType)choiceBox_csvType.getSelectionModel().getSelectedItem());
+        settingsJSON.addProperty("trendline", choiceBox_trendline.getSelectionModel().getSelectedItem().toString());
+        //wtf why u want list of trendlines
+        //currentOptions.setTrendLine(choiceBox_trendline.getSelectionModel().getSelectedItem());
+        settingsJSON.addProperty("x_axis_title", textField_xAxisTitle.getText());
+        // not sure if implemented correctly
+        currentOptions.setxUnit(textField_xAxisTitle.getText());
+        settingsJSON.addProperty("y_axis_title", textField_yAxisTitle.getText());
+        currentOptions.setyUnit(textField_yAxisTitle.getText());
+        //TODO: i18n improvement goes here
+        RadioButton selectedRadioButton = (RadioButton) scaleGroup.getSelectedToggle();
+        //TODO: scale data implementation in GuiSVGOptions
+        settingsJSON.addProperty("scale_data", selectedRadioButton.getText());
+        //currentOptions.setScaleData()
+
+        //not sure if necessary to implement
+        settingsJSON.addProperty("display_area_x_from", textField_displayAreaXfrom.getText());
+        settingsJSON.addProperty("display_area_x_to", textField_displayAreaXto.getText());
+        settingsJSON.addProperty("display_area_y_from", textField_displayAreaYfrom.getText());
+        settingsJSON.addProperty("display_area_y_to", textField_displayAreaYto.getText());
+
+        settingsJSON.addProperty("gridstyle", choiceBox_gridStyle.getSelectionModel().getSelectedItem().toString());
+        currentOptions.setGridStyle( (GridStyle) choiceBox_gridStyle.getSelectionModel().getSelectedItem());
+        settingsJSON.addProperty("help_lines_x", textField_helpLinesX.getText());
+        currentOptions.setxLines(textField_helpLinesX.getText());
+        settingsJSON.addProperty("help_lines_y", textField_helpLinesY.getText());
+        currentOptions.setyLines(textField_helpLinesY.getText());
+        settingsJSON.addProperty("axis_style", choiceBox_dblaxes.getSelectionModel().getSelectedItem().toString());
+        currentOptions.setAxisStyle( (GuiAxisStyle) choiceBox_dblaxes.getSelectionModel().getSelectedItem());
+        settingsJSON.addProperty("css_type", choiceBox_cssType.getSelectionModel().getSelectedItem().toString());
+        currentOptions.setCss(choiceBox_cssType.getSelectionModel().getSelectedItem().toString());
+    }
+
+    private void jsonLoader(){
 
     }
 

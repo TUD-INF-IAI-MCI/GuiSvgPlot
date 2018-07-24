@@ -30,7 +30,9 @@
                         </Menu>
                         <Menu fx:id="menu_Presets" mnemonicParsing="false" text="%menu_presets">
                             <items>
-                                <MenuItem fx:id="menuItem_Preset_default" mnemonicParsing="false" onAction="#startPreset" text="%menu_preset_defaultpreset" />
+                                <MenuItem fx:id="menuItem_Preset_default" mnemonicParsing="false" onAction="#startDiagramDefaultPreset" text="%menu_preset_default_diagram_preset" />
+                        <MenuItem fx:id="menuItem_Preset_default1" mnemonicParsing="false" onAction="#startFunctionDefaultPreset" text="%menu_preset_default_function_preset" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                                 <MenuItem fx:id="menuItem_Preset_Editor" mnemonicParsing="false" onAction="#startPresetEditor" text="%button_preset" />
                             </items>

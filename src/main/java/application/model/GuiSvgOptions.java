@@ -66,7 +66,6 @@ public class GuiSvgOptions {
     public GuiSvgOptions(SvgPlotOptions options) {
 
         this.options = options;
-
         this.diagramType = new SimpleObjectProperty<>(this.options.getDiagramType());
         this.outputDevice = new SimpleObjectProperty<>(this.options.getOutputDevice());
         this.csvType = new SimpleObjectProperty<>(this.options.getCsvType());
