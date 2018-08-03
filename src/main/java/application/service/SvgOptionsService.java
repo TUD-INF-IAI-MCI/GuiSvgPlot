@@ -1,6 +1,7 @@
 package application.service;
 
 import application.GuiSvgPlott;
+import application.model.GuiSvgOptions;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
@@ -60,10 +61,11 @@ public class SvgOptionsService {
     /**
      * Build Svg and load it into {@link WebView}.
      *
-     *  @param svgPlotOptions the {@link SvgPlotOptions}
+     *  @param guiSvgOptions the {@link GuiSvgOptions}
      * @param webView_svg    the {@link WebView}
      */
-    public void buildPreviewSVG(SvgPlotOptions svgPlotOptions, WebView webView_svg) {
+    public void buildPreviewSVG(GuiSvgOptions guiSvgOptions, WebView webView_svg) {
+        SvgPlotOptions svgPlotOptions = guiSvgOptions.getOptions();
         GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
         Path svgPath = Paths.get(System.getProperty("user.home") + "/svgPlot/svg.svg");
         Path legendPath = Paths.get(System.getProperty("user.home") + "/svgPlot/svg_legend.svg");
@@ -75,6 +77,8 @@ public class SvgOptionsService {
         try {
             SvgCreator creator = svgPlotOptions.getDiagramType().getInstance(svgPlotOptions);
             creator.run();
+
+            guiSvgOptions.updatePointSpecificOptions();
 
             /* show created svg and legend. */
             BufferedReader br = new BufferedReader(new FileReader(svg));

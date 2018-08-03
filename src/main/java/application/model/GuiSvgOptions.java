@@ -11,6 +11,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.data.Point;
+import tud.tangram.svgplot.data.PointListList;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.data.sorting.SortingType;
@@ -18,12 +19,15 @@ import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.plotting.Function;
+import tud.tangram.svgplot.plotting.point.PointSymbol;
 import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.AxisStyle;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.GridStyle;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiSvgOptions {
 
@@ -51,6 +55,7 @@ public class GuiSvgOptions {
     private ObservableList<Function> functions;
     private ObservableList<String> colors;
     private ObservableList<Texture> textures;
+    private ObservableList<PointSymbol> pointSymbols;
     private ObservableList<String> trendLine;
 
     private final StringProperty xLines;
@@ -104,6 +109,7 @@ public class GuiSvgOptions {
         this.colors = FXCollections.observableArrayList();
         this.trendLine = FXCollections.observableArrayList();
         this.textures = FXCollections.observableArrayList();
+        this.pointSymbols = FXCollections.observableArrayList();
         initObservableListListeners();
 
     }
@@ -234,6 +240,12 @@ public class GuiSvgOptions {
                 options.setTextures(textures);
             }
         });
+        this.pointSymbols.addListener(new ListChangeListener<PointSymbol>() {
+            @Override
+            public void onChanged(final Change<? extends PointSymbol> c) {
+                options.setPointSymbols(pointSymbols);
+            }
+        });
     }
 
     private void setFunctionPlotDefaultOptions() {
@@ -244,13 +256,16 @@ public class GuiSvgOptions {
         if (this.options.getShowHorizontalGrid() == null && this.options.getShowVerticalGrid() == null) {
             this.gridStyle.set(GridStyle.FULL);
         }
+        this.pointSymbols.add(PointSymbol.dot);
     }
 
     private void setScatterPlotDefaultOptions() {
-
+//        if (this.pointSymbols.size() == 0) {
+//            this.pointSymbols.addAll(PointSymbol.getOrdered());
+//        }
     }
 
-    private void setBarChartDefaultOptions(){
+    private void setBarChartDefaultOptions() {
         if (this.textures.size() == 0) {
             this.textures.addAll(Texture.black, Texture.dotted_pattern, Texture.diagonal_line1_sp_t);
         }
@@ -261,6 +276,7 @@ public class GuiSvgOptions {
     }
 
     public SvgPlotOptions getOptions() {
+
         return options;
     }
 
@@ -335,8 +351,17 @@ public class GuiSvgOptions {
     public void setTextures(final ObservableList<Texture> textures) {
         this.textures = textures;
     }
+
     public ObservableList<Texture> textureProperty() {
         return textures;
+    }
+
+    public ObservableList<PointSymbol> getPointSymbols() {
+        return pointSymbols;
+    }
+
+    public void setPointSymbols(final ObservableList<PointSymbol> pointSymbols) {
+        this.pointSymbols = pointSymbols;
     }
 
     public SortingType getSortingType() {
@@ -601,5 +626,26 @@ public class GuiSvgOptions {
 
     public void setyUnit(final String yUnit) {
         this.yUnit.set(yUnit);
+    }
+
+    public PointListList getPoints() {
+        return this.options.getPoints();
+    }
+
+    public void updatePointSpecificOptions() {
+        if(this.diagramType.get() == DiagramType.ScatterPlot) {
+            if (this.options.getPoints() != null && this.options.getPoints().size() > 0) {
+                if (this.pointSymbols.size() == 0 || this.pointSymbols.equals(PointSymbol.getOrdered())) {
+                    this.pointSymbols.clear();
+                    this.pointSymbols.setAll(PointSymbol.getOrdered().subList(0, this.options.getPoints().size()));
+                } else if (this.pointSymbols.size() < this.options.getPoints().size()) {
+                    List<PointSymbol> tempList = new ArrayList<>();
+                    for (int i = this.pointSymbols.size(); i < this.options.getPoints().size(); i++) {
+                        tempList.add(PointSymbol.getOrdered().get(i));
+                    }
+                    this.pointSymbols.addAll(tempList);
+                }
+            }
+        }
     }
 }

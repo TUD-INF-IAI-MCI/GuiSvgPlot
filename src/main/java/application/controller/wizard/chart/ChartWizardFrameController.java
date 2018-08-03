@@ -13,10 +13,12 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import org.controlsfx.control.CheckComboBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
+import tud.tangram.svgplot.plotting.point.PointSymbol;
 import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 
@@ -44,53 +46,62 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private GridPane stage3;
     @FXML
-    public Label label_baraccumulation;
+    private Label label_baraccumulation;
     @FXML
-    public ChoiceBox<BarAccumulationStyle> choiceBox_baraccumulation;
+    private ChoiceBox<BarAccumulationStyle> choiceBox_baraccumulation;
     @FXML
-    public Label label_firstTexture;
+    private Label label_firstTexture;
     @FXML
-    public ChoiceBox<Texture> choiceBox_firstTexture;
+    private ChoiceBox<Texture> choiceBox_firstTexture;
     @FXML
-    public Label label_secondTexture;
+    private Label label_secondTexture;
     @FXML
-    public ChoiceBox<Texture> choiceBox_secondTexture;
+    private ChoiceBox<Texture> choiceBox_secondTexture;
     @FXML
-    public Label label_thirdTexture;
+    private Label label_thirdTexture;
     @FXML
-    public ChoiceBox<Texture> choiceBox_thirdTexture;
+    private ChoiceBox<Texture> choiceBox_thirdTexture;
     @FXML
-    public Label label_sorting;
+    private Label label_sorting;
     @FXML
-    public ChoiceBox<SortingType> choiceBox_sorting;
+    private ChoiceBox<SortingType> choiceBox_sorting;
     @FXML
-    public Label label_sortOrder;
+    private Label label_sortOrder;
     @FXML
-    public ChoiceBox<SortOrder> choicebox_sortOrder;
+    private ChoiceBox<SortOrder> choicebox_sortOrder;
     @FXML
-    public Label label_linepoints;
+    private Label label_linepoints;
     @FXML
-    public ChoiceBox<LinePointsOption> choiceBox_linepoints;
+    private ChoiceBox<LinePointsOption> choiceBox_linepoints;
     @FXML
     private Label label_trendline;
     @FXML
     private ChoiceBox<TrendlineAlgorithm> choiceBox_trendline;
     @FXML
-    public Label label_trendline_alpha;
+    private Label label_trendline_alpha;
     @FXML
-    public TextField textField_trendline_alpha;
+    private TextField textField_trendline_alpha;
     @FXML
-    public Label label_trendline_forecast;
+    private Label label_trendline_forecast;
     @FXML
-    public TextField textField_trendline_forecast;
+    private TextField textField_trendline_forecast;
     @FXML
-    public Label label_trendline_n;
+    private Label label_trendline_n;
     @FXML
-    public TextField textField_trendline_n;
+    private TextField textField_trendline_n;
     @FXML
-    public Label label_originalPoints;
+    private Label label_originalPoints;
     @FXML
-    public ChoiceBox<VisibilityOfDataPoints> choiceBox_originalPoints;
+    private ChoiceBox<VisibilityOfDataPoints> choiceBox_originalPoints;
+    @FXML
+    private Label label_pointSymbols_lineChart;
+    @FXML
+    private CheckComboBox<PointSymbol> checkComboBox_pointSymbols_lineChart;
+    @FXML
+    private Label label_pointSymbols_scatterPlot;
+    @FXML
+    private CheckComboBox<PointSymbol> checkComboBox_pointSymbols_scatterPlot;
+
 
     /* stage 4 */
     @FXML
@@ -106,6 +117,8 @@ public class ChartWizardFrameController extends SVGWizardController {
     private GridPane stage6;
 
     private ObservableList<Texture> textures;
+    private ObservableList<PointSymbol> customPointSymbols_scatterPlott;
+    private ObservableList<PointSymbol> customPointSymbols_lineChart;
     /*End: FXML Nodes*/
 
     public ChartWizardFrameController() {
@@ -228,6 +241,14 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_linepoints.getSelectionModel().select(this.guiSvgOptions.getLinePointsOption());
         this.choiceBox_linepoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             guiSvgOptions.setLinePointsOption(newValue);
+            switch (newValue){
+                case Hide:
+                    hide(label_pointSymbols_lineChart, checkComboBox_pointSymbols_lineChart);
+                    break;
+                default:
+                    show(label_pointSymbols_lineChart, checkComboBox_pointSymbols_lineChart);
+                    break;
+            }
         });
 
         // trendline and hide original points
@@ -302,6 +323,43 @@ public class ChartWizardFrameController extends SVGWizardController {
             }
             guiSvgOptions.setTrendLine(trendline);
         });
+
+        this.customPointSymbols_lineChart = guiSvgOptions.getPointSymbols();
+        ObservableList<PointSymbol> pointSymbolObservableList = FXCollections.observableArrayList(PointSymbol.getOrdered());
+        this.checkComboBox_pointSymbols_lineChart.getItems().addAll(pointSymbolObservableList);
+        this.checkComboBox_pointSymbols_lineChart.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PointSymbol>() {
+            public void onChanged(ListChangeListener.Change<? extends PointSymbol> ps) {
+                changePointSymbols(customPointSymbols_lineChart, checkComboBox_pointSymbols_lineChart, pointSymbolObservableList);
+            }
+        });
+
+        this.customPointSymbols_scatterPlott = guiSvgOptions.getPointSymbols();
+        this.checkComboBox_pointSymbols_scatterPlot.getItems().addAll(pointSymbolObservableList);
+        this.checkComboBox_pointSymbols_scatterPlot.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PointSymbol>() {
+            public void onChanged(ListChangeListener.Change<? extends PointSymbol> ps) {
+                changePointSymbols(customPointSymbols_scatterPlott, checkComboBox_pointSymbols_scatterPlot, pointSymbolObservableList);
+            }
+        });
+    }
+
+    private void changePointSymbols(ObservableList<PointSymbol> checkedPointSymbols, CheckComboBox<PointSymbol> checkComboBox, ObservableList<PointSymbol> allPointSymbols) {
+        checkedPointSymbols.clear();
+        ObservableList<PointSymbol> checkedItems = checkComboBox.getCheckModel().getCheckedItems();
+        ObservableList<PointSymbol> newItems =
+                checkedItems.filtered(pointSymbol -> !checkedPointSymbols.contains(pointSymbol));
+        ObservableList<PointSymbol> oldItems =
+                allPointSymbols.filtered(pointSymbol -> !checkedItems.contains(pointSymbol) && checkedPointSymbols.contains(pointSymbol));
+        if (newItems.size() > 0) {
+            for (PointSymbol pointSymbol : newItems) {
+                checkedPointSymbols.add(pointSymbol);
+            }
+        }
+        if (oldItems.size() > 0) {
+            for (PointSymbol pointSymbol : oldItems) {
+                checkedPointSymbols.remove(pointSymbol);
+            }
+        }
+        guiSvgOptions.setPointSymbols(checkedPointSymbols);
     }
 
     /**
@@ -357,6 +415,7 @@ public class ChartWizardFrameController extends SVGWizardController {
      */
     private void toggleScatterPlotOptions(final boolean show) {
         if (show) {
+            show(label_pointSymbols_scatterPlot, checkComboBox_pointSymbols_scatterPlot);
             show(label_trendline, choiceBox_trendline);
             // show corresponding other fields
             TrendlineAlgorithm trendlineAlgorithm = choiceBox_trendline.getValue();
@@ -368,6 +427,7 @@ public class ChartWizardFrameController extends SVGWizardController {
             hide(label_trendline_forecast, textField_trendline_forecast);
             hide(label_trendline_n, textField_trendline_n);
             hide(label_originalPoints, choiceBox_originalPoints);
+            hide(label_pointSymbols_scatterPlot, checkComboBox_pointSymbols_scatterPlot);
         }
     }
 
@@ -378,6 +438,12 @@ public class ChartWizardFrameController extends SVGWizardController {
                 choiceBox_firstTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(0));
                 choiceBox_secondTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(1));
                 choiceBox_thirdTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(2));
+            }
+        });
+        this.guiSvgOptions.getPointSymbols().addListener(new ListChangeListener<PointSymbol>() {
+            @Override
+            public void onChanged(final Change<? extends PointSymbol> c) {
+
             }
         });
     }

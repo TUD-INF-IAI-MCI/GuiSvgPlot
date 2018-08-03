@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
-<!--<?import org.controlsfx.control.CheckComboBox?>-->
+<?import org.controlsfx.control.CheckComboBox?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -158,19 +158,24 @@
                                         <!--line chart-->
                                         <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_mark_data" visible="false" GridPane.rowIndex="0" />
                                         <ChoiceBox fx:id="choiceBox_linepoints" accessibleText="%mark_data_on_line" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
+                                        <Label fx:id="label_pointSymbols_lineChart" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_pointSymbols" visible="false" GridPane.rowIndex="1" />
+                                        <CheckComboBox fx:id="checkComboBox_pointSymbols_lineChart" accessibleText="%label_pointSymbols" accessibleHelp="%help_checkcombobox" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                                         <!--scatter plot-->
-                                        <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="0" />
-                                        <ChoiceBox fx:id="choiceBox_trendline" accessibleText="Trendlinienalgorithmus" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                        <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                        <TextField fx:id="textField_trendline_alpha" accessibleText="%label_trendline_alpha" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                        <Label fx:id="label_trendline_forecast" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_forecast" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                                        <TextField fx:id="textField_trendline_forecast" accessibleText="%label_trendline_forecast" maxWidth="1.7976931348623157E308" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                        <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_n" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                        <TextField fx:id="textField_trendline_n" accessibleText="%label_trendline_n" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                        <Label fx:id="label_originalPoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_hide_original_points" visible="false" GridPane.rowIndex="3" />
-                                        <ChoiceBox fx:id="choiceBox_originalPoints" accessibleText="%label_hide_original_points" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="1" />
+                                        <ChoiceBox fx:id="choiceBox_trendline" accessibleText="Trendlinienalgorithmus" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                        <TextField fx:id="textField_trendline_alpha" accessibleText="%label_trendline_alpha" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        <Label fx:id="label_trendline_forecast" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_forecast" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                        <TextField fx:id="textField_trendline_forecast" accessibleText="%label_trendline_forecast" maxWidth="1.7976931348623157E308" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_n" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                        <TextField fx:id="textField_trendline_n" accessibleText="%label_trendline_n" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        <Label fx:id="label_originalPoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_hide_original_points" visible="false" GridPane.rowIndex="4" />
+                                        <ChoiceBox fx:id="choiceBox_originalPoints" accessibleText="%label_hide_original_points" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                                        <!-- scatter plot & line chart-->
+                                        <Label fx:id="label_pointSymbols_scatterPlot" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_pointSymbols" visible="false" GridPane.rowIndex="0" />
+                                        <CheckComboBox fx:id="checkComboBox_pointSymbols_scatterPlot" accessibleText="%label_pointSymbols" accessibleHelp="%help_checkcombobox" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                                     </children>
                                 </GridPane>
                             </Tab>
@@ -294,7 +299,7 @@
 
 
                                         <Label fx:id="label_colors" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_colors" visible="false" GridPane.rowIndex="2" />
-                                        <!--<CheckComboBox fx:id="checkComboBox_color" accessibleText="Farbe auswählen" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />-->
+                                        <CheckComboBox fx:id="checkComboBox_color" accessibleText="%label_colors" accessibleHelp="%help_checkcombobox" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     </children>
                                 </GridPane>
                             </Tab>

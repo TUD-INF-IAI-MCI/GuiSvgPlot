@@ -623,7 +623,7 @@ public class SVGWizardController implements Initializable {
 
             this.borderPane_WizardContent.setCenter(this.stages.get(this.currentStage.get()));
             this.borderPane_WizardContent.getCenter().requestFocus();
-            this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions.getOptions(), this.webView_svg);
+            this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
         });
 
         // increment the currentStage counter. Will trigger its changeListener
@@ -662,7 +662,7 @@ public class SVGWizardController implements Initializable {
 
         // rerender preview
         this.button_rerenderPreview.setOnAction(event ->
-                this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions.getOptions(), this.webView_svg)
+                this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg)
         );
 
     }
