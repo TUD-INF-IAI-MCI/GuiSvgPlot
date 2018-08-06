@@ -23,7 +23,7 @@ public class TextFieldUtil {
     }
 
 
-    public void addMinimumIntegerValidationWithMinimum(final TextField textField, final int minimum){
+    public void addIntegerValidationWithMinimum(final TextField textField, final int minimum){
         this.addNotEmptyValidationListener(textField, minimum);
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             try {

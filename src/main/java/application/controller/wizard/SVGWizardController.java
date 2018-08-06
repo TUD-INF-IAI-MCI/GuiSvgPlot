@@ -2,7 +2,6 @@ package application.controller.wizard;
 
 import application.GuiSvgPlott;
 import application.controller.wizard.chart.ChartWizardFrameController;
-import application.controller.wizard.functions.FunctionWizardFrameController;
 import application.model.Options.CssType;
 import application.model.Options.GuiAxisStyle;
 import application.model.GuiSvgOptions;
@@ -97,6 +96,11 @@ public class SVGWizardController implements Initializable {
     protected Label label_customSizeHeight;
     @FXML
     protected TextField textField_customSizeHeight;
+    @FXML
+    private RadioButton radioBtn_portrait;
+    @FXML
+    private RadioButton radioBtn_landscape;
+
     // grid and axis styling options
     @FXML
     public ChoiceBox<GridStyle> choicebox_gridStyle;
@@ -171,6 +175,7 @@ public class SVGWizardController implements Initializable {
     private Glyph infoIcon;
 
     private Point size;
+    private SimpleObjectProperty<PageSize.PageOrientation> pageOrientation;
     protected BooleanProperty isExtended;
     protected List<Button> stageBtns;
     protected List<Button> messageBtns;
@@ -194,13 +199,13 @@ public class SVGWizardController implements Initializable {
         this.currentStage = new SimpleIntegerProperty();
         this.isExtended = new SimpleBooleanProperty(false);
         this.size = new Point(PageSize.A4.getWidth(), PageSize.A4.getHeight());
+        this.pageOrientation = new SimpleObjectProperty<>(PageSize.PageOrientation.PORTRAIT);
         this.xRange = new SimpleObjectProperty<>();
         this.yRange = new SimpleObjectProperty<>();
         this.userDir = new File(System.getProperty("user.home"));
         this.guiSvgOptions = new GuiSvgOptions(new SvgPlotOptions());
         this.webView_svg.setAccessibleRole(AccessibleRole.PAGE_ITEM);
         this.webView_svg.setAccessibleHelp(this.bundle.getString("preview"));
-
         this.initListener();
         this.initOptionListeners();
         this.preProcessContent();
@@ -228,6 +233,23 @@ public class SVGWizardController implements Initializable {
         });
 
         // size
+        this.pageOrientation.addListener((observable, oldValue, newValue) -> {
+            this.size = new Point(this.size.getY(), this.size.getX());
+            this.guiSvgOptions.setSize(this.size);
+
+            this.textField_customSizeWidth.setText(this.size.x());
+            this.textField_customSizeHeight.setText(this.size.y());
+        });
+
+        this.radioBtn_landscape.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                pageOrientation.set(PageSize.PageOrientation.LANDSCAPE);
+            } else {
+                pageOrientation.set(PageSize.PageOrientation.PORTRAIT);
+            }
+        });
+        this.radioBtn_portrait.setSelected(true);
+
         ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
         ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
         this.choiceBox_size.setItems(sortedPageSizes);
@@ -235,22 +257,21 @@ public class SVGWizardController implements Initializable {
         this.choiceBox_size.getSelectionModel().select(PageSize.A4);
         this.choiceBox_size.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != PageSize.CUSTOM) {
-                this.size = new Point(newValue.getWidth(), newValue.getHeight());
+                this.size = newValue.getPageSizeWithOrientation(this.pageOrientation.get());
                 this.guiSvgOptions.setSize(this.size);
-
             }
             this.toggleCustomSize(newValue == PageSize.CUSTOM);
         });
 
         // custom size
         this.textField_customSizeWidth.setText(this.size.x());
-        this.textFieldUtil.addMinimumIntegerValidationWithMinimum(this.textField_customSizeWidth, 1);
+        this.textFieldUtil.addIntegerValidationWithMinimum(this.textField_customSizeWidth, 1);
         this.textField_customSizeWidth.textProperty().addListener((observable, oldValue, newValue) -> {
             this.size.setX(Integer.parseInt(newValue));
             this.guiSvgOptions.setSize(this.size);
         });
         this.textField_customSizeHeight.setText(this.size.y());
-        this.textFieldUtil.addMinimumIntegerValidationWithMinimum(this.textField_customSizeHeight, 1);
+        this.textFieldUtil.addIntegerValidationWithMinimum(this.textField_customSizeHeight, 1);
         this.textField_customSizeHeight.textProperty().addListener((observable, oldValue, newValue) -> {
             this.size.setY(Integer.parseInt(newValue));
             this.guiSvgOptions.setSize(this.size);

@@ -64,7 +64,7 @@ public class SvgOptionsUtil {
                 if(pageSize == PageSize.CUSTOM) {
                     return bundle.getString("radio_custom_scale");
                 }
-                return pageSize.getName() + " " + bundle.getString(pageSize.getPageOrientationName().toLowerCase());
+                return pageSize.getName();
             }
 
             @Override
