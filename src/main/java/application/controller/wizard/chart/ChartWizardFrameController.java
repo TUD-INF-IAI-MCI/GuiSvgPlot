@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
+import tud.tangram.svgplot.plotting.line.LineStyle;
 import tud.tangram.svgplot.plotting.point.PointSymbol;
 import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
@@ -307,17 +308,20 @@ public class ChartWizardFrameController extends SVGWizardController {
 
         // trendline and hide original points
         ObservableList<String> trendline = FXCollections.observableArrayList();
+        trendline.addListener(new ListChangeListener<String>() {
+            @Override
+            public void onChanged(final Change<? extends String> c) {
+                guiSvgOptions.setTrendLine(trendline);
+            }
+        });
         this.textField_trendline_n.textProperty().addListener((observable, oldValue, newValue) -> {
-            trendline.add(1, newValue);
-            guiSvgOptions.setTrendLine(trendline);
+            setValueToIndex(trendline, 1, newValue);
         });
         this.textField_trendline_alpha.textProperty().addListener((observable, oldValue, newValue) -> {
-            trendline.add(1, newValue);
-            guiSvgOptions.setTrendLine(trendline);
+            setValueToIndex(trendline, 1, newValue);
         });
         this.textField_trendline_forecast.textProperty().addListener((observable, oldValue, newValue) -> {
-            trendline.add(2, newValue);
-            guiSvgOptions.setTrendLine(trendline);
+            setValueToIndex(trendline, 2, newValue);
         });
         ObservableList<VisibilityOfDataPoints> visibilityOfDataPointsObservableList = FXCollections.observableArrayList(VisibilityOfDataPoints.values());
         this.choiceBox_originalPoints.setItems(visibilityOfDataPointsObservableList);
@@ -375,7 +379,6 @@ public class ChartWizardFrameController extends SVGWizardController {
                     choiceBox_originalPoints.getSelectionModel().select(VisibilityOfDataPoints.SHOW);
                     break;
             }
-            guiSvgOptions.setTrendLine(trendline);
         });
 
 
@@ -387,26 +390,6 @@ public class ChartWizardFrameController extends SVGWizardController {
                 changePointSymbols(customPointSymbols_scatterPlott, checkComboBox_pointSymbols_scatterPlot, pointSymbolObservableList);
             }
         });
-    }
-
-    private void changePointSymbols(ObservableList<PointSymbol> checkedPointSymbols, CheckComboBox<PointSymbol> checkComboBox, ObservableList<PointSymbol> allPointSymbols) {
-        checkedPointSymbols.clear();
-        ObservableList<PointSymbol> checkedItems = checkComboBox.getCheckModel().getCheckedItems();
-        ObservableList<PointSymbol> newItems =
-                checkedItems.filtered(pointSymbol -> !checkedPointSymbols.contains(pointSymbol));
-        ObservableList<PointSymbol> oldItems =
-                allPointSymbols.filtered(pointSymbol -> !checkedItems.contains(pointSymbol) && checkedPointSymbols.contains(pointSymbol));
-        if (newItems.size() > 0) {
-            for (PointSymbol pointSymbol : newItems) {
-                checkedPointSymbols.add(pointSymbol);
-            }
-        }
-        if (oldItems.size() > 0) {
-            for (PointSymbol pointSymbol : oldItems) {
-                checkedPointSymbols.remove(pointSymbol);
-            }
-        }
-        guiSvgOptions.setPointSymbols(checkedPointSymbols);
     }
 
     /**
@@ -518,4 +501,34 @@ public class ChartWizardFrameController extends SVGWizardController {
             }
         });
     }
+
+
+    private void setValueToIndex(ObservableList<String> trendline, int index, String newValue){
+        if (trendline.size() > index){
+            trendline.set(index, newValue);
+        } else {
+            trendline.add(index, newValue);
+        }
+    }
+
+    private void changePointSymbols(ObservableList<PointSymbol> checkedPointSymbols, CheckComboBox<PointSymbol> checkComboBox, ObservableList<PointSymbol> allPointSymbols) {
+        checkedPointSymbols.clear();
+        ObservableList<PointSymbol> checkedItems = checkComboBox.getCheckModel().getCheckedItems();
+        ObservableList<PointSymbol> newItems =
+                checkedItems.filtered(pointSymbol -> !checkedPointSymbols.contains(pointSymbol));
+        ObservableList<PointSymbol> oldItems =
+                allPointSymbols.filtered(pointSymbol -> !checkedItems.contains(pointSymbol) && checkedPointSymbols.contains(pointSymbol));
+        if (newItems.size() > 0) {
+            for (PointSymbol pointSymbol : newItems) {
+                checkedPointSymbols.add(pointSymbol);
+            }
+        }
+        if (oldItems.size() > 0) {
+            for (PointSymbol pointSymbol : oldItems) {
+                checkedPointSymbols.remove(pointSymbol);
+            }
+        }
+        guiSvgOptions.setPointSymbols(checkedPointSymbols);
+    }
+
 }

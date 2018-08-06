@@ -1,10 +1,7 @@
 package application.model;
 
 import application.GuiSvgPlott;
-import application.model.Options.GuiAxisStyle;
-import application.model.Options.LinePointsOption;
-import application.model.Options.SortOrder;
-import application.model.Options.VisibilityOfDataPoints;
+import application.model.Options.*;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -534,7 +531,7 @@ public class GuiSvgOptions {
     }
 
     public void setTrendLine(final ObservableList<String> trendLine) {
-        this.trendLine = trendLine;
+        this.trendLine.setAll(trendLine);
     }
 
     public String getxLines() {
