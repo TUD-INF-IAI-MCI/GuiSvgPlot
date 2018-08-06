@@ -19,6 +19,7 @@ import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.plotting.Function;
+import tud.tangram.svgplot.plotting.line.LineStyle;
 import tud.tangram.svgplot.plotting.point.PointSymbol;
 import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.AxisStyle;
@@ -56,6 +57,7 @@ public class GuiSvgOptions {
     private ObservableList<String> colors;
     private ObservableList<Texture> textures;
     private ObservableList<PointSymbol> pointSymbols;
+    private ObservableList<LineStyle> lineStyles;
     private ObservableList<String> trendLine;
 
     private final StringProperty xLines;
@@ -110,6 +112,7 @@ public class GuiSvgOptions {
         this.trendLine = FXCollections.observableArrayList();
         this.textures = FXCollections.observableArrayList();
         this.pointSymbols = FXCollections.observableArrayList();
+        this.lineStyles = FXCollections.observableArrayList();
         initObservableListListeners();
 
     }
@@ -134,6 +137,7 @@ public class GuiSvgOptions {
         });
         this.outputDevice.addListener((observable, oldValue, newValue) -> {
             this.options.setOutputDevice(newValue);
+            this.lineStyles.setAll(LineStyle.getByOutputDeviceOrderedById(newValue));
         });
         this.csvType.addListener((observable, oldValue, newValue) -> {
             this.options.setCsvType(newValue);
@@ -246,6 +250,16 @@ public class GuiSvgOptions {
                 options.setPointSymbols(pointSymbols);
             }
         });
+        this.lineStyles.addListener(new ListChangeListener<LineStyle>() {
+            @Override
+            public void onChanged(final Change<? extends LineStyle> c) {
+                options.setLineStyles(lineStyles);
+                for (int i = 0; i < lineStyles.size(); i++) {
+                    System.out.println(i + ": " + lineStyles.get(i));
+                }
+            }
+        });
+
     }
 
     private void setFunctionPlotDefaultOptions() {
@@ -257,6 +271,9 @@ public class GuiSvgOptions {
             this.gridStyle.set(GridStyle.FULL);
         }
         this.pointSymbols.add(PointSymbol.dot);
+        if (this.lineStyles.size() == 0 ){
+            this.lineStyles.addAll(LineStyle.getByOutputDeviceOrderedById(this.outputDevice.get()));
+        }
     }
 
     private void setScatterPlotDefaultOptions() {
@@ -631,6 +648,15 @@ public class GuiSvgOptions {
     public PointListList getPoints() {
         return this.options.getPoints();
     }
+
+    public ObservableList<LineStyle> getLineStyles() {
+        return lineStyles;
+    }
+
+    public void setLineStyles(final ObservableList<LineStyle> lineStyles) {
+        this.lineStyles = lineStyles;
+    }
+
 
     public void updatePointSpecificOptions() {
         if(this.diagramType.get() == DiagramType.ScatterPlot) {

@@ -8,6 +8,8 @@ import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
+import tud.tangram.svgplot.plotting.line.LineStyle;
+import tud.tangram.svgplot.plotting.point.PointSymbol;
 import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.GridStyle;
@@ -345,5 +347,45 @@ public class SvgOptionsUtil {
      */
     public void setBundle(ResourceBundle bundle) {
         this.bundle = bundle;
+    }
+
+    public StringConverter<LineStyle> getLineStyleStringConverter() {
+        return new StringConverter<LineStyle>() {
+            @Override
+            public String toString(LineStyle lineStyle) {
+                return bundle.getString("lineStyle_" + lineStyle.toString().toLowerCase());
+            }
+
+            @Override
+            public LineStyle fromString(String string) {
+                LineStyle lineStyle = LineStyle.Default_line;
+                for (LineStyle ls : FXCollections.observableArrayList(LineStyle.values())) {
+                    if (this.toString(ls).equals(string)) {
+                        lineStyle = ls;
+                    }
+                }
+                return lineStyle;
+            }
+        };
+    }
+
+    public StringConverter<PointSymbol> getPointSymbolStringConverter() {
+        return new StringConverter<PointSymbol>() {
+            @Override
+            public String toString(PointSymbol pointSymbol) {
+                return bundle.getString("pointSymbol_" + pointSymbol.toString().toLowerCase());
+            }
+
+            @Override
+            public PointSymbol fromString(String string) {
+                PointSymbol pointSymbol = PointSymbol.dot;
+                for (PointSymbol ps : FXCollections.observableArrayList(PointSymbol.values())) {
+                    if (this.toString(ps).equals(string)) {
+                        pointSymbol = ps;
+                    }
+                }
+                return pointSymbol;
+            }
+        };
     }
 }

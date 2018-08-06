@@ -74,6 +74,18 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private ChoiceBox<LinePointsOption> choiceBox_linepoints;
     @FXML
+    private Label label_firstLineStyle;
+    @FXML
+    private ChoiceBox<LineStyle> choiceBox_firstLineStyle;
+    @FXML
+    private Label label_secondLineStyle;
+    @FXML
+    private ChoiceBox<LineStyle> choiceBox_secondLineStyle;
+    @FXML
+    private Label label_thirdLineStyle;
+    @FXML
+    private ChoiceBox<LineStyle> choiceBox_thirdLineStyle;
+    @FXML
     private Label label_trendline;
     @FXML
     private ChoiceBox<TrendlineAlgorithm> choiceBox_trendline;
@@ -117,6 +129,7 @@ public class ChartWizardFrameController extends SVGWizardController {
     private GridPane stage6;
 
     private ObservableList<Texture> textures;
+    private ObservableList<LineStyle> lineStyles;
     private ObservableList<PointSymbol> customPointSymbols_scatterPlott;
     private ObservableList<PointSymbol> customPointSymbols_lineChart;
     /*End: FXML Nodes*/
@@ -251,6 +264,47 @@ public class ChartWizardFrameController extends SVGWizardController {
             }
         });
 
+        this.customPointSymbols_lineChart = guiSvgOptions.getPointSymbols();
+        ObservableList<PointSymbol> pointSymbolObservableList = FXCollections.observableArrayList(PointSymbol.getOrdered());
+        this.checkComboBox_pointSymbols_lineChart.getItems().addAll(pointSymbolObservableList);
+        this.checkComboBox_pointSymbols_lineChart.setConverter(this.svgOptionsUtil.getPointSymbolStringConverter());
+        this.checkComboBox_pointSymbols_lineChart.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PointSymbol>() {
+            public void onChanged(ListChangeListener.Change<? extends PointSymbol> ps) {
+                changePointSymbols(customPointSymbols_lineChart, checkComboBox_pointSymbols_lineChart, pointSymbolObservableList);
+            }
+        });
+
+        this.lineStyles = guiSvgOptions.getLineStyles();
+        this.lineStyles.addListener(new ListChangeListener<LineStyle>() {
+            @Override
+            public void onChanged(final Change<? extends LineStyle> c) {
+                guiSvgOptions.setLineStyles(lineStyles);
+            }
+        });
+        LineStyle[] lineStylesArray = LineStyle.getByOutputDeviceOrderedById(this.guiSvgOptions.getOutputDevice());
+        ObservableList<LineStyle> lineStyleObservableList = FXCollections.observableArrayList(lineStylesArray);
+        this.choiceBox_firstLineStyle.setItems(lineStyleObservableList);
+        this.choiceBox_firstLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
+        this.choiceBox_firstLineStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (this.lineStyles.get(0) != newValue && newValue != null) {
+                this.lineStyles.set(0, newValue);
+            }
+        });
+        this.choiceBox_secondLineStyle.setItems(lineStyleObservableList);
+        this.choiceBox_secondLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
+        this.choiceBox_secondLineStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (this.lineStyles.get(1) != newValue && newValue != null) {
+                this.lineStyles.set(1, newValue);
+            }
+        });
+        this.choiceBox_thirdLineStyle.setItems(lineStyleObservableList);
+        this.choiceBox_thirdLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
+        this.choiceBox_thirdLineStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (this.lineStyles.get(2) != newValue && newValue != null){
+                this.lineStyles.set(2, newValue);
+            }
+        });
+
         // trendline and hide original points
         ObservableList<String> trendline = FXCollections.observableArrayList();
         this.textField_trendline_n.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -324,17 +378,10 @@ public class ChartWizardFrameController extends SVGWizardController {
             guiSvgOptions.setTrendLine(trendline);
         });
 
-        this.customPointSymbols_lineChart = guiSvgOptions.getPointSymbols();
-        ObservableList<PointSymbol> pointSymbolObservableList = FXCollections.observableArrayList(PointSymbol.getOrdered());
-        this.checkComboBox_pointSymbols_lineChart.getItems().addAll(pointSymbolObservableList);
-        this.checkComboBox_pointSymbols_lineChart.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PointSymbol>() {
-            public void onChanged(ListChangeListener.Change<? extends PointSymbol> ps) {
-                changePointSymbols(customPointSymbols_lineChart, checkComboBox_pointSymbols_lineChart, pointSymbolObservableList);
-            }
-        });
 
         this.customPointSymbols_scatterPlott = guiSvgOptions.getPointSymbols();
         this.checkComboBox_pointSymbols_scatterPlot.getItems().addAll(pointSymbolObservableList);
+        this.checkComboBox_pointSymbols_scatterPlot.setConverter(this.svgOptionsUtil.getPointSymbolStringConverter());
         this.checkComboBox_pointSymbols_scatterPlot.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PointSymbol>() {
             public void onChanged(ListChangeListener.Change<? extends PointSymbol> ps) {
                 changePointSymbols(customPointSymbols_scatterPlott, checkComboBox_pointSymbols_scatterPlot, pointSymbolObservableList);
@@ -406,6 +453,14 @@ public class ChartWizardFrameController extends SVGWizardController {
      */
     private void toggleLineChartOptions(final boolean show) {
         toggleVisibility(show, label_linepoints, choiceBox_linepoints);
+        toggleVisibility(show, label_firstLineStyle, choiceBox_firstLineStyle);
+        toggleVisibility(show, label_secondLineStyle, choiceBox_secondLineStyle);
+        toggleVisibility(show, label_thirdLineStyle, choiceBox_thirdLineStyle);
+        if (!show){
+            hide(label_pointSymbols_lineChart, checkComboBox_pointSymbols_lineChart);
+        }else if (this.guiSvgOptions.getLinePointsOption().isShowLinePoints()){
+            show(label_pointSymbols_lineChart, checkComboBox_pointSymbols_lineChart);
+        }
     }
 
     /**
@@ -438,6 +493,22 @@ public class ChartWizardFrameController extends SVGWizardController {
                 choiceBox_firstTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(0));
                 choiceBox_secondTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(1));
                 choiceBox_thirdTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(2));
+            }
+        });
+        this.guiSvgOptions.getLineStyles().addListener(new ListChangeListener<LineStyle>() {
+            @Override
+            public void onChanged(final Change<? extends LineStyle> c) {
+                if(!guiSvgOptions.getLineStyles().isEmpty() && guiSvgOptions.getLineStyles().size() >= 3) {
+                    LineStyle[] lineStylesArray = LineStyle.getByOutputDeviceOrderedById(guiSvgOptions.getOutputDevice());
+                    ObservableList<LineStyle> lineStyleObservableList = FXCollections.observableArrayList(lineStylesArray);
+
+                    choiceBox_firstLineStyle.setItems(lineStyleObservableList);
+                    choiceBox_firstLineStyle.getSelectionModel().select(guiSvgOptions.getLineStyles().get(0));
+                    choiceBox_secondLineStyle.setItems(lineStyleObservableList);
+                    choiceBox_secondLineStyle.getSelectionModel().select(guiSvgOptions.getLineStyles().get(1));
+                    choiceBox_thirdLineStyle.setItems(lineStyleObservableList);
+                    choiceBox_thirdLineStyle.getSelectionModel().select(guiSvgOptions.getLineStyles().get(2));
+                }
             }
         });
         this.guiSvgOptions.getPointSymbols().addListener(new ListChangeListener<PointSymbol>() {
