@@ -113,14 +113,14 @@ public class SettingsController extends SVGWizardController implements Initializ
         settingsDiagramGridPane.setVisible(false);
         //System.out.println(chartTypeObservableList);
         combo_Type.setOnAction(event -> {
-            if (combo_Type.getSelectionModel().getSelectedItem().equals("Diagramm")){
-                if(!settingsDiagramGridPane.isVisible()){
+            if (combo_Type.getSelectionModel().getSelectedItem().equals("Diagramm")) {
+                if (!settingsDiagramGridPane.isVisible()) {
                     settingsDiagramGridPane.setVisible(true);
                     settingsFunctionGridPane.setVisible(false);
                     initDiagram();
                 }
-            }else if(combo_Type.getSelectionModel().getSelectedItem().equals("Funktion")){
-                if(!settingsFunctionGridPane.isVisible()){
+            } else if (combo_Type.getSelectionModel().getSelectedItem().equals("Funktion")) {
+                if (!settingsFunctionGridPane.isVisible()) {
                     settingsFunctionGridPane.setVisible(true);
                     settingsDiagramGridPane.setVisible(false);
                     initFunction();
@@ -136,14 +136,14 @@ public class SettingsController extends SVGWizardController implements Initializ
             @Override
             public ListCell<Preset> call(ListView<Preset> param) {
 
-                ListCell cell = new ListCell<Preset>(){
+                ListCell cell = new ListCell<Preset>() {
 
                     @Override
                     protected void updateItem(Preset item, boolean empty) {
                         super.updateItem(item, empty);
 
 
-                        if(item == null || empty){
+                        if (item == null || empty) {
                             setText("");
                             return;
                         }
@@ -156,9 +156,9 @@ public class SettingsController extends SVGWizardController implements Initializ
             }
         });
         presetNames.setItems(presets);
-        }
+    }
 
-    private void initDiagram(){
+    private void initDiagram() {
         ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());
         choiceBox_diagramType.setItems(diagramTypeObservableList);
         choiceBox_diagramType.getSelectionModel().select(0);
@@ -181,7 +181,8 @@ public class SettingsController extends SVGWizardController implements Initializ
             File file = fileChooser.showOpenDialog(GuiSvgPlott.getInstance().getPrimaryStage());
             if (file != null) {
                 textField_Csvpath.setText(file.getAbsolutePath());
-            }});
+            }
+        });
         flags.add(button_CsvPath);
         ObservableList<CsvOrientation> csvOrientationObservableList = FXCollections.observableArrayList(CsvOrientation.values());
         choiceBox_csvOrientation.setItems(csvOrientationObservableList);
@@ -219,39 +220,39 @@ public class SettingsController extends SVGWizardController implements Initializ
 
     }
 
-    private void initFunction(){
+    private void initFunction() {
         //TODO upon function completeness
         // also: dont know how to put function gridpane alongside in FXML
     }
 
     @FXML
-    private void createNewPreset(){
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Voreinstellungsname");
-            dialog.setResizable(true);
-            dialog.setHeaderText("Hier bitte den Namen ihrer Voreinstellung eingeben");
-            dialog.setContentText("Name ihrer Voreinstellung:");
-            Optional<String> result = dialog.showAndWait();
-            if (result.isPresent() && !savedPresetNames.contains(result.get())){
-                flagGetter();
-                currentPreset = new Preset(currentOptions, result.get());
-                presets.add(currentPreset);
-                savedPresetNames.add(currentPreset.getPresetName());
-                presetNames.setItems(presets);
-                MenuItem newEntry = new MenuItem(currentPreset.getPresetName());
-                GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().add(3, newEntry);
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Voreinstellungsduplikat entdeckt");
-                alert.setHeaderText("Eine Voreinstellung mit dem Namen " + result.get() + " existiert bereits.");
-                alert.setContentText("Bitte wählen sie einen anderen Namen aus.");
-                alert.showAndWait();
-            }
+    private void createNewPreset() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Voreinstellungsname");
+        dialog.setResizable(true);
+        dialog.setHeaderText("Hier bitte den Namen ihrer Voreinstellung eingeben");
+        dialog.setContentText("Name ihrer Voreinstellung:");
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent() && !savedPresetNames.contains(result.get())) {
+            flagGetter();
+            currentPreset = new Preset(currentOptions, result.get());
+            presets.add(currentPreset);
+            savedPresetNames.add(currentPreset.getPresetName());
+            presetNames.setItems(presets);
+            MenuItem newEntry = new MenuItem(currentPreset.getPresetName());
+            GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().add(3, newEntry);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Voreinstellungsduplikat entdeckt");
+            alert.setHeaderText("Eine Voreinstellung mit dem Namen " + result.get() + " existiert bereits.");
+            alert.setContentText("Bitte wählen sie einen anderen Namen aus.");
+            alert.showAndWait();
+        }
     }
 
-    private void flagGetter(){
+    private void flagGetter() {
         settingsJSON.addProperty("diagram_type", choiceBox_diagramType.getSelectionModel().getSelectedItem().toString());
-        currentOptions.setDiagramType((DiagramType)choiceBox_diagramType.getSelectionModel().getSelectedItem());
+        currentOptions.setDiagramType((DiagramType) choiceBox_diagramType.getSelectionModel().getSelectedItem());
         settingsJSON.addProperty("diagram_title", textField_Title.getText());
         currentOptions.setTitle(textField_Title.getText());
         settingsJSON.addProperty("output_device", choiceBox_outputDevice.getSelectionModel().getSelectedItem().toString());
@@ -265,7 +266,7 @@ public class SettingsController extends SVGWizardController implements Initializ
         // TODO: not sure if this works
         currentOptions.setCsvOrientation((CsvOrientation) choiceBox_csvOrientation.getSelectionModel().getSelectedItem());
         settingsJSON.addProperty("csv_type", choiceBox_csvType.getSelectionModel().getSelectedItem().toString());
-        currentOptions.setCsvType((CsvType)choiceBox_csvType.getSelectionModel().getSelectedItem());
+        currentOptions.setCsvType((CsvType) choiceBox_csvType.getSelectionModel().getSelectedItem());
         settingsJSON.addProperty("trendline", choiceBox_trendline.getSelectionModel().getSelectedItem().toString());
         //wtf why u want list of trendlines
         //currentOptions.setTrendLine(choiceBox_trendline.getSelectionModel().getSelectedItem());
@@ -278,9 +279,9 @@ public class SettingsController extends SVGWizardController implements Initializ
         RadioButton selectedRadioButton = (RadioButton) scaleGroup.getSelectedToggle();
         //TODO: scale data implementation in GuiSVGOptions
         settingsJSON.addProperty("scale_data", selectedRadioButton.getText());
-        if(selectedRadioButton.getId().equals("radioBtn_Scale_to_Data")){
+        if (selectedRadioButton.getId().equals("radioBtn_Scale_to_Data")) {
             currentOptions.setAutoScale(true);
-        }else{
+        } else {
             currentOptions.setAutoScale(false);
         }
         //not sure if necessary to implement
@@ -290,21 +291,21 @@ public class SettingsController extends SVGWizardController implements Initializ
         settingsJSON.addProperty("display_area_y_to", textField_displayAreaYto.getText());
 
         settingsJSON.addProperty("gridstyle", choiceBox_gridStyle.getSelectionModel().getSelectedItem().toString());
-        currentOptions.setGridStyle( (GridStyle) choiceBox_gridStyle.getSelectionModel().getSelectedItem());
+        currentOptions.setGridStyle((GridStyle) choiceBox_gridStyle.getSelectionModel().getSelectedItem());
         settingsJSON.addProperty("help_lines_x", textField_helpLinesX.getText());
         currentOptions.setxLines(textField_helpLinesX.getText());
         settingsJSON.addProperty("help_lines_y", textField_helpLinesY.getText());
         currentOptions.setyLines(textField_helpLinesY.getText());
         settingsJSON.addProperty("axis_style", choiceBox_dblaxes.getSelectionModel().getSelectedItem().toString());
-        currentOptions.setAxisStyle( (GuiAxisStyle) choiceBox_dblaxes.getSelectionModel().getSelectedItem());
+        currentOptions.setAxisStyle((GuiAxisStyle) choiceBox_dblaxes.getSelectionModel().getSelectedItem());
         settingsJSON.addProperty("css_type", choiceBox_cssType.getSelectionModel().getSelectedItem().toString());
         currentOptions.setCss(choiceBox_cssType.getSelectionModel().getSelectedItem().toString());
     }
 
-    private void flagSetter(DiagramType dt, Preset p){
+    private void flagSetter(DiagramType dt, Preset p) {
         // diagram
         // can be made dynamic but in the interest of time
-        if(dt.toString() == "FunctionPlot" || dt.toString() == "ScatterPlot" || dt.toString() == "LineChart" || dt.toString() == "Barchart"){
+        if (dt.toString() == "FunctionPlot" || dt.toString() == "ScatterPlot" || dt.toString() == "LineChart" || dt.toString() == "Barchart") {
             GuiSvgOptions options = p.getOptions();
             choiceBox_diagramType.getSelectionModel().select(options.getDiagramType());
             textField_Title.setText(options.getTitle());
@@ -318,9 +319,9 @@ public class SettingsController extends SVGWizardController implements Initializ
             choiceBox_gridStyle.getSelectionModel().select(options.getGridStyle());
             //textField_xAxisTitle.setText(options.getXAxisTitle());
             //textField_yAxistitle.setText(options.getYAxisTitle());
-            if(options.isAutoScale()){
+            if (options.isAutoScale()) {
                 scaleGroup.selectToggle(radioBtn_Scale_to_Data);
-            }else{
+            } else {
                 scaleGroup.selectToggle(radioBtn_customScale);
             }
             //textField_displayAreaXfrom.setText(options.getxRange());
@@ -328,33 +329,33 @@ public class SettingsController extends SVGWizardController implements Initializ
 
             choiceBox_cssType.getSelectionModel().select(options.getCss());
 
-        // function
-        }else{
+            // function
+        } else {
             //TODO
         }
     }
 
     @FXML
-    private void loadPreset(){
+    private void loadPreset() {
         // there are no presets
-        if(presets.size() == 0){
+        if (presets.size() == 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE+100);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE + 100);
             numberOfEdgeCasesFound++;
             alert.setTitle("Fehler in der Matrix");
             alert.setHeaderText("Es gibt keine ladbaren Voreinstellungen!");
             alert.setContentText("Sie haben ihren " + numberOfEdgeCasesFound + ". Edgecase gefunden. Glückwunsch! Finden Sie auch die restlichen?");
             alert.showAndWait();
-        }else if(presetNames.getSelectionModel().getSelectedItem() != null){
+        } else if (presetNames.getSelectionModel().getSelectedItem() != null) {
             System.out.println(presetNames.getSelectionModel().getSelectedItem().getPresetName());
             // is this the right preset?
             Preset loadedPreset = currentPreset;
 
-            flagSetter(loadedPreset.getOptions().getDiagramType(),loadedPreset);
-        // no preset has been chosen out of the list
-        }else{
+            flagSetter(loadedPreset.getOptions().getDiagramType(), loadedPreset);
+            // no preset has been chosen out of the list
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE+100);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE + 100);
             alert.setTitle("Unkritischer Fehler");
             alert.setHeaderText("Welche Voreinstellung möchten Sie denn laden?");
             alert.setContentText("Bitte wählen Sie eine Voreinstellung aus der Liste aus und bestätigen Sie mit dem Laden-Knopf.");
@@ -363,45 +364,47 @@ public class SettingsController extends SVGWizardController implements Initializ
     }
 
     @FXML
-    private void quitToMainMenu(){
+    private void quitToMainMenu() {
         GuiSvgPlott.getInstance().closeWizard();
     }
+
     @FXML
-    private void deletePreset(){
-        if(presets.size() == 0){
+    private void deletePreset() {
+        if (presets.size() == 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE+100);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE + 100);
             alert.setTitle("Fehler in der Matrix");
             alert.setHeaderText("Es gibt keine löschbaren Voreinstellungen!");
             numberOfEdgeCasesFound++;
             alert.setContentText("Aber schön, dass Sie mal getestet haben, ob wir diesen Fall abfangen! Tschüss, bis zum nächsten Edgecase! \nSie haben bisher " + numberOfEdgeCasesFound + " Edgecases gefunden.");
             alert.showAndWait();
-        }else if(presetNames.getSelectionModel().getSelectedItem() != null){
+        } else if (presetNames.getSelectionModel().getSelectedItem() != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Bestätigung erforderlich");
             alert.setHeaderText("Sie löschen hiermit die gewählte Voreinstellung!");
             alert.setContentText("Sind Sie sicher dass Sie " + presetNames.getSelectionModel().getSelectedItem().getPresetName() + " löschen wollen?");
             Optional<ButtonType> result = alert.showAndWait();
 
-            if (result.get() == ButtonType.OK){
+            if (result.get() == ButtonType.OK) {
                 savedPresetNames.remove(presetNames.getSelectionModel().getSelectedItem().getPresetName());
                 presets.remove(presetNames.getSelectionModel().getSelectedItem());
             } else {
-            // ... user chose CANCEL or closed the dialog, hence do nothing
+                // ... user chose CANCEL or closed the dialog, hence do nothing
             }
         }
     }
-    private void jsonLoader(){
+
+    private void jsonLoader() {
 
     }
 
-    private void listViewController(){
+    private void listViewController() {
         //TODO: implement functionality upon clicketyclick
     }
-    private void gridPaneController(){
+
+    private void gridPaneController() {
         //TODO: implement functionality on filling the gridpane
     }
-
 
 
 }

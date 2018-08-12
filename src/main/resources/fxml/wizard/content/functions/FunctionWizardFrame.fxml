@@ -5,10 +5,12 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -122,6 +124,26 @@
                                                    maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
                                                    promptText="%size_of_diagram_height" visible="false"
                                                    GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                                        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                              prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                            <children>
+                                                <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait"
+                                                             mnemonicParsing="false" prefHeight="17.0"
+                                                             text="%radio_portrait" GridPane.valignment="CENTER">
+                                                    <toggleGroup>
+                                                        <ToggleGroup fx:id="togglePageOrientation"/>
+                                                    </toggleGroup>
+                                                </RadioButton>
+                                                <RadioButton fx:id="radioBtn_landscape"
+                                                             accessibleText="%radio_landscape" contentDisplay="RIGHT"
+                                                             mnemonicParsing="false" prefHeight="17.0"
+                                                             text="%radio_landscape"
+                                                             toggleGroup="$togglePageOrientation"/>
+                                            </children>
+                                        </HBox>
+                                        <Label fx:id="label_pageOrientation" contentDisplay="RIGHT"
+                                               maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0"
+                                               text="%label_pageOrientation" GridPane.rowIndex="3"/>
                                     </children>
                                 </GridPane>
                             </Tab>
