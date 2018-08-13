@@ -94,7 +94,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-        super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES);
+        super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES, DiagramType.FunctionPlot);
         this.initiateAllStages();
 
         this.guiSvgOptions.setDiagramType(DiagramType.FunctionPlot);

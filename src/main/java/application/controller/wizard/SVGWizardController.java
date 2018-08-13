@@ -38,6 +38,7 @@ import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.data.Point;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
+import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.styles.Color;
@@ -511,10 +512,15 @@ public class SVGWizardController implements Initializable {
         }
     }
 
-    protected void initiatePagination(final HBox hBox_pagination, final int AMOUNTOFSTAGES) {
+    protected void initiatePagination(final HBox hBox_pagination, final int AMOUNTOFSTAGES, final DiagramType diagramType) {
         this.stageBtns = new ArrayList<>();
         for (int stage = 0; stage < AMOUNTOFSTAGES; stage++) {
             Button stageBtn = new Button(bundle.getString("chart_stage" + stage));
+
+            if (stage == 2 && DiagramType.FunctionPlot.equals(diagramType)) {
+                stageBtn = new Button(bundle.getString("chart_stage" + stage + "Func"));
+            }
+
 //            stageBtn.wrapTextProperty().setValue(true);
             stageBtn.setTextAlignment(TextAlignment.CENTER);
             stageBtn.getStyleClass().add("stageBtn");
