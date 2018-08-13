@@ -88,6 +88,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         integral2 = new SimpleStringProperty("");
         rangeFrom = new SimpleDoubleProperty(-100);
         rangeTo = new SimpleDoubleProperty(100);
+        integralName = new SimpleStringProperty("");
     }
 
     @Override
@@ -137,8 +138,11 @@ public class FunctionWizardFrameController extends SVGWizardController {
         textField_IntegralFunction2.visibleProperty().bind(radioButton_Function2.selectedProperty());
 
         textField_IntegralFunction1.textProperty().addListener((args, oldVal, newVal) -> {
-            integral1.set(newVal);
-            integralOptionBuilder();
+//            integral1.set(newVal);
+//            integralOptionBuilder();
+
+            System.out.println(newVal);
+
         });
 
         textField_IntegralFunction2.textProperty().addListener((args, oldVal, newVal) -> {

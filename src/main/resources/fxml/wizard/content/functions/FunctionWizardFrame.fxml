@@ -147,13 +147,14 @@
                                         <Insets left="10.0" right="10.0" />
                                     </padding>
                                     <children>
+                              <TextField fx:id="textField_IntegralName" accessibleText="Integral Name" GridPane.columnIndex="1" />
+                                        <TextField fx:id="textField_IntegralFunction1" accessibleText="Funktion eins auswählen" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                         <Label text="Funktion 1" GridPane.rowIndex="1">
                                             <padding>
                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                             </padding>
                                         </Label>
-                                        <TextField fx:id="textField_IntegralFunction1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                        <RadioButton mnemonicParsing="false" selected="true" text="x-Achse" GridPane.rowIndex="2">
+                                        <RadioButton accessibleText="Fläche zur X Achse" mnemonicParsing="false" selected="true" text="x-Achse" GridPane.rowIndex="2">
                                             <padding>
                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                             </padding>
@@ -161,12 +162,12 @@
                                                 <ToggleGroup fx:id="integralToggle" />
                                             </toggleGroup>
                                         </RadioButton>
-                                        <RadioButton fx:id="radioButton_Function2" mnemonicParsing="false" text="Funktion 2" toggleGroup="$integralToggle" GridPane.rowIndex="3">
+                                        <RadioButton fx:id="radioButton_Function2" accessibleText="Fläche zu Funtion zwei" mnemonicParsing="false" text="Funktion 2" toggleGroup="$integralToggle" GridPane.rowIndex="3">
                                             <padding>
                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                             </padding>
                                         </RadioButton>
-                                        <TextField fx:id="textField_IntegralFunction2" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        <TextField fx:id="textField_IntegralFunction2" accessibleText="Funktion zwei auswählen" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                         <Label text="Integral">
                                  <padding>
                                     <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
@@ -195,19 +196,18 @@
                                                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                             </padding>
                                         </Label>
-                                        <TextField fx:id="textField_rangeFrom" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                        <TextField fx:id="textField_rangeTo" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                         <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                             <children>
-                                                <RadioButton mnemonicParsing="false" selected="true" text="default">
+                                                <RadioButton accessibleText="Abschnitt voreingestellt" mnemonicParsing="false" selected="true" text="default">
                                                     <toggleGroup>
                                                         <ToggleGroup fx:id="integralRange" />
                                                     </toggleGroup>
                                                 </RadioButton>
-                                                <RadioButton fx:id="radioButton_integralRange" mnemonicParsing="false" text="custom" toggleGroup="$integralRange" />
+                                                <RadioButton fx:id="radioButton_integralRange" accessibleText="Abschnitt auswählen" mnemonicParsing="false" text="custom" toggleGroup="$integralRange" />
                                             </children>
                                         </HBox>
-                              <TextField fx:id="textField_IntegralName" GridPane.columnIndex="1" />
+                                        <TextField fx:id="textField_rangeFrom" accessibleText="Abschnitt Von" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                        <TextField fx:id="textField_rangeTo" accessibleText="Abschnitt bis" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                     </children>
                                 </GridPane>
                             </Tab>
