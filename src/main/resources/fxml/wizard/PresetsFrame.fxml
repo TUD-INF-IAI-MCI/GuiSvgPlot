@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -18,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.SettingsController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.PresetsController">
    <children>
       <BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
@@ -27,7 +26,12 @@
                   <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <buttons>
                         <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT" cancelButton="true" mnemonicParsing="false" onAction="#quitToMainMenu" text="%button_cancel" ButtonBar.buttonData="LEFT" />
+                        <Button fx:id="button_deletePreset" mnemonicParsing="false" onAction="#deletePreset" text="%button_delete" />
+                        <Button fx:id="button_savePreset" layoutX="488.0" layoutY="17.0" mnemonicParsing="false" onAction="#savePreset" text="%button_save" />
                     </buttons>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                     </padding>
                   </ButtonBar>
                </children>
             </AnchorPane>
@@ -278,38 +282,28 @@
          <top>
             <AnchorPane BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="CENTER_LEFT" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox prefHeight="59.0" prefWidth="600.0">
                      <children>
-                        <ComboBox fx:id="combo_Type" layoutX="30.0" layoutY="13.0" maxHeight="-Infinity" prefWidth="200.0" promptText="%combo_title_type" />
-                        <Button fx:id="button_deletePreset" mnemonicParsing="false" onAction="#deletePreset" text="%button_delete" />
-                        <Button fx:id="button_newPreset" mnemonicParsing="false" onAction="#createNewPreset" text="%button_newPreset" />
+                        <Label text="%label_edit_preset">
+                           <VBox.margin>
+                              <Insets bottom="20.0" left="20.0" top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                           <children>
+                              <ComboBox fx:id="combo_Type" layoutX="30.0" layoutY="13.0" maxHeight="-Infinity" prefWidth="200.0" promptText="%combo_title_type" />
+                           </children>
+                           <padding>
+                              <Insets left="20.0" right="20.0" />
+                           </padding>
+                        </HBox>
                      </children>
-                     <padding>
-                        <Insets left="20.0" right="20.0" />
-                     </padding>
-                  </HBox>
+                  </VBox>
                </children>
             </AnchorPane>
          </top>
          <right>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <VBox layoutY="16.0" prefWidth="248.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Label text="%label_saved_presets">
-                           <VBox.margin>
-                              <Insets bottom="10.0" />
-                           </VBox.margin>
-                        </Label>
-                        <ListView fx:id="presetNames" />
-                        <Button fx:id="button_LoadPreset" mnemonicParsing="false" onAction="#loadPreset" text="%label_load_preset" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </VBox>
-               </children>
-            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
          </right>
       </BorderPane>
    </children>

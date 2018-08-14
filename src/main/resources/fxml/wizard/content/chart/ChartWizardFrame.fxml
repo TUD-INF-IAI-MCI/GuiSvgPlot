@@ -19,10 +19,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
-
 <?import org.controlsfx.control.CheckComboBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
             <VBox BorderPane.alignment="CENTER">
@@ -83,12 +82,12 @@
                                         <Label fx:id="label_pageOrientation" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_pageOrientation" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                                         <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                             <children>
-                                                <RadioButton fx:id="radioBtn_portrait" mnemonicParsing="false" prefHeight="17.0" text="%radio_portrait" GridPane.valignment="CENTER" accessibleText="%radio_portrait">
+                                                <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" prefHeight="17.0" text="%radio_portrait" GridPane.valignment="CENTER">
                                                     <toggleGroup>
                                                         <ToggleGroup fx:id="togglePageOrientation" />
                                                     </toggleGroup>
                                                 </RadioButton>
-                                                <RadioButton fx:id="radioBtn_landscape" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_landscape" toggleGroup="$togglePageOrientation" accessibleText="%radio_landscape"/>
+                                                <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_landscape" toggleGroup="$togglePageOrientation" />
                                             </children>
                                         </HBox>
                                         <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram" GridPane.rowIndex="4" />
@@ -179,7 +178,7 @@
                                         <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_mark_data" visible="false" GridPane.rowIndex="3" />
                                         <ChoiceBox fx:id="choiceBox_linepoints" accessibleText="%mark_data_on_line" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                         <Label fx:id="label_pointSymbols_lineChart" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_pointSymbols" visible="false" GridPane.rowIndex="4" />
-                                        <CheckComboBox fx:id="checkComboBox_pointSymbols_lineChart" accessibleText="%label_pointSymbols" accessibleHelp="%help_checkcombobox" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                        <CheckComboBox fx:id="checkComboBox_pointSymbols_lineChart" accessibleHelp="%help_checkcombobox" accessibleText="%label_pointSymbols" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
                                         <!--scatter plot-->
                                         <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="1" />
@@ -193,7 +192,7 @@
                                         <Label fx:id="label_originalPoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_hide_original_points" visible="false" GridPane.rowIndex="4" />
                                         <ChoiceBox fx:id="choiceBox_originalPoints" accessibleText="%label_hide_original_points" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                         <Label fx:id="label_pointSymbols_scatterPlot" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_pointSymbols" visible="false" GridPane.rowIndex="0" />
-                                        <CheckComboBox fx:id="checkComboBox_pointSymbols_scatterPlot" accessibleText="%label_pointSymbols" accessibleHelp="%help_checkcombobox" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                        <CheckComboBox fx:id="checkComboBox_pointSymbols_scatterPlot" accessibleHelp="%help_checkcombobox" accessibleText="%label_pointSymbols" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                                     </children>
                                 </GridPane>
                             </Tab>
@@ -224,12 +223,12 @@
                                         <Label fx:id="label_Autoscale" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_scale_data" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                                         <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                             <children>
-                                                <RadioButton fx:id="radioBtn_autoscale" mnemonicParsing="false" prefHeight="17.0" text="%radio_scale_to_data_area" GridPane.valignment="CENTER" accessibleText="%help_radio_scale_to_data_area">
+                                                <RadioButton fx:id="radioBtn_autoscale" accessibleText="%help_radio_scale_to_data_area" mnemonicParsing="false" prefHeight="17.0" text="%radio_scale_to_data_area" GridPane.valignment="CENTER">
                                                     <toggleGroup>
                                                         <ToggleGroup fx:id="autoScale" />
                                                     </toggleGroup>
                                                 </RadioButton>
-                                                <RadioButton fx:id="radioBtn_customScale" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$autoScale" accessibleText="%help_radio_custom_scale"/>
+                                                <RadioButton fx:id="radioBtn_customScale" accessibleText="%help_radio_custom_scale" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$autoScale" />
                                             </children>
                                         </HBox>
 
@@ -317,7 +316,7 @@
 
 
                                         <Label fx:id="label_colors" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_colors" visible="false" GridPane.rowIndex="2" />
-                                        <CheckComboBox fx:id="checkComboBox_color" accessibleText="%label_colors" accessibleHelp="%help_checkcombobox" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        <CheckComboBox fx:id="checkComboBox_color" accessibleHelp="%help_checkcombobox" accessibleText="%label_colors" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     </children>
                                 </GridPane>
                             </Tab>
@@ -349,6 +348,7 @@
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
+                           <Button fx:id="button_Save_As_Preset" accessibleText="%label_back" layoutX="30.0" layoutY="10.0" mnemonicParsing="false" text="%button_save_as_preset" />
                                     <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back" />
                                     <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next" />
                                     <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create" />

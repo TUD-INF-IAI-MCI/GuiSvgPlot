@@ -1,11 +1,13 @@
 package application.controller.wizard;
 
 import application.GuiSvgPlott;
+import application.controller.PresetsController;
 import application.controller.wizard.chart.ChartWizardFrameController;
 import application.model.Options.CssType;
 import application.model.Options.GuiAxisStyle;
 import application.model.GuiSvgOptions;
 import application.model.Options.PageSize;
+import application.model.Preset;
 import application.service.SvgOptionsService;
 import application.util.SvgOptionsUtil;
 import application.util.TextFieldUtil;
@@ -43,13 +45,11 @@ import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.styles.Color;
 import tud.tangram.svgplot.styles.GridStyle;
 
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class SVGWizardController implements Initializable {
     // start logger
@@ -67,6 +67,8 @@ public class SVGWizardController implements Initializable {
     protected Button button_Cancel;
     @FXML
     protected Button button_Create;
+    @FXML
+    protected Button button_Save_As_Preset;
     @FXML
     public Button button_rerenderPreview;
     //    @FXML
@@ -165,6 +167,9 @@ public class SVGWizardController implements Initializable {
     @FXML
     public ChoiceBox<CsvType> choiceBox_csvType;
 
+    @FXML
+    protected static ObservableList<Preset> presets;
+
     private ObservableList<String> colors;
 
     public VBox vBox_warnings;
@@ -189,6 +194,7 @@ public class SVGWizardController implements Initializable {
     protected TextFieldUtil textFieldUtil = TextFieldUtil.getInstance();
     private ObjectProperty<Range> xRange;
     private ObjectProperty<Range> yRange;
+    protected static ArrayList<String> savedPresetNames = PresetsController.getSavedPresetNames();
 
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -209,6 +215,9 @@ public class SVGWizardController implements Initializable {
         this.initListener();
         this.initOptionListeners();
         this.preProcessContent();
+        if(presets == null){
+            presets = FXCollections.observableArrayList();
+        }
     }
 
     public void setExtended(boolean isExtended) {
@@ -685,6 +694,31 @@ public class SVGWizardController implements Initializable {
         this.button_rerenderPreview.setOnAction(event ->
                 this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg)
         );
+
+        // save as preset
+        this.button_Save_As_Preset.setOnAction(event -> {
+            TextInputDialog dialogue = new TextInputDialog();
+            dialogue.setTitle("Name für Ihre Voreinstellung erforderlich");
+            dialogue.setHeaderText("Bitte geben Sie einen Namen für ihre Voreinstellung ein");
+            dialogue.setContentText("Name der Voreinstellung:");
+            Optional<String> result = dialogue.showAndWait();
+            if(result.get().equals("")){
+                PresetsController.emptyNameAlert();
+            }else if(result.isPresent()){
+                Preset currentPreset = new Preset(guiSvgOptions, result.get(), guiSvgOptions.getDiagramType());
+                presets.add(currentPreset);
+                PresetsController.initSavedPresetNames();
+                System.out.println(savedPresetNames);
+                savedPresetNames.add(currentPreset.getPresetName());
+                MenuItem newEntry = new MenuItem(currentPreset.getPresetName());
+                // 5 most recent entries because it's not "scalable" ladida...
+                if(GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size() < 11){
+                    GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().add(3, newEntry);
+                }
+            }else {
+                PresetsController.duplicateAlert(result);
+            }
+        });
 
     }
 

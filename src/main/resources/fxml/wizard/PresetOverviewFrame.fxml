@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.PresetsController">
+   <children>
+      <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label minWidth="200.0" text="%label_allpresets">
+                     <padding>
+                        <Insets top="70.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets left="50.0" />
+                     </HBox.margin></Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <ButtonBar buttonMinWidth="100.0" prefHeight="100.0">
+                     <buttons>
+                        <Button fx:id="button_newPreset" alignment="CENTER_RIGHT" contentDisplay="RIGHT" minWidth="300.0" mnemonicParsing="false" onAction="#createNewPreset" prefHeight="26.0" text="%button_create_preset" textAlignment="CENTER">
+                           <padding>
+                              <Insets right="50.0" />
+                           </padding>
+                        </Button>
+                     </buttons>
+                     <HBox.margin>
+                        <Insets right="50.0" top="50.0" />
+                     </HBox.margin>
+                  </ButtonBar>
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <TableView fx:id="presetTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn fx:id="table_column_name" maxWidth="250.0" minWidth="100.0" prefWidth="200.0" text="%table_column_name" />
+                <TableColumn fx:id="table_column_date" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="%table_column_date" />
+                 <TableColumn fx:id="table_column_diagram_type" maxWidth="200.0" minWidth="100.0" prefWidth="200.0" text="%table_column_diagram_type" />
+              </columns>
+               <BorderPane.margin>
+                  <Insets bottom="50.0" left="50.0" right="50.0" />
+               </BorderPane.margin>
+            </TableView>
+         </center>
+         <bottom>
+            <AnchorPane prefHeight="40.0" prefWidth="600.0" BorderPane.alignment="TOP_LEFT">
+               <children>
+                  <ButtonBar>
+                     <buttons>
+                        <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT" cancelButton="true" mnemonicParsing="false" onAction="#quitToMainMenu" text="%button_cancel" />
+                     </buttons>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </ButtonBar>
+               </children>
+            </AnchorPane>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>

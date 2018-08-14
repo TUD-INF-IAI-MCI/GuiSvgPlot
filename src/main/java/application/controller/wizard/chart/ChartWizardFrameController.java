@@ -115,7 +115,6 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private CheckComboBox<PointSymbol> checkComboBox_pointSymbols_scatterPlot;
 
-
     /* stage 4 */
     @FXML
     private GridPane stage4;

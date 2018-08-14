@@ -35,6 +35,8 @@ public class RootFrameController implements Initializable {
     }
 
     @FXML
+    private MenuItem menuItem_About;
+    @FXML
     public Menu menu_Presets = new Menu();
 
     @FXML
@@ -49,17 +51,12 @@ public class RootFrameController implements Initializable {
 
     public SVGWizardController svgWizardController;
 
-    public SettingsController settingsController;
+    public PresetsController presetsController;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
-        //TODO: fill menu with previously locally saved presets
-        // dummy preset
-        MenuItem add = new MenuItem("Dummy Preset");
-        // always added above the lowest separatoritem
-        menu_Presets.getItems().add(menu_Presets.getItems().size()-2, add);
     }
 
     public void init() {
@@ -86,6 +83,16 @@ public class RootFrameController implements Initializable {
             } else {
                 alert.close();
             }
+        });
+        menuItem_About.setOnAction(event -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(bundle.getString("menu_help_about_title"));
+            alert.setHeaderText(null);
+            alert.setResizable(true);
+            alert.getDialogPane().setMinSize(400,250);
+
+            alert.setContentText(bundle.getString("menu_help_about_content"));
+            alert.showAndWait();
         });
     }
 
@@ -121,16 +128,17 @@ public class RootFrameController implements Initializable {
     private void startPresetEditor() {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
-        loader.setLocation(getClass().getResource("/fxml/wizard/SettingsFrame.fxml"));
+        loader.setLocation(getClass().getResource("/fxml/wizard/PresetOverviewFrame.fxml"));
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
-            settingsController = loader.getController();
-            //System.out.println(settingsController);
+            presetsController = loader.getController();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 
     private void startWizard(String fxmlPath, boolean isExtended) {
         this.clearMessageLabel();

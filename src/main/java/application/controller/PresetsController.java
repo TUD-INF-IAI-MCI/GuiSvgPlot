@@ -11,11 +11,13 @@ import application.model.Preset;
 import com.google.gson.JsonObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
@@ -27,26 +29,42 @@ import tud.tangram.svgplot.styles.GridStyle;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
-public class SettingsController extends SVGWizardController implements Initializable {
+public class PresetsController extends SVGWizardController implements Initializable {
 
     private ResourceBundle bundle;
-    private ObservableList<Preset> presets;
+    //private static PresetsController instance;
+
     private Preset currentPreset;
     private GuiSvgOptions currentOptions = new GuiSvgOptions(new SvgPlotOptions());
-    private final ToggleGroup sortGroup = new ToggleGroup();
     private final ToggleGroup scaleGroup = new ToggleGroup();
-    private ArrayList<String> savedPresetNames;
+    private static ArrayList<String> savedPresetNames;
     private JsonObject settingsJSON = new JsonObject();
     private ArrayList flags = new ArrayList();
     private int numberOfEdgeCasesFound = 0;
+    private Preset defaultDiagram;
+    private Preset defaultFunction;
+    Image editIcon = new Image(getClass().getResource("/images/editSmall.png").toExternalForm());
+    Image copyIcon = new Image(getClass().getResource("/images/copySmall.png").toExternalForm());
+    Image deleteIcon = new Image(getClass().getResource("/images/deleteSmall.png").toExternalForm());
+
+
 
     @FXML
-    private ListView<Preset> presetNames = new ListView<>();
+    private TableView<Preset> presetTable;
+    @FXML
+    private TableColumn table_column_name;
+    @FXML
+    private TableColumn table_column_date;
+    @FXML
+    private TableColumn table_column_diagram_type;
+    @FXML
+    private TableColumn table_column_edit;
+    @FXML
+    private TableColumn table_column_copy;
+    @FXML
+    private TableColumn table_column_delete;
     @FXML
     private ObservableList<String> chartTypeObservableList = FXCollections.observableArrayList();
     @FXML
@@ -90,18 +108,14 @@ public class SettingsController extends SVGWizardController implements Initializ
 
     @FXML
     private RadioButton radioBtn_Scale_to_Data;
+
     @FXML
     private RadioButton radioBtn_customScale;
-    /*@FXML
-    private RadioButton radioBtn_Ascending;
-    @FXML
-    private RadioButton radioBtn_Descending;*/
     //TODO: make settingsgridpane dynamically filled with help of colleagues
     @FXML
     private GridPane settingsDiagramGridPane = new GridPane();
     @FXML
     private GridPane settingsFunctionGridPane = new GridPane();
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -111,15 +125,14 @@ public class SettingsController extends SVGWizardController implements Initializ
         chartTypeObservableList.add(resources.getString("combo_function"));
         combo_Type.setItems(chartTypeObservableList);
         settingsDiagramGridPane.setVisible(false);
-        //System.out.println(chartTypeObservableList);
         combo_Type.setOnAction(event -> {
-            if (combo_Type.getSelectionModel().getSelectedItem().equals("Diagramm")){
+            if (combo_Type.getSelectionModel().getSelectedItem().equals(bundle.getString("combo_diagram"))){
                 if(!settingsDiagramGridPane.isVisible()){
                     settingsDiagramGridPane.setVisible(true);
                     settingsFunctionGridPane.setVisible(false);
                     initDiagram();
                 }
-            }else if(combo_Type.getSelectionModel().getSelectedItem().equals("Funktion")){
+            }else if(combo_Type.getSelectionModel().getSelectedItem().equals(bundle.getString("combo_function"))){
                 if(!settingsFunctionGridPane.isVisible()){
                     settingsFunctionGridPane.setVisible(true);
                     settingsDiagramGridPane.setVisible(false);
@@ -128,11 +141,15 @@ public class SettingsController extends SVGWizardController implements Initializ
 
             }
         });
+        if(super.presets == null){
+            presets = FXCollections.observableArrayList();
+        }
+        initSavedPresetNames();
+        initPresetTable();
 
-        presets = FXCollections.observableArrayList();
-        savedPresetNames = new ArrayList<>();
-
-        presetNames.setCellFactory(new Callback<ListView<Preset>, ListCell<Preset>>() {
+        int amountOfMenuItems = GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size();
+        GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().get(amountOfMenuItems-1).setDisable(true);
+    /*presetNames.setCellFactory(new Callback<ListView<Preset>, ListCell<Preset>>() {
             @Override
             public ListCell<Preset> call(ListView<Preset> param) {
 
@@ -155,8 +172,142 @@ public class SettingsController extends SVGWizardController implements Initializ
                 return cell;
             }
         });
-        presetNames.setItems(presets);
+        presetNames.setItems(presets);*/
         }
+
+
+
+    private void initPresetTable() {
+        defaultDiagram  = new Preset(new GuiSvgOptions(new SvgPlotOptions()), bundle.getString("default_diagram_preset_name"), DiagramType.LineChart );
+        defaultFunction = new Preset(new GuiSvgOptions(new SvgPlotOptions()), bundle.getString("default_function_preset_name"), DiagramType.FunctionPlot);
+        if(super.presets.size() < 2 ){
+            super.presets.addAll(defaultDiagram, defaultFunction);
+        }
+        table_column_name.setCellValueFactory(new PropertyValueFactory<Preset, String>("presetName"));
+        table_column_date.setCellValueFactory(new PropertyValueFactory<Preset, String>("creationDate"));
+        table_column_diagram_type.setCellValueFactory(new PropertyValueFactory<Preset,String>("diagramType"));
+        addEditButtonToTable();
+        addCopyButtonToTable();
+        addDeleteButtonToTable();
+        presetTable.setItems(super.presets);
+    }
+
+    private void addEditButtonToTable() {
+        TableColumn<Preset, Void> colBtn = new TableColumn();
+        Callback<TableColumn<Preset, Void>, TableCell<Preset, Void>> cellFactory = new Callback<TableColumn<Preset, Void>, TableCell<Preset, Void>>() {
+            @Override
+            public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
+                final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
+
+                    private final Button btn = new Button(bundle.getString("table_column_edit"));
+                    {
+                        //TODO: implement
+                        btn.setOnAction((ActionEvent event) -> {
+                            Object data = getTableView().getItems().get(getIndex());
+                            System.out.println(((Preset) data).getPresetName());
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+        colBtn.setCellFactory(cellFactory);
+        presetTable.getColumns().add(colBtn);
+    }
+
+    private void addCopyButtonToTable() {
+        TableColumn<Preset, Void> colBtn = new TableColumn();
+        Callback<TableColumn<Preset, Void>, TableCell<Preset, Void>> cellFactory = new Callback<TableColumn<Preset, Void>, TableCell<Preset, Void>>() {
+            @Override
+            public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
+                final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
+
+                    private final Button btn = new Button(bundle.getString("table_column_copy"));
+                    {
+                        //TODO: is this even necessary?
+                        btn.setOnAction((ActionEvent event) -> {
+                            System.out.println("copy");
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+        colBtn.setCellFactory(cellFactory);
+        presetTable.getColumns().add(colBtn);
+    }
+
+    private void addDeleteButtonToTable() {
+        TableColumn<Preset, Void> colBtn = new TableColumn();
+        Callback<TableColumn<Preset, Void>, TableCell<Preset, Void>> cellFactory = new Callback<TableColumn<Preset, Void>, TableCell<Preset, Void>>() {
+            @Override
+            public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
+                final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
+                    private final Button btn = new Button(bundle.getString("table_column_delete"));
+                    {
+                            btn.setOnAction((ActionEvent event) -> {
+                                Object data = getTableView().getItems().get(getIndex());
+                                if(((Preset) data).getPresetName().contains("standard") || ((Preset) data).getPresetName().contains("default")){
+                                    Alert alarm = new Alert(Alert.AlertType.ERROR);
+                                    alarm.setTitle("Fehler");
+                                    alarm.setHeaderText("Eine Standardvoreinstellung darf nicht gelöscht werden.");
+                                    alarm.setContentText("Bitte wählen sie eine andere Voreinstellung aus.");
+                                    alarm.showAndWait();
+                                }else{
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                    alert.setTitle("Bestätigung erforderlich");
+                                    alert.setHeaderText("Sie löschen hiermit die gewählte Voreinstellung!");
+                                    alert.setContentText("Sind Sie sicher dass Sie " + ((Preset) data).getPresetName() + " löschen wollen?");
+                                    Optional<ButtonType> result = alert.showAndWait();
+                                    if (result.get() == ButtonType.OK) {
+                                        System.out.println(savedPresetNames);
+                                        savedPresetNames.remove(getTableView().getItems().get(getIndex()).getPresetName());
+                                        System.out.println(savedPresetNames);
+                                        presets.remove(data);
+                                    } else {
+                                        // ... user chose CANCEL or closed the dialog, hence do nothing
+                                    }
+                                }
+                            });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+        colBtn.setCellFactory(cellFactory);
+        presetTable.getColumns().add(colBtn);
+    }
+
 
     private void initDiagram(){
         ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());
@@ -223,34 +374,63 @@ public class SettingsController extends SVGWizardController implements Initializ
         //TODO upon function completeness
         // also: dont know how to put function gridpane alongside in FXML
     }
+    public static void initSavedPresetNames() {
+        if (savedPresetNames == null){
+            savedPresetNames = new ArrayList<>();
+        }
+    }
 
     @FXML
     private void createNewPreset(){
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Voreinstellungsname");
-            dialog.setResizable(true);
-            dialog.setHeaderText("Hier bitte den Namen ihrer Voreinstellung eingeben");
-            dialog.setContentText("Name ihrer Voreinstellung:");
-            Optional<String> result = dialog.showAndWait();
-            if (result.isPresent() && !savedPresetNames.contains(result.get())){
-                flagGetter();
-                currentPreset = new Preset(currentOptions, result.get());
-                presets.add(currentPreset);
-                savedPresetNames.add(currentPreset.getPresetName());
-                presetNames.setItems(presets);
-                MenuItem newEntry = new MenuItem(currentPreset.getPresetName());
+            diagramTypePrompt();
+    }
+
+    private void diagramTypePrompt(){
+        // arbitrary default value
+        DiagramType dt;
+        List<String> choices = new ArrayList<>();
+        choices.add("FunctionPlot");
+        choices.add("ScatterPlot");
+        choices.add("LineChart");
+        choices.add("BarChart");
+        ChoiceDialog<String> dialogue = new ChoiceDialog<>("LineChart", choices);
+        dialogue.setTitle("Diagrammtyp auswählen");
+        dialogue.setResizable(true);
+        dialogue.setHeaderText("Wählen Sie bitte den Diagrammtyp aus");
+        dialogue.setContentText("Diagrammtyp:");
+        Optional<String> result = dialogue.showAndWait();
+        if(result.isPresent()){
+            dt = DiagramType.fromString(result.get());
+            presetNamePrompt(dt);
+        }
+    }
+
+    private void presetNamePrompt(DiagramType dt) {
+        TextInputDialog nameDialogue = new TextInputDialog();
+        nameDialogue.setTitle("Name für Ihre Voreinstellung erforderlich");
+        nameDialogue.setHeaderText("Bitte geben Sie einen Namen für ihre Voreinstellung ein");
+        nameDialogue.setContentText("Name der Voreinstellung:");
+        Optional<String> result = nameDialogue.showAndWait();
+        // TODO: currently only one diagramtype can be saved under a certain name, should maybe be made possible to save two presets with the same name but different diagramtype
+        // also: both
+        if(result.get().equals("")){
+            emptyNameAlert();
+        }else if (result.isPresent() && !savedPresetNames.contains(result.get())){
+            currentPreset = new Preset(currentOptions, result.get(), dt);
+            super.presets.add(currentPreset);
+            savedPresetNames.add(currentPreset.getPresetName());
+            MenuItem newEntry = new MenuItem(currentPreset.getPresetName());
+            // 5 most recent entries because it's not "scalable" ladida...
+            if(GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size() < 11){
                 GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().add(3, newEntry);
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Voreinstellungsduplikat entdeckt");
-                alert.setHeaderText("Eine Voreinstellung mit dem Namen " + result.get() + " existiert bereits.");
-                alert.setContentText("Bitte wählen sie einen anderen Namen aus.");
-                alert.showAndWait();
             }
+        }else{
+            duplicateAlert(result);
+        }
     }
 
     private void flagGetter(){
-        settingsJSON.addProperty("diagram_type", choiceBox_diagramType.getSelectionModel().getSelectedItem().toString());
+        settingsJSON.addProperty("diagram_type", currentPreset.getDiagramType());
         currentOptions.setDiagramType((DiagramType)choiceBox_diagramType.getSelectionModel().getSelectedItem());
         settingsJSON.addProperty("diagram_title", textField_Title.getText());
         currentOptions.setTitle(textField_Title.getText());
@@ -334,7 +514,15 @@ public class SettingsController extends SVGWizardController implements Initializ
         }
     }
 
-    @FXML
+    public boolean doesitcontain(TableView<Preset> table, Preset p){
+        for(Preset item : table.getItems())
+            if (item.getPresetName().equals(p.getPresetName())){
+                return true;
+            }
+        return false;
+    }
+
+    /*@FXML
     private void loadPreset(){
         // there are no presets
         if(presets.size() == 0){
@@ -351,7 +539,7 @@ public class SettingsController extends SVGWizardController implements Initializ
             Preset loadedPreset = currentPreset;
 
             flagSetter(loadedPreset.getOptions().getDiagramType(),loadedPreset);
-        // no preset has been chosen out of the list
+            // no preset has been chosen out of the list
         }else{
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE+100);
@@ -360,13 +548,16 @@ public class SettingsController extends SVGWizardController implements Initializ
             alert.setContentText("Bitte wählen Sie eine Voreinstellung aus der Liste aus und bestätigen Sie mit dem Laden-Knopf.");
             alert.showAndWait();
         }
-    }
-
+    }*/
     @FXML
     private void quitToMainMenu(){
+        GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
         GuiSvgPlott.getInstance().closeWizard();
+        int amountOfMenuItems = GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size();
+        GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().get(amountOfMenuItems-1).setDisable(false);
     }
-    @FXML
+
+    /*@FXML
     private void deletePreset(){
         if(presets.size() == 0){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -390,18 +581,49 @@ public class SettingsController extends SVGWizardController implements Initializ
             // ... user chose CANCEL or closed the dialog, hence do nothing
             }
         }
-    }
+    }*/
+
     private void jsonLoader(){
 
     }
-
     private void listViewController(){
         //TODO: implement functionality upon clicketyclick
     }
+
     private void gridPaneController(){
         //TODO: implement functionality on filling the gridpane
     }
 
+    // TODO: needs some kind of error handling
+    public Preset presetLoader(String presetName){
+        Preset queriedPreset;
+        for (Preset p : presets) {
+            if (p.getPresetName() == presetName){
+                queriedPreset = p;
+                return queriedPreset;
+            }
+        }
+        return null;
+    }
 
 
+    public static ArrayList<String> getSavedPresetNames() {
+        return savedPresetNames;
+    }
+
+    public static void duplicateAlert(Optional o){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Voreinstellungsduplikat entdeckt");
+        alert.setHeaderText("Eine Voreinstellung mit dem Namen " + o.get() + " existiert bereits.");
+        alert.setContentText("Bitte wählen sie einen anderen Namen aus.");
+        alert.showAndWait();
+    }
+
+    public static void emptyNameAlert(){
+        Alert alarm = new Alert(Alert.AlertType.ERROR);
+        alarm.setTitle("Leerer Voreinstellungsname entdeckt");
+        alarm.setHeaderText("Der Name der Voreinstellung muss mindestens einen Buchstaben lang sein.");
+        alarm.setContentText("Bitte wählen sie einen Namen aus.");
+        alarm.showAndWait();
+    }
 }
