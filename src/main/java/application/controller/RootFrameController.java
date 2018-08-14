@@ -63,26 +63,30 @@ public class RootFrameController implements Initializable {
         button_StartDiagram.setOnAction(this::startDiagram);
         button_StartFunction.setOnAction(event -> {
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-            alert.setHeaderText("Function Wizard Mode");
-            alert.setTitle("Choose Function Wizard Mode");
-            alert.setContentText("Simple will be faster, Extended will be more sophisticated");
+            startFunction(true);
 
-            ButtonType buttonTypeSimple = new ButtonType("Simple");
-            ButtonType buttonTypeExtended = new ButtonType("Extended");
-            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-            alert.getButtonTypes().setAll(buttonTypeSimple, buttonTypeExtended, buttonTypeCancel);
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == buttonTypeSimple) {
-                startFunction(false);
-            } else if (result.get() == buttonTypeExtended) {
-                startFunction(true);
-            } else {
-                alert.close();
-            }
+//            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//
+//            alert.setHeaderText("Function Wizard Mode");
+//            alert.setTitle("Choose Function Wizard Mode");
+//            alert.setContentText("Simple will be faster, Extended will be more sophisticated");
+//
+//            ButtonType buttonTypeSimple = new ButtonType("Simple");
+//            ButtonType buttonTypeExtended = new ButtonType("Extended");
+//            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+//
+//            alert.getButtonTypes().setAll(buttonTypeSimple, buttonTypeExtended, buttonTypeCancel);
+//
+//            Optional<ButtonType> result = alert.showAndWait();
+//            if (result.get() == buttonTypeSimple) {
+//                startFunction(true);
+//            } else if (result.get() == buttonTypeExtended) {
+//                startFunction(true);
+//            } else {
+//                alert.close();
+//            }
         });
         menuItem_About.setOnAction(event -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -120,7 +124,7 @@ public class RootFrameController implements Initializable {
     }
 
     @FXML
-    private void startFunctionDefaultPreset(){
+    private void startFunctionDefaultPreset() {
         startWizard("/fxml/wizard/content/functions/FunctionWizardFrame.fxml", false);
     }
 

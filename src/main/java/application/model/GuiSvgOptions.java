@@ -16,6 +16,7 @@ import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.plotting.Function;
+import tud.tangram.svgplot.plotting.IntegralPlotSettings;
 import tud.tangram.svgplot.plotting.line.LineStyle;
 import tud.tangram.svgplot.plotting.point.PointSymbol;
 import tud.tangram.svgplot.plotting.texture.Texture;
@@ -46,6 +47,8 @@ public class GuiSvgOptions {
     private ObjectProperty<LinePointsOption> linePointsOption;
     private ObjectProperty<GridStyle> gridStyle;
     private ObjectProperty<GuiAxisStyle> axisStyle;
+    private ObjectProperty<IntegralPlotSettings> integral;
+
 
     private BooleanProperty pi;
     private BooleanProperty autoScale;
@@ -84,6 +87,7 @@ public class GuiSvgOptions {
         this.linePointsOption = new SimpleObjectProperty<>(LinePointsOption.getLinePointsOption(this.options.getShowLinePoints(), options.isPointsBorderless()));
         this.gridStyle = new SimpleObjectProperty<>(GridStyle.NONE);
         this.axisStyle = new SimpleObjectProperty<>(GuiAxisStyle.Default);
+        this.integral = new SimpleObjectProperty<>(this.options.getIntegral());
         initSimpleObjectListeners();
 
 
@@ -260,7 +264,9 @@ public class GuiSvgOptions {
     }
 
     private void setFunctionPlotDefaultOptions() {
-        // TODO
+        integral.addListener((args, oldVal, newVal) -> {
+            options.setIntegral(newVal);
+        });
     }
 
     private void setLineChartDefaultOptions() {
@@ -268,7 +274,7 @@ public class GuiSvgOptions {
             this.gridStyle.set(GridStyle.FULL);
         }
         this.pointSymbols.add(PointSymbol.dot);
-        if (this.lineStyles.size() == 0 ){
+        if (this.lineStyles.size() == 0) {
             this.lineStyles.addAll(LineStyle.getByOutputDeviceOrderedById(this.outputDevice.get()));
         }
     }
@@ -654,9 +660,17 @@ public class GuiSvgOptions {
         this.lineStyles = lineStyles;
     }
 
+    public void setIntegral(IntegralPlotSettings value) {
+        this.integral.set(value);
+    }
+
+    public IntegralPlotSettings getIntegral() {
+        return this.integral.get();
+    }
+
 
     public void updatePointSpecificOptions() {
-        if(this.diagramType.get() == DiagramType.ScatterPlot) {
+        if (this.diagramType.get() == DiagramType.ScatterPlot) {
             if (this.options.getPoints() != null && this.options.getPoints().size() > 0) {
                 if (this.pointSymbols.size() == 0 || this.pointSymbols.equals(PointSymbol.getOrdered())) {
                     this.pointSymbols.clear();

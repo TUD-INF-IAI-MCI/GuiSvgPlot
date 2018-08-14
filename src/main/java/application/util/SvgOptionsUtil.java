@@ -35,7 +35,7 @@ public class SvgOptionsUtil {
     public StringConverter<DiagramType> getDiagramTypeStringConverter() {
         return new StringConverter<DiagramType>() {
             @Override
-            public String toString(DiagramType diagramType){
+            public String toString(DiagramType diagramType) {
                 return bundle.getString("diagramType_" + diagramType.toString().toLowerCase());
             }
 
@@ -61,7 +61,7 @@ public class SvgOptionsUtil {
         return new StringConverter<PageSize>() {
             @Override
             public String toString(PageSize pageSize) {
-                if(pageSize == PageSize.CUSTOM) {
+                if (pageSize == PageSize.CUSTOM) {
                     return bundle.getString("radio_custom_scale");
                 }
                 return pageSize.getName();
@@ -81,23 +81,23 @@ public class SvgOptionsUtil {
     }
 
     public StringConverter<LinePointsOption> getLinePointsOptionStringConverter() {
-       return new StringConverter<LinePointsOption>() {
-           @Override
-           public String toString(LinePointsOption linePointsOption) {
-               return bundle.getString("linepointsoption_" + linePointsOption.toString());
-           }
+        return new StringConverter<LinePointsOption>() {
+            @Override
+            public String toString(LinePointsOption linePointsOption) {
+                return bundle.getString("linepointsoption_" + linePointsOption.toString());
+            }
 
-           @Override
-           public LinePointsOption fromString(String string) {
-               LinePointsOption linePointsOption = LinePointsOption.Hide;
-               for (LinePointsOption lpo : FXCollections.observableArrayList(LinePointsOption.values())) {
-                   if (this.toString(lpo).equals(string)) {
-                       linePointsOption = lpo;
-                   }
-               }
-               return linePointsOption;
-           }
-       };
+            @Override
+            public LinePointsOption fromString(String string) {
+                LinePointsOption linePointsOption = LinePointsOption.Hide;
+                for (LinePointsOption lpo : FXCollections.observableArrayList(LinePointsOption.values())) {
+                    if (this.toString(lpo).equals(string)) {
+                        linePointsOption = lpo;
+                    }
+                }
+                return linePointsOption;
+            }
+        };
     }
 
     public StringConverter<GuiAxisStyle> getAxisStyleStringConverter() {
@@ -321,7 +321,7 @@ public class SvgOptionsUtil {
         };
     }
 
-    public StringConverter<Texture> getTextureStringConverter(){
+    public StringConverter<Texture> getTextureStringConverter() {
         return new StringConverter<Texture>() {
             @Override
             public String toString(Texture texture) {
@@ -340,6 +340,7 @@ public class SvgOptionsUtil {
             }
         };
     }
+
     /**
      * Sets the {@link ResourceBundle}
      *

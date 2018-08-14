@@ -141,7 +141,7 @@ public class ChartWizardFrameController extends SVGWizardController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-        super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES);
+        super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES, null);
         this.initiateAllStages();
         this.initOptionListeners();
     }
@@ -254,7 +254,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_linepoints.getSelectionModel().select(this.guiSvgOptions.getLinePointsOption());
         this.choiceBox_linepoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             guiSvgOptions.setLinePointsOption(newValue);
-            switch (newValue){
+            switch (newValue) {
                 case Hide:
                     hide(label_pointSymbols_lineChart, checkComboBox_pointSymbols_lineChart);
                     break;
@@ -300,7 +300,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_thirdLineStyle.setItems(lineStyleObservableList);
         this.choiceBox_thirdLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
         this.choiceBox_thirdLineStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (this.lineStyles.get(2) != newValue && newValue != null){
+            if (this.lineStyles.get(2) != newValue && newValue != null) {
                 this.lineStyles.set(2, newValue);
             }
         });
@@ -438,9 +438,9 @@ public class ChartWizardFrameController extends SVGWizardController {
         toggleVisibility(show, label_firstLineStyle, choiceBox_firstLineStyle);
         toggleVisibility(show, label_secondLineStyle, choiceBox_secondLineStyle);
         toggleVisibility(show, label_thirdLineStyle, choiceBox_thirdLineStyle);
-        if (!show){
+        if (!show) {
             hide(label_pointSymbols_lineChart, checkComboBox_pointSymbols_lineChart);
-        }else if (this.guiSvgOptions.getLinePointsOption().isShowLinePoints()){
+        } else if (this.guiSvgOptions.getLinePointsOption().isShowLinePoints()) {
             show(label_pointSymbols_lineChart, checkComboBox_pointSymbols_lineChart);
         }
     }
@@ -480,7 +480,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.guiSvgOptions.getLineStyles().addListener(new ListChangeListener<LineStyle>() {
             @Override
             public void onChanged(final Change<? extends LineStyle> c) {
-                if(!guiSvgOptions.getLineStyles().isEmpty() && guiSvgOptions.getLineStyles().size() >= 3) {
+                if (!guiSvgOptions.getLineStyles().isEmpty() && guiSvgOptions.getLineStyles().size() >= 3) {
                     LineStyle[] lineStylesArray = LineStyle.getByOutputDeviceOrderedById(guiSvgOptions.getOutputDevice());
                     ObservableList<LineStyle> lineStyleObservableList = FXCollections.observableArrayList(lineStylesArray);
 
@@ -502,8 +502,8 @@ public class ChartWizardFrameController extends SVGWizardController {
     }
 
 
-    private void setValueToIndex(ObservableList<String> trendline, int index, String newValue){
-        if (trendline.size() > index){
+    private void setValueToIndex(ObservableList<String> trendline, int index, String newValue) {
+        if (trendline.size() > index) {
             trendline.set(index, newValue);
         } else {
             trendline.add(index, newValue);

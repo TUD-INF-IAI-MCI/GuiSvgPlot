@@ -1,21 +1,16 @@
 package application.controller.wizard.functions;
 
 import application.controller.wizard.SVGWizardController;
-import application.model.Options.LinePointsOption;
-import application.model.Options.SortOrder;
-import application.model.Options.TrendlineAlgorithm;
-import application.model.Options.VisibilityOfDataPoints;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import tud.tangram.svgplot.data.sorting.SortingType;
+import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.options.DiagramType;
-import tud.tangram.svgplot.styles.BarAccumulationStyle;
-import tud.tangram.svgplot.styles.GridStyle;
+import tud.tangram.svgplot.plotting.IntegralPlotSettings;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -23,6 +18,7 @@ import java.util.ResourceBundle;
 public class FunctionWizardFrameController extends SVGWizardController {
 
     private static final int AMOUNTOFSTAGES = 6;
+
 
     /*Begin: FXML Nodes*/
 
@@ -37,6 +33,34 @@ public class FunctionWizardFrameController extends SVGWizardController {
     /* stage 3 */
     @FXML
     private GridPane stage3;
+
+    @FXML
+    private TextField textField_IntegralFunction1;
+
+    @FXML
+    private TextField textField_IntegralFunction2;
+
+    @FXML
+    private RadioButton radioButton_Function2;
+
+    @FXML
+    private TextField textField_rangeFrom;
+
+    @FXML
+    private TextField textField_rangeTo;
+
+    @FXML
+    private RadioButton radioButton_integralRange;
+
+    @FXML
+    private Label label_RangeFrom;
+
+    @FXML
+    private Label label_RangeTo;
+
+    @FXML
+    private TextField textField_IntegralName;
+
 
     /* stage 4 */
     @FXML
@@ -53,14 +77,24 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
     /*End: FXML Nodes*/
 
-    public FunctionWizardFrameController() {
+    private SimpleStringProperty integral1;
+    private SimpleStringProperty integral2;
+    private SimpleDoubleProperty rangeFrom;
+    private SimpleDoubleProperty rangeTo;
+    private SimpleStringProperty integralName;
 
+    public FunctionWizardFrameController() {
+        integral1 = new SimpleStringProperty("");
+        integral2 = new SimpleStringProperty("");
+        rangeFrom = new SimpleDoubleProperty(-100);
+        rangeTo = new SimpleDoubleProperty(100);
+        integralName = new SimpleStringProperty("");
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-        super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES);
+        super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES, DiagramType.FunctionPlot);
         this.initiateAllStages();
 
         this.guiSvgOptions.setDiagramType(DiagramType.FunctionPlot);
@@ -100,6 +134,36 @@ public class FunctionWizardFrameController extends SVGWizardController {
      */
     private void initStage3() {
 
+
+        textField_IntegralFunction2.visibleProperty().bind(radioButton_Function2.selectedProperty());
+
+        textField_IntegralFunction1.textProperty().addListener((args, oldVal, newVal) -> {
+//            integral1.set(newVal);
+//            integralOptionBuilder();
+
+            System.out.println(newVal);
+
+        });
+
+        textField_IntegralFunction2.textProperty().addListener((args, oldVal, newVal) -> {
+            if (textField_IntegralFunction2.isVisible())
+                integral2.set(newVal);
+            integralOptionBuilder();
+        });
+
+        radioButton_Function2.visibleProperty().addListener(args -> {
+            integral2.set("y=0");
+            integralOptionBuilder();
+        });
+
+
+        textField_rangeFrom.visibleProperty().bind(radioButton_integralRange.selectedProperty());
+        textField_rangeTo.visibleProperty().bind(radioButton_integralRange.selectedProperty());
+        label_RangeFrom.visibleProperty().bind(radioButton_integralRange.selectedProperty());
+        label_RangeTo.visibleProperty().bind(radioButton_integralRange.selectedProperty());
+
+        integralName.bind(textField_IntegralName.textProperty());
+
     }
 
     /**
@@ -121,6 +185,21 @@ public class FunctionWizardFrameController extends SVGWizardController {
      */
     private void initStage6() {
         super.initStylingFieldListeners();
+    }
+
+    private void integralOptionBuilder() {
+
+
+        //FIXME
+        int f1 = 1;
+        int f2 = 2;
+        double from = -100;
+        double to = 100;
+        String name = "integral";
+
+        IntegralPlotSettings integalSettings = new IntegralPlotSettings(f1, f2, name, new Range(from, to));
+        guiSvgOptions.setIntegral(integalSettings);
+
     }
 
 
