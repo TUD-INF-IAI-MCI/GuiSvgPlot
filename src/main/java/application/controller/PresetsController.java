@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
@@ -197,6 +198,7 @@ public class PresetsController extends SVGWizardController implements Initializa
             public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
                 final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
 
+                    //private final Button btn = new Button("", new ImageView(editIcon));
                     private final Button btn = new Button(bundle.getString("table_column_edit"));
                     {
                         //TODO: implement
@@ -230,15 +232,17 @@ public class PresetsController extends SVGWizardController implements Initializa
             public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
                 final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
 
+                    //private final Button btn = new Button("", new ImageView(copyIcon));
                     private final Button btn = new Button(bundle.getString("table_column_copy"));
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Object data = getTableView().getItems().get(getIndex());
                             System.out.println(((Preset) data).getDiagramType());
                             System.out.println(((Preset) data).getOptions().getDiagramType());
-                            //Preset tempPreset = new Preset(((Preset) data).getOptions(), ((Preset) data).getPresetName()+ " (Kopie)", ((Preset) data).getDiagramType());
-                            //presets.add(tempPreset);
-                            //savedPresetNames.add(tempPreset.getPresetName());
+                            //TODO: why is options null?
+                            Preset tempPreset = new Preset(((Preset) data).getOptions(), ((Preset) data).getPresetName()+ " (Kopie)", ((Preset) data).getOptions().getDiagramType());
+                            presets.add(tempPreset);
+                            savedPresetNames.add(tempPreset.getPresetName());
                         });
                     }
 
@@ -265,6 +269,7 @@ public class PresetsController extends SVGWizardController implements Initializa
             @Override
             public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
                 final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
+                    //private final Button btn = new Button("", new ImageView(deleteIcon));
                     private final Button btn = new Button(bundle.getString("table_column_delete"));
                     {
                             btn.setOnAction((ActionEvent event) -> {
