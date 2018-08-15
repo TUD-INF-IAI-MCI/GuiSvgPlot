@@ -42,7 +42,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     private static ArrayList<String> savedPresetNames;
     private JsonObject settingsJSON = new JsonObject();
     private ArrayList flags = new ArrayList();
-    private int numberOfEdgeCasesFound = 0;
     private Preset defaultDiagram;
     private Preset defaultFunction;
     Image editIcon = new Image(getClass().getResource("/images/editSmall.png").toExternalForm());
@@ -120,7 +119,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
-        // can potentially cause problems upon i18n implementations, see this.line+7 and this.line+13
         chartTypeObservableList.add(resources.getString("combo_diagram"));
         chartTypeObservableList.add(resources.getString("combo_function"));
         combo_Type.setItems(chartTypeObservableList);
@@ -234,9 +232,13 @@ public class PresetsController extends SVGWizardController implements Initializa
 
                     private final Button btn = new Button(bundle.getString("table_column_copy"));
                     {
-                        //TODO: is this even necessary?
                         btn.setOnAction((ActionEvent event) -> {
-                            System.out.println("copy");
+                            Object data = getTableView().getItems().get(getIndex());
+                            System.out.println(((Preset) data).getDiagramType());
+                            System.out.println(((Preset) data).getOptions().getDiagramType());
+                            //Preset tempPreset = new Preset(((Preset) data).getOptions(), ((Preset) data).getPresetName()+ " (Kopie)", ((Preset) data).getDiagramType());
+                            //presets.add(tempPreset);
+                            //savedPresetNames.add(tempPreset.getPresetName());
                         });
                     }
 
@@ -412,7 +414,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         nameDialogue.setContentText("Name der Voreinstellung:");
         Optional<String> result = nameDialogue.showAndWait();
         // TODO: currently only one diagramtype can be saved under a certain name, should maybe be made possible to save two presets with the same name but different diagramtype
-        // also: both
         if(result.get().equals("")){
             emptyNameAlert();
         }else if (result.isPresent() && !savedPresetNames.contains(result.get())){
@@ -512,14 +513,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         }else{
             //TODO
         }
-    }
-
-    public boolean doesitcontain(TableView<Preset> table, Preset p){
-        for(Preset item : table.getItems())
-            if (item.getPresetName().equals(p.getPresetName())){
-                return true;
-            }
-        return false;
     }
 
     /*@FXML
