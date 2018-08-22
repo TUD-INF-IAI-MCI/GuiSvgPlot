@@ -71,6 +71,8 @@ public class SVGWizardController implements Initializable {
     @FXML
     protected Button button_Save_As_Preset;
     @FXML
+    protected Button button_Edit_Preset;
+    @FXML
     public Button button_rerenderPreview;
     //    @FXML
 //    protected Label label_Headline;
@@ -195,7 +197,6 @@ public class SVGWizardController implements Initializable {
     protected TextFieldUtil textFieldUtil = TextFieldUtil.getInstance();
     private ObjectProperty<Range> xRange;
     private ObjectProperty<Range> yRange;
-    protected static ArrayList<String> savedPresetNames = PresetsController.getSavedPresetNames();
 
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -216,6 +217,7 @@ public class SVGWizardController implements Initializable {
         this.initListener();
         this.initOptionListeners();
         this.preProcessContent();
+        initSaveAsPreset();
         if(presets == null){
             presets = FXCollections.observableArrayList();
         }
@@ -701,8 +703,19 @@ public class SVGWizardController implements Initializable {
                 this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg)
         );
 
-        // save as preset
-        this.button_Save_As_Preset.setOnAction(event -> {
+
+
+
+    }
+
+    /**
+     * initializes the preset save button.
+     * upon calling, asks the user for the type and name of the presets including input validation and duplicate checking.
+     */
+    // save as preset
+    protected void initSaveAsPreset(){
+        //button_Save_As_Preset = new Button();
+        button_Save_As_Preset.setOnAction(event -> {
             TextInputDialog dialogue = new TextInputDialog();
             dialogue.setTitle("Name für Ihre Voreinstellung erforderlich");
             dialogue.setHeaderText("Bitte geben Sie einen Namen für ihre Voreinstellung ein");
@@ -710,22 +723,18 @@ public class SVGWizardController implements Initializable {
             Optional<String> result = dialogue.showAndWait();
             if(result.get().equals("")){
                 PresetsController.emptyNameAlert();
-            }else if(result.isPresent()){
+            }else if(result.isPresent() && !presets.stream().map(p -> p.getPresetName()).anyMatch(n -> n.equals(result.get()))){
                 Preset currentPreset = new Preset(guiSvgOptions, result.get(), guiSvgOptions.getDiagramType());
                 presets.add(currentPreset);
-                PresetsController.initSavedPresetNames();
-                System.out.println(savedPresetNames);
-                savedPresetNames.add(currentPreset.getPresetName());
                 MenuItem newEntry = new MenuItem(currentPreset.getPresetName());
                 // 5 most recent entries because it's not "scalable" ladida...
                 if(GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size() < 11){
                     GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().add(3, newEntry);
                 }
-            }else {
+            }else{
                 PresetsController.duplicateAlert(result);
             }
         });
-
     }
 
     public Glyph getWarnIcon() {

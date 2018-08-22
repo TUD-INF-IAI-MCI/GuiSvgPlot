@@ -1,18 +1,20 @@
 package application.controller.wizard.functions;
 
+import application.GuiSvgPlott;
+import application.controller.PresetsController;
 import application.controller.wizard.SVGWizardController;
+import application.model.Preset;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.plotting.IntegralPlotSettings;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class FunctionWizardFrameController extends SVGWizardController {
@@ -98,7 +100,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         this.initiateAllStages();
 
         this.guiSvgOptions.setDiagramType(DiagramType.FunctionPlot);
-
+        super.initSaveAsPreset();
     }
 
 

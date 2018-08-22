@@ -4,7 +4,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import tud.tangram.svgplot.options.DiagramType;
 
-import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

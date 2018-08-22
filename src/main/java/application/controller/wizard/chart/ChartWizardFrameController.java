@@ -1,17 +1,18 @@
 package application.controller.wizard.chart;
 
+import application.GuiSvgPlott;
+import application.controller.PresetsController;
 import application.controller.wizard.SVGWizardController;
 import application.model.Options.LinePointsOption;
 import application.model.Options.SortOrder;
 import application.model.Options.TrendlineAlgorithm;
 import application.model.Options.VisibilityOfDataPoints;
+import application.model.Preset;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import org.controlsfx.control.CheckComboBox;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ChartWizardFrameController extends SVGWizardController {
@@ -144,6 +146,8 @@ public class ChartWizardFrameController extends SVGWizardController {
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES, null);
         this.initiateAllStages();
         this.initOptionListeners();
+        super.initSaveAsPreset();
+
     }
 
 
@@ -500,8 +504,6 @@ public class ChartWizardFrameController extends SVGWizardController {
             }
         });
     }
-
-
     private void setValueToIndex(ObservableList<String> trendline, int index, String newValue) {
         if (trendline.size() > index) {
             trendline.set(index, newValue);

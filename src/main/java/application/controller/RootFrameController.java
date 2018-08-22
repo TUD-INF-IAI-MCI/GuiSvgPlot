@@ -129,14 +129,27 @@ public class RootFrameController implements Initializable {
     }
 
     @FXML
-    private void startPresetEditor() {
+    private void startPresetOverview() {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
         loader.setLocation(getClass().getResource("/fxml/wizard/PresetOverviewFrame.fxml"));
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
-            presetsController = loader.getController();
+            //presetsController = loader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void startPresetEditor(){
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+        loader.setLocation(getClass().getResource("/fxml/wizard/PresetEditorFrame.fxml"));
+        try {
+            center = borderPane_Content.getCenter();
+            borderPane_Content.setCenter(loader.load());
+            //presetsController = loader.getController();
         } catch (IOException e) {
             e.printStackTrace();
         }
