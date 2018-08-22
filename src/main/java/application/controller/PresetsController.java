@@ -13,9 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -31,7 +29,6 @@ import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.styles.GridStyle;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -46,10 +43,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     private ArrayList flags = new ArrayList();
     private Preset defaultDiagram;
     private Preset defaultFunction;
-    private Node center;
     Image editIcon = new Image(getClass().getResource("/images/editSmall.png").toExternalForm());
     Image copyIcon = new Image(getClass().getResource("/images/copySmall.png").toExternalForm());
     Image deleteIcon = new Image(getClass().getResource("/images/deleteSmall.png").toExternalForm());
+    DiagramType.DiagramTypeConverter converter = new DiagramType.DiagramTypeConverter();
 
 
 
@@ -101,15 +98,12 @@ public class PresetsController extends SVGWizardController implements Initializa
     private TextField textField_helpLinesX = new TextField();
     @FXML
     private TextField textField_helpLinesY = new TextField();
-    @FXML
-    private HBox overviewUpperHBox;
 
     @FXML
     private RadioButton radioBtn_Scale_to_Data;
 
     @FXML
     private RadioButton radioBtn_customScale;
-    //TODO: make settingsgridpane dynamically filled with help of colleagues
     @FXML
     private GridPane settingsDiagramGridPane = new GridPane();
     @FXML
@@ -117,41 +111,29 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private BorderPane overViewBorderPane;
     @FXML
-    private BorderPane editorBorderPane;
+    private BorderPane editorDiagramBorderPane;
+    @FXML
+    private BorderPane editorFunctionBorderPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
-        chartTypeObservableList.add(resources.getString("diagramType_scatterplot"));
-        chartTypeObservableList.add(resources.getString("diagramType_linechart"));
-        chartTypeObservableList.add(resources.getString("diagramType_barchart"));
-        chartTypeObservableList.add(resources.getString("function_plot"));
+        chartTypeObservableList.add(resources.getString("combo_diagram"));
+        chartTypeObservableList.add(resources.getString("combo_function"));
         combo_Type.setItems(chartTypeObservableList);
         settingsDiagramGridPane.setVisible(false);
         combo_Type.setOnAction(event -> {
-            if (combo_Type.getSelectionModel().getSelectedItem().equals(bundle.getString("diagramType_barchart"))){
+            if (combo_Type.getSelectionModel().getSelectedItem().equals(bundle.getString("combo_diagram"))){
                 if(!settingsDiagramGridPane.isVisible()){
                     settingsDiagramGridPane.setVisible(true);
                     settingsFunctionGridPane.setVisible(false);
                     initDiagram();
                 }
-            }else if(combo_Type.getSelectionModel().getSelectedItem().equals(bundle.getString("function_plot"))) {
+            }else if(combo_Type.getSelectionModel().getSelectedItem().equals(bundle.getString("combo_function"))) {
                 if (!settingsFunctionGridPane.isVisible()) {
                     settingsFunctionGridPane.setVisible(true);
                     settingsDiagramGridPane.setVisible(false);
                     initFunction();
-                }
-            }else if(combo_Type.getSelectionModel().getSelectedItem().equals(bundle.getString("diagramType_scatterplot"))) {
-                if(!settingsDiagramGridPane.isVisible()){
-                    settingsDiagramGridPane.setVisible(true);
-                    settingsFunctionGridPane.setVisible(false);
-                    initDiagram();
-                }
-            }else if(combo_Type.getSelectionModel().getSelectedItem().equals(bundle.getString("diagramType_linechart"))) {
-                if(!settingsDiagramGridPane.isVisible()){
-                    settingsDiagramGridPane.setVisible(true);
-                    settingsFunctionGridPane.setVisible(false);
-                    initDiagram();
                 }
             }
         });
@@ -215,18 +197,22 @@ public class PresetsController extends SVGWizardController implements Initializa
             public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
                 final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
 
-                    //private final Button btn = new Button("", new ImageView(editIcon));
                     private final Button btn = new Button(bundle.getString("table_column_edit"));
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Object data = getTableView().getItems().get(getIndex());
                             loadPreset(((Preset) data).getPresetName());
                             //hide current stuff
-                            //presetTable.setVisible(false);
+                            presetTable.setVisible(false);
                             overViewBorderPane.setVisible(false);
                             //show settings stuff
-                            editorBorderPane.setVisible(true);
-                            combo_Type.setValue(((Preset) data).getDiagramType());
+                            if(converter.convert(((Preset) data).getDiagramType()) == DiagramType.FunctionPlot){
+                                combo_Type.setValue(bundle.getString("combo_function"));
+                                editorFunctionBorderPane.setVisible(true);
+                            }else{
+                                combo_Type.setValue(bundle.getString("combo_diagram"));
+                                editorDiagramBorderPane.setVisible(true);
+                            }
                         });
                     }
 
@@ -259,12 +245,10 @@ public class PresetsController extends SVGWizardController implements Initializa
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Object data = getTableView().getItems().get(getIndex());
-                            DiagramType.DiagramTypeConverter converter = new DiagramType.DiagramTypeConverter();
                             Preset tempPreset = new Preset(((Preset) data).getOptions(), ((Preset) data).getPresetName()+ " (Kopie)", converter.convert(((Preset) data).getDiagramType()));
                             presets.add(tempPreset);
                         });
                     }
-
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -332,7 +316,17 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void initDiagram(){
         ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());
         choiceBox_diagramType.setItems(diagramTypeObservableList);
-        choiceBox_diagramType.getSelectionModel().select(0);
+        DiagramType dt = converter.convert(currentPreset.getDiagramType());
+        System.out.println(diagramTypeObservableList);
+        System.out.println(dt);
+        switch(dt){
+            case ScatterPlot:
+                choiceBox_diagramType.getSelectionModel().select(1);
+            case LineChart:
+                choiceBox_diagramType.getSelectionModel().select(3);
+            case BarChart:
+                choiceBox_diagramType.getSelectionModel().select(2);
+        }
         flags.add(choiceBox_diagramType);
         ObservableList<OutputDevice> outputDevices = FXCollections.observableArrayList(OutputDevice.values());
         choiceBox_outputDevice.setItems(outputDevices);
@@ -391,8 +385,8 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
     private void initFunction(){
-        //TODO upon function completeness
-        // also: dont know how to put function gridpane alongside in FXML
+
+
     }
 
 
@@ -556,13 +550,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void jsonLoader(){
 
     }
-    private void listViewController(){
-        //TODO: implement functionality upon clicketyclick
-    }
-
-    private void gridPaneController(){
-        //TODO: implement functionality on filling the gridpane
-    }
 
     // TODO: needs some kind of error handling
     public Preset presetLoader(String presetName){
@@ -600,4 +587,5 @@ public class PresetsController extends SVGWizardController implements Initializa
         alarm.setContentText("Bitte wählen sie eine andere Voreinstellung aus.");
         alarm.showAndWait();
     }
+
 }
