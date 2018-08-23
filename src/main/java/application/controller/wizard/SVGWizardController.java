@@ -3,6 +3,7 @@ package application.controller.wizard;
 import application.GuiSvgPlott;
 import application.controller.PresetsController;
 import application.controller.wizard.chart.ChartWizardFrameController;
+import application.controller.wizard.functions.FunctionWizardFrameController;
 import application.model.Options.CssType;
 import application.model.Options.GuiAxisStyle;
 import application.model.GuiSvgOptions;
@@ -292,17 +293,21 @@ public class SVGWizardController implements Initializable {
     }
 
     protected void initAxisFieldListeners() {
-        // x unit
-        this.textField_xunit.setText(this.guiSvgOptions.getxUnit());
-        this.textField_xunit.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setxUnit(newValue);
-        });
 
-        // y unit
-        this.textField_yunit.setText(this.guiSvgOptions.getyUnit());
-        this.textField_yunit.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setyUnit(newValue);
-        });
+        if (!(this instanceof FunctionWizardFrameController)) {
+            // x unit
+            this.textField_xunit.setText(this.guiSvgOptions.getxUnit());
+            this.textField_xunit.textProperty().addListener((observable, oldValue, newValue) -> {
+                this.guiSvgOptions.setxUnit(newValue);
+            });
+
+            // y unit
+            this.textField_yunit.setText(this.guiSvgOptions.getyUnit());
+            this.textField_yunit.textProperty().addListener((observable, oldValue, newValue) -> {
+                this.guiSvgOptions.setyUnit(newValue);
+            });
+
+        }
 
         // no autoscaling on function plot
         if (this instanceof ChartWizardFrameController) {
