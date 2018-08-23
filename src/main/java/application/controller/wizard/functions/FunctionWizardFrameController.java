@@ -268,8 +268,13 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
         functionList.forEach(func -> f.add(new Function(func)));
         guiSvgOptions.getFunctions().clear();
-        guiSvgOptions.getFunctions().addAll(f);
 
+
+//        if (f2 == -1) {
+//            f.add(new Function("0x"));
+//            f2 = f.size();
+//        }
+        guiSvgOptions.getFunctions().addAll(f);
         IntegralPlotSettings integalSettings = new IntegralPlotSettings(f1, f2, name, new Range(from, to));
         guiSvgOptions.setIntegral(integalSettings);
 
