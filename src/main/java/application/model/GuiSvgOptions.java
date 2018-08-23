@@ -224,6 +224,8 @@ public class GuiSvgOptions {
         this.functions.addListener(new ListChangeListener<Function>() {
             @Override
             public void onChanged(Change<? extends Function> c) {
+
+
                 options.setFunctions(functions);
             }
         });
@@ -251,6 +253,8 @@ public class GuiSvgOptions {
                 options.setPointSymbols(pointSymbols);
             }
         });
+
+
         this.lineStyles.addListener(new ListChangeListener<LineStyle>() {
             @Override
             public void onChanged(final Change<? extends LineStyle> c) {

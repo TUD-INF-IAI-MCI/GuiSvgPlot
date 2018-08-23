@@ -93,7 +93,7 @@ public class RootFrameController implements Initializable {
             alert.setTitle(bundle.getString("menu_help_about_title"));
             alert.setHeaderText(null);
             alert.setResizable(true);
-            alert.getDialogPane().setMinSize(400,250);
+            alert.getDialogPane().setMinSize(400, 250);
 
             alert.setContentText(bundle.getString("menu_help_about_content"));
             alert.showAndWait();
@@ -154,7 +154,6 @@ public class RootFrameController implements Initializable {
             e.printStackTrace();
         }
     }
-
 
 
     private void startWizard(String fxmlPath, boolean isExtended) {

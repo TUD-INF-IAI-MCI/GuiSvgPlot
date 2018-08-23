@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -56,6 +57,7 @@ public class GuiSvgPlott extends Application {
 
         AnchorPane anchorPane = loader.load();
 
+
         rootFrameController = loader.getController();
 
         rootFrameController.init();
@@ -68,6 +70,12 @@ public class GuiSvgPlott extends Application {
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(getClass().getResource("/images/barchart_circle.png").toExternalForm()));
         primaryStage.show();
+
+        primaryStage.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.F5) {
+                rootFrameController.svgWizardController.button_rerenderPreview.fire();
+            }
+        });
 
     }
 
