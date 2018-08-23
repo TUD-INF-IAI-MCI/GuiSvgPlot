@@ -98,10 +98,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     private TextField textField_helpLinesX = new TextField();
     @FXML
     private TextField textField_helpLinesY = new TextField();
-
+    @FXML
+    private TextField textFieldPresetName;
     @FXML
     private RadioButton radioBtn_Scale_to_Data;
-
     @FXML
     private RadioButton radioBtn_customScale;
     @FXML
@@ -122,6 +122,8 @@ public class PresetsController extends SVGWizardController implements Initializa
         chartTypeObservableList.add(resources.getString("combo_function"));
         combo_Type.setItems(chartTypeObservableList);
         settingsDiagramGridPane.setVisible(false);
+        editorFunctionBorderPane.setVisible(false);
+        overViewBorderPane.setVisible(true);
         combo_Type.setOnAction(event -> {
             if (combo_Type.getSelectionModel().getSelectedItem().equals(bundle.getString("combo_diagram"))){
                 if(!settingsDiagramGridPane.isVisible()){
@@ -203,15 +205,17 @@ public class PresetsController extends SVGWizardController implements Initializa
                             Object data = getTableView().getItems().get(getIndex());
                             loadPreset(((Preset) data).getPresetName());
                             //hide current stuff
-                            presetTable.setVisible(false);
-                            overViewBorderPane.setVisible(false);
+                            overViewHider();
+                            textFieldPresetName.setText(((Preset) data).getPresetName());
                             //show settings stuff
                             if(converter.convert(((Preset) data).getDiagramType()) == DiagramType.FunctionPlot){
                                 combo_Type.setValue(bundle.getString("combo_function"));
-                                editorFunctionBorderPane.setVisible(true);
+                                //flagGetter();
+                                functionEditorDisplayer();
                             }else{
                                 combo_Type.setValue(bundle.getString("combo_diagram"));
-                                editorDiagramBorderPane.setVisible(true);
+                                //flagGetter();
+                                diagramEditorDisplayer();
                             }
                         });
                     }
@@ -317,8 +321,8 @@ public class PresetsController extends SVGWizardController implements Initializa
         ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());
         choiceBox_diagramType.setItems(diagramTypeObservableList);
         DiagramType dt = converter.convert(currentPreset.getDiagramType());
-        System.out.println(diagramTypeObservableList);
-        System.out.println(dt);
+        //System.out.println(diagramTypeObservableList);
+        //System.out.println(dt);
         switch(dt){
             case ScatterPlot:
                 choiceBox_diagramType.getSelectionModel().select(1);
@@ -538,6 +542,9 @@ public class PresetsController extends SVGWizardController implements Initializa
             }
         }
     }
+
+
+
     @FXML
     private void quitToMainMenu(){
         GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
@@ -563,6 +570,64 @@ public class PresetsController extends SVGWizardController implements Initializa
         return null;
     }
 
+    private void overViewHider(){
+        overViewBorderPane.setVisible(false);
+    }
+
+    private void diagramEditorHider(){
+        editorDiagramBorderPane.setVisible(false);
+
+    }
+
+    private void functionEditorHider(){
+        editorFunctionBorderPane.setVisible(false);
+    }
+
+    private void overviewDisplayer(){
+        overViewBorderPane.setVisible(true);
+    }
+
+    private void diagramEditorDisplayer(){
+        editorDiagramBorderPane.setVisible(true);
+    }
+
+    private void functionEditorDisplayer(){
+        editorFunctionBorderPane.setVisible(true);
+    }
+
+
+    @FXML
+    private void deletePreset(){
+        Preset tobedeletedPreset = currentPreset;
+        deleteConfirmationAlert(tobedeletedPreset);
+        functionEditorHider();
+        diagramEditorHider();
+        overviewDisplayer();
+    }
+
+    @FXML
+    private void savePreset(){
+        currentPreset.setPresetName(textFieldPresetName.getText());
+        //workaround ]:->
+        presetTable.refresh();
+        flagGetter();
+        functionEditorHider();
+        diagramEditorHider();
+        overviewDisplayer();
+    }
+
+    public static void deleteConfirmationAlert(Preset p){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Bestätigung erforderlich");
+        alert.setHeaderText("Sie löschen hiermit die gewählte Voreinstellung!");
+        alert.setContentText("Sind Sie sicher dass Sie " + p.getPresetName() + " löschen wollen?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            presets.remove(p);
+        } else {
+            // ... user chose CANCEL or closed the dialog, hence do nothing
+        }
+    }
 
     public static void duplicateAlert(Optional o){
         Alert alert = new Alert(Alert.AlertType.ERROR);
