@@ -190,7 +190,7 @@ public class SVGWizardController implements Initializable {
     protected ResourceBundle bundle;
     protected IntegerProperty currentStage;
     protected File userDir;
-    protected ArrayList<GridPane> stages;
+    protected ArrayList<AnchorPane> stages;
     protected GuiSvgOptions guiSvgOptions;
     protected SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
     protected SvgOptionsUtil svgOptionsUtil = SvgOptionsUtil.getInstance();
@@ -218,7 +218,7 @@ public class SVGWizardController implements Initializable {
         this.initOptionListeners();
         this.preProcessContent();
         initSaveAsPreset();
-        if(presets == null){
+        if (presets == null) {
             presets = FXCollections.observableArrayList();
         }
     }
@@ -627,8 +627,8 @@ public class SVGWizardController implements Initializable {
      * content-preprocessing. Will "hide" the content-tabPane and shows the first stage
      */
     protected void preProcessContent() {
-        this.stages = new ArrayList<>();
-        this.tabPane_ContentHolder.getTabs().forEach(tab -> this.stages.add((GridPane) tab.getContent()));
+        this.stages = new ArrayList<AnchorPane>();
+        this.tabPane_ContentHolder.getTabs().forEach(tab -> this.stages.add((AnchorPane) tab.getContent()));
         this.currentStage.set(0);
         this.borderPane_WizardContent.setCenter(this.stages.get(0));
         this.stages.get(0).getChildren().get(0).requestFocus();
@@ -704,8 +704,6 @@ public class SVGWizardController implements Initializable {
         );
 
 
-
-
     }
 
     /**
@@ -713,7 +711,7 @@ public class SVGWizardController implements Initializable {
      * upon calling, asks the user for the type and name of the presets including input validation and duplicate checking.
      */
     // save as preset
-    protected void initSaveAsPreset(){
+    protected void initSaveAsPreset() {
         //button_Save_As_Preset = new Button();
         button_Save_As_Preset.setOnAction(event -> {
             TextInputDialog dialogue = new TextInputDialog();
@@ -721,17 +719,17 @@ public class SVGWizardController implements Initializable {
             dialogue.setHeaderText("Bitte geben Sie einen Namen für ihre Voreinstellung ein");
             dialogue.setContentText("Name der Voreinstellung:");
             Optional<String> result = dialogue.showAndWait();
-            if(result.get().equals("")){
+            if (result.get().equals("")) {
                 PresetsController.emptyNameAlert();
-            }else if(result.isPresent() && !presets.stream().map(p -> p.getPresetName()).anyMatch(n -> n.equals(result.get()))){
+            } else if (result.isPresent() && !presets.stream().map(p -> p.getPresetName()).anyMatch(n -> n.equals(result.get()))) {
                 Preset currentPreset = new Preset(guiSvgOptions, result.get(), guiSvgOptions.getDiagramType());
                 presets.add(currentPreset);
                 MenuItem newEntry = new MenuItem(currentPreset.getPresetName());
                 // 5 most recent entries because it's not "scalable" ladida...
-                if(GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size() < 11){
+                if (GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size() < 11) {
                     GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().add(3, newEntry);
                 }
-            }else{
+            } else {
                 PresetsController.duplicateAlert(result);
             }
         });

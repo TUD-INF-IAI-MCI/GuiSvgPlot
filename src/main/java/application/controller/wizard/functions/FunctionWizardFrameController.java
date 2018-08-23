@@ -5,21 +5,31 @@ import application.controller.PresetsController;
 import application.controller.wizard.SVGWizardController;
 import application.model.Preset;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.options.DiagramType;
+import tud.tangram.svgplot.plotting.Function;
 import tud.tangram.svgplot.plotting.IntegralPlotSettings;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class FunctionWizardFrameController extends SVGWizardController {
 
     private static final int AMOUNTOFSTAGES = 6;
+
 
 
     /*Begin: FXML Nodes*/
@@ -31,16 +41,25 @@ public class FunctionWizardFrameController extends SVGWizardController {
     /* stage 2*/
     @FXML
     private GridPane stage2;
+    @FXML
+    private TextField textField_addFunction;
+    @FXML
+    private Button button_addFunction;
+    @FXML
+    private TableView<String> tableView_Functions;
+    @FXML
+    private TableColumn<String, String> tableCol_Function;
+    @FXML
+    private TableColumn<String, Button> tableCol_Delete;
 
     /* stage 3 */
     @FXML
     private GridPane stage3;
 
-    @FXML
-    private TextField textField_IntegralFunction1;
+    public ComboBox<String> comboBox_function2;
 
-    @FXML
-    private TextField textField_IntegralFunction2;
+    public ComboBox<String> comboBox_function1;
+
 
     @FXML
     private RadioButton radioButton_Function2;
@@ -85,6 +104,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
     private SimpleDoubleProperty rangeTo;
     private SimpleStringProperty integralName;
 
+    private ObservableList<String> functionList;
+
+
     public FunctionWizardFrameController() {
         integral1 = new SimpleStringProperty("");
         integral2 = new SimpleStringProperty("");
@@ -98,6 +120,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         super.initialize(location, resources);
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES, DiagramType.FunctionPlot);
         this.initiateAllStages();
+
 
         this.guiSvgOptions.setDiagramType(DiagramType.FunctionPlot);
         super.initSaveAsPreset();
@@ -118,9 +141,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
      * Will initiate the first stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage1() {
-
         super.initGeneralFieldListeners();
-
     }
 
 
@@ -128,7 +149,46 @@ public class FunctionWizardFrameController extends SVGWizardController {
      * Will initiate the second stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage2() {
-        super.initCsvFieldListeners();
+
+        this.functionList = FXCollections.observableArrayList();
+
+
+        button_addFunction.setOnAction(event -> {
+
+            if (!functionList.contains(textField_addFunction.getText()) && !textField_addFunction.getText().isEmpty()) {
+                functionList.add(textField_addFunction.getText());
+                textField_addFunction.setText("");
+            }
+        });
+
+        tableCol_Delete.setCellValueFactory(btn -> {
+
+            Button b = new Button();
+            b.setOnAction(event ->
+                    functionList.remove(btn.getValue()));
+
+            return new SimpleObjectProperty<>(b);
+        });
+
+        tableCol_Delete.setCellFactory(cell -> new TableCell<String, Button>() {
+
+            @Override
+            protected void updateItem(Button item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setGraphic(null);
+                    setText(null);
+                    return;
+                }
+
+                item.setText("-");
+                setGraphic(item);
+            }
+        });
+
+        tableCol_Function.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
+        tableView_Functions.setItems(functionList);
     }
 
     /**
@@ -136,21 +196,23 @@ public class FunctionWizardFrameController extends SVGWizardController {
      */
     private void initStage3() {
 
+        comboBox_function1.setItems(functionList);
+        comboBox_function2.setItems(functionList);
 
-        textField_IntegralFunction2.visibleProperty().bind(radioButton_Function2.selectedProperty());
 
-        textField_IntegralFunction1.textProperty().addListener((args, oldVal, newVal) -> {
-//            integral1.set(newVal);
-//            integralOptionBuilder();
+        comboBox_function2.visibleProperty().bind(radioButton_Function2.selectedProperty());
 
-            System.out.println(newVal);
+        comboBox_function1.setOnAction(event -> {
+            integral1.set(comboBox_function1.getSelectionModel().getSelectedItem());
+            integralOptionBuilder();
 
         });
 
-        textField_IntegralFunction2.textProperty().addListener((args, oldVal, newVal) -> {
-            if (textField_IntegralFunction2.isVisible())
-                integral2.set(newVal);
+
+        comboBox_function2.setOnAction(event -> {
+            integral1.set(comboBox_function2.getSelectionModel().getSelectedItem());
             integralOptionBuilder();
+
         });
 
         radioButton_Function2.visibleProperty().addListener(args -> {
@@ -165,7 +227,6 @@ public class FunctionWizardFrameController extends SVGWizardController {
         label_RangeTo.visibleProperty().bind(radioButton_integralRange.selectedProperty());
 
         integralName.bind(textField_IntegralName.textProperty());
-
     }
 
     /**
@@ -191,16 +252,28 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
     private void integralOptionBuilder() {
 
+        int f1 = comboBox_function1.getSelectionModel().getSelectedIndex();
+        int f2 = radioButton_Function2.isVisible() ? comboBox_function2.getSelectionModel().getSelectedIndex() : -1;
+        double from = -10;
+        double to = 10;
 
-        //FIXME
-        int f1 = 1;
-        int f2 = 2;
-        double from = -100;
-        double to = 100;
-        String name = "integral";
+        if (!radioButton_integralRange.isVisible()) {
+            from = Double.parseDouble(textField_rangeFrom.getText());
+            to = Double.parseDouble(textField_rangeTo.getText());
+        }
+        String name = textField_IntegralName.getText();
+
+
+        ObservableList<Function> f = FXCollections.observableArrayList();
+
+        functionList.forEach(func -> f.add(new Function(func)));
+        guiSvgOptions.getFunctions().clear();
+        guiSvgOptions.getFunctions().addAll(f);
 
         IntegralPlotSettings integalSettings = new IntegralPlotSettings(f1, f2, name, new Range(from, to));
         guiSvgOptions.setIntegral(integalSettings);
+
+        this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
 
     }
 

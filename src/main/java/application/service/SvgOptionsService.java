@@ -65,6 +65,13 @@ public class SvgOptionsService {
      * @param webView_svg    the {@link WebView}
      */
     public void buildPreviewSVG(GuiSvgOptions guiSvgOptions, WebView webView_svg) {
+
+
+        if(true){
+            System.out.println(guiSvgOptions);
+        }
+
+
         SvgPlotOptions svgPlotOptions = guiSvgOptions.getOptions();
         GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
         Path svgPath = Paths.get(System.getProperty("user.home") + "/svgPlot/svg.svg");
