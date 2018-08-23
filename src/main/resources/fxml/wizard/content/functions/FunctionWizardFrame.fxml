@@ -23,6 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
+<?import org.controlsfx.control.CheckComboBox?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.functions.FunctionWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
@@ -340,7 +341,7 @@
 
 
                                                 <Label fx:id="label_colors" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_colors" visible="false" GridPane.rowIndex="2" />
-                                                <!--<CheckComboBox fx:id="checkComboBox_color" accessibleText="Farbe auswählen" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />-->
+                                                <CheckComboBox fx:id="checkComboBox_color" accessibleText="Farbe auswählen" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                             </children>
                                         </GridPane>
                                     </children>
