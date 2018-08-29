@@ -314,7 +314,8 @@ public class SVGWizardController implements Initializable {
                 this.toggleAxesRanges(!newValue);
             });
 
-            this.radioBtn_autoscale.setSelected(true);
+            this.radioBtn_autoscale.setSelected(this.guiSvgOptions.isAutoScale());
+            this.radioBtn_customScale.setSelected(!this.guiSvgOptions.isAutoScale());
 
         } else {
             this.toggleAxesRanges(true);
