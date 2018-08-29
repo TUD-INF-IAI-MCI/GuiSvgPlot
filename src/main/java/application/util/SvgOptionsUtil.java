@@ -109,7 +109,7 @@ public class SvgOptionsUtil {
 
             @Override
             public GuiAxisStyle fromString(String string) {
-                GuiAxisStyle axisStyle = GuiAxisStyle.Default;
+                GuiAxisStyle axisStyle = GuiAxisStyle.Barchart;
                 for (GuiAxisStyle as : FXCollections.observableArrayList(GuiAxisStyle.values())) {
                     if (this.toString(as).equals(string)) {
                         axisStyle = as;

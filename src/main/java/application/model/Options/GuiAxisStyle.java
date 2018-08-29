@@ -3,7 +3,7 @@ package application.model.Options;
 import tud.tangram.svgplot.styles.AxisStyle;
 
 public enum GuiAxisStyle {
-    Default(null),
+    Barchart(null),
     Box(AxisStyle.BOX),
     Edge(AxisStyle.EDGE);
 

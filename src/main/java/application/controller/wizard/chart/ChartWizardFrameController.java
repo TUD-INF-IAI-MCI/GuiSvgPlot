@@ -1,13 +1,7 @@
 package application.controller.wizard.chart;
 
-import application.GuiSvgPlott;
-import application.controller.PresetsController;
 import application.controller.wizard.SVGWizardController;
-import application.model.Options.LinePointsOption;
-import application.model.Options.SortOrder;
-import application.model.Options.TrendlineAlgorithm;
-import application.model.Options.VisibilityOfDataPoints;
-import application.model.Preset;
+import application.model.Options.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -25,7 +19,6 @@ import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ChartWizardFrameController extends SVGWizardController {
@@ -120,6 +113,8 @@ public class ChartWizardFrameController extends SVGWizardController {
     /* stage 4 */
     @FXML
     private GridPane stage4;
+    @FXML
+    public ChoiceBox<GuiAxisStyle> choicebox_dblaxes;
 
 
     /* stage 5 */
@@ -400,6 +395,15 @@ public class ChartWizardFrameController extends SVGWizardController {
      */
     private void initStage4() {
         super.initAxisFieldListeners();
+
+        ObservableList<GuiAxisStyle> axisStyleObservableList = FXCollections.observableArrayList(GuiAxisStyle.values());
+        axisStyleObservableList.remove(GuiAxisStyle.Barchart);
+        this.choicebox_dblaxes.setItems(axisStyleObservableList);
+        this.choicebox_dblaxes.setConverter(this.svgOptionsUtil.getAxisStyleStringConverter());
+        this.choicebox_dblaxes.getSelectionModel().select(this.guiSvgOptions.getAxisStyle());
+        this.choicebox_dblaxes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.guiSvgOptions.setAxisStyle(newValue);
+        });
     }
 
     /**
@@ -427,8 +431,12 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.toggleVisibility(show, this.label_firstTexture, this.choiceBox_firstTexture);
         this.toggleVisibility(show, this.label_secondTexture, this.choiceBox_secondTexture);
         this.toggleVisibility(show, this.label_thirdTexture, this.choiceBox_thirdTexture);
+
         if (!show) {
+            this.choicebox_dblaxes.getItems().remove(GuiAxisStyle.Barchart);
             this.hide(this.label_sortOrder, this.choicebox_sortOrder);
+        }else {
+            this.choicebox_dblaxes.getItems().add(GuiAxisStyle.Barchart);
         }
     }
 
@@ -502,6 +510,9 @@ public class ChartWizardFrameController extends SVGWizardController {
             public void onChanged(final Change<? extends PointSymbol> c) {
 
             }
+        });
+        this.guiSvgOptions.axisStyleProperty().addListener((observable, oldValue, newValue) -> {
+            this.choicebox_dblaxes.getSelectionModel().select(newValue);
         });
     }
     private void setValueToIndex(ObservableList<String> trendline, int index, String newValue) {

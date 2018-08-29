@@ -86,7 +86,7 @@ public class GuiSvgOptions {
         this.hideOriginalPoints = new SimpleObjectProperty<>(this.options.isHideOriginalPoints() ? VisibilityOfDataPoints.HIDE : VisibilityOfDataPoints.SHOW);
         this.linePointsOption = new SimpleObjectProperty<>(LinePointsOption.getLinePointsOption(this.options.getShowLinePoints(), options.isPointsBorderless()));
         this.gridStyle = new SimpleObjectProperty<>(GridStyle.NONE);
-        this.axisStyle = new SimpleObjectProperty<>(GuiAxisStyle.Default);
+        this.axisStyle = new SimpleObjectProperty<>(GuiAxisStyle.Barchart);
         this.integral = new SimpleObjectProperty<>(this.options.getIntegral());
         initSimpleObjectListeners();
 
@@ -259,9 +259,6 @@ public class GuiSvgOptions {
             @Override
             public void onChanged(final Change<? extends LineStyle> c) {
                 options.setLineStyles(lineStyles);
-                for (int i = 0; i < lineStyles.size(); i++) {
-                    System.out.println(i + ": " + lineStyles.get(i));
-                }
             }
         });
 
@@ -281,12 +278,14 @@ public class GuiSvgOptions {
         if (this.lineStyles.size() == 0) {
             this.lineStyles.addAll(LineStyle.getByOutputDeviceOrderedById(this.outputDevice.get()));
         }
+        this.axisStyle.set(GuiAxisStyle.Edge);
     }
 
     private void setScatterPlotDefaultOptions() {
 //        if (this.pointSymbols.size() == 0) {
 //            this.pointSymbols.addAll(PointSymbol.getOrdered());
 //        }
+        this.axisStyle.set(GuiAxisStyle.Box);
     }
 
     private void setBarChartDefaultOptions() {
@@ -297,6 +296,7 @@ public class GuiSvgOptions {
         if (this.options.getShowHorizontalGrid() == null) {
             this.gridStyle.set(GridStyle.HORIZONTAL);
         }
+        this.axisStyle.set(GuiAxisStyle.Barchart);
     }
 
     public SvgPlotOptions getOptions() {

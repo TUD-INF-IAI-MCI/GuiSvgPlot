@@ -17,7 +17,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
@@ -370,7 +369,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         flags.add(choiceBox_gridStyle);
         ObservableList<GuiAxisStyle> axisStyleObservableList = FXCollections.observableArrayList(GuiAxisStyle.values());
         choiceBox_dblaxes.setItems(axisStyleObservableList);
-        choiceBox_dblaxes.getSelectionModel().select(GuiAxisStyle.Default);
+        choiceBox_dblaxes.getSelectionModel().select(GuiAxisStyle.Barchart);
         flags.add(choiceBox_dblaxes);
         ObservableList<CssType> cssTypeObservableList = FXCollections.observableArrayList(CssType.values());
         choiceBox_cssType.setItems(cssTypeObservableList);

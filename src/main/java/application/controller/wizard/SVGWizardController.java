@@ -5,7 +5,6 @@ import application.controller.PresetsController;
 import application.controller.wizard.chart.ChartWizardFrameController;
 import application.controller.wizard.functions.FunctionWizardFrameController;
 import application.model.Options.CssType;
-import application.model.Options.GuiAxisStyle;
 import application.model.GuiSvgOptions;
 import application.model.Options.PageSize;
 import application.model.Preset;
@@ -114,8 +113,6 @@ public class SVGWizardController implements Initializable {
     public TextField textField_xlines;
     @FXML
     public TextField textField_ylines;
-    @FXML
-    public ChoiceBox<GuiAxisStyle> choicebox_dblaxes;
 
     // general axis options
     @FXML
@@ -514,18 +511,6 @@ public class SVGWizardController implements Initializable {
         this.textField_ylines.textProperty().addListener((observable, oldValue, newValue) -> {
             this.guiSvgOptions.setyLines(newValue);
         });
-
-        // no use for FunctionPlot
-        if (this instanceof ChartWizardFrameController) {
-            // double axes
-            ObservableList<GuiAxisStyle> axisStyleObservableList = FXCollections.observableArrayList(GuiAxisStyle.values());
-            this.choicebox_dblaxes.setItems(axisStyleObservableList);
-            this.choicebox_dblaxes.setConverter(this.svgOptionsUtil.getAxisStyleStringConverter());
-            this.choicebox_dblaxes.getSelectionModel().select(this.guiSvgOptions.getAxisStyle());
-            this.choicebox_dblaxes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                this.guiSvgOptions.setAxisStyle(newValue);
-            });
-        }
     }
 
     protected void initiatePagination(final HBox hBox_pagination, final int AMOUNTOFSTAGES, final DiagramType diagramType) {
@@ -704,6 +689,7 @@ public class SVGWizardController implements Initializable {
         });
 
         // rerender preview
+        this.button_rerenderPreview.graphicProperty().setValue(new Glyph("FontAwesome", FontAwesome.Glyph.RETWEET));
         this.button_rerenderPreview.setOnAction(event ->
                 this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg)
         );
@@ -718,6 +704,7 @@ public class SVGWizardController implements Initializable {
     // save as preset
     protected void initSaveAsPreset() {
         //button_Save_As_Preset = new Button();
+        // TODO: i18n
         button_Save_As_Preset.setOnAction(event -> {
             TextInputDialog dialogue = new TextInputDialog();
             dialogue.setTitle("Name für Ihre Voreinstellung erforderlich");
@@ -848,9 +835,6 @@ public class SVGWizardController implements Initializable {
     private void initOptionListeners() {
         this.guiSvgOptions.gridStyleProperty().addListener((observable, oldValue, newValue) -> {
             this.choicebox_gridStyle.getSelectionModel().select(newValue);
-        });
-        this.guiSvgOptions.axisStyleProperty().addListener((observable, oldValue, newValue) -> {
-            this.choicebox_dblaxes.getSelectionModel().select(newValue);
         });
         this.guiSvgOptions.csvTypeProperty().addListener((observable, oldValue, newValue) -> {
             this.choiceBox_csvType.getSelectionModel().select(newValue);

@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.transform.sax.SAXSource;
 import java.io.*;
@@ -25,7 +27,7 @@ import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class GuiSvgPlott extends Application {
-
+    private static final Logger logger = LoggerFactory.getLogger(GuiSvgPlott.class);
 
     private static GuiSvgPlott instance;
 
@@ -94,7 +96,7 @@ public class GuiSvgPlott extends Application {
             settings = jsonElement.getAsJsonObject();
         } catch (Exception e) {
             settings = new JsonObject();
-            System.out.println("empty settings File");
+            logger.debug("empty settings file");
         }
 
         if (!settings.has("gnu-path") || settings.get("gnu-path").getAsString().isEmpty()) {
