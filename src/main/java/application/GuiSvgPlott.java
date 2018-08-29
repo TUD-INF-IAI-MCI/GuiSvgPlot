@@ -27,7 +27,7 @@ import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class GuiSvgPlott extends Application {
-    private static final Logger logger = LoggerFactory.getLogger(GuiSvgPlott.class);
+//    private static final Logger logger = LoggerFactory.getLogger(GuiSvgPlott.class);
 
     private static GuiSvgPlott instance;
 
@@ -96,7 +96,7 @@ public class GuiSvgPlott extends Application {
             settings = jsonElement.getAsJsonObject();
         } catch (Exception e) {
             settings = new JsonObject();
-            logger.debug("empty settings file");
+//            logger.debug("empty settings file");
         }
 
         if (!settings.has("gnu-path") || settings.get("gnu-path").getAsString().isEmpty()) {

@@ -308,14 +308,6 @@ public class SVGWizardController implements Initializable {
 
         // no autoscaling on function plot
         if (this instanceof ChartWizardFrameController) {
-            // autoscale
-            this.radioBtn_autoscale.selectedProperty().addListener((observable, oldValue, newValue) -> {
-                this.guiSvgOptions.setAutoScale(newValue);
-                this.toggleAxesRanges(!newValue);
-            });
-
-            this.radioBtn_autoscale.setSelected(this.guiSvgOptions.isAutoScale());
-            this.radioBtn_customScale.setSelected(!this.guiSvgOptions.isAutoScale());
 
         } else {
             this.toggleAxesRanges(true);
@@ -325,10 +317,13 @@ public class SVGWizardController implements Initializable {
         // xRange
         this.xRange.set(this.guiSvgOptions.getxRange());
         if (this.xRange.get() == null) {
-            this.xRange.set(new Range(-8, 8));
+//            this.xRange.set(new Range(-8, 8));
+            this.textField_xfrom.setText("");
+            this.textField_xto.setText("");
+        } else {
+            this.textField_xfrom.setText("" + this.xRange.get().getFrom());
+            this.textField_xto.setText("" + this.xRange.get().getTo());
         }
-        this.textField_xfrom.setText("" + this.xRange.get().getFrom());
-        this.textField_xto.setText("" + this.xRange.get().getTo());
 
         this.textFieldUtil.addDoubleValidation(this.textField_xfrom, this.label_xfrom);
         this.textField_xfrom.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -351,10 +346,13 @@ public class SVGWizardController implements Initializable {
         // yRange
         this.yRange.set(this.guiSvgOptions.getyRange());
         if (this.yRange.get() == null) {
-            this.yRange.set(new Range(-8, 8));
+//            this.yRange.set(new Range(-8, 8));
+            this.textField_yfrom.setText("");
+            this.textField_yto.setText("");
+        }else{
+            this.textField_yfrom.setText("" + this.yRange.get().getFrom());
+            this.textField_yto.setText("" + this.yRange.get().getTo());
         }
-        this.textField_yfrom.setText("" + this.yRange.get().getFrom());
-        this.textField_yto.setText("" + this.yRange.get().getTo());
 
         this.textFieldUtil.addDoubleValidation(this.textField_yfrom, this.label_yfrom);
         this.textField_yfrom.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -821,13 +819,16 @@ public class SVGWizardController implements Initializable {
             this.xRange.set(null);
             this.yRange.set(null);
         } else {
-            this.xRange.set(new Range(-8, 8));
-            this.yRange.set(new Range(-8, 8));
+            this.xRange.set(this.guiSvgOptions.getxRange());
+            this.yRange.set(this.guiSvgOptions.getyRange());
         }
 
 
-        this.toggleVisibility(enabled, this.label_xfrom, this.textField_xfrom);
-        this.toggleVisibility(enabled, this.label_xto, this.textField_xto);
+        if(!this.guiSvgOptions.getDiagramType().equals(DiagramType.BarChart)) {
+            this.toggleVisibility(enabled, this.label_xfrom, this.textField_xfrom);
+            this.toggleVisibility(enabled, this.label_xto, this.textField_xto);
+        }
+
         this.toggleVisibility(enabled, this.label_yfrom, this.textField_yfrom);
         this.toggleVisibility(enabled, this.label_yto, this.textField_yto);
     }

@@ -404,6 +404,17 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choicebox_dblaxes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.guiSvgOptions.setAxisStyle(newValue);
         });
+
+
+        // autoscale
+        this.radioBtn_autoscale.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            this.guiSvgOptions.setAutoScale(newValue);
+            this.toggleAxesRanges(!newValue);
+        });
+
+        this.radioBtn_autoscale.setSelected(this.guiSvgOptions.isAutoScale());
+        this.radioBtn_customScale.setSelected(!this.guiSvgOptions.isAutoScale());
+
     }
 
     /**
@@ -432,6 +443,9 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.toggleVisibility(show, this.label_secondTexture, this.choiceBox_secondTexture);
         this.toggleVisibility(show, this.label_thirdTexture, this.choiceBox_thirdTexture);
 
+        boolean showXRangeInputs = !this.guiSvgOptions.isAutoScale() && !show;
+        this.toggleVisibility(showXRangeInputs, this.label_xfrom, this.textField_xfrom);
+        this.toggleVisibility(showXRangeInputs, this.label_xto, this.textField_xto);
         if (!show) {
             this.choicebox_dblaxes.getItems().remove(GuiAxisStyle.Barchart);
             this.hide(this.label_sortOrder, this.choicebox_sortOrder);
