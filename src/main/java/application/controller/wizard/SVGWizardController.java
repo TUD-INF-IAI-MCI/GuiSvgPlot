@@ -21,6 +21,7 @@ import javafx.geometry.Insets;
 import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;

@@ -1,15 +1,18 @@
 package application.controller;
 
+import application.GuiSvgPlott;
 import application.controller.wizard.SVGWizardController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +22,9 @@ public class RootFrameController implements Initializable {
 
     @FXML
     public BorderPane borderPane_Content;
+
+    @FXML
+    private Label label_Headline;
 
     @FXML
     public Button button_StartDiagram;
@@ -100,15 +106,21 @@ public class RootFrameController implements Initializable {
     }
 
     public void closeWizard() {
+        this.setSceneTitle("application_title");
+        this.label_Headline.setText(this.bundle.getString("application_title"));
         borderPane_Content.setCenter(center);
     }
 
 
     private void startFunction(boolean isExtended) {
+        this.setSceneTitle("application_create_function_title");
+        this.label_Headline.setText(this.bundle.getString("headline_function"));
         startWizard("/fxml/wizard/content/functions/FunctionWizardFrame.fxml", isExtended);
     }
 
     private void startDiagram(ActionEvent event) {
+        this.setSceneTitle("application_create_chart_title");
+        this.label_Headline.setText(this.bundle.getString("headline_chart"));
         startWizard("/fxml/wizard/content/chart/ChartWizardFrame.fxml", false);
     }
 
@@ -119,16 +131,22 @@ public class RootFrameController implements Initializable {
 
     @FXML
     private void startDiagramDefaultPreset() {
+        this.setSceneTitle("application_create_chart_title");
+        this.label_Headline.setText(this.bundle.getString("headline_chart"));
         startWizard("/fxml/wizard/content/chart/ChartWizardFrame.fxml", false);
     }
 
     @FXML
     private void startFunctionDefaultPreset() {
+        this.setSceneTitle("application_create_function_title");
+        this.label_Headline.setText(this.bundle.getString("headline_function"));
         startWizard("/fxml/wizard/content/functions/FunctionWizardFrame.fxml", false);
     }
 
     @FXML
     private void startPresetOverview() {
+        this.setSceneTitle("application_preset_overview");
+        this.label_Headline.setText(this.bundle.getString("headline_presets"));
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
         loader.setLocation(getClass().getResource("/fxml/wizard/PresetOverviewFrame.fxml"));
@@ -188,4 +206,8 @@ public class RootFrameController implements Initializable {
         }
     }
 
+    public void setSceneTitle(final String messageCode){
+        Stage scene = GuiSvgPlott.getInstance().getPrimaryStage();
+        scene.titleProperty().set(this.bundle.getString(messageCode));
+    }
 }

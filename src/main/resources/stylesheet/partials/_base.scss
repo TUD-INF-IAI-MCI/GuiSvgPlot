@@ -19,6 +19,7 @@ WebView {
 }
 
 Label {
+  -fx-font-size: 10pt;
   -fx-padding: 0 10 0 10;
   -fx-wrap-text: true;
   -fx-pref-height: 17px;
@@ -27,6 +28,14 @@ Label {
   &.invalid {
     -fx-text-fill: $error-font-color;
     -fx-font-weight: bold;
+  }
+
+  &.headline {
+    -fx-padding: 10 10 0 10;
+    -fx-font-weight: bold;
+    -fx-font-size: 14pt;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
   }
 
 }

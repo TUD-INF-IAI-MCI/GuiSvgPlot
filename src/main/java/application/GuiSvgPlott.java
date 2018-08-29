@@ -34,7 +34,7 @@ public class GuiSvgPlott extends Application {
     private RootFrameController rootFrameController;
     private Stage primaryStage;
     private JsonObject settings;
-
+    private ResourceBundle bundle;
 
     public GuiSvgPlott() {
         instance = this;
@@ -52,7 +52,7 @@ public class GuiSvgPlott extends Application {
     public void start(Stage primaryStage) throws Exception {
         setSettings();
 
-        ResourceBundle bundle = ResourceBundle.getBundle("langBundle", new UTF8Control());
+        this.bundle = ResourceBundle.getBundle("langBundle", new UTF8Control());
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
         loader.setLocation(getClass().getResource("/fxml/RootFrame.fxml"));
@@ -68,7 +68,7 @@ public class GuiSvgPlott extends Application {
         Scene scene = new Scene(anchorPane);
         this.primaryStage = primaryStage;
         primaryStage.setResizable(true);
-        primaryStage.setTitle("SVG Plott");
+        primaryStage.setTitle(bundle.getString("application_title"));
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(getClass().getResource("/images/barchart_circle.png").toExternalForm()));
         primaryStage.show();
@@ -123,13 +123,12 @@ public class GuiSvgPlott extends Application {
 
 
     public void closeWizard() {
-
         if (rootFrameController != null)
             rootFrameController.closeWizard();
 
     }
 
-    public Window getPrimaryStage() {
+    public Stage getPrimaryStage() {
         return primaryStage;
     }
 
