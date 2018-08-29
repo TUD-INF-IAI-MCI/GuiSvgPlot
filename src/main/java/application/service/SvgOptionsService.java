@@ -14,6 +14,7 @@ import org.w3c.dom.NodeList;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.svgcreator.SvgCreator;
 
+import javax.xml.bind.ValidationException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.BufferedReader;
@@ -44,7 +45,10 @@ public class SvgOptionsService {
      *
      * @param svgPlotOptions the {@link SvgPlotOptions}
      */
-    public void buildSVG(SvgPlotOptions svgPlotOptions) {
+    public void buildSVG(SvgPlotOptions svgPlotOptions) throws ValidationException{
+        if(!this.isSvgPlottOptionsValid(svgPlotOptions)){
+           throw new ValidationException("The SvgPlottOptions are not valid!");
+        }
         GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
         svgPlotOptions.finalizeOptions();
 
@@ -66,6 +70,11 @@ public class SvgOptionsService {
      */
     public void buildPreviewSVG(GuiSvgOptions guiSvgOptions, WebView webView_svg) {
         SvgPlotOptions svgPlotOptions = guiSvgOptions.getOptions();
+
+        if(!this.isSvgPlottOptionsValid(svgPlotOptions)){
+            return;
+        }
+
         GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
         Path svgPath = Paths.get(System.getProperty("user.home") + "/svgPlot/svg.svg");
         Path legendPath = Paths.get(System.getProperty("user.home") + "/svgPlot/svg_legend.svg");
@@ -222,5 +231,22 @@ public class SvgOptionsService {
 
     public static String getLoggerName() {
         return logger.getName();
+    }
+
+
+    private boolean isSvgPlottOptionsValid(final SvgPlotOptions svgPlotOptions){
+        boolean hasErrorInXRange = svgPlotOptions.getxRange().getFrom() == svgPlotOptions.getxRange().getTo();
+        boolean hasErrorInYRange = svgPlotOptions.getyRange().getFrom() == svgPlotOptions.getyRange().getTo();
+        if (hasErrorInXRange || hasErrorInYRange){
+            GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
+            if (hasErrorInXRange){
+                logger.error(this.bundle.getString("preview_load_xrange_error"));
+            }
+            if(hasErrorInYRange){
+                logger.error(this.bundle.getString("preview_load_yrange_error"));
+            }
+            return false;
+        }
+        return true;
     }
 }

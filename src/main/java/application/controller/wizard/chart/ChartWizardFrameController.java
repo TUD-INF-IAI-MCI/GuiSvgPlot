@@ -6,7 +6,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import org.controlsfx.control.CheckComboBox;
 import org.slf4j.Logger;
@@ -115,6 +117,10 @@ public class ChartWizardFrameController extends SVGWizardController {
     private GridPane stage4;
     @FXML
     public ChoiceBox<GuiAxisStyle> choicebox_dblaxes;
+    @FXML
+    protected TextField textField_xunit;
+    @FXML
+    protected TextField textField_yunit;
 
 
     /* stage 5 */
@@ -142,7 +148,6 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.initiateAllStages();
         this.initOptionListeners();
         super.initSaveAsPreset();
-
     }
 
 
@@ -395,6 +400,19 @@ public class ChartWizardFrameController extends SVGWizardController {
      */
     private void initStage4() {
         super.initAxisFieldListeners();
+        this.guiSvgOptions.setAutoScale(true);
+
+        // x unit
+        this.textField_xunit.setText(this.guiSvgOptions.getxUnit());
+        this.textField_xunit.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.guiSvgOptions.setxUnit(newValue);
+        });
+
+        // y unit
+        this.textField_yunit.setText(this.guiSvgOptions.getyUnit());
+        this.textField_yunit.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.guiSvgOptions.setyUnit(newValue);
+        });
 
         ObservableList<GuiAxisStyle> axisStyleObservableList = FXCollections.observableArrayList(GuiAxisStyle.values());
         axisStyleObservableList.remove(GuiAxisStyle.Barchart);
@@ -409,7 +427,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         // autoscale
         this.radioBtn_autoscale.selectedProperty().addListener((observable, oldValue, newValue) -> {
             this.guiSvgOptions.setAutoScale(newValue);
-            this.toggleAxesRanges(!newValue);
+            super.toggleAxesRanges(!newValue);
         });
 
         this.radioBtn_autoscale.setSelected(this.guiSvgOptions.isAutoScale());

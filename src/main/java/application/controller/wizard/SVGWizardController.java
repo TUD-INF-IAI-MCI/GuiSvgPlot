@@ -2,10 +2,8 @@ package application.controller.wizard;
 
 import application.GuiSvgPlott;
 import application.controller.PresetsController;
-import application.controller.wizard.chart.ChartWizardFrameController;
-import application.controller.wizard.functions.FunctionWizardFrameController;
-import application.model.Options.CssType;
 import application.model.GuiSvgOptions;
+import application.model.Options.CssType;
 import application.model.Options.PageSize;
 import application.model.Preset;
 import application.service.SvgOptionsService;
@@ -46,7 +44,7 @@ import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.styles.Color;
 import tud.tangram.svgplot.styles.GridStyle;
 
-
+import javax.xml.bind.ValidationException;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -115,10 +113,6 @@ public class SVGWizardController implements Initializable {
     public TextField textField_ylines;
 
     // general axis options
-    @FXML
-    protected TextField textField_xunit;
-    @FXML
-    protected TextField textField_yunit;
     @FXML
     protected RadioButton radioBtn_autoscale;
     @FXML
@@ -193,8 +187,8 @@ public class SVGWizardController implements Initializable {
     protected SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
     protected SvgOptionsUtil svgOptionsUtil = SvgOptionsUtil.getInstance();
     protected TextFieldUtil textFieldUtil = TextFieldUtil.getInstance();
-    private ObjectProperty<Range> xRange;
-    private ObjectProperty<Range> yRange;
+    protected ObjectProperty<Range> xRange;
+    protected ObjectProperty<Range> yRange;
 
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -219,6 +213,10 @@ public class SVGWizardController implements Initializable {
         if (presets == null) {
             presets = FXCollections.observableArrayList();
         }
+    }
+
+    public GuiSvgOptions getGuiSvgOptions(){
+        return this.guiSvgOptions;
     }
 
     public void setExtended(boolean isExtended) {
@@ -290,87 +288,88 @@ public class SVGWizardController implements Initializable {
     }
 
     protected void initAxisFieldListeners() {
-
-        if (!(this instanceof FunctionWizardFrameController)) {
-            // x unit
-            this.textField_xunit.setText(this.guiSvgOptions.getxUnit());
-            this.textField_xunit.textProperty().addListener((observable, oldValue, newValue) -> {
-                this.guiSvgOptions.setxUnit(newValue);
-            });
-
-            // y unit
-            this.textField_yunit.setText(this.guiSvgOptions.getyUnit());
-            this.textField_yunit.textProperty().addListener((observable, oldValue, newValue) -> {
-                this.guiSvgOptions.setyUnit(newValue);
-            });
-
-        }
-
-        // no autoscaling on function plot
-        if (this instanceof ChartWizardFrameController) {
-
-        } else {
-            this.toggleAxesRanges(true);
-        }
-
-
         // xRange
+        this.xRange.addListener((args, oldVal, newVal) -> {
+            if (!this.guiSvgOptions.isAutoScale()) {
+                this.guiSvgOptions.setxRange(xRange.get());
+                if (!this.textField_xfrom.getText().equals(newVal.getFrom())) {
+                    this.textField_xfrom.setText("" + newVal.getFrom());
+                }
+                if (!this.textField_xto.getText().equals(newVal.getTo())) {
+                    this.textField_xto.setText("" + newVal.getTo());
+                }
+            }
+        });
         this.xRange.set(this.guiSvgOptions.getxRange());
         if (this.xRange.get() == null) {
-//            this.xRange.set(new Range(-8, 8));
-            this.textField_xfrom.setText("");
-            this.textField_xto.setText("");
-        } else {
-            this.textField_xfrom.setText("" + this.xRange.get().getFrom());
-            this.textField_xto.setText("" + this.xRange.get().getTo());
+            this.xRange.set(new Range(-8, 8));
         }
+        this.textField_xfrom.setText("" + this.xRange.get().getFrom());
+        this.textField_xto.setText("" + this.xRange.get().getTo());
 
         this.textFieldUtil.addDoubleValidation(this.textField_xfrom, this.label_xfrom);
         this.textField_xfrom.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals("-")) {
-                this.xRange.get().setFrom(Double.parseDouble(newValue));
+                if (this.xRange.get() == null) {
+                    this.xRange.set(new Range(Double.parseDouble(newValue), 8));
+                } else {
+                    this.xRange.get().setFrom(Double.parseDouble(newValue));
+                }
             }
         });
         this.textFieldUtil.addDoubleValidation(this.textField_xto, this.label_xto);
         this.textField_xto.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals("-")) {
-                this.xRange.get().setTo(Double.parseDouble(newValue));
-            }
-        });
-        this.xRange.addListener((args, oldVal, newVal) -> {
-            if (!this.guiSvgOptions.isAutoScale()) {
-                this.guiSvgOptions.setxRange(xRange.get());
+                if (this.xRange.get() == null) {
+                    this.xRange.set(new Range(-8, Double.parseDouble(newValue)));
+                } else {
+                    this.xRange.get().setTo(Double.parseDouble(newValue));
+                }
             }
         });
 
+
         // yRange
+        this.yRange.addListener((args, oldVal, newVal) -> {
+            if (!this.guiSvgOptions.isAutoScale()) {
+                this.guiSvgOptions.setyRange(this.yRange.get());
+                if (!this.textField_yfrom.getText().equals(newVal.getFrom())) {
+                    this.textField_yfrom.setText("" + newVal.getFrom());
+                }
+                if (!this.textField_yto.getText().equals(newVal.getTo())) {
+                    this.textField_yto.setText("" + newVal.getTo());
+                }
+            }
+        });
         this.yRange.set(this.guiSvgOptions.getyRange());
         if (this.yRange.get() == null) {
-//            this.yRange.set(new Range(-8, 8));
-            this.textField_yfrom.setText("");
-            this.textField_yto.setText("");
-        }else{
-            this.textField_yfrom.setText("" + this.yRange.get().getFrom());
-            this.textField_yto.setText("" + this.yRange.get().getTo());
+            this.yRange.set(new Range(-8, 8));
         }
+        this.textField_yfrom.setText("" + this.yRange.get().getFrom());
+        this.textField_yto.setText("" + this.yRange.get().getTo());
+
 
         this.textFieldUtil.addDoubleValidation(this.textField_yfrom, this.label_yfrom);
         this.textField_yfrom.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals("-")) {
-                this.yRange.get().setFrom(Double.parseDouble(newValue));
+                if (this.yRange.get() == null) {
+                    this.yRange.set(new Range(Double.parseDouble(newValue), 8));
+                } else {
+                    this.yRange.get().setFrom(Double.parseDouble(newValue));
+                }
             }
         });
         this.textFieldUtil.addDoubleValidation(this.textField_yto, this.label_yto);
         this.textField_yto.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.equals("-")) {
-                this.yRange.get().setTo(Double.parseDouble(newValue));
+                if (this.yRange.get() == null) {
+                    this.yRange.set(new Range(-8, Double.parseDouble(newValue)));
+                } else {
+                    this.yRange.get().setTo(Double.parseDouble(newValue));
+                }
             }
         });
-        this.yRange.addListener((args, oldVal, newVal) -> {
-            if (!this.guiSvgOptions.isAutoScale()) {
-                this.guiSvgOptions.setyRange(this.yRange.get());
-            }
-        });
+
     }
 
     protected void initStylingFieldListeners() {
@@ -582,7 +581,7 @@ public class SVGWizardController implements Initializable {
             infoScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
             infoScrollPane.setPadding(new Insets(0, 10, 0, 0));
 
-            this.popOver_infos.setTitle("Informationen");
+            this.popOver_infos.setTitle(this.bundle.getString("popup_info_title"));
             this.popOver_warnings.getStyleClass().add("notification");
             this.popOver_warnings.getStyleClass().add("info");
             this.popOver_infos.setHeaderAlwaysVisible(true);
@@ -600,7 +599,7 @@ public class SVGWizardController implements Initializable {
             warningScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
             warningScrollPane.setPadding(new Insets(0, 10, 0, 0));
 
-            this.popOver_warnings.setTitle("Warnungen");
+            this.popOver_warnings.setTitle(this.bundle.getString("popup_warn_title"));
             this.popOver_warnings.getStyleClass().add("notification");
             this.popOver_warnings.getStyleClass().add("warn");
             this.popOver_warnings.setHeaderAlwaysVisible(true);
@@ -679,11 +678,15 @@ public class SVGWizardController implements Initializable {
             fileChooser.setInitialFileName(title.toLowerCase() + ".svg");
             File file = fileChooser.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
             if (file != null) {
-                this.guiSvgOptions.setOutput(file.getAbsolutePath());
-                this.svgOptionsService.buildSVG(guiSvgOptions.getOptions());
-                this.popOver_infos.hide();
-                this.popOver_warnings.hide();
-                GuiSvgPlott.getInstance().closeWizard();
+                try {
+                    this.guiSvgOptions.setOutput(file.getAbsolutePath());
+                    this.svgOptionsService.buildSVG(guiSvgOptions.getOptions());
+                    this.popOver_infos.hide();
+                    this.popOver_warnings.hide();
+                    GuiSvgPlott.getInstance().closeWizard();
+                }catch (ValidationException e){
+                    logger.error(this.bundle.getString("svg_creation_validation_error"));
+                }
             }
         });
 
@@ -823,8 +826,7 @@ public class SVGWizardController implements Initializable {
             this.yRange.set(this.guiSvgOptions.getyRange());
         }
 
-
-        if(!this.guiSvgOptions.getDiagramType().equals(DiagramType.BarChart)) {
+        if (!this.guiSvgOptions.getDiagramType().equals(DiagramType.BarChart)) {
             this.toggleVisibility(enabled, this.label_xfrom, this.textField_xfrom);
             this.toggleVisibility(enabled, this.label_xto, this.textField_xto);
         }

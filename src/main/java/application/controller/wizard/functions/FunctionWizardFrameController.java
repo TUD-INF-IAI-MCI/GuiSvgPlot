@@ -234,6 +234,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
      */
     private void initStage4() {
         super.initAxisFieldListeners();
+        super.toggleAxesRanges(true);
     }
 
     /**

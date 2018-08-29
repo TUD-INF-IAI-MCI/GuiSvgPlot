@@ -13,7 +13,6 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class RootFrameController implements Initializable {
@@ -166,7 +165,6 @@ public class RootFrameController implements Initializable {
             borderPane_Content.setCenter(loader.load());
             svgWizardController = ((SVGWizardController) loader.getController());
             svgWizardController.setExtended(isExtended);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -189,4 +187,5 @@ public class RootFrameController implements Initializable {
         } catch (Exception e) {
         }
     }
+
 }
