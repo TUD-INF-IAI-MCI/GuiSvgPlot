@@ -1,7 +1,10 @@
 package application.model;
 
 import application.GuiSvgPlott;
-import application.model.Options.*;
+import application.model.Options.GuiAxisStyle;
+import application.model.Options.LinePointsOption;
+import application.model.Options.SortOrder;
+import application.model.Options.VisibilityOfDataPoints;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -30,6 +33,9 @@ import java.util.List;
 
 public class GuiSvgOptions {
 
+    // These values were determined by trial and error, if the values are lower, the application crashes!
+    public static int MINIMUM_PAGE_WIDTH = 90;
+    public static int MINIMUM_PAGE_HEIGHT = 71;
 
     private SvgPlotOptions options;
 

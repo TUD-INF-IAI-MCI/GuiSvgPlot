@@ -274,12 +274,14 @@ public class SVGWizardController implements Initializable {
         // custom size
         this.textField_customSizeWidth.setText(this.size.x());
         this.textFieldUtil.addIntegerValidationWithMinimum(this.textField_customSizeWidth, 1);
+        this.textFieldUtil.addMinimumIntegerValidation(this.textField_customSizeWidth, this.label_customSizeWidth, GuiSvgOptions.MINIMUM_PAGE_WIDTH);
         this.textField_customSizeWidth.textProperty().addListener((observable, oldValue, newValue) -> {
             this.size.setX(Integer.parseInt(newValue));
             this.guiSvgOptions.setSize(this.size);
         });
         this.textField_customSizeHeight.setText(this.size.y());
         this.textFieldUtil.addIntegerValidationWithMinimum(this.textField_customSizeHeight, 1);
+        this.textFieldUtil.addMinimumIntegerValidation(this.textField_customSizeHeight, this.label_customSizeHeight, GuiSvgOptions.MINIMUM_PAGE_HEIGHT);
         this.textField_customSizeHeight.textProperty().addListener((observable, oldValue, newValue) -> {
             this.size.setY(Integer.parseInt(newValue));
             this.guiSvgOptions.setSize(this.size);
@@ -289,6 +291,7 @@ public class SVGWizardController implements Initializable {
 
     protected void initAxisFieldListeners() {
         // xRange
+        this.textFieldUtil.addNotEqualValidation(this.textField_xfrom, this.label_xfrom, this.textField_xto, this.label_xto);
         this.xRange.addListener((args, oldVal, newVal) -> {
             if (!this.guiSvgOptions.isAutoScale()) {
                 this.guiSvgOptions.setxRange(xRange.get());
@@ -330,6 +333,7 @@ public class SVGWizardController implements Initializable {
 
 
         // yRange
+        this.textFieldUtil.addNotEqualValidation(this.textField_yfrom, this.label_yfrom, this.textField_yto, this.label_yto);
         this.yRange.addListener((args, oldVal, newVal) -> {
             if (!this.guiSvgOptions.isAutoScale()) {
                 this.guiSvgOptions.setyRange(this.yRange.get());

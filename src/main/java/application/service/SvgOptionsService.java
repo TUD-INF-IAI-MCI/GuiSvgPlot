@@ -45,9 +45,9 @@ public class SvgOptionsService {
      *
      * @param svgPlotOptions the {@link SvgPlotOptions}
      */
-    public void buildSVG(SvgPlotOptions svgPlotOptions) throws ValidationException{
-        if(!this.isSvgPlottOptionsValid(svgPlotOptions)){
-           throw new ValidationException("The SvgPlottOptions are not valid!");
+    public void buildSVG(SvgPlotOptions svgPlotOptions) throws ValidationException {
+        if (!this.isSvgPlottOptionsValid(svgPlotOptions)) {
+            throw new ValidationException("The SvgPlottOptions are not valid!");
         }
         GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
         svgPlotOptions.finalizeOptions();
@@ -65,13 +65,14 @@ public class SvgOptionsService {
     /**
      * Build Svg and load it into {@link WebView}.
      *
-     *  @param guiSvgOptions the {@link GuiSvgOptions}
-     * @param webView_svg    the {@link WebView}
+     * @param guiSvgOptions the {@link GuiSvgOptions}
+     * @param webView_svg   the {@link WebView}
      */
     public void buildPreviewSVG(GuiSvgOptions guiSvgOptions, WebView webView_svg) {
         SvgPlotOptions svgPlotOptions = guiSvgOptions.getOptions();
 
-        if(!this.isSvgPlottOptionsValid(svgPlotOptions)){
+        if (!this.isSvgPlottOptionsValid(svgPlotOptions)) {
+//            logger.error(this.bundle.getString("preview_load_error"));
             return;
         }
 
@@ -101,7 +102,7 @@ public class SvgOptionsService {
             if (svgPlotOptions.getSize().getX() > svgPlotOptions.getSize().getY()) { // querformat
                 height = height * 2;
                 svgSizeAttr = "y=\"" + svgPlotOptions.getSize().getY() + "mm\">";
-            }else {
+            } else {
                 width = width * 2;
                 svgSizeAttr = "x=\"" + svgPlotOptions.getSize().getX() + "mm\">";
             }
@@ -234,19 +235,33 @@ public class SvgOptionsService {
     }
 
 
-    private boolean isSvgPlottOptionsValid(final SvgPlotOptions svgPlotOptions){
+    private boolean isSvgPlottOptionsValid(final SvgPlotOptions svgPlotOptions) {
         boolean hasErrorInXRange = svgPlotOptions.getxRange().getFrom() == svgPlotOptions.getxRange().getTo();
         boolean hasErrorInYRange = svgPlotOptions.getyRange().getFrom() == svgPlotOptions.getyRange().getTo();
-        if (hasErrorInXRange || hasErrorInYRange){
+
+        boolean hasErrorInCustomSizeWidth = svgPlotOptions.getSize().getX() < GuiSvgOptions.MINIMUM_PAGE_WIDTH;
+        boolean hasErrorInCustomSizeHeight = svgPlotOptions.getSize().getY() < GuiSvgOptions.MINIMUM_PAGE_HEIGHT;
+
+
+        boolean hasError = hasErrorInXRange || hasErrorInYRange || hasErrorInCustomSizeWidth || hasErrorInCustomSizeHeight;
+        if (hasError) {
             GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
-            if (hasErrorInXRange){
+            if (hasErrorInXRange) {
                 logger.error(this.bundle.getString("preview_load_xrange_error"));
             }
-            if(hasErrorInYRange){
+            if (hasErrorInYRange) {
                 logger.error(this.bundle.getString("preview_load_yrange_error"));
+            }
+            if (hasErrorInCustomSizeWidth){
+                logger.error(this.bundle.getString("preview_load_customWidth_error"));
+            }
+            if (hasErrorInCustomSizeHeight){
+                logger.error(this.bundle.getString("preview_load_customHeight_error"));
             }
             return false;
         }
+
+
         return true;
     }
 }
