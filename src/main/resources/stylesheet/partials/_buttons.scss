@@ -8,8 +8,11 @@ Button {
   }
 
   &.btn{
-    &-preview {
+    &-preset {
       -fx-pref-width: 175px;
+    }
+    &-preview {
+      //-fx-pref-width: 175px;
     }
     &-upload {
       -fx-pref-width: 10px;

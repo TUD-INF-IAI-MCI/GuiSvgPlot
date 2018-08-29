@@ -366,12 +366,12 @@
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                                    <Button fx:id="button_rerenderPreview" accessibleText="%button_rerender_preview" mnemonicParsing="false" styleClass="btn-preview" text="%button_rerender_preview" />
+                                    <Button fx:id="button_rerenderPreview" accessibleText="%button_rerender_preview" mnemonicParsing="false" styleClass="btn-preview" text="%button_rerender_preview_text" />
                                 </buttons>
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                           <Button fx:id="button_Save_As_Preset" accessibleText="%label_back" layoutX="30.0" layoutY="10.0" mnemonicParsing="false" text="%button_save_as_preset" />
+                                    <Button fx:id="button_Save_As_Preset" accessibleText="%button_save_as_preset" mnemonicParsing="false" text="%button_save_as_preset" styleClass="btn-preset"/>
                                     <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back"/>
                                     <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next" />
                                     <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create" />

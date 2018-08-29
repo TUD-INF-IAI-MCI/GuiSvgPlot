@@ -695,7 +695,7 @@ public class SVGWizardController implements Initializable {
         });
 
         // rerender preview
-        this.button_rerenderPreview.graphicProperty().setValue(new Glyph("FontAwesome", FontAwesome.Glyph.RETWEET));
+        this.button_rerenderPreview.graphicProperty().setValue(new Glyph("FontAwesome", '\uf021'));
         this.button_rerenderPreview.setOnAction(event ->
                 this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg)
         );
