@@ -598,10 +598,15 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private void deletePreset(){
         Preset tobedeletedPreset = currentPreset;
-        deleteConfirmationAlert(tobedeletedPreset);
-        functionEditorHider();
-        diagramEditorHider();
-        overviewDisplayer();
+        if(!isDefault(tobedeletedPreset)){
+            deleteConfirmationAlert(tobedeletedPreset);
+            functionEditorHider();
+            diagramEditorHider();
+            overviewDisplayer();
+        }else{
+            defaultDeleteAlert();
+        }
+
     }
 
     @FXML
@@ -651,6 +656,12 @@ public class PresetsController extends SVGWizardController implements Initializa
         alarm.setHeaderText(bundle.getString("alert_preset_defaultdelete_header"));
         alarm.setContentText(bundle.getString("alert_preset_defaultdelete_content"));
         alarm.showAndWait();
+    }
+    public boolean isDefault(Preset p){
+        if(p.getPresetName().contains(bundle.getString("default_diagram_preset_name")) || p.getPresetName().contains((bundle.getString("default_function_preset_name")))){
+            return true;
+        }
+        return false;
     }
 
 }
