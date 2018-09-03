@@ -25,13 +25,6 @@
          <top>
             <HBox fx:id="overviewUpperHBox" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label minWidth="200.0" text="%label_allpresets">
-                     <padding>
-                        <Insets top="70.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets left="50.0" />
-                     </HBox.margin></Label>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <ButtonBar buttonMinWidth="100.0" prefHeight="100.0">
                      <buttons>

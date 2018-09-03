@@ -58,6 +58,8 @@ public class RootFrameController implements Initializable {
 
     public PresetsController presetsController;
 
+    public static String isWizard = "none";
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -145,6 +147,11 @@ public class RootFrameController implements Initializable {
 
     @FXML
     private void startPresetOverview() {
+        // checks whether the PresetOverview window has been opened from within the Function/Chartwizard Frame -> fixes #24
+        if(isWizard.contains("Wizard")){
+            GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
+            GuiSvgPlott.getInstance().closeWizard();
+        }
         this.setSceneTitle("application_preset_overview");
         this.label_Headline.setText(this.bundle.getString("headline_presets"));
         FXMLLoader loader = new FXMLLoader();
@@ -178,6 +185,7 @@ public class RootFrameController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
         loader.setLocation(getClass().getResource(fxmlPath));
+        isWizard = fxmlPath;
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
