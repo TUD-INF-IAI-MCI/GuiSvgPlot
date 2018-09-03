@@ -284,9 +284,9 @@ public class PresetsController extends SVGWizardController implements Initializa
                                     defaultDeleteAlert();
                                 }else{
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                                    alert.setTitle("Bestätigung erforderlich");
-                                    alert.setHeaderText("Sie löschen hiermit die gewählte Voreinstellung!");
-                                    alert.setContentText("Sind Sie sicher dass Sie " + ((Preset) data).getPresetName() + " löschen wollen?");
+                                    alert.setTitle(bundle.getString("alert_preset_delete_title"));
+                                    alert.setHeaderText(bundle.getString("alert_preset_delete_header"));
+                                    alert.setContentText(bundle.getString("alert_preset_delete_content1") + ((Preset) data).getPresetName() + bundle.getString("alert_preset_delete_content2"));
                                     Optional<ButtonType> result = alert.showAndWait();
                                     if (result.get() == ButtonType.OK) {
                                         presets.remove(getTableView().getItems().get(getIndex()).getPresetName());
@@ -412,10 +412,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         choices.add(DiagramType.LineChart.toString());
         choices.add(DiagramType.BarChart.toString());
         ChoiceDialog<String> dialogue = new ChoiceDialog<>(DiagramType.LineChart.toString(), choices);
-        dialogue.setTitle("Diagrammtyp auswählen");
+        dialogue.setTitle(bundle.getString("prompt_diagramtype_title"));
         dialogue.setResizable(true);
-        dialogue.setHeaderText("Wählen Sie bitte den Diagrammtyp aus");
-        dialogue.setContentText("Diagrammtyp:");
+        dialogue.setHeaderText(bundle.getString("prompt_diagramtype_header"));
+        dialogue.setContentText(bundle.getString("prompt_diagramtype_content"));
         Optional<String> result = dialogue.showAndWait();
         if(result.isPresent()){
             dt = DiagramType.fromString(result.get());
@@ -425,9 +425,9 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     private void presetNamePrompt(DiagramType dt) {
         TextInputDialog nameDialogue = new TextInputDialog();
-        nameDialogue.setTitle("Name für Ihre Voreinstellung erforderlich");
-        nameDialogue.setHeaderText("Bitte geben Sie einen Namen für ihre Voreinstellung ein");
-        nameDialogue.setContentText("Name der Voreinstellung:");
+        nameDialogue.setTitle(bundle.getString("prompt_preset_name_title"));
+        nameDialogue.setHeaderText(bundle.getString("prompt_preset_name_header"));
+        nameDialogue.setContentText(bundle.getString("prompt_preset_name_content"));
         Optional<String> result = nameDialogue.showAndWait();
         // TODO: currently only one diagramtype can be saved under a certain name, should maybe be made possible to save two presets with the same name but different diagramtype
         if(result.get().equals("")){
@@ -615,11 +615,12 @@ public class PresetsController extends SVGWizardController implements Initializa
         overviewDisplayer();
     }
 
-    public static void deleteConfirmationAlert(Preset p){
+    public void deleteConfirmationAlert(Preset p){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Bestätigung erforderlich");
-        alert.setHeaderText("Sie löschen hiermit die gewählte Voreinstellung!");
-        alert.setContentText("Sind Sie sicher dass Sie " + p.getPresetName() + " löschen wollen?");
+        alert.setTitle(bundle.getString("alert_preset_delete_title"));
+
+        alert.setHeaderText(bundle.getString("alert_preset_delete_header"));
+        alert.setContentText(bundle.getString("alert_preset_delete_content1") + p.getPresetName() + bundle.getString("alert_preset_delete_content2"));
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             presets.remove(p);
@@ -628,27 +629,27 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
     }
 
-    public static void duplicateAlert(Optional o){
+    public void duplicateAlert(Optional o){
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Voreinstellungsduplikat entdeckt");
-        alert.setHeaderText("Eine Voreinstellung mit dem Namen " + o.get() + " existiert bereits.");
-        alert.setContentText("Bitte wählen sie einen anderen Namen aus.");
+        alert.setTitle(bundle.getString("alert_preset_duplicate_title"));
+        alert.setHeaderText(bundle.getString("alert_preset_duplicate_header1") + o.get() + bundle.getString("alert_preset_duplicate_header2"));
+        alert.setContentText(bundle.getString("alert_preset_duplicate_content"));
         alert.showAndWait();
     }
 
-    public static void emptyNameAlert(){
+    public void emptyNameAlert(){
         Alert alarm = new Alert(Alert.AlertType.ERROR);
-        alarm.setTitle("Leerer Voreinstellungsname entdeckt");
-        alarm.setHeaderText("Der Name der Voreinstellung muss mindestens einen Buchstaben lang sein.");
-        alarm.setContentText("Bitte wählen sie einen Namen aus.");
+        alarm.setTitle(bundle.getString("alert_preset_empty_title"));
+        alarm.setHeaderText(bundle.getString("alert_preset_empty_header"));
+        alarm.setContentText(bundle.getString("alert_preset_empty_content"));
         alarm.showAndWait();
     }
 
-    public static void defaultDeleteAlert(){
+    public void defaultDeleteAlert(){
         Alert alarm = new Alert(Alert.AlertType.ERROR);
-        alarm.setTitle("Fehler");
-        alarm.setHeaderText("Eine Standardvoreinstellung darf nicht gelöscht werden.");
-        alarm.setContentText("Bitte wählen sie eine andere Voreinstellung aus.");
+        alarm.setTitle(bundle.getString("alert_preset_defaultdelete_title"));
+        alarm.setHeaderText(bundle.getString("alert_preset_defaultdelete_header"));
+        alarm.setContentText(bundle.getString("alert_preset_defaultdelete_content"));
         alarm.showAndWait();
     }
 

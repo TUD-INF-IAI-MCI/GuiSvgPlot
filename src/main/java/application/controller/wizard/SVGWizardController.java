@@ -21,7 +21,6 @@ import javafx.geometry.Insets;
 import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -55,6 +54,7 @@ public class SVGWizardController implements Initializable {
     // start logger
     private static final Logger logger = LoggerFactory.getLogger(SVGWizardController.class);
 
+    public PresetsController presetsController;
     @FXML
     protected Button button_Back;
     @FXML
@@ -68,7 +68,7 @@ public class SVGWizardController implements Initializable {
     @FXML
     protected Button button_Create;
     @FXML
-    protected Button button_Save_As_Preset;
+    protected Button button_Save_As;
     @FXML
     protected Button button_Edit_Preset;
     @FXML
@@ -710,16 +710,15 @@ public class SVGWizardController implements Initializable {
      */
     // save as preset
     protected void initSaveAsPreset() {
-        //button_Save_As_Preset = new Button();
         // TODO: i18n
-        button_Save_As_Preset.setOnAction(event -> {
+        button_Save_As.setOnAction(event -> {
             TextInputDialog dialogue = new TextInputDialog();
-            dialogue.setTitle("Name für Ihre Voreinstellung erforderlich");
-            dialogue.setHeaderText("Bitte geben Sie einen Namen für ihre Voreinstellung ein");
-            dialogue.setContentText("Name der Voreinstellung:");
+            dialogue.setTitle(bundle.getString("prompt_preset_saveas_title"));
+            dialogue.setHeaderText(bundle.getString("prompt_preset_saveas_header"));
+            dialogue.setContentText(bundle.getString("prompt_preset_saveas_content"));
             Optional<String> result = dialogue.showAndWait();
             if (result.get().equals("")) {
-                PresetsController.emptyNameAlert();
+                presetsController.emptyNameAlert();
             } else if (result.isPresent() && !presets.stream().map(p -> p.getPresetName()).anyMatch(n -> n.equals(result.get()))) {
                 Preset currentPreset = new Preset(guiSvgOptions, result.get(), guiSvgOptions.getDiagramType());
                 presets.add(currentPreset);
@@ -729,7 +728,7 @@ public class SVGWizardController implements Initializable {
                     GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().add(3, newEntry);
                 }
             } else {
-                PresetsController.duplicateAlert(result);
+                presetsController.duplicateAlert(result);
             }
         });
     }
