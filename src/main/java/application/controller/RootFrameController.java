@@ -7,15 +7,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class RootFrameController implements Initializable {
@@ -100,8 +106,7 @@ public class RootFrameController implements Initializable {
             alert.setTitle(bundle.getString("menu_help_about_title"));
             alert.setHeaderText(null);
             alert.setResizable(true);
-            alert.getDialogPane().setMinSize(400, 250);
-
+            alert.getDialogPane().setMinSize(500, 250);
             alert.setContentText(bundle.getString("menu_help_about_content"));
             alert.showAndWait();
         });
@@ -127,8 +132,19 @@ public class RootFrameController implements Initializable {
     }
 
     @FXML
-    private void closeButtonAction() {
-        System.exit(1);
+    private void closeButtonAction(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setResizable(true);
+        alert.setTitle(bundle.getString("alert_exit_title"));
+        alert.setHeaderText(bundle.getString("alert_exit_header"));
+        alert.setContentText(bundle.getString("alert_exit_content"));
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            // ... user chose OK
+            GuiSvgPlott.getInstance().getPrimaryStage().close();
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
     }
 
     @FXML
