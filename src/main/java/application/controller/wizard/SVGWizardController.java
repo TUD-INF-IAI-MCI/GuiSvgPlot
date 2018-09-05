@@ -710,25 +710,52 @@ public class SVGWizardController implements Initializable {
      */
     // save as preset
     protected void initSaveAsPreset() {
-        // TODO: i18n
         button_Save_As.setOnAction(event -> {
-            TextInputDialog dialogue = new TextInputDialog();
-            dialogue.setTitle(bundle.getString("prompt_preset_saveas_title"));
-            dialogue.setHeaderText(bundle.getString("prompt_preset_saveas_header"));
-            dialogue.setContentText(bundle.getString("prompt_preset_saveas_content"));
-            Optional<String> result = dialogue.showAndWait();
-            if (result.get().equals("")) {
-                presetsController.emptyNameAlert();
-            } else if (result.isPresent() && !presets.stream().map(p -> p.getPresetName()).anyMatch(n -> n.equals(result.get()))) {
-                Preset currentPreset = new Preset(guiSvgOptions, result.get(), guiSvgOptions.getDiagramType());
-                presets.add(currentPreset);
-                MenuItem newEntry = new MenuItem(currentPreset.getPresetName());
-                // 5 most recent entries because it's not "scalable" ladida...
-                if (GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size() < 11) {
-                    GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().add(3, newEntry);
+            List<String> choices = new ArrayList<>();
+            choices.add(bundle.getString("preset"));
+            choices.add(bundle.getString("json"));
+            ChoiceDialog<String> dialog = new ChoiceDialog<>(bundle.getString("preset"), choices);
+            dialog.setTitle(bundle.getString("prompt_saveas_title"));
+            dialog.setHeaderText(bundle.getString("prompt_saveas_header"));
+            dialog.setContentText(bundle.getString("prompt_saveas_content"));
+            Optional<String> result1 = dialog.showAndWait();
+            if (result1.isPresent() && result1.get().equalsIgnoreCase(bundle.getString("preset"))){
+                TextInputDialog dialogue = new TextInputDialog();
+                dialogue.setTitle(bundle.getString("prompt_preset_saveas_title"));
+                dialogue.setHeaderText(bundle.getString("prompt_preset_saveas_header"));
+                dialogue.setContentText(bundle.getString("prompt_preset_saveas_content"));
+                Optional<String> result = dialogue.showAndWait();
+                if (result.get().equals("")) {
+                    presetsController.emptyNameAlert();
+                } else if (result.isPresent() && !presets.stream().map(p -> p.getPresetName()).anyMatch(n -> n.equals(result.get()))) {
+                    Preset currentPreset = new Preset(guiSvgOptions, result.get(), guiSvgOptions.getDiagramType());
+                    presets.add(currentPreset);
+                    MenuItem newEntry = new MenuItem(currentPreset.getPresetName());
+                    // 5 most recent entries because it's not "scalable" ladida...
+                    if (GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size() < 11) {
+                        GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().add(3, newEntry);
+                    }
+                } else {
+                    presetsController.duplicateAlert(result);
                 }
-            } else {
-                presetsController.duplicateAlert(result);
+            } else if(result1.isPresent() && result1.get().equalsIgnoreCase(bundle.getString("json"))){
+                //TODO
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("NOT YET IMPLEMENTED");
+                alert.setHeaderText("NOT YET IMPLEMENTED");
+                alert.setContentText("NOT YET IMPLEMENTED");
+                alert.showAndWait();
+               /* TextInputDialog dialogueJSON = new TextInputDialog();
+                dialogueJSON.setTitle(bundle.getString("prompt_json_saveas_title"));
+                dialogueJSON.setHeaderText(bundle.getString("prompt_json_saveas_header"));
+                dialogueJSON.setContentText(bundle.getString("prompt_json_saveas_content"));
+                Optional<String> result = dialogueJSON.showAndWait();
+                if (result.get().equals("")) {
+                    presetsController.emptyNameAlert();
+                } else if (result.isPresent()) {
+                   //JSON file creation
+
+                }*/
             }
         });
     }
