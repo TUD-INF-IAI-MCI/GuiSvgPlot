@@ -40,6 +40,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     private Preset currentPreset;
     private GuiSvgOptions currentOptions = new GuiSvgOptions(new SvgPlotOptions());
     private final ToggleGroup scaleGroup = new ToggleGroup();
+    private final ToggleGroup pageOrientation = new ToggleGroup();
     private JsonObject settingsJSON = new JsonObject();
     private ArrayList flags = new ArrayList();
     private Preset defaultDiagram;
@@ -120,7 +121,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         chartTypeObservableList.add(resources.getString("combo_diagram"));
         chartTypeObservableList.add(resources.getString("combo_function"));
         combo_Type.setItems(chartTypeObservableList);
-        settingsDiagramGridPane.setVisible(false);
+        //settingsDiagramGridPane.setVisible(false);
         editorFunctionBorderPane.setVisible(false);
         overViewBorderPane.setVisible(true);
         combo_Type.setOnAction(event -> {
@@ -209,11 +210,11 @@ public class PresetsController extends SVGWizardController implements Initializa
                             //show settings stuff
                             if(converter.convert(((Preset) data).getDiagramType()) == DiagramType.FunctionPlot){
                                 combo_Type.setValue(bundle.getString("combo_function"));
-                                //flagGetter();
+                                flagSetter(converter.convert(((Preset) data).getDiagramType()), (Preset) data);
                                 functionEditorDisplayer();
                             }else{
                                 combo_Type.setValue(bundle.getString("combo_diagram"));
-                                //flagGetter();
+                                flagSetter(converter.convert(((Preset) data).getDiagramType()), (Preset) data);
                                 diagramEditorDisplayer();
                             }
                         });
@@ -276,7 +277,6 @@ public class PresetsController extends SVGWizardController implements Initializa
 
                     private final Button btn = new Button("", new Glyph("FontAwesome", '\uf1f8'));
                     {
-                        //this.btn.graphicProperty().setValue(deleteGlyph);
                         btn.setOnAction((ActionEvent event) -> {
                                 Object data = getTableView().getItems().get(getIndex());
                                 if(((Preset) data).getPresetName().equalsIgnoreCase(bundle.getString("default_diagram_preset_name")) || ((Preset) data).getPresetName().equalsIgnoreCase(bundle.getString("default_function_preset_name"))){
@@ -290,6 +290,10 @@ public class PresetsController extends SVGWizardController implements Initializa
                                     if (result.get() == ButtonType.OK) {
                                         presets.remove(getTableView().getItems().get(getIndex()).getPresetName());
                                         presets.remove(data);
+                                        //TODO remove the one that is in the preset menuitem
+                                        /*if (GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().contains(data)){
+                                            GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().remove(data);
+                                        }*/
                                     } else {
                                         // ... user chose CANCEL or closed the dialog, hence do nothing
                                     }
@@ -499,14 +503,21 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void flagSetter(DiagramType dt, Preset p){
         // diagram
         // can be made dynamic but in the interest of time
+        System.out.println(dt);
         if(dt.toString() == "FunctionPlot" || dt.toString() == "ScatterPlot" || dt.toString() == "LineChart" || dt.toString() == "Barchart"){
             GuiSvgOptions options = p.getOptions();
+            options.setDiagramType(dt);
+            //diagramtype
+            choiceBox_diagramType.setItems(FXCollections.observableArrayList(DiagramType.values()));
             choiceBox_diagramType.getSelectionModel().select(options.getDiagramType());
             textField_Title.setText(options.getTitle());
+            //outputdevice
+            choiceBox_outputDevice.setItems(FXCollections.observableArrayList(OutputDevice.values()));
             choiceBox_outputDevice.getSelectionModel().select(options.getOutputDevice());
-            // why size in points?
             //choiceBox_size.getSelectionModel().select(options.getSize());
             textField_Csvpath.setText(options.getCsvPath());
+
+
             choiceBox_csvOrientation.getSelectionModel().select(options.getCsvOrientation());
             choiceBox_csvType.getSelectionModel().select(options.getCsvType());
             choiceBox_trendline.getSelectionModel().select(options.getTrendLine());
@@ -543,13 +554,6 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
 
-    @FXML
-    private void quitToMainMenu(){
-        GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
-        GuiSvgPlott.getInstance().closeWizard();
-        int amountOfMenuItems = GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size();
-        GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().get(amountOfMenuItems-1).setDisable(false);
-    }
 
 
     private void jsonLoader(){
@@ -613,7 +617,8 @@ public class PresetsController extends SVGWizardController implements Initializa
         currentPreset.setPresetName(textFieldPresetName.getText());
         //workaround ]:->
         presetTable.refresh();
-        flagGetter();
+        //TODO: gets all the information out of the form and sets the appropriate values in the options
+        //flagGetter();
         functionEditorHider();
         diagramEditorHider();
         overviewDisplayer();
@@ -662,5 +667,13 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
         return false;
     }
+    @FXML
+    private void quitToMainMenu(){
+        GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
+        GuiSvgPlott.getInstance().closeWizard();
+        int amountOfMenuItems = GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size();
+        GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().get(amountOfMenuItems-1).setDisable(false);
+    }
+
 
 }
