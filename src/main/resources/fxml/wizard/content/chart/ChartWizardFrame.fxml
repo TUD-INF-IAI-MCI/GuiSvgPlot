@@ -85,11 +85,11 @@
                                               <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                   <children>
                                                       <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" prefHeight="17.0" text="%radio_portrait" GridPane.valignment="CENTER">
-                                                          <toggleGroup>
-                                                              <ToggleGroup fx:id="togglePageOrientation" />
-                                                          </toggleGroup>
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="togglePageOrientationTG" />
+                                             </toggleGroup>
                                                       </RadioButton>
-                                                      <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_landscape" toggleGroup="$togglePageOrientation" />
+                                                      <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_landscape" toggleGroup="$togglePageOrientationTG" />
                                                   </children>
                                               </HBox>
                                               <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram" GridPane.rowIndex="4" />
