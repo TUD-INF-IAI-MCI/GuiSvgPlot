@@ -20,12 +20,14 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
+import org.controlsfx.glyphfont.Glyph;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.styles.GridStyle;
+import org.controlsfx.glyphfont.FontAwesome;
 
 import java.io.File;
 import java.net.URL;
@@ -42,9 +44,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     private ArrayList flags = new ArrayList();
     private Preset defaultDiagram;
     private Preset defaultFunction;
-    Image editIcon = new Image(getClass().getResource("/images/editSmall.png").toExternalForm());
-    Image copyIcon = new Image(getClass().getResource("/images/copySmall.png").toExternalForm());
-    Image deleteIcon = new Image(getClass().getResource("/images/deleteSmall.png").toExternalForm());
+    private Glyph deleteGlyph = new Glyph("FontAwesome", '\uf021');
     DiagramType.DiagramTypeConverter converter = new DiagramType.DiagramTypeConverter();
 
 
@@ -198,7 +198,7 @@ public class PresetsController extends SVGWizardController implements Initializa
             public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
                 final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
 
-                    private final Button btn = new Button(bundle.getString("table_column_edit"));
+                    private final Button btn = new Button("", new Glyph("FontAwesome", '\uf044'));
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Object data = getTableView().getItems().get(getIndex());
@@ -242,9 +242,7 @@ public class PresetsController extends SVGWizardController implements Initializa
             @Override
             public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
                 final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
-
-                    //private final Button btn = new Button("", new ImageView(copyIcon));
-                    private final Button btn = new Button(bundle.getString("table_column_copy"));
+                    private final Button btn = new Button("", new Glyph("FontAwesome", '\uf0c5'));
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Object data = getTableView().getItems().get(getIndex());
@@ -275,10 +273,11 @@ public class PresetsController extends SVGWizardController implements Initializa
             @Override
             public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
                 final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
-                    //private final Button btn = new Button("", new ImageView(deleteIcon));
-                    private final Button btn = new Button(bundle.getString("table_column_delete"));
+
+                    private final Button btn = new Button("", new Glyph("FontAwesome", '\uf1f8'));
                     {
-                            btn.setOnAction((ActionEvent event) -> {
+                        //this.btn.graphicProperty().setValue(deleteGlyph);
+                        btn.setOnAction((ActionEvent event) -> {
                                 Object data = getTableView().getItems().get(getIndex());
                                 if(((Preset) data).getPresetName().equalsIgnoreCase(bundle.getString("default_diagram_preset_name")) || ((Preset) data).getPresetName().equalsIgnoreCase(bundle.getString("default_function_preset_name"))){
                                     defaultDeleteAlert();
