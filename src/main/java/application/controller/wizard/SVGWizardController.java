@@ -1,7 +1,10 @@
 package application.controller.wizard;
 
 import application.GuiSvgPlott;
+import application.controller.CsvEditorController;
 import application.controller.PresetsController;
+import application.controller.wizard.chart.ChartWizardFrameController;
+import application.controller.wizard.functions.FunctionWizardFrameController;
 import application.model.GuiSvgOptions;
 import application.model.Options.CssType;
 import application.model.Options.PageSize;
@@ -10,16 +13,21 @@ import application.service.SvgOptionsService;
 import application.util.SvgOptionsUtil;
 import application.util.TextFieldUtil;
 import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
+import javafx.beans.binding.Binding;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
@@ -29,6 +37,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.glyphfont.FontAwesome;
@@ -47,9 +56,16 @@ import tud.tangram.svgplot.styles.GridStyle;
 
 import javax.xml.bind.ValidationException;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class SVGWizardController implements Initializable {
     // start logger
@@ -158,6 +174,10 @@ public class SVGWizardController implements Initializable {
     public TextField textField_csvPath;
     @FXML
     private Button button_csvPath;
+
+    @FXML
+    private Button button_EditDataSet;
+
     @FXML
     public ChoiceBox<CsvOrientation> choiceBox_csvOrientation;
     @FXML
@@ -191,6 +211,11 @@ public class SVGWizardController implements Initializable {
     protected ObjectProperty<Range> xRange;
     protected ObjectProperty<Range> yRange;
 
+    protected File temporaryCSV;
+    protected HashMap<DiagramType, File> pointMap;
+
+    protected SimpleObjectProperty<File> currentDataSet;
+
 
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
@@ -207,6 +232,9 @@ public class SVGWizardController implements Initializable {
         this.guiSvgOptions = new GuiSvgOptions(new SvgPlotOptions());
         this.webView_svg.setAccessibleRole(AccessibleRole.PAGE_ITEM);
         this.webView_svg.setAccessibleHelp(this.bundle.getString("preview"));
+        this.currentDataSet = new SimpleObjectProperty<>();
+        this.pointMap = new HashMap<>();
+
         this.initListener();
         this.initOptionListeners();
         this.preProcessContent();
@@ -216,7 +244,7 @@ public class SVGWizardController implements Initializable {
         }
     }
 
-    public GuiSvgOptions getGuiSvgOptions(){
+    public GuiSvgOptions getGuiSvgOptions() {
         return this.guiSvgOptions;
     }
 
@@ -448,10 +476,21 @@ public class SVGWizardController implements Initializable {
     }
 
     protected void initCsvFieldListeners() {
+
+        this.button_EditDataSet.setOnAction(event -> {
+            openEditDataSetFrame();
+        });
+
+
         // csv path
         this.textField_csvPath.setDisable(false);
         this.textField_csvPath.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setCsvPath(newValue);
+
+            guiSvgOptions.setCsvPath(generateCSV());
+        });
+
+        currentDataSet.addListener(item -> {
+            guiSvgOptions.setCsvPath(generateCSV());
         });
 
         textField_csvPath.setOnDragOver(dragOverHandler(".csv"));
@@ -462,6 +501,7 @@ public class SVGWizardController implements Initializable {
 
 
         this.button_csvPath.setDisable(false);
+
         this.button_csvPath.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setInitialDirectory(this.userDir);
@@ -473,23 +513,29 @@ public class SVGWizardController implements Initializable {
             }
         });
 
-        // csv orientation
-        ObservableList<CsvOrientation> csvOrientationObservableList = FXCollections.observableArrayList(CsvOrientation.values());
-        this.choiceBox_csvOrientation.setItems(csvOrientationObservableList);
-        this.choiceBox_csvOrientation.setConverter(this.svgOptionsUtil.getCsvOrientationStringConverter());
-        this.choiceBox_csvOrientation.getSelectionModel().select(CsvOrientation.HORIZONTAL);
-        this.choiceBox_csvOrientation.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setCsvOrientation(newValue);
-        });
+        if (this instanceof ChartWizardFrameController) {
 
-        // csv type
-        ObservableList<CsvType> csvTypeObservableList = FXCollections.observableArrayList(CsvType.values());
-        this.choiceBox_csvType.setItems(csvTypeObservableList);
-        this.choiceBox_csvType.setConverter(this.svgOptionsUtil.getCsvTypeStringConverter());
-        this.choiceBox_csvType.getSelectionModel().select(CsvType.DOTS);
-        this.choiceBox_csvType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setCsvType(newValue);
-        });
+
+            // csv orientation
+            ObservableList<CsvOrientation> csvOrientationObservableList = FXCollections.observableArrayList(CsvOrientation.values());
+            this.choiceBox_csvOrientation.setItems(csvOrientationObservableList);
+            this.choiceBox_csvOrientation.setConverter(this.svgOptionsUtil.getCsvOrientationStringConverter());
+            this.choiceBox_csvOrientation.getSelectionModel().select(CsvOrientation.HORIZONTAL);
+            this.choiceBox_csvOrientation.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                this.guiSvgOptions.setCsvOrientation(newValue);
+            });
+
+            // csv type
+            ObservableList<CsvType> csvTypeObservableList = FXCollections.observableArrayList(CsvType.values());
+            this.choiceBox_csvType.setItems(csvTypeObservableList);
+            this.choiceBox_csvType.setConverter(this.svgOptionsUtil.getCsvTypeStringConverter());
+            this.choiceBox_csvType.getSelectionModel().select(CsvType.DOTS);
+            this.choiceBox_csvType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                this.guiSvgOptions.setCsvType(newValue);
+            });
+
+
+        }
     }
 
     protected void initSpecialFieldListeners() {
@@ -689,7 +735,7 @@ public class SVGWizardController implements Initializable {
                     this.popOver_infos.hide();
                     this.popOver_warnings.hide();
                     GuiSvgPlott.getInstance().closeWizard();
-                }catch (ValidationException e){
+                } catch (ValidationException e) {
                     logger.error(this.bundle.getString("svg_creation_validation_error"));
                 }
             }
@@ -831,7 +877,7 @@ public class SVGWizardController implements Initializable {
             this.yRange.set(this.guiSvgOptions.getyRange());
         }
 
-        if (!this.guiSvgOptions.getDiagramType().equals(DiagramType.BarChart)) {
+        if (!DiagramType.BarChart.equals(this.guiSvgOptions.getDiagramType())) {
             this.toggleVisibility(enabled, this.label_xfrom, this.textField_xfrom);
             this.toggleVisibility(enabled, this.label_xto, this.textField_xto);
         }
@@ -869,6 +915,87 @@ public class SVGWizardController implements Initializable {
             }
         };
         return dragOverHandler;
+    }
+
+
+    protected void openEditDataSetFrame() {
+
+        FXMLLoader loader = new FXMLLoader();
+
+        try {
+
+            loader.setResources(bundle);
+            loader.setLocation(GuiSvgPlott.CsvEditorFrame);
+
+            BorderPane bp = loader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(bp);
+
+            stage.setMinHeight(450);
+            stage.setScene(scene);
+
+            CsvEditorController csvController = loader.getController();
+
+
+            csvController.button_Cancel.setOnAction(event -> {
+                stage.close();
+            });
+            csvController.init(pointMap, textField_csvPath.getText(), guiSvgOptions, this);
+
+            stage.showAndWait();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    protected String generateCSV() {
+
+        if (currentDataSet == null || currentDataSet.get() == null)
+            textField_csvPath.getText();
+
+        Path tempFile = null;
+        try {
+            tempFile = Files.createTempFile("dataset", ".csv");
+            mergeDataSet(textField_csvPath.getText(), tempFile);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return (tempFile != null) ? tempFile.toString() : "";
+    }
+
+    private void mergeDataSet(String originFile, Path resultFile) throws IOException {
+
+        File f = resultFile.toFile();
+
+        Files.write(resultFile, "".getBytes());
+
+        Files.readAllLines(Paths.get(originFile)).forEach(line -> {
+
+            try {
+                Files.write(resultFile, (line + System.lineSeparator()).getBytes(Charset.defaultCharset()), StandardOpenOption.APPEND);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        if (currentDataSet != null && currentDataSet.get() != null)
+            Files.readAllLines(Paths.get(currentDataSet.get().getAbsolutePath())).forEach(line -> {
+
+                try {
+                    Files.write(resultFile, (line + System.lineSeparator()).getBytes(Charset.defaultCharset()), StandardOpenOption.APPEND);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            });
+        f.deleteOnExit();
     }
 
 

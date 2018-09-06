@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.xml.transform.sax.SAXSource;
 import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,6 +36,22 @@ public class GuiSvgPlott extends Application {
     private Stage primaryStage;
     private JsonObject settings;
     private ResourceBundle bundle;
+
+
+    ///// PATHS ////
+
+    public static URL RootFrame = GuiSvgPlott.class.getResource("/fxml/RootFrame.fxml");
+    public static URL WizardFrame = GuiSvgPlott.class.getResource("/fxml/wizard/Wizard.fxml");
+    public static URL PresetEditorFrame = GuiSvgPlott.class.getResource("/fxml/wizard/PresetEditorFrame.fxml");
+    public static URL PresetOverviewFrame = GuiSvgPlott.class.getResource("/fxml/wizard/PresetOverviewFrame.fxml");
+    public static URL IntroFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/Intro.fxml");
+    public static URL CsvEditorFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/CsvEditor.fxml");
+    public static URL FunctionWizardFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/functions/FunctionWizardFrame.fxml");
+    public static URL ChartWizardFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/chart/ChartWizardFrame.fxml");
+
+
+    ////////////////
+
 
     public GuiSvgPlott() {
         instance = this;
@@ -55,7 +72,7 @@ public class GuiSvgPlott extends Application {
         this.bundle = ResourceBundle.getBundle("langBundle", new UTF8Control());
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
-        loader.setLocation(getClass().getResource("/fxml/RootFrame.fxml"));
+        loader.setLocation(GuiSvgPlott.RootFrame);
 
         AnchorPane anchorPane = loader.load();
 

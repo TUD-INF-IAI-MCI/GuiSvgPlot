@@ -1,28 +1,20 @@
 package application.controller.wizard.functions;
 
-import application.GuiSvgPlott;
-import application.controller.PresetsController;
 import application.controller.wizard.SVGWizardController;
-import application.model.Preset;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.plotting.Function;
 import tud.tangram.svgplot.plotting.IntegralPlotSettings;
 
 import java.net.URL;
-import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -42,23 +34,16 @@ public class FunctionWizardFrameController extends SVGWizardController {
     @FXML
     private GridPane stage2;
     @FXML
-    private TextField textField_addFunction;
-    @FXML
-    private Button button_addFunction;
-    @FXML
-    private TableView<String> tableView_Functions;
-    @FXML
-    private TableColumn<String, String> tableCol_Function;
-    @FXML
-    private TableColumn<String, Button> tableCol_Delete;
+    private Button button_EditDataSet;
+
 
     /* stage 3 */
     @FXML
     private GridPane stage3;
 
-    public ComboBox<String> comboBox_function2;
+    public ComboBox<Function> comboBox_function2;
 
-    public ComboBox<String> comboBox_function1;
+    public ComboBox<Function> comboBox_function1;
 
 
     @FXML
@@ -70,8 +55,6 @@ public class FunctionWizardFrameController extends SVGWizardController {
     @FXML
     private TextField textField_rangeTo;
 
-    @FXML
-    private RadioButton radioButton_integralRange;
 
     @FXML
     private Label label_RangeFrom;
@@ -81,6 +64,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
     @FXML
     private TextField textField_IntegralName;
+
+    @FXML
+    private CheckBox checkBox_ValueRange;
 
 
     /* stage 4 */
@@ -104,7 +90,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
     private SimpleDoubleProperty rangeTo;
     private SimpleStringProperty integralName;
 
-    private ObservableList<String> functionList;
+    private ObservableList<Function> functionList;
 
 
     public FunctionWizardFrameController() {
@@ -134,6 +120,16 @@ public class FunctionWizardFrameController extends SVGWizardController {
         initStage4();
         initStage5();
         initStage6();
+
+        Function f1 = new Function("F1", "x^2");
+        Function f2 = new Function("F2", "-(x^2)");
+        Function f3 = new Function("F3", "2x");
+        Function f4 = new Function("F4", "3");
+
+
+        functionList.addAll(f1, f2, f3, f4);
+
+
     }
 
 
@@ -152,44 +148,11 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
         this.functionList = FXCollections.observableArrayList();
 
+        super.initCsvFieldListeners();
 
-        button_addFunction.setOnAction(event -> {
 
-            if (!functionList.contains(textField_addFunction.getText()) && !textField_addFunction.getText().isEmpty()) {
-                functionList.add(textField_addFunction.getText());
-                textField_addFunction.setText("");
-            }
-        });
-
-        tableCol_Delete.setCellValueFactory(btn -> {
-
-            Button b = new Button();
-            b.setOnAction(event ->
-                    functionList.remove(btn.getValue()));
-
-            return new SimpleObjectProperty<>(b);
-        });
-
-        tableCol_Delete.setCellFactory(cell -> new TableCell<String, Button>() {
-
-            @Override
-            protected void updateItem(Button item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (item == null || empty) {
-                    setGraphic(null);
-                    setText(null);
-                    return;
-                }
-
-                item.setText("-");
-                setGraphic(item);
-            }
-        });
-
-        tableCol_Function.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
-        tableView_Functions.setItems(functionList);
     }
+
 
     /**
      * Will initiate the third stage. Depending on {@code extended}, some parts will be dis- or enabled.
@@ -199,18 +162,40 @@ public class FunctionWizardFrameController extends SVGWizardController {
         comboBox_function1.setItems(functionList);
         comboBox_function2.setItems(functionList);
 
+        Callback<ListView<Function>, ListCell<Function>> comboBoxCB = new Callback<ListView<Function>, ListCell<Function>>() {
+            @Override
+            public ListCell<Function> call(ListView<Function> p) {
+                return new ListCell<Function>() {
+                    @Override
+                    protected void updateItem(Function item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item == null || empty) {
+                            setGraphic(null);
+                        } else {
+                            setText(item.getFunction());
+                        }
+                    }
+                };
+            }
+        };
+
+        comboBox_function1.setCellFactory(comboBoxCB);
+        comboBox_function2.setCellFactory(comboBoxCB);
+
 
         comboBox_function2.visibleProperty().bind(radioButton_Function2.selectedProperty());
 
+
         comboBox_function1.setOnAction(event -> {
-            integral1.set(comboBox_function1.getSelectionModel().getSelectedItem());
+            integral1.set(comboBox_function1.getSelectionModel().getSelectedItem().getFunction());
             integralOptionBuilder();
 
         });
 
 
         comboBox_function2.setOnAction(event -> {
-            integral1.set(comboBox_function2.getSelectionModel().getSelectedItem());
+            integral1.set(comboBox_function2.getSelectionModel().getSelectedItem().getFunction());
             integralOptionBuilder();
 
         });
@@ -221,10 +206,10 @@ public class FunctionWizardFrameController extends SVGWizardController {
         });
 
 
-        textField_rangeFrom.visibleProperty().bind(radioButton_integralRange.selectedProperty());
-        textField_rangeTo.visibleProperty().bind(radioButton_integralRange.selectedProperty());
-        label_RangeFrom.visibleProperty().bind(radioButton_integralRange.selectedProperty());
-        label_RangeTo.visibleProperty().bind(radioButton_integralRange.selectedProperty());
+        textField_rangeFrom.visibleProperty().bind(checkBox_ValueRange.selectedProperty());
+        textField_rangeTo.visibleProperty().bind(checkBox_ValueRange.selectedProperty());
+        label_RangeFrom.visibleProperty().bind(checkBox_ValueRange.selectedProperty());
+        label_RangeTo.visibleProperty().bind(checkBox_ValueRange.selectedProperty());
 
         integralName.bind(textField_IntegralName.textProperty());
     }
@@ -258,7 +243,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         double from = -10;
         double to = 10;
 
-        if (!radioButton_integralRange.isVisible()) {
+        if (checkBox_ValueRange.isSelected()) {
             from = Double.parseDouble(textField_rangeFrom.getText());
             to = Double.parseDouble(textField_rangeTo.getText());
         }
@@ -267,7 +252,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
         ObservableList<Function> f = FXCollections.observableArrayList();
 
-        functionList.forEach(func -> f.add(new Function(func)));
+        functionList.forEach(func -> f.add(func));
         guiSvgOptions.getFunctions().clear();
 
 
@@ -281,6 +266,10 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
         this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
 
+    }
+
+    public ObservableList<Function> getFunctionList() {
+        return functionList;
     }
 
 

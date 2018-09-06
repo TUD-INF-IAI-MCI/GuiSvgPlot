@@ -134,6 +134,11 @@
                                               <ChoiceBox id="choiceBox_CsvOrientation" fx:id="choiceBox_csvOrientation" accessibleText="CSV Orientierung" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                               <Label fx:id="label_Title1" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_type" GridPane.rowIndex="2" />
                                               <ChoiceBox id="choiceBox_CsvType" fx:id="choiceBox_csvType" accessibleText="CSV Typ" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <AnchorPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                                       <children>
+                                          <Button fx:id="button_EditDataSet" accessibleText="%label_csv_edit" mnemonicParsing="false" text="%label_csv_edit" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
+                                       </children>
+                                    </AnchorPane>
                                           </children>
                                       </GridPane>
                            </children>
@@ -371,8 +376,8 @@
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                                    <Button fx:id="button_Save_As_Preset" accessibleText="%button_save_as_preset" mnemonicParsing="false" text="%button_save_as_preset" styleClass="btn-preset"/>
-                                    <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back"/>
+                                    <Button fx:id="button_Save_As_Preset" accessibleText="%button_save_as_preset" mnemonicParsing="false" styleClass="btn-preset" text="%button_save_as_preset" />
+                                    <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back" />
                                     <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next" />
                                     <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create" />
                                 </buttons>
