@@ -373,6 +373,7 @@
                                 <buttons>
                                     <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back" />
                                     <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next" />
+                           <Button fx:id="button_Load" disable="true" mnemonicParsing="false" text="%button_load" />
                                     <Button fx:id="button_Save_As" accessibleText="%button_save_as" mnemonicParsing="false" styleClass="btn-preset" text="%button_save_as" />
                                     <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create" />
                                 </buttons>

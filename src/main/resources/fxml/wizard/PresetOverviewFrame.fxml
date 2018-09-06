@@ -22,9 +22,9 @@
 
 <AnchorPane fx:id="overViewAnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.PresetsController">
    <children>
-      <BorderPane fx:id="overViewBorderPane" prefHeight="400.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane fx:id="overViewBorderPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <HBox fx:id="overviewUpperHBox" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <HBox fx:id="overviewUpperHBox" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <ButtonBar buttonMinWidth="200.0" prefHeight="50.0" prefWidth="221.0">
@@ -32,8 +32,11 @@
                         <Button fx:id="button_newPreset" alignment="CENTER" contentDisplay="RIGHT" minWidth="350.0" mnemonicParsing="false" onAction="#createNewPreset" prefHeight="26.0" text="%button_create_preset" textAlignment="CENTER" />
                      </buttons>
                      <HBox.margin>
-                        <Insets right="50.0" top="50.0" />
+                        <Insets right="50.0" top="10.0" />
                      </HBox.margin>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
                   </ButtonBar>
                </children>
             </HBox>
@@ -65,7 +68,7 @@
             </AnchorPane>
          </bottom>
       </BorderPane>
-      <BorderPane fx:id="editorDiagramBorderPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane fx:id="editorDiagramBorderPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
             <AnchorPane fx:id="settingsBottomAnchorPane">
                <children>
@@ -221,7 +224,7 @@
                         <HBox layoutX="310.0" layoutY="87.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                            <children>
                               <TextField fx:id="textField_Csvpath" accessibleText="Diagramm Titel" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="26.0" prefWidth="357.0" promptText="%prompt_path_to_csv" />
-                              <Button fx:id="button_CsvPath" accessibleText="CSV Datei auswählen" alignment="TOP_RIGHT" mnemonicParsing="false" text="..." />
+                              <Button fx:id="button_CsvPath" accessibleText="CSV Datei auswählen" alignment="TOP_RIGHT" maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="..." />
                            </children>
                         </HBox>
                         <ChoiceBox fx:id="choiceBox_csvOrientation" prefHeight="26.0" prefWidth="388.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
@@ -328,12 +331,12 @@
                         </Label>
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <children>
-                              <RadioButton mnemonicParsing="false" text="%radio_portrait">
+                              <RadioButton fx:id="radioBtn_Portrait" mnemonicParsing="false" text="%radio_portrait">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="pageOrientation" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="%radio_landscape" toggleGroup="$pageOrientation" />
+                              <RadioButton fx:id="radioBtn_Landscape" mnemonicParsing="false" text="%radio_landscape" toggleGroup="$pageOrientation" />
                            </children>
                         </HBox>
                      </children>

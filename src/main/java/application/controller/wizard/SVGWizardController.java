@@ -68,6 +68,8 @@ public class SVGWizardController implements Initializable {
     @FXML
     protected Button button_Create;
     @FXML
+    protected Button button_Load;
+    @FXML
     protected Button button_Save_As;
     @FXML
     protected Button button_Edit_Preset;
@@ -211,6 +213,7 @@ public class SVGWizardController implements Initializable {
         this.initOptionListeners();
         this.preProcessContent();
         initSaveAsPreset();
+        initloadPreset();
         if (presets == null) {
             presets = FXCollections.observableArrayList();
         }
@@ -760,6 +763,28 @@ public class SVGWizardController implements Initializable {
         });
     }
 
+    protected void initloadPreset(){
+        button_Load.setOnAction(event -> {
+            //TODO
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("NOT YET IMPLEMENTED");
+            alert.setHeaderText("NOT YET IMPLEMENTED");
+            alert.setContentText("NOT YET IMPLEMENTED");
+            alert.showAndWait();
+            /*List<String> choices = new ArrayList<>();
+            for (Preset p : presets) {
+                choices.add(p.toString());
+            }
+            ChoiceDialog<String> dialog = new ChoiceDialog<>("",choices);
+            dialog.setTitle(bundle.getString("prompt_load_title"));
+            dialog.setHeaderText(bundle.getString("prompt_load_header"));
+            dialog.setContentText(bundle.getString("prompt_load_content"));
+            Optional<String> result = dialog.showAndWait();
+            if(result.isPresent()){
+
+            }*/
+        });
+    }
     public Glyph getWarnIcon() {
         return warnIcon;
     }

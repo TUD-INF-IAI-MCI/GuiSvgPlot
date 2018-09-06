@@ -20,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 import org.controlsfx.glyphfont.Glyph;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
@@ -189,6 +190,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
         table_column_name.setCellValueFactory(new PropertyValueFactory<Preset, String>("presetName"));
         table_column_date.setCellValueFactory(new PropertyValueFactory<Preset, String>("creationDate"));
+        //TODO: diagramtype needs to be i18n'ded but how is that supposed to be happening? Ô_ó
         table_column_diagram_type.setCellValueFactory(new PropertyValueFactory<Preset,String>("diagramType"));
         addEditButtonToTable();
         addCopyButtonToTable();
@@ -196,7 +198,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         presetTable.setItems(super.presets);
     }
     private void initDefaultPresets(){
-        defaultDiagram = new Preset(new GuiSvgOptions(new SvgPlotOptions()), bundle.getString("default_diagram_preset_name"), DiagramType.LineChart );
+        defaultDiagram = new Preset(new GuiSvgOptions(new SvgPlotOptions()), bundle.getString("default_diagram_preset_name"), DiagramType.LineChart);
         defaultFunction  = new Preset(new GuiSvgOptions(new SvgPlotOptions()), bundle.getString("default_function_preset_name"), DiagramType.FunctionPlot);
     }
 
@@ -396,7 +398,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         // arbitrary default value
         DiagramType dt;
         List<String> choices = new ArrayList<>();
-        //needs i18n implementation that doesnt suck
+        //TODO: needs i18n implementation that doesnt suck
         /*choices.add(bundle.getString("function_plot"));
         choices.add(bundle.getString("diagramType_scatterplot"));
         choices.add(bundle.getString("diagramType_linechart"));
@@ -405,14 +407,14 @@ public class PresetsController extends SVGWizardController implements Initializa
         choices.add(DiagramType.ScatterPlot.toString());
         choices.add(DiagramType.LineChart.toString());
         choices.add(DiagramType.BarChart.toString());
-        ChoiceDialog<String> dialogue = new ChoiceDialog<>(DiagramType.LineChart.toString(), choices);
+        ChoiceDialog<String> dialogue = new ChoiceDialog<>(bundle.getString("diagramType_linechart"), choices);
         dialogue.setTitle(bundle.getString("prompt_diagramtype_title"));
         dialogue.setResizable(true);
         dialogue.setHeaderText(bundle.getString("prompt_diagramtype_header"));
         dialogue.setContentText(bundle.getString("prompt_diagramtype_content"));
         Optional<String> result = dialogue.showAndWait();
         if(result.isPresent()){
-            dt = DiagramType.fromString(result.get());
+            dt = converter.convert(result.get());
             presetNamePrompt(dt);
         }
     }
@@ -528,7 +530,6 @@ public class PresetsController extends SVGWizardController implements Initializa
             }
             //textField_displayAreaXfrom.setText(options.getxRange());
             choiceBox_dblaxes.getSelectionModel().select(options.getAxisStyle());
-            System.out.println(options.getCss());
             choiceBox_cssType.getSelectionModel().select(options.getCss());
 
         // function
