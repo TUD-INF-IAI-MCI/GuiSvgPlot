@@ -86,7 +86,7 @@ public class SVGWizardController implements Initializable {
     @FXML
     protected Button button_Load;
     @FXML
-    protected Button button_Save_As;
+    protected Button button_Save_As_Preset;
     @FXML
     protected Button button_Edit_Preset;
     @FXML
@@ -759,7 +759,7 @@ public class SVGWizardController implements Initializable {
      */
     // save as preset
     protected void initSaveAsPreset() {
-        button_Save_As.setOnAction(event -> {
+        button_Save_As_Preset.setOnAction(event -> {
             List<String> choices = new ArrayList<>();
             choices.add(bundle.getString("preset"));
             choices.add(bundle.getString("json"));
