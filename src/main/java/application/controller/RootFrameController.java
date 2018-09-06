@@ -201,7 +201,7 @@ public class RootFrameController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
         loader.setLocation(fxmlPath);
-        isWizard = fxmlPath;
+        isWizard = fxmlPath.getPath();
          try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
