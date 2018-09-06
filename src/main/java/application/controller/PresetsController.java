@@ -8,6 +8,7 @@ import application.model.Options.GuiAxisStyle;
 import application.model.Options.PageSize;
 import application.model.Options.TrendlineAlgorithm;
 import application.model.Preset;
+import application.util.SvgOptionsUtil;
 import com.google.gson.JsonObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,10 +17,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
+import org.controlsfx.glyphfont.Glyph;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.options.DiagramType;
@@ -35,16 +37,17 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     private ResourceBundle bundle;
 
+    public SvgOptionsUtil svgOptionsUtil = SvgOptionsUtil.getInstance();
     private Preset currentPreset;
+    private GuiSvgOptions defaultOptions;
     private GuiSvgOptions currentOptions = new GuiSvgOptions(new SvgPlotOptions());
     private final ToggleGroup scaleGroup = new ToggleGroup();
+    private final ToggleGroup pageOrientationTG = new ToggleGroup();
     private JsonObject settingsJSON = new JsonObject();
     private ArrayList flags = new ArrayList();
     private Preset defaultDiagram;
     private Preset defaultFunction;
-    Image editIcon = new Image(getClass().getResource("/images/editSmall.png").toExternalForm());
-    Image copyIcon = new Image(getClass().getResource("/images/copySmall.png").toExternalForm());
-    Image deleteIcon = new Image(getClass().getResource("/images/deleteSmall.png").toExternalForm());
+    private Glyph deleteGlyph = new Glyph("FontAwesome", '\uf021');
     DiagramType.DiagramTypeConverter converter = new DiagramType.DiagramTypeConverter();
 
 
@@ -104,6 +107,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private RadioButton radioBtn_customScale;
     @FXML
+    private RadioButton radioBtn_Portrait;
+    @FXML
+    private RadioButton radioBtn_Landscape;
+    @FXML
     private GridPane settingsDiagramGridPane = new GridPane();
     @FXML
     private GridPane settingsFunctionGridPane = new GridPane();
@@ -117,10 +124,13 @@ public class PresetsController extends SVGWizardController implements Initializa
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
+        this.svgOptionsUtil = SvgOptionsUtil.getInstance();
+        //das zu finden hat mich ne halbe stunde gekostet...
+        this.svgOptionsUtil.setBundle(resources);
         chartTypeObservableList.add(resources.getString("combo_diagram"));
         chartTypeObservableList.add(resources.getString("combo_function"));
         combo_Type.setItems(chartTypeObservableList);
-        settingsDiagramGridPane.setVisible(false);
+        //settingsDiagramGridPane.setVisible(false);
         editorFunctionBorderPane.setVisible(false);
         overViewBorderPane.setVisible(true);
         combo_Type.setOnAction(event -> {
@@ -180,6 +190,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
         table_column_name.setCellValueFactory(new PropertyValueFactory<Preset, String>("presetName"));
         table_column_date.setCellValueFactory(new PropertyValueFactory<Preset, String>("creationDate"));
+        //TODO: diagramtype needs to be i18n'ded but how is that supposed to be happening? Ô_ó
         table_column_diagram_type.setCellValueFactory(new PropertyValueFactory<Preset,String>("diagramType"));
         addEditButtonToTable();
         addCopyButtonToTable();
@@ -187,7 +198,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         presetTable.setItems(super.presets);
     }
     private void initDefaultPresets(){
-        defaultDiagram = new Preset(new GuiSvgOptions(new SvgPlotOptions()), bundle.getString("default_diagram_preset_name"), DiagramType.LineChart );
+        defaultDiagram = new Preset(new GuiSvgOptions(new SvgPlotOptions()), bundle.getString("default_diagram_preset_name"), DiagramType.LineChart);
         defaultFunction  = new Preset(new GuiSvgOptions(new SvgPlotOptions()), bundle.getString("default_function_preset_name"), DiagramType.FunctionPlot);
     }
 
@@ -198,7 +209,7 @@ public class PresetsController extends SVGWizardController implements Initializa
             public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
                 final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
 
-                    private final Button btn = new Button(bundle.getString("table_column_edit"));
+                    private final Button btn = new Button("", new Glyph("FontAwesome", '\uf044'));
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Object data = getTableView().getItems().get(getIndex());
@@ -209,11 +220,11 @@ public class PresetsController extends SVGWizardController implements Initializa
                             //show settings stuff
                             if(converter.convert(((Preset) data).getDiagramType()) == DiagramType.FunctionPlot){
                                 combo_Type.setValue(bundle.getString("combo_function"));
-                                //flagGetter();
+                                flagSetter(converter.convert(((Preset) data).getDiagramType()), (Preset) data);
                                 functionEditorDisplayer();
                             }else{
                                 combo_Type.setValue(bundle.getString("combo_diagram"));
-                                //flagGetter();
+                                flagSetter(converter.convert(((Preset) data).getDiagramType()), (Preset) data);
                                 diagramEditorDisplayer();
                             }
                         });
@@ -242,9 +253,7 @@ public class PresetsController extends SVGWizardController implements Initializa
             @Override
             public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
                 final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
-
-                    //private final Button btn = new Button("", new ImageView(copyIcon));
-                    private final Button btn = new Button(bundle.getString("table_column_copy"));
+                    private final Button btn = new Button("", new Glyph("FontAwesome", '\uf0c5'));
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Object data = getTableView().getItems().get(getIndex());
@@ -275,22 +284,26 @@ public class PresetsController extends SVGWizardController implements Initializa
             @Override
             public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
                 final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
-                    //private final Button btn = new Button("", new ImageView(deleteIcon));
-                    private final Button btn = new Button(bundle.getString("table_column_delete"));
+
+                    private final Button btn = new Button("", new Glyph("FontAwesome", '\uf1f8'));
                     {
-                            btn.setOnAction((ActionEvent event) -> {
+                        btn.setOnAction((ActionEvent event) -> {
                                 Object data = getTableView().getItems().get(getIndex());
                                 if(((Preset) data).getPresetName().equalsIgnoreCase(bundle.getString("default_diagram_preset_name")) || ((Preset) data).getPresetName().equalsIgnoreCase(bundle.getString("default_function_preset_name"))){
                                     defaultDeleteAlert();
                                 }else{
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                                    alert.setTitle("Bestätigung erforderlich");
-                                    alert.setHeaderText("Sie löschen hiermit die gewählte Voreinstellung!");
-                                    alert.setContentText("Sind Sie sicher dass Sie " + ((Preset) data).getPresetName() + " löschen wollen?");
+                                    alert.setTitle(bundle.getString("alert_preset_delete_title"));
+                                    alert.setHeaderText(bundle.getString("alert_preset_delete_header"));
+                                    alert.setContentText(bundle.getString("alert_preset_delete_content1") + ((Preset) data).getPresetName() + bundle.getString("alert_preset_delete_content2"));
                                     Optional<ButtonType> result = alert.showAndWait();
                                     if (result.get() == ButtonType.OK) {
                                         presets.remove(getTableView().getItems().get(getIndex()).getPresetName());
                                         presets.remove(data);
+                                        //TODO remove the one that is in the preset menuitem
+                                        /*if (GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().contains(data)){
+                                            GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().remove(data);
+                                        }*/
                                     } else {
                                         // ... user chose CANCEL or closed the dialog, hence do nothing
                                     }
@@ -317,11 +330,8 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
     private void initDiagram(){
-        ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());
-        choiceBox_diagramType.setItems(diagramTypeObservableList);
+        choiceBox_diagramType.setItems(FXCollections.observableArrayList(DiagramType.values()));
         DiagramType dt = converter.convert(currentPreset.getDiagramType());
-        //System.out.println(diagramTypeObservableList);
-        //System.out.println(dt);
         switch(dt){
             case ScatterPlot:
                 choiceBox_diagramType.getSelectionModel().select(1);
@@ -330,16 +340,14 @@ public class PresetsController extends SVGWizardController implements Initializa
             case BarChart:
                 choiceBox_diagramType.getSelectionModel().select(2);
         }
-        flags.add(choiceBox_diagramType);
-        ObservableList<OutputDevice> outputDevices = FXCollections.observableArrayList(OutputDevice.values());
-        choiceBox_outputDevice.setItems(outputDevices);
-        choiceBox_outputDevice.getSelectionModel().select(0);
-        flags.add(choiceBox_outputDevice);
+        //outputdevice
+        choiceBox_outputDevice.setItems(FXCollections.observableArrayList(OutputDevice.values()));
+        choiceBox_outputDevice.setConverter(svgOptionsUtil.getOutputDeviceStringConverter());
+        //pagesize
         ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
         ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
         choiceBox_size.setItems(sortedPageSizes);
-        choiceBox_size.getSelectionModel().select(PageSize.A4);
-        flags.add(choiceBox_size);
+        //CSV
         button_CsvPath.setDisable(false);
         button_CsvPath.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
@@ -350,33 +358,21 @@ public class PresetsController extends SVGWizardController implements Initializa
             if (file != null) {
                 textField_Csvpath.setText(file.getAbsolutePath());
             }});
-        flags.add(button_CsvPath);
-        ObservableList<CsvOrientation> csvOrientationObservableList = FXCollections.observableArrayList(CsvOrientation.values());
-        choiceBox_csvOrientation.setItems(csvOrientationObservableList);
-        choiceBox_csvOrientation.getSelectionModel().select(0);
-        flags.add(choiceBox_csvOrientation);
-        ObservableList<CsvType> csvTypeObservableList = FXCollections.observableArrayList(CsvType.values());
-        choiceBox_csvType.setItems(csvTypeObservableList);
-        choiceBox_csvType.getSelectionModel().select(0);
-        flags.add(choiceBox_csvType);
-        ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
-        choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
-        choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
-        flags.add(choiceBox_trendline);
-        ObservableList<GridStyle> gridStyleObservableList = FXCollections.observableArrayList(GridStyle.values());
-        choiceBox_gridStyle.setItems(gridStyleObservableList);
-        choiceBox_gridStyle.getSelectionModel().select(GridStyle.NONE);
-        flags.add(choiceBox_gridStyle);
-        ObservableList<GuiAxisStyle> axisStyleObservableList = FXCollections.observableArrayList(GuiAxisStyle.values());
-        choiceBox_dblaxes.setItems(axisStyleObservableList);
-        choiceBox_dblaxes.getSelectionModel().select(GuiAxisStyle.Barchart);
-        flags.add(choiceBox_dblaxes);
-        ObservableList<CssType> cssTypeObservableList = FXCollections.observableArrayList(CssType.values());
-        choiceBox_cssType.setItems(cssTypeObservableList);
-        choiceBox_cssType.getSelectionModel().select(CssType.NONE);
-        flags.add(choiceBox_cssType);
-
-
+        choiceBox_csvOrientation.setItems(FXCollections.observableArrayList(CsvOrientation.values()));
+        choiceBox_csvOrientation.setConverter(svgOptionsUtil.getCsvOrientationStringConverter());
+        choiceBox_csvType.setItems(FXCollections.observableArrayList(CsvType.values()));
+        choiceBox_csvType.setConverter(svgOptionsUtil.getCsvTypeStringConverter());
+        //trendline
+        choiceBox_trendline.setItems(FXCollections.observableArrayList(TrendlineAlgorithm.values()));
+        choiceBox_trendline.setConverter(svgOptionsUtil.getTrendlineAlgorithmStringConverter());
+        choiceBox_trendline.getSelectionModel().select(0);
+        //gridstyle
+        choiceBox_gridStyle.setItems(FXCollections.observableArrayList(GridStyle.values()));
+        //doubleaxis
+        choiceBox_dblaxes.setItems(FXCollections.observableArrayList(GuiAxisStyle.values()));
+        //css
+        choiceBox_cssType.setItems(FXCollections.observableArrayList(CssType.values()));
+        choiceBox_cssType.getSelectionModel().select(0);
         // Radiobutton groupings
         /*radioBtn_Ascending.setToggleGroup(sortGroup);
         radioBtn_Ascending.setSelected(true);
@@ -402,7 +398,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         // arbitrary default value
         DiagramType dt;
         List<String> choices = new ArrayList<>();
-        //needs i18n implementation that doesnt suck
+        //TODO: needs i18n implementation that doesnt suck
         /*choices.add(bundle.getString("function_plot"));
         choices.add(bundle.getString("diagramType_scatterplot"));
         choices.add(bundle.getString("diagramType_linechart"));
@@ -411,23 +407,23 @@ public class PresetsController extends SVGWizardController implements Initializa
         choices.add(DiagramType.ScatterPlot.toString());
         choices.add(DiagramType.LineChart.toString());
         choices.add(DiagramType.BarChart.toString());
-        ChoiceDialog<String> dialogue = new ChoiceDialog<>(DiagramType.LineChart.toString(), choices);
-        dialogue.setTitle("Diagrammtyp auswählen");
+        ChoiceDialog<String> dialogue = new ChoiceDialog<>(bundle.getString("diagramType_linechart"), choices);
+        dialogue.setTitle(bundle.getString("prompt_diagramtype_title"));
         dialogue.setResizable(true);
-        dialogue.setHeaderText("Wählen Sie bitte den Diagrammtyp aus");
-        dialogue.setContentText("Diagrammtyp:");
+        dialogue.setHeaderText(bundle.getString("prompt_diagramtype_header"));
+        dialogue.setContentText(bundle.getString("prompt_diagramtype_content"));
         Optional<String> result = dialogue.showAndWait();
         if(result.isPresent()){
-            dt = DiagramType.fromString(result.get());
+            dt = converter.convert(result.get());
             presetNamePrompt(dt);
         }
     }
 
     private void presetNamePrompt(DiagramType dt) {
         TextInputDialog nameDialogue = new TextInputDialog();
-        nameDialogue.setTitle("Name für Ihre Voreinstellung erforderlich");
-        nameDialogue.setHeaderText("Bitte geben Sie einen Namen für ihre Voreinstellung ein");
-        nameDialogue.setContentText("Name der Voreinstellung:");
+        nameDialogue.setTitle(bundle.getString("prompt_preset_name_title"));
+        nameDialogue.setHeaderText(bundle.getString("prompt_preset_name_header"));
+        nameDialogue.setContentText(bundle.getString("prompt_preset_name_content"));
         Optional<String> result = nameDialogue.showAndWait();
         // TODO: currently only one diagramtype can be saved under a certain name, should maybe be made possible to save two presets with the same name but different diagramtype
         if(result.get().equals("")){
@@ -499,19 +495,32 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     private void flagSetter(DiagramType dt, Preset p){
         // diagram
+        initDiagram();
         // can be made dynamic but in the interest of time
         if(dt.toString() == "FunctionPlot" || dt.toString() == "ScatterPlot" || dt.toString() == "LineChart" || dt.toString() == "Barchart"){
             GuiSvgOptions options = p.getOptions();
+            options.setDiagramType(dt);
+            //diagramtype
             choiceBox_diagramType.getSelectionModel().select(options.getDiagramType());
             textField_Title.setText(options.getTitle());
+            //outputdevice
             choiceBox_outputDevice.getSelectionModel().select(options.getOutputDevice());
-            // why size in points?
+
             //choiceBox_size.getSelectionModel().select(options.getSize());
+            //TODO: need help with page size sorcery
+            /*switch (super.pageOrientation){
+                case PageSize.PageOrientation.LANDSCAPE:
+            }*/
+            choiceBox_size.setItems(FXCollections.observableArrayList(PageSize.values()));
+            //TODO: choiceBox_size.getSelectionModel().select(options.getSize().)
             textField_Csvpath.setText(options.getCsvPath());
+
             choiceBox_csvOrientation.getSelectionModel().select(options.getCsvOrientation());
             choiceBox_csvType.getSelectionModel().select(options.getCsvType());
-            choiceBox_trendline.getSelectionModel().select(options.getTrendLine());
-            choiceBox_gridStyle.getSelectionModel().select(options.getGridStyle());
+            if(options.getTrendLine().size()>0){
+                choiceBox_trendline.getSelectionModel().select(options.getTrendLine());
+                choiceBox_gridStyle.getSelectionModel().select(options.getGridStyle());
+            }
             //textField_xAxisTitle.setText(options.getXAxisTitle());
             //textField_yAxistitle.setText(options.getYAxisTitle());
             if(options.isAutoScale()){
@@ -520,8 +529,7 @@ public class PresetsController extends SVGWizardController implements Initializa
                 scaleGroup.selectToggle(radioBtn_customScale);
             }
             //textField_displayAreaXfrom.setText(options.getxRange());
-            choiceBox_dblaxes.getSelectionModel().select(options.getAxisStyle()); //TODO: unsure if axis style == double axis etc
-
+            choiceBox_dblaxes.getSelectionModel().select(options.getAxisStyle());
             choiceBox_cssType.getSelectionModel().select(options.getCss());
 
         // function
@@ -544,13 +552,6 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
 
-    @FXML
-    private void quitToMainMenu(){
-        GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
-        GuiSvgPlott.getInstance().closeWizard();
-        int amountOfMenuItems = GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size();
-        GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().get(amountOfMenuItems-1).setDisable(false);
-    }
 
 
     private void jsonLoader(){
@@ -598,10 +599,15 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private void deletePreset(){
         Preset tobedeletedPreset = currentPreset;
-        deleteConfirmationAlert(tobedeletedPreset);
-        functionEditorHider();
-        diagramEditorHider();
-        overviewDisplayer();
+        if(!isDefault(tobedeletedPreset)){
+            deleteConfirmationAlert(tobedeletedPreset);
+            functionEditorHider();
+            diagramEditorHider();
+            overviewDisplayer();
+        }else{
+            defaultDeleteAlert();
+        }
+
     }
 
     @FXML
@@ -609,17 +615,19 @@ public class PresetsController extends SVGWizardController implements Initializa
         currentPreset.setPresetName(textFieldPresetName.getText());
         //workaround ]:->
         presetTable.refresh();
-        flagGetter();
+        //TODO: gets all the information out of the form and sets the appropriate values in the options
+        //flagGetter();
         functionEditorHider();
         diagramEditorHider();
         overviewDisplayer();
     }
 
-    public static void deleteConfirmationAlert(Preset p){
+    public void deleteConfirmationAlert(Preset p){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Bestätigung erforderlich");
-        alert.setHeaderText("Sie löschen hiermit die gewählte Voreinstellung!");
-        alert.setContentText("Sind Sie sicher dass Sie " + p.getPresetName() + " löschen wollen?");
+        alert.setTitle(bundle.getString("alert_preset_delete_title"));
+
+        alert.setHeaderText(bundle.getString("alert_preset_delete_header"));
+        alert.setContentText(bundle.getString("alert_preset_delete_content1") + p.getPresetName() + bundle.getString("alert_preset_delete_content2"));
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             presets.remove(p);
@@ -628,28 +636,42 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
     }
 
-    public static void duplicateAlert(Optional o){
+    public void duplicateAlert(Optional o){
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Voreinstellungsduplikat entdeckt");
-        alert.setHeaderText("Eine Voreinstellung mit dem Namen " + o.get() + " existiert bereits.");
-        alert.setContentText("Bitte wählen sie einen anderen Namen aus.");
+        alert.setTitle(bundle.getString("alert_preset_duplicate_title"));
+        alert.setHeaderText(bundle.getString("alert_preset_duplicate_header1") + o.get() + bundle.getString("alert_preset_duplicate_header2"));
+        alert.setContentText(bundle.getString("alert_preset_duplicate_content"));
         alert.showAndWait();
     }
 
-    public static void emptyNameAlert(){
+    public void emptyNameAlert(){
         Alert alarm = new Alert(Alert.AlertType.ERROR);
-        alarm.setTitle("Leerer Voreinstellungsname entdeckt");
-        alarm.setHeaderText("Der Name der Voreinstellung muss mindestens einen Buchstaben lang sein.");
-        alarm.setContentText("Bitte wählen sie einen Namen aus.");
+        alarm.setTitle(bundle.getString("alert_preset_empty_title"));
+        alarm.setHeaderText(bundle.getString("alert_preset_empty_header"));
+        alarm.setContentText(bundle.getString("alert_preset_empty_content"));
         alarm.showAndWait();
     }
 
-    public static void defaultDeleteAlert(){
+    public void defaultDeleteAlert(){
         Alert alarm = new Alert(Alert.AlertType.ERROR);
-        alarm.setTitle("Fehler");
-        alarm.setHeaderText("Eine Standardvoreinstellung darf nicht gelöscht werden.");
-        alarm.setContentText("Bitte wählen sie eine andere Voreinstellung aus.");
+        alarm.setTitle(bundle.getString("alert_preset_defaultdelete_title"));
+        alarm.setHeaderText(bundle.getString("alert_preset_defaultdelete_header"));
+        alarm.setContentText(bundle.getString("alert_preset_defaultdelete_content"));
         alarm.showAndWait();
     }
+    public boolean isDefault(Preset p){
+        if(p.getPresetName().contains(bundle.getString("default_diagram_preset_name")) || p.getPresetName().contains((bundle.getString("default_function_preset_name")))){
+            return true;
+        }
+        return false;
+    }
+    @FXML
+    private void quitToMainMenu(){
+        GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
+        GuiSvgPlott.getInstance().closeWizard();
+        int amountOfMenuItems = GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size();
+        GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().get(amountOfMenuItems-1).setDisable(false);
+    }
+
 
 }

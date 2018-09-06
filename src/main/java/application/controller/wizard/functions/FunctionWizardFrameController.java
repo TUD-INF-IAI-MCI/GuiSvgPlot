@@ -110,6 +110,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
         this.guiSvgOptions.setDiagramType(DiagramType.FunctionPlot);
         super.initSaveAsPreset();
+        super.initloadPreset();
     }
 
 

@@ -148,6 +148,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.initiateAllStages();
         this.initOptionListeners();
         super.initSaveAsPreset();
+        super.initloadPreset();
     }
 
 

@@ -29,7 +29,6 @@ import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -71,6 +70,7 @@ public class SVGWizardController implements Initializable {
     // start logger
     private static final Logger logger = LoggerFactory.getLogger(SVGWizardController.class);
 
+    public PresetsController presetsController;
     @FXML
     protected Button button_Back;
     @FXML
@@ -84,7 +84,9 @@ public class SVGWizardController implements Initializable {
     @FXML
     protected Button button_Create;
     @FXML
-    protected Button button_Save_As_Preset;
+    protected Button button_Load;
+    @FXML
+    protected Button button_Save_As;
     @FXML
     protected Button button_Edit_Preset;
     @FXML
@@ -239,6 +241,7 @@ public class SVGWizardController implements Initializable {
         this.initOptionListeners();
         this.preProcessContent();
         initSaveAsPreset();
+        initloadPreset();
         if (presets == null) {
             presets = FXCollections.observableArrayList();
         }
@@ -756,30 +759,78 @@ public class SVGWizardController implements Initializable {
      */
     // save as preset
     protected void initSaveAsPreset() {
-        //button_Save_As_Preset = new Button();
-        // TODO: i18n
-        button_Save_As_Preset.setOnAction(event -> {
-            TextInputDialog dialogue = new TextInputDialog();
-            dialogue.setTitle("Name für Ihre Voreinstellung erforderlich");
-            dialogue.setHeaderText("Bitte geben Sie einen Namen für ihre Voreinstellung ein");
-            dialogue.setContentText("Name der Voreinstellung:");
-            Optional<String> result = dialogue.showAndWait();
-            if (result.get().equals("")) {
-                PresetsController.emptyNameAlert();
-            } else if (result.isPresent() && !presets.stream().map(p -> p.getPresetName()).anyMatch(n -> n.equals(result.get()))) {
-                Preset currentPreset = new Preset(guiSvgOptions, result.get(), guiSvgOptions.getDiagramType());
-                presets.add(currentPreset);
-                MenuItem newEntry = new MenuItem(currentPreset.getPresetName());
-                // 5 most recent entries because it's not "scalable" ladida...
-                if (GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size() < 11) {
-                    GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().add(3, newEntry);
+        button_Save_As.setOnAction(event -> {
+            List<String> choices = new ArrayList<>();
+            choices.add(bundle.getString("preset"));
+            choices.add(bundle.getString("json"));
+            ChoiceDialog<String> dialog = new ChoiceDialog<>(bundle.getString("preset"), choices);
+            dialog.setTitle(bundle.getString("prompt_saveas_title"));
+            dialog.setHeaderText(bundle.getString("prompt_saveas_header"));
+            dialog.setContentText(bundle.getString("prompt_saveas_content"));
+            Optional<String> result1 = dialog.showAndWait();
+            if (result1.isPresent() && result1.get().equalsIgnoreCase(bundle.getString("preset"))){
+                TextInputDialog dialogue = new TextInputDialog();
+                dialogue.setTitle(bundle.getString("prompt_preset_saveas_title"));
+                dialogue.setHeaderText(bundle.getString("prompt_preset_saveas_header"));
+                dialogue.setContentText(bundle.getString("prompt_preset_saveas_content"));
+                Optional<String> result = dialogue.showAndWait();
+                if (result.get().equals("")) {
+                    presetsController.emptyNameAlert();
+                } else if (result.isPresent() && !presets.stream().map(p -> p.getPresetName()).anyMatch(n -> n.equals(result.get()))) {
+                    Preset currentPreset = new Preset(guiSvgOptions, result.get(), guiSvgOptions.getDiagramType());
+                    presets.add(currentPreset);
+                    MenuItem newEntry = new MenuItem(currentPreset.getPresetName());
+                    // 5 most recent entries because it's not "scalable" ladida...
+                    if (GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size() < 11) {
+                        GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().add(3, newEntry);
+                    }
+                } else {
+                    presetsController.duplicateAlert(result);
                 }
-            } else {
-                PresetsController.duplicateAlert(result);
+            } else if(result1.isPresent() && result1.get().equalsIgnoreCase(bundle.getString("json"))){
+                //TODO
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("NOT YET IMPLEMENTED");
+                alert.setHeaderText("NOT YET IMPLEMENTED");
+                alert.setContentText("NOT YET IMPLEMENTED");
+                alert.showAndWait();
+               /* TextInputDialog dialogueJSON = new TextInputDialog();
+                dialogueJSON.setTitle(bundle.getString("prompt_json_saveas_title"));
+                dialogueJSON.setHeaderText(bundle.getString("prompt_json_saveas_header"));
+                dialogueJSON.setContentText(bundle.getString("prompt_json_saveas_content"));
+                Optional<String> result = dialogueJSON.showAndWait();
+                if (result.get().equals("")) {
+                    presetsController.emptyNameAlert();
+                } else if (result.isPresent()) {
+                   //JSON file creation
+
+                }*/
             }
         });
     }
 
+    protected void initloadPreset(){
+        button_Load.setOnAction(event -> {
+            //TODO
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("NOT YET IMPLEMENTED");
+            alert.setHeaderText("NOT YET IMPLEMENTED");
+            alert.setContentText("NOT YET IMPLEMENTED");
+            alert.showAndWait();
+            /*List<String> choices = new ArrayList<>();
+            for (Preset p : presets) {
+                choices.add(p.toString());
+            }
+            ChoiceDialog<String> dialog = new ChoiceDialog<>("",choices);
+            dialog.setTitle(bundle.getString("prompt_load_title"));
+            dialog.setHeaderText(bundle.getString("prompt_load_header"));
+            dialog.setContentText(bundle.getString("prompt_load_content"));
+            Optional<String> result = dialog.showAndWait();
+            if(result.isPresent()){
+
+            }*/
+        });
+    }
     public Glyph getWarnIcon() {
         return warnIcon;
     }

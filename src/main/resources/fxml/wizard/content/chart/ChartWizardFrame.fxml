@@ -21,7 +21,7 @@
 <?import javafx.scene.web.WebView?>
 <?import org.controlsfx.control.CheckComboBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
             <VBox BorderPane.alignment="CENTER">
@@ -85,11 +85,11 @@
                                               <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                   <children>
                                                       <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" prefHeight="17.0" text="%radio_portrait" GridPane.valignment="CENTER">
-                                                          <toggleGroup>
-                                                              <ToggleGroup fx:id="togglePageOrientation" />
-                                                          </toggleGroup>
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="togglePageOrientationTG" />
+                                             </toggleGroup>
                                                       </RadioButton>
-                                                      <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_landscape" toggleGroup="$togglePageOrientation" />
+                                                      <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_landscape" toggleGroup="$togglePageOrientationTG" />
                                                   </children>
                                               </HBox>
                                               <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram" GridPane.rowIndex="4" />
@@ -376,9 +376,10 @@
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                                    <Button fx:id="button_Save_As_Preset" accessibleText="%button_save_as_preset" mnemonicParsing="false" styleClass="btn-preset" text="%button_save_as_preset" />
                                     <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back" />
                                     <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next" />
+                           <Button fx:id="button_Load" disable="true" mnemonicParsing="false" text="%button_load" />
+                                    <Button fx:id="button_Save_As" accessibleText="%button_save_as" mnemonicParsing="false" styleClass="btn-preset" text="%button_save_as" />
                                     <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create" />
                                 </buttons>
                             </ButtonBar>
