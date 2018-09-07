@@ -200,8 +200,8 @@ public class CsvEditorController implements Initializable {
         button_add.setOnAction(event -> {
 
             TextInputDialog dialog = new TextInputDialog();
-            dialog.setContentText("Funktion: ");
-            dialog.setHeaderText("Funktion Hinzufügen");
+            dialog.setContentText(bundle.getString("function_name") + ":");
+            dialog.setHeaderText(bundle.getString("function_add"));
             dialog.showAndWait();
             if (dialog.getResult() == null || dialog.getResult().trim().isEmpty())
                 return;

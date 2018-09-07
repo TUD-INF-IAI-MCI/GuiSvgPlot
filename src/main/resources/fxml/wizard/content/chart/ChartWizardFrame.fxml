@@ -21,6 +21,7 @@
 <?import javafx.scene.web.WebView?>
 <?import org.controlsfx.control.CheckComboBox?>
 
+<?import javafx.scene.control.Tooltip?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
@@ -85,11 +86,14 @@
                                               <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                   <children>
                                                       <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" prefHeight="17.0" text="%radio_portrait" GridPane.valignment="CENTER">
-                                             <toggleGroup>
-                                                <ToggleGroup fx:id="togglePageOrientationTG" />
-                                             </toggleGroup>
+                                                          <tooltip><Tooltip text="%radio_portrait" /></tooltip>
+                                                          <toggleGroup>
+                                                              <ToggleGroup fx:id="togglePageOrientationTG" />
+                                                          </toggleGroup>
                                                       </RadioButton>
-                                                      <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_landscape" toggleGroup="$togglePageOrientationTG" />
+                                                      <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_landscape" toggleGroup="$togglePageOrientationTG" >
+                                                          <tooltip><Tooltip text="%radio_landscape" /></tooltip>
+                                                      </RadioButton>
                                                   </children>
                                               </HBox>
                                               <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram" GridPane.rowIndex="4" />
@@ -126,8 +130,10 @@
                                           <children>
                                               <Label id="label_CsvFile" fx:id="label_CsvFile" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_file" GridPane.rowIndex="0" />
                                               <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                                  <TextField fx:id="textField_csvPath" accessibleText="Pfad zur CSV Datei" promptText="%prompt_path_to_csv" HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_csvPath" accessibleText="CSV Datei auswählen" mnemonicParsing="false" styleClass="btn-upload" text="..." />
+                                                  <TextField fx:id="textField_csvPath" accessibleText="%csv_file_help_text_field" promptText="%prompt_path_to_csv" HBox.hgrow="ALWAYS" />
+                                                  <Button fx:id="button_csvPath" accessibleText="%csv_file_help_button" mnemonicParsing="false" styleClass="btn-upload" text="..." >
+                                                      <tooltip><Tooltip text="%csv_file_help_button" /></tooltip>
+                                                  </Button>
                                               </HBox>
       
                                               <Label fx:id="label_CsvOrientation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_orientation" GridPane.rowIndex="1" />
@@ -136,7 +142,9 @@
                                               <ChoiceBox id="choiceBox_CsvType" fx:id="choiceBox_csvType" accessibleText="CSV Typ" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <AnchorPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
                                        <children>
-                                          <Button fx:id="button_EditDataSet" accessibleText="%label_csv_edit" mnemonicParsing="false" text="%label_csv_edit" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
+                                          <Button fx:id="button_EditDataSet" accessibleText="%label_csv_edit" mnemonicParsing="false" text="%label_csv_edit" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" >
+                                              <tooltip><Tooltip text="%label_csv_edit" /></tooltip>
+                                          </Button>
                                        </children>
                                     </AnchorPane>
                                           </children>
@@ -172,17 +180,23 @@
                                               <Label fx:id="label_firstTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_first_bar" visible="false" GridPane.rowIndex="1" />
                                               <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                   <ChoiceBox fx:id="choiceBox_firstTexture" accessibleText="%texture_first_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false"  HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_resetFirstTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" visible="false"/>
+                                                  <Button fx:id="button_resetFirstTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" visible="false">
+                                                      <tooltip><Tooltip text="%button_texture_reset" /></tooltip>
+                                                  </Button>
                                               </HBox>
                                               <Label fx:id="label_secondTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_second_bar" visible="false" GridPane.rowIndex="2" />
                                               <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" >
                                                   <ChoiceBox fx:id="choiceBox_secondTexture" accessibleText="%texture_second_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false"  HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_resetSecondTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" visible="false"/>
+                                                  <Button fx:id="button_resetSecondTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" visible="false">
+                                                        <tooltip><Tooltip text="%button_texture_reset" /></tooltip>
+                                                  </Button>
                                               </HBox>
                                               <Label fx:id="label_thirdTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_third_bar" visible="false" GridPane.rowIndex="3" />
                                               <HBox alignment="CENTER_RIGHT" spacing="10.0"  GridPane.columnIndex="1" GridPane.rowIndex="3" >
                                                   <ChoiceBox fx:id="choiceBox_thirdTexture" accessibleText="%texture_third_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false"  HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_resetThirdTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" visible="false"/>
+                                                  <Button fx:id="button_resetThirdTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" visible="false">
+                                                      <tooltip><Tooltip text="%button_texture_reset" /></tooltip>
+                                                  </Button>
                                               </HBox>
 
                                               <Label fx:id="label_sorting" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sorting" visible="false" GridPane.rowIndex="4" />
@@ -197,7 +211,7 @@
                                               <ChoiceBox fx:id="choiceBox_secondLineStyle" accessibleText="%label_line_style_second" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                <Label fx:id="label_thirdLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_third" visible="false" GridPane.rowIndex="2" />
                                               <!--HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" -->
-                                                  <ChoiceBox fx:id="choiceBox_thirdLineStyle" accessibleText="%label_line_style_third" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false"  HBox.hgrow="ALWAYS" />
+                                                  <ChoiceBox fx:id="choiceBox_thirdLineStyle" accessibleText="%label_line_style_third" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false"  HBox.hgrow="ALWAYS" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                   <!--Button fx:id="button_thirdLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" visible="false"/-->
                                               <!--/HBox-->
       
@@ -254,11 +268,14 @@
                                               <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                   <children>
                                                       <RadioButton fx:id="radioBtn_autoscale" accessibleText="%help_radio_scale_to_data_area" mnemonicParsing="false" prefHeight="17.0" text="%radio_scale_to_data_area" GridPane.valignment="CENTER">
+                                                          <tooltip><Tooltip text="%help_radio_scale_to_data_area" /></tooltip>
                                                           <toggleGroup>
                                                               <ToggleGroup fx:id="autoScale" />
                                                           </toggleGroup>
                                                       </RadioButton>
-                                                      <RadioButton fx:id="radioBtn_customScale" accessibleText="%help_radio_custom_scale" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$autoScale" />
+                                                      <RadioButton fx:id="radioBtn_customScale" accessibleText="%help_radio_custom_scale" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$autoScale" >
+                                                          <tooltip><Tooltip text="%help_radio_custom_scale" /></tooltip>
+                                                      </RadioButton>
                                                   </children>
                                               </HBox>
 
@@ -341,8 +358,10 @@
       
                                               <Label fx:id="label_cssPath" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_file" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                                               <HBox fx:id="hBox_cssPath" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                  <TextField fx:id="textField_cssPath" accessibleText="Pfad zur CSS-Datei" promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_cssPath" accessibleText="CSS Datei auswählen" mnemonicParsing="false" styleClass="btn-upload" text="..." />
+                                                  <TextField fx:id="textField_cssPath" accessibleText="%label_css_path_text_field" promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS" />
+                                                  <Button fx:id="button_cssPath" accessibleText="%label_css_path_button" mnemonicParsing="false" styleClass="btn-upload" text="..." >
+                                                  <tooltip><Tooltip text="%label_css_path_button"/></tooltip>
+                                                  </Button>
                                               </HBox>
                                               <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                                               <TextArea fx:id="textArea_cssCustom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -377,21 +396,35 @@
                         <children>
                             <ButtonBar HBox.hgrow="NEVER">
                                 <buttons>
-                                    <Button fx:id="button_Cancel" accessibleText="%button_cancel" cancelButton="true" mnemonicParsing="false" text="%button_cancel" ButtonBar.buttonData="LEFT" />
+                                    <Button fx:id="button_Cancel" accessibleText="%button_cancel" cancelButton="true" mnemonicParsing="false" text="%button_cancel" ButtonBar.buttonData="LEFT" >
+                                        <tooltip><Tooltip text="%button_cancel" /></tooltip>
+                                    </Button>
                                 </buttons>
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                                    <Button fx:id="button_rerenderPreview" accessibleText="%button_rerender_preview" mnemonicParsing="false" styleClass="btn-preview" text="%button_rerender_preview_text" />
+                                    <Button fx:id="button_rerenderPreview" accessibleText="%button_rerender_preview" mnemonicParsing="false" styleClass="btn-preview" text="%button_rerender_preview_text" >
+                                        <tooltip><Tooltip text="%button_rerender_preview" /></tooltip>
+                                    </Button>
                                 </buttons>
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                                    <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back" />
-                                    <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next" />
-                                     <Button fx:id="button_Load" disable="true" mnemonicParsing="false" text="%button_load" />
-                                    <Button fx:id="button_Save_As_Preset" accessibleText="%button_save_as" mnemonicParsing="false" styleClass="btn-preset" text="%button_save_as" />
-                                    <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create" />
+                                    <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back">
+                                        <tooltip><Tooltip text="%label_back" /></tooltip>
+                                    </Button>
+                                    <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next" >
+                                        <tooltip><Tooltip text="%label_next" /></tooltip>
+                                    </Button>
+                                     <Button fx:id="button_Load" disable="true"  accessibleText="%button_load" mnemonicParsing="false" text="%button_load" >
+                                         <tooltip><Tooltip text="%button_load" /></tooltip>
+                                     </Button>
+                                    <Button fx:id="button_Save_As_Preset" accessibleText="%button_save_as" mnemonicParsing="false" styleClass="btn-preset" text="%button_save_as" >
+                                        <tooltip><Tooltip text="%button_save_as" /></tooltip>
+                                    </Button>
+                                    <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create" >
+                                        <tooltip><Tooltip text="%button_diagram_create" /></tooltip>
+                                    </Button>
                                 </buttons>
                             </ButtonBar>
                         </children>

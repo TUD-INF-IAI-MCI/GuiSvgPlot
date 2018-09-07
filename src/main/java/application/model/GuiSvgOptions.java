@@ -222,6 +222,7 @@ public class GuiSvgOptions {
             this.options.setPi(newValue);
         });
         this.autoScale.addListener((observable, oldValue, newValue) -> {
+            System.out.println(newValue);
             this.options.setAutoScale(newValue);
         });
     }

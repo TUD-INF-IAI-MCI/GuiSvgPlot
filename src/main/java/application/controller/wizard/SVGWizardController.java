@@ -596,6 +596,8 @@ public class SVGWizardController implements Initializable {
         this.button_Warnings = new Button("", warnIcon);
         this.button_Warnings.getStyleClass().add("notification");
         this.button_Warnings.getStyleClass().add("notification-btn");
+        this.button_Warnings.setAccessibleHelp(this.bundle.getString("warn_message_help"));
+        this.button_Warnings.setTooltip(new Tooltip(this.bundle.getString("warn_message_help")));
         this.button_Warnings.setId("btn_warnings");
         this.button_Warnings.setDisable(true);
         hBox_pagination.getChildren().add(this.button_Warnings);
@@ -606,6 +608,8 @@ public class SVGWizardController implements Initializable {
         this.button_Infos = new Button("", infoIcon);
         this.button_Infos.getStyleClass().add("notification");
         this.button_Infos.getStyleClass().add("notification-btn");
+        this.button_Infos.setAccessibleHelp(this.bundle.getString("info_message_help"));
+        this.button_Infos.setTooltip(new Tooltip(this.bundle.getString("info_message_help")));
         this.button_Infos.setId("btn_infos");
         this.button_Infos.setDisable(true);
         hBox_pagination.getChildren().add(this.button_Infos);

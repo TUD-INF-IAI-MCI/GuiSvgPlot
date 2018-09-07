@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -104,8 +105,7 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
         Text formattedMsg = getTextOfMessage(event, infos, "info");
         infos.getChildren().add(formattedMsg);
         button_infos.setDisable(false);
-        button_infos.setAccessibleText(this.bundle.getString("info_message") + ":" + infos.getChildren().size() );
-        button_infos.setAccessibleHelp(this.bundle.getString("info_message_help"));
+        button_infos.setAccessibleText(this.bundle.getString("info_message") + " " + infos.getChildren().size());
         button_infos.setAccessibleRole(AccessibleRole.MENU_ITEM);
 
         createNotification(button_infos, "" + infos.getChildren().size(), rootFrameController.svgWizardController.getInfoIcon());
@@ -119,7 +119,6 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
         warnings.getChildren().add(formattedMsg);
         button_warnings.setDisable(false);
         button_warnings.setAccessibleText(this.bundle.getString("warn_message") + ":" + warnings.getChildren().size());
-        button_warnings.setAccessibleHelp(this.bundle.getString("warn_message_help"));
         button_warnings.setAccessibleRole(AccessibleRole.MENU_ITEM);
 
         createNotification(button_warnings, "" + warnings.getChildren().size(), rootFrameController.svgWizardController.getWarnIcon());
