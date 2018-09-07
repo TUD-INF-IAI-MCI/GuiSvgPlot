@@ -62,6 +62,12 @@ ChoiceBox,
     -fx-min-width: 210px;
     -fx-max-width: 1.7976931348623157E308;
   }
+
+  &.invalid {
+    -fx-border-color: $error-font-color;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3;
+  }
 }
 
 TextField {

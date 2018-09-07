@@ -164,6 +164,11 @@ public class TextFieldUtil {
         });
     }
 
+    /**
+     * If {@link TextField} is empty, it sets the given defaultValue to the TextField.
+     * @param textField the {@link TextField},whose entry is to be validated.
+     * @param defaultVal the defaultVal
+     */
     public void addNotEmptyValidationListener(final TextField textField, final Object defaultVal) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.isEmpty()) {

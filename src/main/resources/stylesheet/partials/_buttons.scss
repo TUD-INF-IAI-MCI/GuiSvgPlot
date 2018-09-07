@@ -1,7 +1,7 @@
 
 Button {
   -fx-cursor: hand;
-  -fx-pref-width: 100px;
+  //-fx-pref-width: 80px;
 
   &:focused {
     -fx-border-color: $tud-blue;
@@ -9,12 +9,15 @@ Button {
 
   &.btn{
     &-preset {
-      -fx-pref-width: 175px;
+     //-fx-pref-width: 175px;
     }
     &-preview {
       //-fx-pref-width: 175px;
     }
     &-upload {
+      -fx-pref-width: 10px;
+    }
+    &-reset{
       -fx-pref-width: 10px;
     }
   }

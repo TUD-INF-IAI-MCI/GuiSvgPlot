@@ -1,6 +1,5 @@
 package application;
 
-import application.controller.PresetsController;
 import application.controller.RootFrameController;
 import application.infrastructure.UTF8Control;
 import com.google.gson.*;
@@ -13,13 +12,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import org.controlsfx.glyphfont.FontAwesome;
-import org.controlsfx.glyphfont.Glyph;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.xml.transform.sax.SAXSource;
+import javax.swing.*;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
@@ -54,6 +48,10 @@ public class GuiSvgPlott extends Application {
 
 
     public GuiSvgPlott() {
+        // favicon for macos
+        try {
+            com.apple.eawt.Application.getApplication().setDockIconImage(new ImageIcon(getClass().getResource("/images/barchart_circle.png")).getImage());
+        }catch(Exception e){}
         instance = this;
     }
 
@@ -87,7 +85,10 @@ public class GuiSvgPlott extends Application {
         primaryStage.setResizable(true);
         primaryStage.setTitle(bundle.getString("application_title"));
         primaryStage.setScene(scene);
-        primaryStage.getIcons().add(new Image(getClass().getResource("/images/barchart_circle.png").toExternalForm()));
+        Image favicon = new Image(getClass().getResource("/images/barchart_circle.png").toExternalForm());
+        primaryStage.getIcons().add(favicon);
+
+
         primaryStage.show();
 
         primaryStage.getScene().setOnKeyPressed(event -> {
@@ -118,8 +119,8 @@ public class GuiSvgPlott extends Application {
 
         if (!settings.has("gnu-path") || settings.get("gnu-path").getAsString().isEmpty()) {
             Alert a = new Alert(Alert.AlertType.WARNING);
-            a.setTitle("missing gnu path");
-            a.setHeaderText("GNU-Plot Pfad muss zuerst ausgewählt werden");
+            a.setTitle(bundle.getString("application_missing_gnuplot_path_title"));
+            a.setHeaderText(bundle.getString("application_missing_gnuplot_path_message"));
             a.setContentText("");
 
             a.showAndWait();

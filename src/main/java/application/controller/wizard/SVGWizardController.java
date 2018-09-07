@@ -4,22 +4,19 @@ import application.GuiSvgPlott;
 import application.controller.CsvEditorController;
 import application.controller.PresetsController;
 import application.controller.wizard.chart.ChartWizardFrameController;
-import application.controller.wizard.functions.FunctionWizardFrameController;
 import application.model.GuiSvgOptions;
 import application.model.Options.CssType;
 import application.model.Options.PageSize;
 import application.model.Preset;
 import application.service.SvgOptionsService;
+import application.util.ChoiceBoxUtil;
 import application.util.SvgOptionsUtil;
 import application.util.TextFieldUtil;
 import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
-import javafx.beans.binding.Binding;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,7 +61,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class SVGWizardController implements Initializable {
     // start logger
@@ -210,6 +206,7 @@ public class SVGWizardController implements Initializable {
     protected SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
     protected SvgOptionsUtil svgOptionsUtil = SvgOptionsUtil.getInstance();
     protected TextFieldUtil textFieldUtil = TextFieldUtil.getInstance();
+    protected ChoiceBoxUtil choiceBoxUtil = ChoiceBoxUtil.getInstance();
     protected ObjectProperty<Range> xRange;
     protected ObjectProperty<Range> yRange;
 
@@ -224,6 +221,7 @@ public class SVGWizardController implements Initializable {
         this.svgOptionsService.setBundle(resources);
         this.svgOptionsUtil.setBundle(resources);
         this.textFieldUtil.setBundle(resources);
+        this.choiceBoxUtil.setBundle(resources);
         this.currentStage = new SimpleIntegerProperty();
         this.isExtended = new SimpleBooleanProperty(false);
         this.size = new Point(PageSize.A4.getWidth(), PageSize.A4.getHeight());
@@ -703,7 +701,6 @@ public class SVGWizardController implements Initializable {
 
             this.borderPane_WizardContent.setCenter(this.stages.get(this.currentStage.get()));
             this.borderPane_WizardContent.getCenter().requestFocus();
-            this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
         });
 
         // increment the currentStage counter. Will trigger its changeListener
@@ -1049,5 +1046,9 @@ public class SVGWizardController implements Initializable {
         f.deleteOnExit();
     }
 
-
+    protected void initFieldListenersForPreview(){
+        this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
+                this.choiceBox_outputDevice, this.choiceBox_size, this.choicebox_gridStyle,
+                this.choiceBox_csvOrientation, this.choiceBox_csvType, this.choiceBox_cssType);
+    }
 }

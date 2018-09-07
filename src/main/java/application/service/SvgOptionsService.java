@@ -242,8 +242,9 @@ public class SvgOptionsService {
         boolean hasErrorInCustomSizeWidth = svgPlotOptions.getSize().getX() < GuiSvgOptions.MINIMUM_PAGE_WIDTH;
         boolean hasErrorInCustomSizeHeight = svgPlotOptions.getSize().getY() < GuiSvgOptions.MINIMUM_PAGE_HEIGHT;
 
+        boolean hasErrorInTextures = svgPlotOptions.getTextures().contains(null);
 
-        boolean hasError = hasErrorInXRange || hasErrorInYRange || hasErrorInCustomSizeWidth || hasErrorInCustomSizeHeight;
+        boolean hasError = hasErrorInXRange || hasErrorInYRange || hasErrorInCustomSizeWidth || hasErrorInCustomSizeHeight || hasErrorInTextures;
         if (hasError) {
             GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
             if (hasErrorInXRange) {
@@ -257,6 +258,9 @@ public class SvgOptionsService {
             }
             if (hasErrorInCustomSizeHeight){
                 logger.error(this.bundle.getString("preview_load_customHeight_error"));
+            }
+            if (hasErrorInTextures){
+                logger.error(this.bundle.getString("preview_load_emptyTexture_error"));
             }
             return false;
         }

@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -52,13 +53,19 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private ChoiceBox<Texture> choiceBox_firstTexture;
     @FXML
+    private Button button_resetFirstTexture;
+    @FXML
     private Label label_secondTexture;
     @FXML
     private ChoiceBox<Texture> choiceBox_secondTexture;
     @FXML
+    private Button button_resetSecondTexture;
+    @FXML
     private Label label_thirdTexture;
     @FXML
     private ChoiceBox<Texture> choiceBox_thirdTexture;
+    @FXML
+    private Button button_resetThirdTexture;
     @FXML
     private Label label_sorting;
     @FXML
@@ -149,6 +156,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.initOptionListeners();
         super.initSaveAsPreset();
         super.initloadPreset();
+        this.initFieldListenersForChartPreview();
     }
 
 
@@ -212,21 +220,60 @@ public class ChartWizardFrameController extends SVGWizardController {
                 guiSvgOptions.setTextures(textures);
             }
         });
-        ObservableList<Texture> textureObservableList = FXCollections.observableArrayList(Texture.values());
-        this.choiceBox_firstTexture.setItems(textureObservableList);
+        ObservableList<Texture> textureObservableListFirstTexture = FXCollections.observableArrayList(Texture.values());
+        ObservableList<Texture> textureObservableListSecondTexture = FXCollections.observableArrayList(Texture.values());
+        ObservableList<Texture> textureObservableListThirdTexture = FXCollections.observableArrayList(Texture.values());
+        this.choiceBox_firstTexture.setItems(textureObservableListFirstTexture);
         this.choiceBox_firstTexture.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_firstTexture, this.label_firstTexture);
         this.choiceBox_firstTexture.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null) {
+               textureObservableListSecondTexture.add(oldValue);
+               textureObservableListThirdTexture.add(oldValue);
+            }
+            if (newValue != null) {
+                textureObservableListSecondTexture.remove(newValue);
+                textureObservableListThirdTexture.remove(newValue);
+            }
+
             this.textures.set(0, newValue);
         });
-        this.choiceBox_secondTexture.setItems(textureObservableList);
+        this.button_resetFirstTexture.setOnAction(event -> {
+            this.textures.set(0, null);
+        });
+        this.choiceBox_secondTexture.setItems(textureObservableListSecondTexture);
         this.choiceBox_secondTexture.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_secondTexture, this.label_secondTexture);
         this.choiceBox_secondTexture.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null) {
+                textureObservableListFirstTexture.add(oldValue);
+                textureObservableListThirdTexture.add(oldValue);
+            }
+            if (newValue != null) {
+                textureObservableListFirstTexture.remove(newValue);
+                textureObservableListThirdTexture.remove(newValue);
+            }
             this.textures.set(1, newValue);
         });
-        this.choiceBox_thirdTexture.setItems(textureObservableList);
+        this.button_resetSecondTexture.setOnAction(event -> {
+            this.textures.set(1, null);
+        });
+        this.choiceBox_thirdTexture.setItems(textureObservableListThirdTexture);
         this.choiceBox_thirdTexture.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_thirdTexture, this.label_thirdTexture);
         this.choiceBox_thirdTexture.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null) {
+                textureObservableListFirstTexture.add(oldValue);
+                textureObservableListSecondTexture.add(oldValue);
+            }
+            if (newValue != null) {
+                textureObservableListFirstTexture.remove(newValue);
+                textureObservableListSecondTexture.remove(newValue);
+            }
             this.textures.set(2, newValue);
+        });
+        this.button_resetThirdTexture.setOnAction(event -> {
+            this.textures.set(2, null);
         });
 
         // sorting type
@@ -295,6 +342,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                 this.lineStyles.set(0, newValue);
             }
         });
+
         this.choiceBox_secondLineStyle.setItems(lineStyleObservableList);
         this.choiceBox_secondLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
         this.choiceBox_secondLineStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -302,6 +350,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                 this.lineStyles.set(1, newValue);
             }
         });
+
         this.choiceBox_thirdLineStyle.setItems(lineStyleObservableList);
         this.choiceBox_thirdLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
         this.choiceBox_thirdLineStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -309,6 +358,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                 this.lineStyles.set(2, newValue);
             }
         });
+
 
         // trendline and hide original points
         ObservableList<String> trendline = FXCollections.observableArrayList();
@@ -471,6 +521,10 @@ public class ChartWizardFrameController extends SVGWizardController {
         }else {
             this.choicebox_dblaxes.getItems().add(GuiAxisStyle.Barchart);
         }
+
+        button_resetFirstTexture.setVisible(show);
+        button_resetSecondTexture.setVisible(show);
+        button_resetThirdTexture.setVisible(show);
     }
 
     /**
@@ -483,6 +537,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         toggleVisibility(show, label_firstLineStyle, choiceBox_firstLineStyle);
         toggleVisibility(show, label_secondLineStyle, choiceBox_secondLineStyle);
         toggleVisibility(show, label_thirdLineStyle, choiceBox_thirdLineStyle);
+
         if (!show) {
             hide(label_pointSymbols_lineChart, checkComboBox_pointSymbols_lineChart);
         } else if (this.guiSvgOptions.getLinePointsOption().isShowLinePoints()) {
@@ -576,4 +631,12 @@ public class ChartWizardFrameController extends SVGWizardController {
         guiSvgOptions.setPointSymbols(checkedPointSymbols);
     }
 
+    private void initFieldListenersForChartPreview(){
+        super.initFieldListenersForPreview();
+        this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
+                this.choiceBox_diagramType, this.choiceBox_baraccumulation, this.choiceBox_firstTexture,
+                this.choiceBox_secondTexture, this.choiceBox_thirdTexture, this.choicebox_dblaxes, this.choiceBox_firstLineStyle,
+                this.choiceBox_secondLineStyle, this.choiceBox_thirdLineStyle, this.choiceBox_linepoints, this.choiceBox_originalPoints,
+                this.choiceBox_sorting, this.choicebox_sortOrder, this.choiceBox_trendline);
+    }
 }
