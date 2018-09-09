@@ -92,8 +92,44 @@ public class GuiSvgPlott extends Application {
         primaryStage.show();
 
         primaryStage.getScene().setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.F5) {
-                rootFrameController.svgWizardController.button_rerenderPreview.fire();
+
+            switch (event.getCode()) {
+                case F5: {
+                    rootFrameController.svgWizardController.button_rerenderPreview.fire();
+                    break;
+                }
+                case F1: {
+                    rootFrameController.svgWizardController.button_Warnings.requestFocus();
+                    break;
+                }
+                case Q: {
+                    if (event.isControlDown()) {
+                        primaryStage.close();
+                        break;
+                    }
+                }
+                case P: {
+                    if (event.isControlDown()) {
+                        rootFrameController.startPresetOverview();
+                        break;
+                    }
+                }
+                case S: {
+                    if (event.isControlDown()) {
+                        rootFrameController.svgWizardController.initSaveAsPreset();
+                        break;
+                    }
+                }
+                case N: {
+                    if (event.isControlDown()) {
+                        try {
+                            start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                }
             }
         });
 

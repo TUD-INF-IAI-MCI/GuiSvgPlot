@@ -173,8 +173,6 @@ public class SVGWizardController implements Initializable {
     @FXML
     private Button button_csvPath;
 
-    @FXML
-    private Button button_EditDataSet;
 
     @FXML
     public ChoiceBox<CsvOrientation> choiceBox_csvOrientation;
@@ -478,10 +476,6 @@ public class SVGWizardController implements Initializable {
 
     protected void initCsvFieldListeners() {
 
-        this.button_EditDataSet.setOnAction(event -> {
-            openEditDataSetFrame();
-        });
-
 
         // csv path
         this.textField_csvPath.setDisable(false);
@@ -759,7 +753,7 @@ public class SVGWizardController implements Initializable {
      * upon calling, asks the user for the type and name of the presets including input validation and duplicate checking.
      */
     // save as preset
-    protected void initSaveAsPreset() {
+    public void initSaveAsPreset() {
         button_Save_As_Preset.setOnAction(event -> {
             List<String> choices = new ArrayList<>();
             choices.add(bundle.getString("preset"));
@@ -769,7 +763,7 @@ public class SVGWizardController implements Initializable {
             dialog.setHeaderText(bundle.getString("prompt_saveas_header"));
             dialog.setContentText(bundle.getString("prompt_saveas_content"));
             Optional<String> result1 = dialog.showAndWait();
-            if (result1.isPresent() && result1.get().equalsIgnoreCase(bundle.getString("preset"))){
+            if (result1.isPresent() && result1.get().equalsIgnoreCase(bundle.getString("preset"))) {
                 TextInputDialog dialogue = new TextInputDialog();
                 dialogue.setTitle(bundle.getString("prompt_preset_saveas_title"));
                 dialogue.setHeaderText(bundle.getString("prompt_preset_saveas_header"));
@@ -788,7 +782,7 @@ public class SVGWizardController implements Initializable {
                 } else {
                     presetsController.duplicateAlert(result);
                 }
-            } else if(result1.isPresent() && result1.get().equalsIgnoreCase(bundle.getString("json"))){
+            } else if (result1.isPresent() && result1.get().equalsIgnoreCase(bundle.getString("json"))) {
                 //TODO
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("NOT YET IMPLEMENTED");
@@ -810,7 +804,7 @@ public class SVGWizardController implements Initializable {
         });
     }
 
-    protected void initloadPreset(){
+    protected void initloadPreset() {
         button_Load.setOnAction(event -> {
             //TODO
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -832,6 +826,7 @@ public class SVGWizardController implements Initializable {
             }*/
         });
     }
+
     public Glyph getWarnIcon() {
         return warnIcon;
     }
@@ -1050,7 +1045,7 @@ public class SVGWizardController implements Initializable {
         f.deleteOnExit();
     }
 
-    protected void initFieldListenersForPreview(){
+    protected void initFieldListenersForPreview() {
         this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
                 this.choiceBox_outputDevice, this.choiceBox_size, this.choicebox_gridStyle,
                 this.choiceBox_csvOrientation, this.choiceBox_csvType, this.choiceBox_cssType);
