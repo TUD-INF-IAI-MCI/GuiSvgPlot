@@ -4,11 +4,16 @@ import application.controller.wizard.SVGWizardController;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.plotting.Function;
@@ -16,7 +21,6 @@ import tud.tangram.svgplot.plotting.IntegralPlotSettings;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class FunctionWizardFrameController extends SVGWizardController {
 
@@ -36,14 +40,17 @@ public class FunctionWizardFrameController extends SVGWizardController {
     @FXML
     private Button button_EditDataSet;
 
+    @FXML
+    private VBox hbox_DataTable;
+
 
     /* stage 3 */
     @FXML
     private GridPane stage3;
 
-    public ComboBox<Function> comboBox_function2;
+    public ChoiceBox<Function> comboBox_function2;
 
-    public ComboBox<Function> comboBox_function1;
+    public ChoiceBox<Function> comboBox_function1;
 
 
     @FXML
@@ -122,14 +129,6 @@ public class FunctionWizardFrameController extends SVGWizardController {
         initStage5();
         initStage6();
 
-        Function f1 = new Function("F1", "x^2");
-        Function f2 = new Function("F2", "-(x^2)");
-        Function f3 = new Function("F3", "2x");
-        Function f4 = new Function("F4", "3");
-
-
-        functionList.addAll(f1, f2, f3, f4);
-
 
     }
 
@@ -151,6 +150,28 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
         super.initCsvFieldListeners();
 
+        button_EditDataSet.setOnAction(event -> {
+            HBox row = generateTableEntry(new Function("name", " function"));
+            hbox_DataTable.getChildren().add(row);
+        });
+
+
+        hbox_DataTable.getChildren().addListener((ListChangeListener.Change<? extends Node> nodes) -> {
+            while (nodes.next()) {
+
+                nodes.getAddedSubList().forEach(row -> {
+                    if (row instanceof HBox) {
+                        functionList.add((Function) row.getUserData());
+                    }
+                });
+
+                nodes.getRemoved().forEach(row -> {
+                    if (row instanceof HBox) {
+                        functionList.remove((Function) row.getUserData());
+                    }
+                });
+            }
+        });
 
     }
 
@@ -163,33 +184,35 @@ public class FunctionWizardFrameController extends SVGWizardController {
         comboBox_function1.setItems(functionList);
         comboBox_function2.setItems(functionList);
 
-        Callback<ListView<Function>, ListCell<Function>> comboBoxCB = new Callback<ListView<Function>, ListCell<Function>>() {
-            @Override
-            public ListCell<Function> call(ListView<Function> p) {
-                return new ListCell<Function>() {
-                    @Override
-                    protected void updateItem(Function item, boolean empty) {
-                        super.updateItem(item, empty);
 
-                        if (item == null || empty) {
-                            setGraphic(null);
-                        } else {
-                            setText(item.getFunction());
-                        }
-                    }
-                };
+        StringConverter<Function> converter = new StringConverter<Function>() {
+            Function f;
+
+            @Override
+            public String toString(Function function) {
+                f = function;
+                return function.getTitle() + ": " + function.getFunction();
+            }
+
+            @Override
+            public Function fromString(String string) {
+                return f;
             }
         };
 
-        comboBox_function1.setCellFactory(comboBoxCB);
-        comboBox_function2.setCellFactory(comboBoxCB);
+        comboBox_function1.setConverter(converter);
+        comboBox_function2.setConverter(converter);
 
 
         comboBox_function2.visibleProperty().bind(radioButton_Function2.selectedProperty());
 
 
         comboBox_function1.setOnAction(event -> {
-            integral1.set(comboBox_function1.getSelectionModel().getSelectedItem().getFunction());
+            try {
+                integral1.set(comboBox_function1.getSelectionModel().getSelectedItem().getFunction());
+            } catch (NullPointerException e) {
+
+            }
             integralOptionBuilder();
 
         });
@@ -239,6 +262,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
     private void integralOptionBuilder() {
 
+
         int f1 = comboBox_function1.getSelectionModel().getSelectedIndex();
         int f2 = radioButton_Function2.isVisible() ? comboBox_function2.getSelectionModel().getSelectedIndex() : -1;
         double from = -10;
@@ -271,6 +295,56 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
     public ObservableList<Function> getFunctionList() {
         return functionList;
+    }
+
+
+    private HBox generateTableEntry(Function function) {
+
+        Function f = new Function(function.getTitle(), function.getFunction());
+
+        HBox row = new HBox();
+        row.setSpacing(5);
+        row.setUserData(f);
+        TextField titleField = new TextField(function.getTitle());
+        TextField functionField = new TextField(function.getFunction());
+
+        titleField.textProperty().addListener(args -> {
+            functionList.remove(row.getUserData());
+            Function func = new Function(titleField.getText(), functionField.getText());
+            row.setUserData(func);
+            functionList.add(func);
+        });
+
+        functionField.textProperty().addListener(args -> {
+            functionList.remove(row.getUserData());
+            Function func = new Function(titleField.getText(), functionField.getText());
+            row.setUserData(func);
+            functionList.add(func);
+
+            renderFunctions();
+
+
+        });
+
+        Button removeButton = new Button("-");
+
+        removeButton.setOnAction(event -> {
+            hbox_DataTable.getChildren().remove(row);
+
+            renderFunctions();
+        });
+
+        row.getChildren().add(titleField);
+        row.getChildren().add(functionField);
+        row.getChildren().add(removeButton);
+
+
+        return row;
+    }
+
+    private void renderFunctions() {
+        comboBox_function1.setItems(functionList);
+        comboBox_function2.setItems(functionList);
     }
 
 
