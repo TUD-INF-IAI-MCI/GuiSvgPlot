@@ -23,6 +23,7 @@ import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ChartWizardFrameController extends SVGWizardController {
@@ -167,6 +168,7 @@ public class ChartWizardFrameController extends SVGWizardController {
     ObservableList<LineStyle> lineStyleSecondObservableList;
     ObservableList<LineStyle> lineStyleThirdObservableList;
 
+    private boolean isInitial = true;
 
     public ChartWizardFrameController() {
 
@@ -252,8 +254,8 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_firstTexture, this.label_firstTexture);
         this.choiceBox_firstTexture.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
-               textureObservableListSecondTexture.add(oldValue);
-               textureObservableListThirdTexture.add(oldValue);
+                textureObservableListSecondTexture.add(oldValue);
+                textureObservableListThirdTexture.add(oldValue);
             }
             if (newValue != null) {
                 textureObservableListSecondTexture.remove(newValue);
@@ -350,38 +352,43 @@ public class ChartWizardFrameController extends SVGWizardController {
             }
         });
 
-        this.lineStyles = guiSvgOptions.getLineStyles();
-        this.lineStyles.addListener(new ListChangeListener<LineStyle>() {
-            @Override
-            public void onChanged(final Change<? extends LineStyle> c) {
-                choiceBox_firstLineStyle.getSelectionModel().select(lineStyles.get(0));
-                choiceBox_secondLineStyle.getSelectionModel().select(lineStyles.get(1));
-                choiceBox_thirdLineStyle.getSelectionModel().select(lineStyles.get(2));
-                guiSvgOptions.setLineStyles(lineStyles);
-            }
-        });
-        LineStyle[] lineStylesArray = LineStyle.getByOutputDeviceOrderedById(this.guiSvgOptions.getOutputDevice());
+        // line style
+        List<LineStyle> lineStylesArray = LineStyle.getByOutputDeviceOrderedById(this.guiSvgOptions.getOutputDevice());
         lineStyleFirstObservableList = FXCollections.observableArrayList(lineStylesArray);
         lineStyleSecondObservableList = FXCollections.observableArrayList(lineStylesArray);
         lineStyleThirdObservableList = FXCollections.observableArrayList(lineStylesArray);
+        lineStyles = FXCollections.observableArrayList(this.guiSvgOptions.getLineStyles());
+
+        this.lineStyles.addListener(new ListChangeListener<LineStyle>() {
+            @Override
+            public void onChanged(final Change<? extends LineStyle> c) {
+                if (lineStyles.size() == 3 && !lineStyles.equals(guiSvgOptions.getLineStyles())) {
+                    guiSvgOptions.setLineStyles(lineStyles);
+                }
+            }
+        });
+
         this.choiceBox_firstLineStyle.setItems(lineStyleFirstObservableList);
         this.choiceBox_firstLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
-
+        this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_firstLineStyle, this.label_firstLineStyle);
         this.choiceBox_firstLineStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (this.lineStyles.get(0) != newValue) {
-                this.lineStyles.set(0, newValue);
+            boolean oldValueInPossibleStyles = LineStyle.getListByOutputDevice(guiSvgOptions.getOutputDevice()).contains(oldValue);
+            if (oldValue != null && oldValueInPossibleStyles) {
+                if (!this.lineStyleSecondObservableList.contains(oldValue))
+                    this.lineStyleSecondObservableList.add(oldValue);
+                if (!this.lineStyleThirdObservableList.contains(oldValue))
+                    this.lineStyleThirdObservableList.add(oldValue);
             }
-            if (newValue != null){
-                if (lineStyleSecondObservableList.contains(newValue))
-                    lineStyleSecondObservableList.remove(newValue);
-                if (lineStyleThirdObservableList.contains(newValue))
-                    lineStyleThirdObservableList.remove(newValue);
+            if (newValue != null) {
+                if (this.lineStyleSecondObservableList.contains(newValue))
+                    this.lineStyleSecondObservableList.remove(newValue);
+                if (this.lineStyleThirdObservableList.contains(newValue))
+                    this.lineStyleThirdObservableList.remove(newValue);
             }
-            if (oldValue != null) {
-                if (!lineStyleSecondObservableList.contains(oldValue))
-                    lineStyleSecondObservableList.add(oldValue);
-                if (!lineStyleThirdObservableList.contains(oldValue))
-                    lineStyleThirdObservableList.add(oldValue);
+            try {
+                lineStyles.set(0, newValue);
+            } catch (IndexOutOfBoundsException e) {
+                lineStyles.add(0, newValue);
             }
         });
         this.button_resetFirstLineStyle.setOnAction(event -> {
@@ -390,21 +397,26 @@ public class ChartWizardFrameController extends SVGWizardController {
 
         this.choiceBox_secondLineStyle.setItems(lineStyleSecondObservableList);
         this.choiceBox_secondLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
+        this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_secondLineStyle, this.label_secondLineStyle);
         this.choiceBox_secondLineStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (this.lineStyles.get(1) != newValue) {
-                this.lineStyles.set(1, newValue);
+            try {
+                lineStyles.set(1, newValue);
+            } catch (Exception e) {
+                lineStyles.add(1, newValue);
             }
-            if (newValue != null){
-                if (lineStyleFirstObservableList.contains(newValue))
-                    lineStyleFirstObservableList.remove(newValue);
-                if (lineStyleThirdObservableList.contains(newValue))
-                    lineStyleThirdObservableList.remove(newValue);
+
+            boolean oldValueInPossibleStyles = LineStyle.getListByOutputDevice(guiSvgOptions.getOutputDevice()).contains(oldValue);
+            if (oldValue != null && oldValueInPossibleStyles) {
+                if (!this.lineStyleFirstObservableList.contains(oldValue))
+                    this.lineStyleFirstObservableList.add(oldValue);
+                if (!this.lineStyleThirdObservableList.contains(oldValue))
+                    this.lineStyleThirdObservableList.add(oldValue);
             }
-            if (oldValue != null) {
-                if (!lineStyleFirstObservableList.contains(oldValue))
-                    lineStyleFirstObservableList.add(oldValue);
-                if (!lineStyleThirdObservableList.contains(oldValue))
-                    lineStyleThirdObservableList.add(oldValue);
+            if (newValue != null) {
+                if (this.lineStyleFirstObservableList.contains(newValue))
+                    this.lineStyleFirstObservableList.remove(newValue);
+                if (this.lineStyleThirdObservableList.contains(newValue))
+                    this.lineStyleThirdObservableList.remove(newValue);
             }
         });
         this.button_resetSecondLineStyle.setOnAction(event -> {
@@ -413,21 +425,27 @@ public class ChartWizardFrameController extends SVGWizardController {
 
         this.choiceBox_thirdLineStyle.setItems(lineStyleThirdObservableList);
         this.choiceBox_thirdLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
+        this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_thirdLineStyle, this.label_thirdLineStyle);
         this.choiceBox_thirdLineStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (this.lineStyles.get(2) != newValue) {
-                this.lineStyles.set(2, newValue);
+            try {
+                lineStyles.set(2, newValue);
+            } catch (Exception e) {
+                lineStyles.add(2, newValue);
             }
-            if (newValue != null){
+            boolean oldValueInPossibleStyles = LineStyle.getListByOutputDevice(guiSvgOptions.getOutputDevice()).contains(oldValue);
+            if (oldValue != null && oldValueInPossibleStyles) {
+                if (!lineStyleFirstObservableList.contains(oldValue)) {
+                    lineStyleFirstObservableList.add(oldValue);
+                }
+                if (!lineStyleSecondObservableList.contains(oldValue)) {
+                    lineStyleSecondObservableList.add(oldValue);
+                }
+            }
+            if (newValue != null) {
                 if (lineStyleFirstObservableList.contains(newValue))
                     lineStyleFirstObservableList.remove(newValue);
                 if (lineStyleSecondObservableList.contains(newValue))
                     lineStyleSecondObservableList.remove(newValue);
-            }
-            if (oldValue != null) {
-                if (!lineStyleFirstObservableList.contains(oldValue))
-                    lineStyleFirstObservableList.add(oldValue);
-                if (!lineStyleSecondObservableList.contains(oldValue))
-                    lineStyleSecondObservableList.add(oldValue);
             }
         });
         this.button_resetThirdLineStyle.setOnAction(event -> {
@@ -592,7 +610,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         if (!show) {
             this.choicebox_dblaxes.getItems().remove(GuiAxisStyle.Barchart);
             this.hide(this.label_sortOrder, this.choicebox_sortOrder);
-        }else {
+        } else {
             this.choicebox_dblaxes.getItems().add(GuiAxisStyle.Barchart);
         }
     }
@@ -648,44 +666,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                 choiceBox_thirdTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(2));
             }
         });
-        this.guiSvgOptions.getLineStyles().addListener(new ListChangeListener<LineStyle>() {
-            @Override
-            public void onChanged(final Change<? extends LineStyle> c) {
-                if (!guiSvgOptions.getLineStyles().isEmpty() && guiSvgOptions.getLineStyles().size() >= 3 &&
-                        !guiSvgOptions.getLineStyles().contains(null) &&
-                        (!guiSvgOptions.getLineStyles().equals(lineStyles))) {
 
-                    System.out.println(guiSvgOptions.getLineStyles());
-                    System.out.println(lineStyles);
-
-                    // unselect
-                    choiceBox_thirdLineStyle.getSelectionModel().select(null);
-                    choiceBox_secondLineStyle.getSelectionModel().select(null);
-                    choiceBox_firstLineStyle.getSelectionModel().select(null);
-
-                    // set options
-                    lineStyleFirstObservableList.clear();
-                    lineStyleFirstObservableList.add(guiSvgOptions.getLineStyles().get(0));
-                    lineStyleFirstObservableList.remove(guiSvgOptions.getLineStyles().get(1));
-                    lineStyleFirstObservableList.remove(guiSvgOptions.getLineStyles().get(2));
-
-                    lineStyleSecondObservableList.clear();
-                    lineStyleSecondObservableList.add(guiSvgOptions.getLineStyles().get(1));
-                    lineStyleSecondObservableList.remove(guiSvgOptions.getLineStyles().get(0));
-                    lineStyleSecondObservableList.remove(guiSvgOptions.getLineStyles().get(2));
-
-                    lineStyleThirdObservableList.clear();
-                    lineStyleThirdObservableList.add(guiSvgOptions.getLineStyles().get(2));
-                    lineStyleThirdObservableList.remove(guiSvgOptions.getLineStyles().get(0));
-                    lineStyleThirdObservableList.remove(guiSvgOptions.getLineStyles().get(1));
-
-                    // select
-                    choiceBox_firstLineStyle.getSelectionModel().select(guiSvgOptions.getLineStyles().get(0));
-                    choiceBox_secondLineStyle.getSelectionModel().select(guiSvgOptions.getLineStyles().get(1));
-                    choiceBox_thirdLineStyle.getSelectionModel().select(guiSvgOptions.getLineStyles().get(2));
-                }
-            }
-        });
         this.guiSvgOptions.getPointSymbols().addListener(new ListChangeListener<PointSymbol>() {
             @Override
             public void onChanged(final Change<? extends PointSymbol> c) {
@@ -695,7 +676,31 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.guiSvgOptions.axisStyleProperty().addListener((observable, oldValue, newValue) -> {
             this.choicebox_dblaxes.getSelectionModel().select(newValue);
         });
+
+        this.guiSvgOptions.getLineStyles().addListener(new ListChangeListener<LineStyle>() {
+            @Override
+            public void onChanged(final Change<? extends LineStyle> c) {
+                List<LineStyle> newLineStyles = guiSvgOptions.getLineStyles();
+                if (!newLineStyles.contains(null) && !lineStyles.equals(newLineStyles)) {
+                    lineStyleFirstObservableList = FXCollections.observableArrayList(newLineStyles);
+                    lineStyleSecondObservableList = FXCollections.observableArrayList(newLineStyles);
+                    lineStyleThirdObservableList = FXCollections.observableArrayList(newLineStyles);
+
+                    // when selecting the first item of the first choicebox, it will be removed from the second and third choice box
+                    choiceBox_firstLineStyle.setItems(lineStyleFirstObservableList);
+                    choiceBox_firstLineStyle.getSelectionModel().select(0);
+                    // therefore, you have to select the (new) first item of the second, which will then be removed from the first an third
+                    choiceBox_secondLineStyle.setItems(lineStyleSecondObservableList);
+                    choiceBox_secondLineStyle.getSelectionModel().select(0);
+                    // equivalent here
+                    choiceBox_thirdLineStyle.setItems(lineStyleThirdObservableList);
+                    choiceBox_thirdLineStyle.getSelectionModel().select(0);
+                }
+            }
+        });
+
     }
+
     private void setValueToIndex(ObservableList<String> trendline, int index, String newValue) {
         if (trendline.size() > index) {
             trendline.set(index, newValue);
@@ -724,7 +729,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         guiSvgOptions.setPointSymbols(checkedPointSymbols);
     }
 
-    private void initFieldListenersForChartPreview(){
+    private void initFieldListenersForChartPreview() {
         super.initFieldListenersForPreview();
         this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
                 this.choiceBox_diagramType, this.choiceBox_baraccumulation, this.choiceBox_firstTexture,
