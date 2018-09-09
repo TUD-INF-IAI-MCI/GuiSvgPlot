@@ -753,7 +753,7 @@ public class SVGWizardController implements Initializable {
      * upon calling, asks the user for the type and name of the presets including input validation and duplicate checking.
      */
     // save as preset
-    protected void initSaveAsPreset() {
+    public void initSaveAsPreset() {
         button_Save_As_Preset.setOnAction(event -> {
             List<String> choices = new ArrayList<>();
             choices.add(bundle.getString("preset"));

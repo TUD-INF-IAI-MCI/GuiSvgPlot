@@ -28,7 +28,7 @@
                             text="%button_next"
                             ButtonBar.buttonData="RIGHT">
                         <tooltip>
-                            <Tooltip text="%"/>
+                            <Tooltip text="%button_next"/>
                         </tooltip>
                     </Button>
                     <Button fx:id="button_Cancel" accessibleText="Abbrechen" alignment="TOP_LEFT" cancelButton="true"
