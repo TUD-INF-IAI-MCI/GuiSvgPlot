@@ -178,23 +178,23 @@
                                               <ChoiceBox fx:id="choiceBox_baraccumulation" accessibleText="Art, in der mehrere Datenreihen in Balkendiagrammen akkumuliert werden." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
       
                                               <Label fx:id="label_firstTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_first_bar" visible="false" GridPane.rowIndex="1" />
-                                              <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                  <ChoiceBox fx:id="choiceBox_firstTexture" accessibleText="%texture_first_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false"  HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_resetFirstTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" visible="false">
-                                                      <tooltip><Tooltip text="%button_texture_reset" /></tooltip>
+                                              <HBox fx:id="hbox_firstTexture" alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1" visible="false">
+                                                  <ChoiceBox fx:id="choiceBox_firstTexture" accessibleText="%texture_first_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                  <Button fx:id="button_resetFirstTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
+                                                    <tooltip><Tooltip text="%button_texture_reset" /></tooltip>
                                                   </Button>
                                               </HBox>
                                               <Label fx:id="label_secondTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_second_bar" visible="false" GridPane.rowIndex="2" />
-                                              <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" >
-                                                  <ChoiceBox fx:id="choiceBox_secondTexture" accessibleText="%texture_second_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false"  HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_resetSecondTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" visible="false">
-                                                        <tooltip><Tooltip text="%button_texture_reset" /></tooltip>
+                                              <HBox fx:id="hbox_secondTexture" alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" visible="false" >
+                                                  <ChoiceBox fx:id="choiceBox_secondTexture" accessibleText="%texture_second_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                  <Button fx:id="button_resetSecondTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" >
+                                                      <tooltip><Tooltip text="%button_texture_reset" /></tooltip>
                                                   </Button>
                                               </HBox>
                                               <Label fx:id="label_thirdTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_third_bar" visible="false" GridPane.rowIndex="3" />
-                                              <HBox alignment="CENTER_RIGHT" spacing="10.0"  GridPane.columnIndex="1" GridPane.rowIndex="3" >
-                                                  <ChoiceBox fx:id="choiceBox_thirdTexture" accessibleText="%texture_third_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false"  HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_resetThirdTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" visible="false">
+                                              <HBox fx:id="hbox_thirdTexture" alignment="CENTER_RIGHT" spacing="10.0"  GridPane.columnIndex="1" GridPane.rowIndex="3" visible="false">
+                                                  <ChoiceBox fx:id="choiceBox_thirdTexture" accessibleText="%texture_third_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"  HBox.hgrow="ALWAYS" />
+                                                  <Button fx:id="button_resetThirdTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
                                                       <tooltip><Tooltip text="%button_texture_reset" /></tooltip>
                                                   </Button>
                                               </HBox>
@@ -206,15 +206,25 @@
       
                                               <!--line chart-->
                                               <Label fx:id="label_firstLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_default" visible="false" GridPane.rowIndex="0" />
-                                              <ChoiceBox fx:id="choiceBox_firstLineStyle" accessibleText="%label_line_style_default" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                              <HBox fx:id="hbox_firstLineStyle" alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0" visible="false">
+                                                  <ChoiceBox fx:id="choiceBox_firstLineStyle" accessibleText="%label_line_style_default" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                  <Button fx:id="button_resetFirstLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" />
+                                              </HBox>
+
                                               <Label fx:id="label_secondLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_second" visible="false" GridPane.rowIndex="1" />
-                                              <ChoiceBox fx:id="choiceBox_secondLineStyle" accessibleText="%label_line_style_second" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                               <Label fx:id="label_thirdLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_third" visible="false" GridPane.rowIndex="2" />
-                                              <!--HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" -->
-                                                  <ChoiceBox fx:id="choiceBox_thirdLineStyle" accessibleText="%label_line_style_third" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false"  HBox.hgrow="ALWAYS" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                  <!--Button fx:id="button_thirdLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" visible="false"/-->
-                                              <!--/HBox-->
-      
+                                              <HBox fx:id="hbox_secondLineStyle" alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1" visible="false">
+                                                  <ChoiceBox fx:id="choiceBox_secondLineStyle" accessibleText="%label_line_style_second" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                  <Button fx:id="button_resetSecondLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" text="X"/>
+                                              </HBox>
+
+                                              <Label fx:id="label_thirdLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_third" visible="false" GridPane.rowIndex="2" />
+                                              <HBox fx:id="hbox_thirdLineStyle" alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" visible="false">
+                                                  <ChoiceBox fx:id="choiceBox_thirdLineStyle" accessibleText="%label_line_style_third" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                  <Button fx:id="button_resetThirdLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" text="X"/>
+                                              </HBox>
+
+
+
                                               <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_mark_data" visible="false" GridPane.rowIndex="3" />
                                               <ChoiceBox fx:id="choiceBox_linepoints" accessibleText="%mark_data_on_line" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                               <Label fx:id="label_pointSymbols_lineChart" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_pointSymbols" visible="false" GridPane.rowIndex="4" />
@@ -410,21 +420,11 @@
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                                    <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back">
-                                        <tooltip><Tooltip text="%label_back" /></tooltip>
-                                    </Button>
-                                    <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next" >
-                                        <tooltip><Tooltip text="%label_next" /></tooltip>
-                                    </Button>
-                                     <Button fx:id="button_Load" disable="true"  accessibleText="%button_load" mnemonicParsing="false" text="%button_load" >
-                                         <tooltip><Tooltip text="%button_load" /></tooltip>
-                                     </Button>
-                                    <Button fx:id="button_Save_As_Preset" accessibleText="%button_save_as" mnemonicParsing="false" styleClass="btn-preset" text="%button_save_as" >
-                                        <tooltip><Tooltip text="%button_save_as" /></tooltip>
-                                    </Button>
-                                    <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create" >
-                                        <tooltip><Tooltip text="%button_diagram_create" /></tooltip>
-                                    </Button>
+                                    <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back" />
+                                    <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next" />
+                                     <Button fx:id="button_Load" disable="true" mnemonicParsing="false" text="%button_load" />
+                                    <Button fx:id="button_Save_As_Preset" accessibleText="%button_save_as" mnemonicParsing="false" styleClass="btn-preset" text="%button_save_as" />
+                                    <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create" />
                                 </buttons>
                             </ButtonBar>
                         </children>

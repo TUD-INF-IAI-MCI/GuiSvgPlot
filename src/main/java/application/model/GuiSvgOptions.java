@@ -231,8 +231,6 @@ public class GuiSvgOptions {
         this.functions.addListener(new ListChangeListener<Function>() {
             @Override
             public void onChanged(Change<? extends Function> c) {
-
-
                 options.setFunctions(functions);
             }
         });

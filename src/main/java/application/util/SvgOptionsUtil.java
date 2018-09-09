@@ -354,7 +354,9 @@ public class SvgOptionsUtil {
         return new StringConverter<LineStyle>() {
             @Override
             public String toString(LineStyle lineStyle) {
-                return bundle.getString("lineStyle_" + lineStyle.toString().toLowerCase());
+                if (lineStyle != null)
+                    return bundle.getString("lineStyle_" + lineStyle.toString().toLowerCase());
+                else return "";
             }
 
             @Override

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.svgcreator.SvgCreator;
 
@@ -242,9 +243,10 @@ public class SvgOptionsService {
         boolean hasErrorInCustomSizeWidth = svgPlotOptions.getSize().getX() < GuiSvgOptions.MINIMUM_PAGE_WIDTH;
         boolean hasErrorInCustomSizeHeight = svgPlotOptions.getSize().getY() < GuiSvgOptions.MINIMUM_PAGE_HEIGHT;
 
-        boolean hasErrorInTextures = svgPlotOptions.getTextures().contains(null);
+        boolean hasErrorInTextures = svgPlotOptions.getDiagramType().equals(DiagramType.BarChart) && svgPlotOptions.getTextures().contains(null);
+        boolean hasErrorInLineTypes = svgPlotOptions.getDiagramType().equals(DiagramType.LineChart) && svgPlotOptions.getLineStyles().contains(null);
 
-        boolean hasError = hasErrorInXRange || hasErrorInYRange || hasErrorInCustomSizeWidth || hasErrorInCustomSizeHeight || hasErrorInTextures;
+        boolean hasError = hasErrorInXRange || hasErrorInYRange || hasErrorInCustomSizeWidth || hasErrorInCustomSizeHeight || hasErrorInTextures || hasErrorInLineTypes;
         if (hasError) {
             GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
             if (hasErrorInXRange) {
@@ -261,6 +263,9 @@ public class SvgOptionsService {
             }
             if (hasErrorInTextures){
                 logger.error(this.bundle.getString("preview_load_emptyTexture_error"));
+            }
+            if (hasErrorInLineTypes){
+                logger.error(this.bundle.getString("preview_load_emptyLineStyle_error"));
             }
             return false;
         }
