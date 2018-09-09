@@ -222,7 +222,6 @@ public class GuiSvgOptions {
             this.options.setPi(newValue);
         });
         this.autoScale.addListener((observable, oldValue, newValue) -> {
-            System.out.println(newValue);
             this.options.setAutoScale(newValue);
         });
     }
@@ -258,8 +257,6 @@ public class GuiSvgOptions {
                 options.setPointSymbols(pointSymbols);
             }
         });
-
-
         this.lineStyles.addListener(new ListChangeListener<LineStyle>() {
             @Override
             public void onChanged(final Change<? extends LineStyle> c) {
@@ -666,7 +663,7 @@ public class GuiSvgOptions {
     }
 
     public void setLineStyles(final ObservableList<LineStyle> lineStyles) {
-        this.lineStyles = lineStyles;
+        this.lineStyles.setAll(lineStyles);
     }
 
     public void setIntegral(IntegralPlotSettings value) {

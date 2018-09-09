@@ -50,7 +50,8 @@ public class GuiSvgPlott extends Application {
     public GuiSvgPlott() {
         // favicon for macos
         try {
-            com.apple.eawt.Application.getApplication().setDockIconImage(new ImageIcon(getClass().getResource("/images/barchart_circle.png")).getImage());
+            // only works in macos
+            //com.apple.eawt.Application.getApplication().setDockIconImage(new ImageIcon(getClass().getResource("/images/barchart_circle.png")).getImage());
         }catch(Exception e){}
         instance = this;
     }
@@ -65,9 +66,8 @@ public class GuiSvgPlott extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        setSettings();
-
         this.bundle = ResourceBundle.getBundle("langBundle", new UTF8Control());
+        setSettings();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
         loader.setLocation(GuiSvgPlott.RootFrame);

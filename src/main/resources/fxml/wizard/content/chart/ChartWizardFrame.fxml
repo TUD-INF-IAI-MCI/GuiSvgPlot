@@ -27,10 +27,7 @@
         <top>
             <VBox BorderPane.alignment="CENTER">
                 <children>
-                    <!--<Label fx:id="label_Headline" alignment="CENTER" contentDisplay="CENTER"-->
-                    <!--maxWidth="1.7976931348623157E308" minWidth="200.0" prefHeight="48.0" text="Label"-->
-                    <!--textAlignment="CENTER"/>-->
-                    <HBox fx:id="hBox_pagination" accessibleRole="MENU_BAR" alignment="CENTER" prefHeight="48.0" prefWidth="600.0">
+                     <HBox fx:id="hBox_pagination" accessibleRole="MENU_BAR" alignment="CENTER" prefHeight="48.0" prefWidth="600.0">
                         <Button fx:id="button_Warnings" />
                         <Button fx:id="button_Infos" />
                     </HBox>
@@ -205,24 +202,23 @@
                                               <ChoiceBox fx:id="choicebox_sortOrder" accessibleText="%label_sort_order" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       
                                               <!--line chart-->
-                                              <Label fx:id="label_firstLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_default" visible="false" GridPane.rowIndex="0" />
-                                              <HBox fx:id="hbox_firstLineStyle" alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0" visible="false">
-                                                  <ChoiceBox fx:id="choiceBox_firstLineStyle" accessibleText="%label_line_style_default" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_resetFirstLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" />
-                                              </HBox>
-
-                                              <Label fx:id="label_secondLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_second" visible="false" GridPane.rowIndex="1" />
-                                              <HBox fx:id="hbox_secondLineStyle" alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1" visible="false">
+                                              <Label fx:id="label_secondLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_second" visible="false" GridPane.rowIndex="0" />
+                                              <HBox fx:id="hbox_secondLineStyle" alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0" visible="false">
                                                   <ChoiceBox fx:id="choiceBox_secondLineStyle" accessibleText="%label_line_style_second" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                                                   <Button fx:id="button_resetSecondLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" text="X"/>
                                               </HBox>
 
-                                              <Label fx:id="label_thirdLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_third" visible="false" GridPane.rowIndex="2" />
-                                              <HBox fx:id="hbox_thirdLineStyle" alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" visible="false">
+                                              <Label fx:id="label_thirdLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_third" visible="false" GridPane.rowIndex="1" />
+                                              <HBox fx:id="hbox_thirdLineStyle" alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1" visible="false">
                                                   <ChoiceBox fx:id="choiceBox_thirdLineStyle" accessibleText="%label_line_style_third" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                                                   <Button fx:id="button_resetThirdLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" text="X"/>
                                               </HBox>
 
+                                              <Label fx:id="label_firstLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_default" visible="false" GridPane.rowIndex="2" />
+                                              <HBox fx:id="hbox_firstLineStyle" alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2" visible="false">
+                                                  <ChoiceBox fx:id="choiceBox_firstLineStyle" accessibleText="%label_line_style_default" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                  <Button fx:id="button_resetFirstLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" />
+                                              </HBox>
 
 
                                               <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_mark_data" visible="false" GridPane.rowIndex="3" />
