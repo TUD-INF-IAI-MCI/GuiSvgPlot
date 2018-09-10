@@ -1,6 +1,7 @@
 package application.controller.wizard.functions;
 
 import application.controller.wizard.SVGWizardController;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -151,7 +152,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         super.initCsvFieldListeners();
 
         button_EditDataSet.setOnAction(event -> {
-            HBox row = generateTableEntry(new Function("name", " function"));
+            HBox row = generateTableEntry(new Function("", ""));
             hbox_DataTable.getChildren().add(row);
         });
 
@@ -303,41 +304,44 @@ public class FunctionWizardFrameController extends SVGWizardController {
         Function f = new Function(function.getTitle(), function.getFunction());
 
         HBox row = new HBox();
+        row.getStyleClass().add("data-table");
         row.setSpacing(5);
         row.setUserData(f);
+
         TextField titleField = new TextField(function.getTitle());
+        titleField.getStyleClass().add("data-row");
+        titleField.getStyleClass().add("data-cell-x");
+
+        titleField.setPromptText("Funktionsname");
+
         TextField functionField = new TextField(function.getFunction());
+        functionField.getStyleClass().add("data-row");
+        functionField.getStyleClass().add("data-cell-y");
 
-        titleField.textProperty().addListener(args -> {
-            functionList.remove(row.getUserData());
-            Function func = new Function(titleField.getText(), functionField.getText());
-            row.setUserData(func);
-            functionList.add(func);
-        });
+        functionField.setPromptText("Funktion");
 
-        functionField.textProperty().addListener(args -> {
-            functionList.remove(row.getUserData());
-            Function func = new Function(titleField.getText(), functionField.getText());
-            row.setUserData(func);
-            functionList.add(func);
+        InvalidationListener invalidationListener = args -> {
 
-            renderFunctions();
+            if (!(titleField.getText().isEmpty() || functionField.getText().isEmpty())) {
+                functionList.remove(row.getUserData());
+                Function func = new Function(titleField.getText(), functionField.getText());
+                row.setUserData(func);
+                functionList.add(func);
+                renderFunctions();
+            }
+        };
 
-
-        });
+        titleField.textProperty().addListener(invalidationListener);
+        functionField.textProperty().addListener(invalidationListener);
 
         Button removeButton = new Button("-");
 
         removeButton.setOnAction(event -> {
             hbox_DataTable.getChildren().remove(row);
-
             renderFunctions();
         });
 
-        row.getChildren().add(titleField);
-        row.getChildren().add(functionField);
-        row.getChildren().add(removeButton);
-
+        row.getChildren().addAll(titleField, functionField, removeButton);
 
         return row;
     }
