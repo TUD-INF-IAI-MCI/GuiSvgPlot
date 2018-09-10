@@ -50,8 +50,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     private final ToggleGroup pageOrientationTG = new ToggleGroup();
     private JsonObject settingsJSON = new JsonObject();
     private ArrayList flags = new ArrayList();
-    private Preset defaultDiagram;
-    private Preset defaultFunction;
     DiagramType.DiagramTypeConverter converter = new DiagramType.DiagramTypeConverter();
 
 
@@ -155,7 +153,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         if(super.presets == null){
             presets = FXCollections.observableArrayList();
         }
-        initPresetTable();
 
 
         int amountOfMenuItems = GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size();
@@ -165,19 +162,8 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
 
-    private void initPresetTable() {
-        initDefaultPresets();
-        if(super.presets.size() < 2 ){
-            super.presets.addAll(defaultDiagram, defaultFunction);
-        }
-        //TODO: diagramtype needs to be i18n'ded but how is that supposed to be happening? Ô_ó
 
-        //presetTable.setItems(super.presets);
-    }
-    private void initDefaultPresets(){
-        defaultDiagram = new Preset(new GuiSvgOptions(new SvgPlotOptions()), bundle.getString("default_diagram_preset_name"), DiagramType.LineChart);
-        defaultFunction  = new Preset(new GuiSvgOptions(new SvgPlotOptions()), bundle.getString("default_function_preset_name"), DiagramType.FunctionPlot);
-    }
+
 
 
 
@@ -298,15 +284,16 @@ public class PresetsController extends SVGWizardController implements Initializa
     private HBox generateTableEntry(){
         HBox row = new HBox();
         row.setSpacing(5);
+        row.getStyleClass().add("data-row");
         TextField nameField = new TextField(currentPreset.getPresetName());
         nameField.setFocusTraversable(true);
         nameField.setEditable(false);
-        nameField.getStyleClass().add("data-row");
         nameField.getStyleClass().add("data-cell-x");
         TextField creationDateField = new TextField(currentPreset.getCreationDate());
         creationDateField.setFocusTraversable(true);
         creationDateField.setEditable(false);
-        /*creationDateField.
+        creationDateField.setText(bundle.getString("label_created_on") + currentPreset.getCreationDate());
+        creationDateField.setDisable(true);
 
         Button editButton = new Button();
         Button copyButton = new Button();
@@ -329,8 +316,8 @@ public class PresetsController extends SVGWizardController implements Initializa
             vbox_Preset_DataTable.getChildren().remove(row);
         });
 
-       row.getChildren().addAll(nameField, editButton, copyButton, removeButton);
-*/
+        row.getChildren().addAll(nameField, creationDateField, editButton, copyButton, removeButton);
+
         return row;
     }
 
@@ -445,26 +432,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
     }
 
-
-
-
-
-    private void jsonLoader(){
-
-    }
-
-    // TODO: needs some kind of error handling
-    public Preset presetLoader(String presetName){
-        Preset queriedPreset;
-        for (Preset p : presets) {
-            if (p.getPresetName() == presetName){
-                queriedPreset = p;
-                return queriedPreset;
-            }
-        }
-        return null;
-    }
-
     private void overViewHider(){
         overViewBorderPane.setVisible(false);
     }
@@ -494,15 +461,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private void deletePreset(){
         Preset tobedeletedPreset = currentPreset;
-        if(!isDefault(tobedeletedPreset)){
             deleteConfirmationAlert(tobedeletedPreset);
             functionEditorHider();
             diagramEditorHider();
             overviewDisplayer();
-        }else{
-            defaultDeleteAlert();
-        }
-
     }
 
     @FXML
@@ -547,19 +509,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         alarm.showAndWait();
     }
 
-    public void defaultDeleteAlert(){
-        Alert alarm = new Alert(Alert.AlertType.ERROR);
-        alarm.setTitle(bundle.getString("alert_preset_defaultdelete_title"));
-        alarm.setHeaderText(bundle.getString("alert_preset_defaultdelete_header"));
-        alarm.setContentText(bundle.getString("alert_preset_defaultdelete_content"));
-        alarm.showAndWait();
-    }
-    public boolean isDefault(Preset p){
-        if(p.getPresetName().contains(bundle.getString("default_diagram_preset_name")) || p.getPresetName().contains((bundle.getString("default_function_preset_name")))){
-            return true;
-        }
-        return false;
-    }
     @FXML
     private void quitToMainMenu(){
         GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
