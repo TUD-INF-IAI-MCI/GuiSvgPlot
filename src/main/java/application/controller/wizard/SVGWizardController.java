@@ -82,7 +82,7 @@ public class SVGWizardController implements Initializable {
     @FXML
     protected Button button_Load;
     @FXML
-    protected Button button_Save_As_Preset;
+    protected Button button_Save_As;
     @FXML
     protected Button button_Edit_Preset;
     @FXML
