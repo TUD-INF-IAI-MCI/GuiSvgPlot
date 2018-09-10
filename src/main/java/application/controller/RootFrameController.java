@@ -49,6 +49,8 @@ public class RootFrameController implements Initializable {
     private MenuItem menuItem_About;
     @FXML
     public Menu menu_Presets = new Menu();
+    @FXML
+    public Button button_Save_Preset;
 
     @FXML
     public ScrollPane scrollPane_message;
@@ -64,7 +66,7 @@ public class RootFrameController implements Initializable {
 
     public PresetsController presetsController;
 
-    public static String hasWizard = "none";
+    public static String wizardPath = "none";
 
 
     @Override
@@ -135,6 +137,7 @@ public class RootFrameController implements Initializable {
     private void closeButtonAction(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setResizable(true);
+        alert.getDialogPane().setMinWidth(400);
         alert.setTitle(bundle.getString("alert_exit_title"));
         alert.setHeaderText(bundle.getString("alert_exit_header"));
         alert.setContentText(bundle.getString("alert_exit_content"));
@@ -164,7 +167,7 @@ public class RootFrameController implements Initializable {
     @FXML
     public void startPresetOverview() {
         // checks whether the PresetOverview window has been opened from within the Function/Chartwizard Frame -> fixes #24
-        if(hasWizard.contains("Wizard")){
+        if(wizardPath.contains("Wizard")){
             GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
             GuiSvgPlott.getInstance().closeWizard();
         }
@@ -201,7 +204,7 @@ public class RootFrameController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
         loader.setLocation((fxmlPath));
-        hasWizard = fxmlPath.getPath();
+        wizardPath = fxmlPath.getPath();
 
          try {
             center = borderPane_Content.getCenter();
