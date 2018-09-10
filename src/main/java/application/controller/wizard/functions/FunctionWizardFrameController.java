@@ -31,6 +31,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
 
 
+
     /*Begin: FXML Nodes*/
 
     /* stage 1 */
@@ -43,6 +44,8 @@ public class FunctionWizardFrameController extends SVGWizardController {
     @FXML
     private Button button_EditDataSet;
 
+    @FXML
+    private ScrollPane scrollPane_dataTable;
     @FXML
     private VBox vBox_DataTable;
 
@@ -149,6 +152,10 @@ public class FunctionWizardFrameController extends SVGWizardController {
      */
     private void initStage2() {
         vBox_DataTable.getStyleClass().add("data-table");
+        vBox_DataTable.setFillWidth(true);
+
+        scrollPane_dataTable.setFitToWidth(true);
+
         this.functionList = FXCollections.observableArrayList();
 
         super.initCsvFieldListeners();
@@ -306,20 +313,21 @@ public class FunctionWizardFrameController extends SVGWizardController {
         Function f = new Function(function.getTitle(), function.getFunction());
 
         HBox row = new HBox();
+
+
         row.getStyleClass().add("data-row");
         row.setSpacing(5);
         row.setUserData(f);
 
+
         TextField titleField = new TextField(function.getTitle());
         titleField.getStyleClass().add("data-cell-x");
-        HBox.setHgrow(titleField, Priority.ALWAYS);
 
 
         titleField.setPromptText("Funktionsname");
 
         TextField functionField = new TextField(function.getFunction());
         functionField.getStyleClass().add("data-cell-y");
-        HBox.setHgrow(functionField, Priority.ALWAYS);
         functionField.setPromptText("Funktion");
 
         InvalidationListener invalidationListener = args -> {
@@ -341,13 +349,17 @@ public class FunctionWizardFrameController extends SVGWizardController {
         removeButton.setTooltip(new Tooltip("close"));
         removeButton.setGraphic(closeGlyph);
         removeButton.getStyleClass().add("data-cell-button");
-        HBox.setHgrow(removeButton, Priority.NEVER);
         removeButton.setOnAction(event -> {
             vBox_DataTable.getChildren().remove(row);
             renderFunctions();
         });
 
         row.getChildren().addAll(titleField, functionField, removeButton);
+
+
+        HBox.setHgrow(functionField, Priority.ALWAYS);
+        HBox.setHgrow(titleField, Priority.ALWAYS);
+        HBox.setHgrow(removeButton, Priority.NEVER);
 
         return row;
     }

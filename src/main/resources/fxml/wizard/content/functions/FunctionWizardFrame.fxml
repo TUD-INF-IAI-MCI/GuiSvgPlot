@@ -267,7 +267,7 @@
                                                                contentDisplay="RIGHT" text="%label_csv_file"/>
                                                     </children>
                                                 </GridPane>
-                                                <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                                                <ScrollPane prefHeight="200.0" prefWidth="200.0" fx:id="scrollPane_dataTable">
                                                     <content>
                                                         <VBox fx:id="vBox_DataTable"/>
                                                     </content>
