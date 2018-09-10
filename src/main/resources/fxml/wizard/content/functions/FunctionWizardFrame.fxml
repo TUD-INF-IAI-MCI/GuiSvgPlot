@@ -699,10 +699,9 @@
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                                    <Button fx:id="button_Save_As" accessibleText="%label_back" mnemonicParsing="false"
-                                            text="%button_save_as_preset">
+                                    <Button fx:id="button_Save_As" accessibleText="%label_back" mnemonicParsing="false" text="%button_save_as">
                                         <tooltip>
-                                            <Tooltip text="%button_save_as_preset"/>
+                                            <Tooltip text="%button_save_as" />
                                         </tooltip>
                                     </Button>
                                     <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false"

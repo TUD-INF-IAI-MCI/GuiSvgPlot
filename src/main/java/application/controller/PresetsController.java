@@ -9,7 +9,9 @@ import application.model.Options.PageSize;
 import application.model.Options.TrendlineAlgorithm;
 import application.model.Preset;
 import application.util.SvgOptionsUtil;
+import application.util.TextFieldUtil;
 import com.google.gson.JsonObject;
+import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,14 +23,17 @@ import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
+import tud.tangram.svgplot.plotting.Function;
 import tud.tangram.svgplot.styles.GridStyle;
 
+import javax.xml.soap.Text;
 import java.io.File;
 import java.net.URL;
 import java.util.*;
@@ -47,13 +52,13 @@ public class PresetsController extends SVGWizardController implements Initializa
     private ArrayList flags = new ArrayList();
     private Preset defaultDiagram;
     private Preset defaultFunction;
-    private Glyph deleteGlyph = new Glyph("FontAwesome", '\uf021');
     DiagramType.DiagramTypeConverter converter = new DiagramType.DiagramTypeConverter();
 
 
-
     @FXML
-    private TableView<Preset> presetTable;
+    private VBox vbox_Preset_DataTable;
+    /*@FXML
+    private TableView<Preset> presetTable;*/
     @FXML
     private TableColumn table_column_name;
     @FXML
@@ -125,7 +130,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
         this.svgOptionsUtil = SvgOptionsUtil.getInstance();
-        //das zu finden hat mich ne halbe stunde gekostet...
         this.svgOptionsUtil.setBundle(resources);
         chartTypeObservableList.add(resources.getString("combo_diagram"));
         chartTypeObservableList.add(resources.getString("combo_function"));
@@ -153,32 +157,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
         initPresetTable();
 
+
         int amountOfMenuItems = GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size();
         GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().get(amountOfMenuItems-1).setDisable(true);
-    /*presetNames.setCellFactory(new Callback<ListView<Preset>, ListCell<Preset>>() {
-            @Override
-            public ListCell<Preset> call(ListView<Preset> param) {
 
-                ListCell cell = new ListCell<Preset>(){
-
-                    @Override
-                    protected void updateItem(Preset item, boolean empty) {
-                        super.updateItem(item, empty);
-
-
-                        if(item == null || empty){
-                            setText("");
-                            return;
-                        }
-
-                        setText(item.getPresetName());
-                    }
-                };
-
-                return cell;
-            }
-        });
-        presetNames.setItems(presets);*/
         }
 
 
@@ -188,145 +170,15 @@ public class PresetsController extends SVGWizardController implements Initializa
         if(super.presets.size() < 2 ){
             super.presets.addAll(defaultDiagram, defaultFunction);
         }
-        table_column_name.setCellValueFactory(new PropertyValueFactory<Preset, String>("presetName"));
-        table_column_date.setCellValueFactory(new PropertyValueFactory<Preset, String>("creationDate"));
         //TODO: diagramtype needs to be i18n'ded but how is that supposed to be happening? Ô_ó
-        table_column_diagram_type.setCellValueFactory(new PropertyValueFactory<Preset,String>("diagramType"));
-        addEditButtonToTable();
-        addCopyButtonToTable();
-        addDeleteButtonToTable();
-        presetTable.setItems(super.presets);
+
+        //presetTable.setItems(super.presets);
     }
     private void initDefaultPresets(){
         defaultDiagram = new Preset(new GuiSvgOptions(new SvgPlotOptions()), bundle.getString("default_diagram_preset_name"), DiagramType.LineChart);
         defaultFunction  = new Preset(new GuiSvgOptions(new SvgPlotOptions()), bundle.getString("default_function_preset_name"), DiagramType.FunctionPlot);
     }
 
-    private void addEditButtonToTable() {
-        TableColumn<Preset, Void> colBtn = new TableColumn();
-        Callback<TableColumn<Preset, Void>, TableCell<Preset, Void>> cellFactory = new Callback<TableColumn<Preset, Void>, TableCell<Preset, Void>>() {
-            @Override
-            public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
-                final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
-
-                    private final Button btn = new Button("", new Glyph("FontAwesome", '\uf044'));
-                    {
-                        btn.setOnAction((ActionEvent event) -> {
-                            Object data = getTableView().getItems().get(getIndex());
-                            loadPreset(((Preset) data).getPresetName());
-                            //hide current stuff
-                            overViewHider();
-                            textFieldPresetName.setText(((Preset) data).getPresetName());
-                            //show settings stuff
-                            if(converter.convert(((Preset) data).getDiagramType()) == DiagramType.FunctionPlot){
-                                combo_Type.setValue(bundle.getString("combo_function"));
-                                flagSetter(converter.convert(((Preset) data).getDiagramType()), (Preset) data);
-                                functionEditorDisplayer();
-                            }else{
-                                combo_Type.setValue(bundle.getString("combo_diagram"));
-                                flagSetter(converter.convert(((Preset) data).getDiagramType()), (Preset) data);
-                                diagramEditorDisplayer();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(btn);
-                        }
-                    }
-                };
-                return cell;
-            }
-        };
-        colBtn.setCellFactory(cellFactory);
-        presetTable.getColumns().add(colBtn);
-    }
-
-    private void addCopyButtonToTable() {
-        TableColumn<Preset, Void> colBtn = new TableColumn();
-        Callback<TableColumn<Preset, Void>, TableCell<Preset, Void>> cellFactory = new Callback<TableColumn<Preset, Void>, TableCell<Preset, Void>>() {
-            @Override
-            public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
-                final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
-                    private final Button btn = new Button("", new Glyph("FontAwesome", '\uf0c5'));
-                    {
-                        btn.setOnAction((ActionEvent event) -> {
-                            Object data = getTableView().getItems().get(getIndex());
-                            Preset tempPreset = new Preset(((Preset) data).getOptions(), ((Preset) data).getPresetName()+ " (Kopie)", converter.convert(((Preset) data).getDiagramType()));
-                            presets.add(tempPreset);
-                        });
-                    }
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(btn);
-                        }
-                    }
-                };
-                return cell;
-            }
-        };
-        colBtn.setCellFactory(cellFactory);
-        presetTable.getColumns().add(colBtn);
-    }
-
-    private void addDeleteButtonToTable() {
-        TableColumn<Preset, Void> colBtn = new TableColumn();
-        Callback<TableColumn<Preset, Void>, TableCell<Preset, Void>> cellFactory = new Callback<TableColumn<Preset, Void>, TableCell<Preset, Void>>() {
-            @Override
-            public TableCell<Preset, Void> call(final TableColumn<Preset, Void> param) {
-                final TableCell<Preset, Void> cell = new TableCell<Preset, Void>() {
-
-                    private final Button btn = new Button("", new Glyph("FontAwesome", '\uf1f8'));
-                    {
-                        btn.setOnAction((ActionEvent event) -> {
-                                Object data = getTableView().getItems().get(getIndex());
-                                if(((Preset) data).getPresetName().equalsIgnoreCase(bundle.getString("default_diagram_preset_name")) || ((Preset) data).getPresetName().equalsIgnoreCase(bundle.getString("default_function_preset_name"))){
-                                    defaultDeleteAlert();
-                                }else{
-                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                                    alert.setTitle(bundle.getString("alert_preset_delete_title"));
-                                    alert.setHeaderText(bundle.getString("alert_preset_delete_header"));
-                                    alert.setContentText(bundle.getString("alert_preset_delete_content1") + ((Preset) data).getPresetName() + bundle.getString("alert_preset_delete_content2"));
-                                    Optional<ButtonType> result = alert.showAndWait();
-                                    if (result.get() == ButtonType.OK) {
-                                        presets.remove(getTableView().getItems().get(getIndex()).getPresetName());
-                                        presets.remove(data);
-                                        //TODO remove the one that is in the preset menuitem
-                                        /*if (GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().contains(data)){
-                                            GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().remove(data);
-                                        }*/
-                                    } else {
-                                        // ... user chose CANCEL or closed the dialog, hence do nothing
-                                    }
-                                }
-                            });
-                    }
-
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(btn);
-                        }
-                    }
-                };
-                return cell;
-            }
-        };
-        colBtn.setCellFactory(cellFactory);
-        presetTable.getColumns().add(colBtn);
-    }
 
 
     private void initDiagram(){
@@ -430,6 +282,8 @@ public class PresetsController extends SVGWizardController implements Initializa
             emptyNameAlert();
         }else if (result.isPresent() && !presets.contains(result.get())){
             currentPreset = new Preset(currentOptions, result.get(), dt);
+            HBox row = generateTableEntry();
+            vbox_Preset_DataTable.getChildren().add(row);
             super.presets.add(currentPreset);
             MenuItem newEntry = new MenuItem(currentPreset.getPresetName());
             // 5 most recent entries
@@ -440,6 +294,47 @@ public class PresetsController extends SVGWizardController implements Initializa
             duplicateAlert(result);
         }
     }
+
+    private HBox generateTableEntry(){
+        HBox row = new HBox();
+        row.setSpacing(5);
+        TextField nameField = new TextField(currentPreset.getPresetName());
+        nameField.setFocusTraversable(true);
+        nameField.setEditable(false);
+        nameField.getStyleClass().add("data-row");
+        nameField.getStyleClass().add("data-cell-x");
+        TextField creationDateField = new TextField(currentPreset.getCreationDate());
+        creationDateField.setFocusTraversable(true);
+        creationDateField.setEditable(false);
+        /*creationDateField.
+
+        Button editButton = new Button();
+        Button copyButton = new Button();
+        Button removeButton = new Button();
+        Glyph editGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.EDIT);
+        Glyph copyGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.COPY);
+        Glyph removeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.TRASH);
+        editButton.setGraphic(editGlyph);
+        copyButton.setGraphic(copyGlyph);
+        removeButton.setGraphic(removeGlyph);
+        editButton.setOnAction(event -> {
+            //TODO: edit functionality
+        });
+
+        copyButton.setOnAction(event -> {
+            vbox_Preset_DataTable.getChildren().add(row);
+        });
+
+        removeButton.setOnAction(event -> {
+            vbox_Preset_DataTable.getChildren().remove(row);
+        });
+
+       row.getChildren().addAll(nameField, editButton, copyButton, removeButton);
+*/
+        return row;
+    }
+
+
 
     private void flagGetter(){
         settingsJSON.addProperty("diagram_type", currentPreset.getDiagramType());
@@ -614,7 +509,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void savePreset(){
         currentPreset.setPresetName(textFieldPresetName.getText());
         //workaround ]:->
-        presetTable.refresh();
+        //presetTable.refresh();
         //TODO: gets all the information out of the form and sets the appropriate values in the options
         //flagGetter();
         functionEditorHider();

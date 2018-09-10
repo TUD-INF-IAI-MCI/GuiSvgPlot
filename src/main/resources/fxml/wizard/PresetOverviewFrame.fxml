@@ -8,8 +8,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.Tooltip?>
@@ -30,7 +28,10 @@
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <ButtonBar buttonMinWidth="200.0" prefHeight="50.0" prefWidth="221.0">
                      <buttons>
-                        <Button fx:id="button_newPreset" alignment="CENTER" contentDisplay="RIGHT" minWidth="350.0" mnemonicParsing="false" onAction="#createNewPreset" prefHeight="26.0" text="%button_create_preset" textAlignment="CENTER" />
+                        <Button fx:id="button_newPreset" alignment="CENTER" contentDisplay="RIGHT" minWidth="350.0" mnemonicParsing="false" onAction="#createNewPreset" prefHeight="26.0" text="%button_create_preset" textAlignment="CENTER">
+                           <tooltip>
+                              <Tooltip text="%button_create_preset_tooltip" />
+                           </tooltip></Button>
                      </buttons>
                      <HBox.margin>
                         <Insets right="50.0" top="10.0" />
@@ -42,18 +43,6 @@
                </children>
             </HBox>
          </top>
-         <center>
-            <TableView fx:id="presetTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-              <columns>
-                <TableColumn fx:id="table_column_name" maxWidth="400.0" minWidth="100.0" prefWidth="200.0" text="%table_column_name" />
-                <TableColumn fx:id="table_column_date" maxWidth="500.0" minWidth="200.0" prefWidth="200.0" text="%table_column_date" />
-                 <TableColumn fx:id="table_column_diagram_type" maxWidth="200.0" minWidth="100.0" prefWidth="200.0" text="%table_column_diagram_type" />
-              </columns>
-               <BorderPane.margin>
-                  <Insets bottom="50.0" left="50.0" right="50.0" />
-               </BorderPane.margin>
-            </TableView>
-         </center>
          <bottom>
             <AnchorPane fx:id="overviewBottomAnchorPane" prefHeight="40.0" prefWidth="600.0" BorderPane.alignment="TOP_LEFT">
                <children>
@@ -72,6 +61,17 @@
                </children>
             </AnchorPane>
          </bottom>
+         <center>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ScrollPane prefHeight="305.0" prefWidth="600.0">
+                     <content>
+                        <VBox fx:id="vbox_Preset_DataTable" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+         </center>
       </BorderPane>
       <BorderPane fx:id="editorDiagramBorderPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
