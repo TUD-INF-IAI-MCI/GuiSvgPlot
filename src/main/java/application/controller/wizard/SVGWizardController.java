@@ -754,7 +754,7 @@ public class SVGWizardController implements Initializable {
      */
     // save as preset
     public void initSaveAsPreset() {
-        button_Save_As_Preset.setOnAction(event -> {
+        button_Save_As.setOnAction(event -> {
             List<String> choices = new ArrayList<>();
             choices.add(bundle.getString("preset"));
             choices.add(bundle.getString("json"));
