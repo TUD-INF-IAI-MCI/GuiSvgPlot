@@ -146,7 +146,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
      * Will initiate the second stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage2() {
-
+        hbox_DataTable.getStyleClass().add("data-table");
         this.functionList = FXCollections.observableArrayList();
 
         super.initCsvFieldListeners();
@@ -168,7 +168,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
                 nodes.getRemoved().forEach(row -> {
                     if (row instanceof HBox) {
-                        functionList.remove((Function) row.getUserData());
+                        functionList.remove(row.getUserData());
                     }
                 });
             }
@@ -304,18 +304,16 @@ public class FunctionWizardFrameController extends SVGWizardController {
         Function f = new Function(function.getTitle(), function.getFunction());
 
         HBox row = new HBox();
-        row.getStyleClass().add("data-table");
+        row.getStyleClass().add("data-row");
         row.setSpacing(5);
         row.setUserData(f);
 
         TextField titleField = new TextField(function.getTitle());
-        titleField.getStyleClass().add("data-row");
         titleField.getStyleClass().add("data-cell-x");
 
         titleField.setPromptText("Funktionsname");
 
         TextField functionField = new TextField(function.getFunction());
-        functionField.getStyleClass().add("data-row");
         functionField.getStyleClass().add("data-cell-y");
 
         functionField.setPromptText("Funktion");
