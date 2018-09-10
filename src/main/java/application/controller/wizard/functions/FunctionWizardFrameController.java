@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import org.controlsfx.glyphfont.FontAwesome;
@@ -311,13 +312,14 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
         TextField titleField = new TextField(function.getTitle());
         titleField.getStyleClass().add("data-cell-x");
+        HBox.setHgrow(titleField, Priority.ALWAYS);
 
 
         titleField.setPromptText("Funktionsname");
 
         TextField functionField = new TextField(function.getFunction());
         functionField.getStyleClass().add("data-cell-y");
-
+        HBox.setHgrow(functionField, Priority.ALWAYS);
         functionField.setPromptText("Funktion");
 
         InvalidationListener invalidationListener = args -> {
@@ -339,7 +341,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         removeButton.setTooltip(new Tooltip("close"));
         removeButton.setGraphic(closeGlyph);
         removeButton.getStyleClass().add("data-cell-button");
-
+        HBox.setHgrow(removeButton, Priority.NEVER);
         removeButton.setOnAction(event -> {
             vBox_DataTable.getChildren().remove(row);
             renderFunctions();
