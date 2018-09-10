@@ -36,6 +36,9 @@
   }
 
   &-marker {
+    -fx-font-size: 11;
+    -fx-font-weight: bold;
+
     &-circle {
       -fx-fill: $notification-bg-color;
       -fx-stroke-width: 0;
