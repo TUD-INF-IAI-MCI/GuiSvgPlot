@@ -333,6 +333,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         functionField.textProperty().addListener(invalidationListener);
 
         Button removeButton = new Button("-");
+        removeButton.getStyleClass().add("data-cell-button");
 
         removeButton.setOnAction(event -> {
             hbox_DataTable.getChildren().remove(row);
