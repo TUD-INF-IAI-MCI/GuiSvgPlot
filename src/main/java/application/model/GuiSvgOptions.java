@@ -98,7 +98,9 @@ public class GuiSvgOptions {
 
 
         this.gnuplot = new SimpleStringProperty(GuiSvgPlott.getInstance().getGnuPlot());
-        this.options.setGnuplot(this.gnuplot.getValue());
+        if (!this.gnuplot.get().isEmpty()){
+            this.options.setGnuplot(this.gnuplot.getValue());
+        }
         this.title = new SimpleStringProperty(this.options.getTitle());
         this.output = new SimpleStringProperty(this.options.getOutput() != null ? options.getOutput().getAbsolutePath() : "");
         this.csvPath = new SimpleStringProperty(this.options.getCsvPath());
