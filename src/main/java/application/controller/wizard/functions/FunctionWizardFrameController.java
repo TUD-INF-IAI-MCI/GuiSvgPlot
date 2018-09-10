@@ -13,8 +13,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.plotting.Function;
@@ -42,7 +43,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
     private Button button_EditDataSet;
 
     @FXML
-    private VBox hbox_DataTable;
+    private VBox vBox_DataTable;
 
 
     /* stage 3 */
@@ -146,18 +147,18 @@ public class FunctionWizardFrameController extends SVGWizardController {
      * Will initiate the second stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage2() {
-        hbox_DataTable.getStyleClass().add("data-table");
+        vBox_DataTable.getStyleClass().add("data-table");
         this.functionList = FXCollections.observableArrayList();
 
         super.initCsvFieldListeners();
 
         button_EditDataSet.setOnAction(event -> {
             HBox row = generateTableEntry(new Function("", ""));
-            hbox_DataTable.getChildren().add(row);
+            vBox_DataTable.getChildren().add(row);
         });
 
 
-        hbox_DataTable.getChildren().addListener((ListChangeListener.Change<? extends Node> nodes) -> {
+        vBox_DataTable.getChildren().addListener((ListChangeListener.Change<? extends Node> nodes) -> {
             while (nodes.next()) {
 
                 nodes.getAddedSubList().forEach(row -> {
@@ -311,6 +312,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         TextField titleField = new TextField(function.getTitle());
         titleField.getStyleClass().add("data-cell-x");
 
+
         titleField.setPromptText("Funktionsname");
 
         TextField functionField = new TextField(function.getFunction());
@@ -332,11 +334,14 @@ public class FunctionWizardFrameController extends SVGWizardController {
         titleField.textProperty().addListener(invalidationListener);
         functionField.textProperty().addListener(invalidationListener);
 
-        Button removeButton = new Button("-");
+        Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
+        Button removeButton = new Button();
+        removeButton.setTooltip(new Tooltip("close"));
+        removeButton.setGraphic(closeGlyph);
         removeButton.getStyleClass().add("data-cell-button");
 
         removeButton.setOnAction(event -> {
-            hbox_DataTable.getChildren().remove(row);
+            vBox_DataTable.getChildren().remove(row);
             renderFunctions();
         });
 
