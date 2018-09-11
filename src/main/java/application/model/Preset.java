@@ -75,7 +75,6 @@ public class Preset {
 
     @JsonIgnore
     public String getFormattedCreationDate() {
-        System.out.println(sdf.format(creationDate));
         return sdf.format(creationDate);
     }
 

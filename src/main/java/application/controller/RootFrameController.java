@@ -217,7 +217,6 @@ public class RootFrameController implements Initializable {
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
-            System.out.println(presetsController);
             if(presetsController == null){
                 presetsController = loader.getController();
             }
