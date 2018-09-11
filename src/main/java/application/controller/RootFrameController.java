@@ -2,6 +2,8 @@ package application.controller;
 
 import application.GuiSvgPlott;
 import application.controller.wizard.SVGWizardController;
+import application.model.GuiSvgOptions;
+import application.model.Preset;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +18,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -41,16 +44,14 @@ public class RootFrameController implements Initializable {
     @FXML
     public AnchorPane anchorPain_main;
 
-    public Menu getMenu_Presets() {
-        return menu_Presets;
-    }
+
 
     @FXML
     private MenuItem menuItem_About;
     @FXML
     public Menu menu_Presets = new Menu();
     @FXML
-    public Button button_Save_Preset;
+    public MenuItem menuItem_Save_Preset;
 
     @FXML
     public ScrollPane scrollPane_message;
@@ -64,7 +65,7 @@ public class RootFrameController implements Initializable {
 
     public SVGWizardController svgWizardController;
 
-    public PresetsController presetsController;
+    public PresetsController presetsController = PresetsController.getInstance();
 
     public static String wizardPath = "none";
 
@@ -73,6 +74,8 @@ public class RootFrameController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
     }
+
+
 
     public void init() {
         button_StartDiagram.setOnAction(this::startDiagram);
@@ -103,6 +106,42 @@ public class RootFrameController implements Initializable {
 //                alert.close();
 //            }
         });
+
+        menuItem_Save_Preset.setOnAction(event -> {
+            if(wizardPath.contains("Chart")){
+                Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName", svgWizardController.getGuiSvgOptions().getDiagramType());
+                TextInputDialog nameDialogue = new TextInputDialog();
+                nameDialogue.setTitle(bundle.getString("prompt_preset_name_title"));
+                nameDialogue.setHeaderText(bundle.getString("prompt_preset_name_header"));
+                nameDialogue.setContentText(bundle.getString("prompt_preset_name_content"));
+                Optional<String> result = nameDialogue.showAndWait();
+                if(result.get().equals("")){
+                    Alert alarm = new Alert(Alert.AlertType.ERROR);
+                    alarm.setTitle(bundle.getString("alert_preset_empty_title"));
+                    alarm.setHeaderText(bundle.getString("alert_preset_empty_header"));
+                    alarm.setContentText(bundle.getString("alert_preset_empty_content"));
+                    alarm.showAndWait();
+                }else if (result.isPresent() && !presetsController.presets.contains(result.get())){
+                    savedPreset.setPresetName(result.get());
+                    startPresetOverview();
+                    HBox row = presetsController.generateTableEntry();
+                    presetsController.vbox_Preset_DataTable.getChildren().add(row);
+                    presetsController.presets.add(savedPreset);
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle(bundle.getString("alert_preset_duplicate_title"));
+                    alert.setHeaderText(bundle.getString("alert_preset_duplicate_header1") + result.get() + bundle.getString("alert_preset_duplicate_header2"));
+                    alert.setContentText(bundle.getString("alert_preset_duplicate_content"));
+                    alert.showAndWait();
+                }
+            }else if(wizardPath.contains("Function")){
+                Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName", svgWizardController.getGuiSvgOptions().getDiagramType());
+            }else{
+                //do nothing since the user is not in either wizard
+            }
+
+        });
+
         menuItem_About.setOnAction(event -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(bundle.getString("menu_help_about_title"));
@@ -179,7 +218,7 @@ public class RootFrameController implements Initializable {
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
-            //presetsController = loader.getController();
+            presetsController = loader.getController();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -237,5 +276,9 @@ public class RootFrameController implements Initializable {
     public void setSceneTitle(final String messageCode) {
         Stage scene = GuiSvgPlott.getInstance().getPrimaryStage();
         scene.titleProperty().set(this.bundle.getString(messageCode));
+    }
+
+    public Menu getMenu_Presets() {
+        return menu_Presets;
     }
 }

@@ -24,170 +24,100 @@
 <?import javafx.scene.web.WebView?>
 <?import org.controlsfx.control.CheckComboBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="application.controller.wizard.functions.FunctionWizardFrameController">
-    <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0"
-                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                AnchorPane.topAnchor="0.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.functions.FunctionWizardFrameController">
+    <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
             <VBox BorderPane.alignment="CENTER">
                 <children>
                     <!--<Label fx:id="label_Headline" alignment="CENTER" contentDisplay="CENTER"-->
                     <!--maxWidth="1.7976931348623157E308" minWidth="200.0" prefHeight="48.0" text="Label"-->
                     <!--textAlignment="CENTER"/>-->
-                    <HBox fx:id="hBox_pagination" accessibleRole="MENU_BAR" alignment="CENTER" prefHeight="48.0"
-                          prefWidth="600.0">
-                        <Button fx:id="button_Warnings"/>
-                        <Button fx:id="button_Infos"/>
+                    <HBox fx:id="hBox_pagination" accessibleRole="MENU_BAR" alignment="CENTER" prefHeight="48.0" prefWidth="600.0">
+                        <Button fx:id="button_Warnings" />
+                        <Button fx:id="button_Infos" />
                     </HBox>
                 </children>
             </VBox>
         </top>
 
         <center>
-            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="264.0"
-                      prefWidth="503.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="264.0" prefWidth="503.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <columnConstraints>
-                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                       minWidth="100.0" prefWidth="0.0"/>
-                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                       minWidth="100.0" prefWidth="0.0"/>
+                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="0.0" />
+                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="0.0" />
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <padding>
-                    <Insets left="10.0" right="10.0"/>
+                    <Insets left="10.0" right="10.0" />
                 </padding>
-                <BorderPane fx:id="borderPane_WizardContent" maxHeight="1.7976931348623157E308"
-                            maxWidth="1.7976931348623157E308" prefWidth="500.0" AnchorPane.bottomAnchor="0"
-                            AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0"
-                            GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <BorderPane fx:id="borderPane_WizardContent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="500.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                     <center>
-                        <TabPane fx:id="tabPane_ContentHolder" layoutX="177.0" layoutY="112.0"
-                                 maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="312.0"
-                                 tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0"
-                                 AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TabPane fx:id="tabPane_ContentHolder" layoutX="177.0" layoutY="112.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="312.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <Tab text="Stage1">
-                                <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <GridPane fx:id="stage1" maxHeight="1.7976931348623157E308"
-                                                  maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="290.0"
-                                                  AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0"
-                                                  AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                                        <GridPane fx:id="stage1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="290.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308"
-                                                                   minWidth="200.0"/>
-                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                                                   minWidth="10.0"/>
+                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="200.0" />
+                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <Label fx:id="label_title" contentDisplay="RIGHT" prefHeight="17.0"
-                                                       prefWidth="200.0" text="%label_diagram_title"/>
-                                                <TextField fx:id="textField_title" accessibleText="Bezeichnung"
-                                                           maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                           prefHeight="25.0" promptText="%prompt_title"
-                                                           GridPane.columnIndex="1">
+                                                <Label fx:id="label_title" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_diagram_title" />
+                                                <TextField fx:id="textField_title" accessibleText="Bezeichnung" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%prompt_title" GridPane.columnIndex="1">
                                                     <tooltip>
-                                                        <Tooltip text="Bezeichnung"/>
+                                                        <Tooltip text="Bezeichnung" />
                                                     </tooltip>
                                                 </TextField>
 
-                                                <Label fx:id="label_outputDevice" contentDisplay="RIGHT"
-                                                       prefHeight="17.0" prefWidth="200.0" text="%label_output_device"
-                                                       GridPane.rowIndex="1"/>
-                                                <ChoiceBox fx:id="choiceBox_outputDevice" accessibleText="Ausgabegerät "
-                                                           maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                           prefHeight="25.0" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="1"/>
+                                                <Label fx:id="label_outputDevice" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_output_device" GridPane.rowIndex="1" />
+                                                <ChoiceBox fx:id="choiceBox_outputDevice" accessibleText="Ausgabegerät " maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                                                <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0"
-                                                       prefWidth="200.0" text="%label_size_of_diagram"
-                                                       GridPane.rowIndex="3"/>
-                                                <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308"
-                                                      minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1"
-                                                      GridPane.rowIndex="2">
+                                                <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram" GridPane.rowIndex="3" />
+                                                <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                     <children>
-                                                        <RadioButton fx:id="radioBtn_portrait"
-                                                                     accessibleText="%radio_portrait"
-                                                                     mnemonicParsing="false" prefHeight="17.0"
-                                                                     text="%radio_portrait"
-                                                                     GridPane.valignment="CENTER">
+                                                        <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" prefHeight="17.0" text="%radio_portrait" GridPane.valignment="CENTER">
                                                             <tooltip>
-                                                                <Tooltip text="%radio_portrait"/>
+                                                                <Tooltip text="%radio_portrait" />
                                                             </tooltip>
                                                             <toggleGroup>
-                                                                <ToggleGroup fx:id="togglePageOrientation"/>
+                                                                <ToggleGroup fx:id="togglePageOrientation" />
                                                             </toggleGroup>
                                                         </RadioButton>
-                                                        <RadioButton fx:id="radioBtn_landscape"
-                                                                     accessibleText="%radio_landscape"
-                                                                     contentDisplay="RIGHT" mnemonicParsing="false"
-                                                                     prefHeight="17.0" text="%radio_landscape"
-                                                                     toggleGroup="$togglePageOrientation">
+                                                        <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_landscape" toggleGroup="$togglePageOrientation">
                                                             <tooltip>
-                                                                <Tooltip text="%radio_landscape"/>
+                                                                <Tooltip text="%radio_landscape" />
                                                             </tooltip>
                                                         </RadioButton>
                                                     </children>
                                                 </HBox>
-                                                <ChoiceBox fx:id="choiceBox_size" accessibleText="Größe des Diagramms"
-                                                           maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                           prefHeight="25.0" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="3">
+                                                <ChoiceBox fx:id="choiceBox_size" accessibleText="Größe des Diagramms" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                     <tooltip>
-                                                        <Tooltip text="Größe des Diagramms"/>
+                                                        <Tooltip text="Größe des Diagramms" />
                                                     </tooltip>
                                                 </ChoiceBox>
-                                                <Label fx:id="label_customSizeWidth" contentDisplay="RIGHT"
-                                                       prefHeight="17.0" prefWidth="200.0"
-                                                       text="%label_size_of_diagram_width" visible="false"
-                                                       GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                                                <TextField fx:id="textField_customSizeWidth"
-                                                           accessibleText="%size_of_diagram_width"
-                                                           maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                           prefHeight="25.0" promptText="%size_of_diagram_width"
-                                                           visible="false" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="4">
+                                                <Label fx:id="label_customSizeWidth" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_width" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                                <TextField fx:id="textField_customSizeWidth" accessibleText="%size_of_diagram_width" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_width" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                                     <tooltip>
-                                                        <Tooltip text="size_of_diagram_width"/>
+                                                        <Tooltip text="size_of_diagram_width" />
                                                     </tooltip>
                                                 </TextField>
-                                                <Label fx:id="label_customSizeHeight" contentDisplay="RIGHT"
-                                                       prefHeight="17.0" prefWidth="200.0"
-                                                       text="%label_size_of_diagram_height" visible="false"
-                                                       GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-                                                <TextField fx:id="textField_customSizeHeight"
-                                                           accessibleText="%size_of_diagram_height"
-                                                           maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                           prefHeight="25.0" promptText="%size_of_diagram_height"
-                                                           visible="false" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="5">
+                                                <Label fx:id="label_customSizeHeight" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_height" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                                <TextField fx:id="textField_customSizeHeight" accessibleText="%size_of_diagram_height" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_height" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                     <tooltip>
-                                                        <Tooltip text="%size_of_diagram_height"/>
+                                                        <Tooltip text="%size_of_diagram_height" />
                                                     </tooltip>
                                                 </TextField>
-                                                <Label fx:id="label_pageOrientation" contentDisplay="RIGHT"
-                                                       maxWidth="1.7976931348623157E308" prefHeight="17.0"
-                                                       prefWidth="200.0" text="%label_pageOrientation"
-                                                       GridPane.rowIndex="2"/>
+                                                <Label fx:id="label_pageOrientation" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_pageOrientation" GridPane.rowIndex="2" />
                                             </children>
                                         </GridPane>
                                     </children>
@@ -196,80 +126,51 @@
                             <Tab text="Stage2">
                                 <AnchorPane>
                                     <children>
-                                        <VBox prefHeight="473.0" prefWidth="317.0" AnchorPane.bottomAnchor="0.0"
-                                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                              AnchorPane.topAnchor="0.0">
+                                        <VBox prefHeight="473.0" prefWidth="317.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <children>
                                                 <GridPane fx:id="stage2" prefHeight="273.0" prefWidth="317.0">
                                                     <columnConstraints>
-                                                        <ColumnConstraints hgrow="NEVER"
-                                                                           maxWidth="1.7976931348623157E308"
-                                                                           minWidth="200.0"/>
-                                                        <ColumnConstraints hgrow="ALWAYS"
-                                                                           maxWidth="1.7976931348623157E308"
-                                                                           minWidth="10.0"/>
+                                                        <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="200.0" />
+                                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                                                     </columnConstraints>
                                                     <rowConstraints>
-                                                        <RowConstraints maxHeight="30.0" minHeight="10.0"
-                                                                        prefHeight="30.0" valignment="TOP"
-                                                                        vgrow="SOMETIMES"/>
-                                                        <RowConstraints maxHeight="1.7976931348623157E308"
-                                                                        minHeight="10.0" prefHeight="30.0"
-                                                                        valignment="TOP" vgrow="SOMETIMES"/>
-                                                        <RowConstraints maxHeight="1.7976931348623157E308"
-                                                                        minHeight="10.0" prefHeight="30.0"
-                                                                        valignment="TOP" vgrow="SOMETIMES"/>
+                                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
                                                     </rowConstraints>
                                                     <children>
-                                                        <HBox alignment="CENTER_RIGHT" spacing="10.0"
-                                                              GridPane.columnIndex="1" GridPane.vgrow="ALWAYS">
-                                                            <HBox alignment="TOP_RIGHT" spacing="5.0"
-                                                                  HBox.hgrow="ALWAYS">
+                                                        <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.vgrow="ALWAYS">
+                                                            <HBox alignment="TOP_RIGHT" spacing="5.0" HBox.hgrow="ALWAYS">
                                                                 <children>
-                                                                    <TextField fx:id="textField_csvPath"
-                                                                               accessibleText="Pfad zur CSV Datei"
-                                                                               promptText="%prompt_path_to_csv"
-                                                                               HBox.hgrow="ALWAYS">
+                                                                    <TextField fx:id="textField_csvPath" accessibleText="Pfad zur CSV Datei" promptText="%prompt_path_to_csv" HBox.hgrow="ALWAYS">
                                                                         <tooltip>
-                                                                            <Tooltip text="Pfad zur CSV Datei"/>
+                                                                            <Tooltip text="Pfad zur CSV Datei" />
                                                                         </tooltip>
                                                                     </TextField>
-                                                                    <Button fx:id="button_csvPath"
-                                                                            accessibleText="%label_csv_file"
-                                                                            mnemonicParsing="false"
-                                                                            styleClass="btn-upload" text="...">
+                                                                    <Button fx:id="button_csvPath" accessibleText="%label_csv_file" mnemonicParsing="false" styleClass="btn-upload" text="...">
                                                                         <tooltip>
-                                                                            <Tooltip text="%label_csv_file"/>
+                                                                            <Tooltip text="%label_csv_file" />
                                                                         </tooltip>
                                                                     </Button>
                                                                 </children>
                                                             </HBox>
                                                         </HBox>
-                                                        <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                                                        <AnchorPane GridPane.columnIndex="1"
-                                                                    GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
-                                                                    GridPane.rowIndex="1">
+                                                        <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                        <AnchorPane GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
                                                             <children>
-                                                                <Button fx:id="button_EditDataSet"
-                                                                        accessibleText="%label_csv_edit"
-                                                                        mnemonicParsing="false" prefHeight="25.0"
-                                                                        text="%label_functions"
-                                                                        AnchorPane.leftAnchor="0.0"
-                                                                        AnchorPane.rightAnchor="0.0"
-                                                                        AnchorPane.topAnchor="50.0">
+                                                                <Button fx:id="button_EditDataSet" accessibleText="%label_csv_edit" mnemonicParsing="false" prefHeight="25.0" text="%label_functions" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                                                                     <tooltip>
-                                                                        <Tooltip text="%label_csv_edit"/>
+                                                                        <Tooltip text="%label_csv_edit" />
                                                                     </tooltip>
                                                                 </Button>
                                                             </children>
                                                         </AnchorPane>
-                                                        <Label id="label_CsvFile" fx:id="label_addFunction"
-                                                               contentDisplay="RIGHT" text="%label_csv_file"/>
+                                                        <Label id="label_CsvFile" fx:id="label_addFunction" contentDisplay="RIGHT" text="%label_csv_file" />
                                                     </children>
                                                 </GridPane>
-                                                <ScrollPane prefHeight="200.0" prefWidth="200.0" fx:id="scrollPane_dataTable" styleClass="data-table-container">
+                                                <ScrollPane fx:id="scrollPane_dataTable" prefHeight="200.0" prefWidth="200.0" styleClass="data-table-container">
                                                     <content>
-                                                        <VBox fx:id="vBox_DataTable"/>
+                                                        <VBox fx:id="vBox_DataTable" />
                                                     </content>
                                                 </ScrollPane>
                                             </children>
@@ -278,212 +179,145 @@
                                 </AnchorPane>
                             </Tab>
                             <Tab text="Stage3">
-                                <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <GridPane fx:id="stage3" prefHeight="273.0" prefWidth="290.0"
-                                                  AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0"
-                                                  AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                                        <GridPane fx:id="stage3" prefHeight="273.0" prefWidth="290.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308"
-                                                                   minWidth="200.0"/>
-                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                                                   minWidth="10.0"/>
+                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="200.0" />
+                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0"
-                                                                valignment="TOP" vgrow="SOMETIMES"/>
-                                                <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0"
-                                                                valignment="TOP" vgrow="SOMETIMES"/>
-                                                <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0"
-                                                                valignment="TOP" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <TextField fx:id="textField_IntegralName" accessibleText="Integral Name"
-                                                           GridPane.columnIndex="1">
+                                                <TextField fx:id="textField_IntegralName" accessibleText="Integral Name" GridPane.columnIndex="1">
                                                     <tooltip>
-                                                        <Tooltip text="Integral Name"/>
+                                                        <Tooltip text="Integral Name" />
                                                     </tooltip>
                                                     <GridPane.margin>
-                                                        <Insets right="5.0"/>
+                                                        <Insets right="5.0" />
                                                     </GridPane.margin>
                                                 </TextField>
-                                                <Label text="%label_integral_func1" GridPane.rowIndex="1"/>
-                                                <AnchorPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
-                                                            GridPane.rowIndex="1" GridPane.vgrow="NEVER">
+                                                <Label text="%label_integral_func1" GridPane.rowIndex="1" />
+                                                <AnchorPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
                                                     <children>
-                                                        <ChoiceBox fx:id="comboBox_function1" maxHeight="30.0"
-                                                                   AnchorPane.leftAnchor="5.0"
-                                                                   AnchorPane.rightAnchor="5.0"/>
+                                                        <ChoiceBox fx:id="comboBox_function1" maxHeight="30.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
                                                     </children>
                                                     <GridPane.margin>
-                                                        <Insets/>
+                                                        <Insets />
                                                     </GridPane.margin>
                                                 </AnchorPane>
                                                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                     <children>
-                                                        <RadioButton accessibleText="Fläche zur X Achse"
-                                                                     mnemonicParsing="false" selected="true"
-                                                                     text="%label_x_axis">
+                                                        <RadioButton accessibleText="Fläche zur X Achse" mnemonicParsing="false" selected="true" text="%label_x_axis">
                                                             <tooltip>
-                                                                <Tooltip text="%label_x_axis"/>
+                                                                <Tooltip text="%label_x_axis" />
                                                             </tooltip>
                                                             <toggleGroup>
-                                                                <ToggleGroup fx:id="integralToggle"/>
+                                                                <ToggleGroup fx:id="integralToggle" />
                                                             </toggleGroup>
                                                         </RadioButton>
-                                                        <RadioButton fx:id="radioButton_Function2"
-                                                                     accessibleText="%label_integral_func1"
-                                                                     mnemonicParsing="false"
-                                                                     text="%label_integral_func1"
-                                                                     toggleGroup="$integralToggle">
+                                                        <RadioButton fx:id="radioButton_Function2" accessibleText="%label_integral_func1" mnemonicParsing="false" text="%label_integral_func1" toggleGroup="$integralToggle">
                                                             <tooltip>
-                                                                <Tooltip text="%label_integral_func1"/>
+                                                                <Tooltip text="%label_integral_func1" />
                                                             </tooltip>
                                                         </RadioButton>
                                                     </children>
                                                 </HBox>
-                                                <AnchorPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
-                                                            GridPane.rowIndex="3" GridPane.vgrow="NEVER">
+                                                <AnchorPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
                                                     <GridPane.margin>
-                                                        <Insets/>
+                                                        <Insets />
                                                     </GridPane.margin>
                                                     <children>
-                                                        <ChoiceBox fx:id="comboBox_function2" layoutX="-39.0"
-                                                                   layoutY="10.0" maxHeight="30.0"
-                                                                   AnchorPane.leftAnchor="5.0"
-                                                                   AnchorPane.rightAnchor="5.0"/>
+                                                        <ChoiceBox fx:id="comboBox_function2" layoutX="-39.0" layoutY="10.0" maxHeight="30.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
                                                     </children>
                                                 </AnchorPane>
                                                 <HBox spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                                     <children>
-                                                        <CheckBox fx:id="checkBox_ValueRange" mnemonicParsing="false"
-                                                                  text="%checkbox_value_custom"/>
+                                                        <CheckBox fx:id="checkBox_ValueRange" mnemonicParsing="false" text="%checkbox_value_custom" />
                                                     </children>
                                                 </HBox>
-                                                <Label text="%label_integral_name"/>
+                                                <Label text="%label_integral_name" />
                                                 <Label text="%label_integral_valuerange" GridPane.rowIndex="4">
                                                     <GridPane.margin>
-                                                        <Insets/>
+                                                        <Insets />
                                                     </GridPane.margin>
                                                 </Label>
-                                                <Label fx:id="label_RangeFrom" text="%label_integral_from"
-                                                       GridPane.rowIndex="5">
+                                                <Label fx:id="label_RangeFrom" text="%label_integral_from" GridPane.rowIndex="5">
                                                     <GridPane.margin>
-                                                        <Insets/>
+                                                        <Insets />
                                                     </GridPane.margin>
                                                 </Label>
-                                                <Label fx:id="label_RangeTo" text="%label_integral_from"
-                                                       GridPane.rowIndex="6">
+                                                <Label fx:id="label_RangeTo" text="%label_integral_from" GridPane.rowIndex="6">
                                                     <GridPane.margin>
-                                                        <Insets/>
+                                                        <Insets />
                                                     </GridPane.margin>
                                                 </Label>
-                                                <TextField fx:id="textField_rangeFrom" accessibleText="Abschnitt Von"
-                                                           GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                <TextField fx:id="textField_rangeFrom" accessibleText="Abschnitt Von" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                     <tooltip>
-                                                        <Tooltip text="Abschnitt Von"/>
+                                                        <Tooltip text="Abschnitt Von" />
                                                     </tooltip>
                                                     <GridPane.margin>
-                                                        <Insets/>
+                                                        <Insets />
                                                     </GridPane.margin>
                                                 </TextField>
-                                                <TextField fx:id="textField_rangeTo" accessibleText="Abschnitt bis"
-                                                           GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                <TextField fx:id="textField_rangeTo" accessibleText="Abschnitt bis" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                                     <GridPane.margin>
-                                                        <Insets/>
+                                                        <Insets />
                                                     </GridPane.margin>
                                                 </TextField>
-                                                <Label alignment="TOP_CENTER" text="%label_integral_integral"
-                                                       GridPane.rowIndex="2" GridPane.valignment="TOP"/>
+                                                <Label alignment="TOP_CENTER" text="%label_integral_integral" GridPane.rowIndex="2" GridPane.valignment="TOP" />
                                             </children>
                                         </GridPane>
                                     </children>
                                 </AnchorPane>
                             </Tab>
                             <Tab text="Stage4">
-                                <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <GridPane fx:id="stage4" prefHeight="273.0" prefWidth="290.0"
-                                                  AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0"
-                                                  AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                                        <GridPane fx:id="stage4" prefHeight="273.0" prefWidth="290.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308"
-                                                                   minWidth="200.0"/>
-                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                                                   minWidth="10.0"/>
+                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="200.0" />
+                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
 
 
-                                                <Label fx:id="label_xfrom" contentDisplay="RIGHT"
-                                                       maxWidth="1.7976931348623157E308" prefHeight="18.0"
-                                                       prefWidth="200.0" text="%label_display_area_x_from"
-                                                       textAlignment="RIGHT" GridPane.halignment="LEFT"/>
-                                                <TextField fx:id="textField_xfrom" accessibleText="%display_area_x_from"
-                                                           maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                           prefHeight="17.0" GridPane.columnIndex="1">
+                                                <Label fx:id="label_xfrom" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_from" textAlignment="RIGHT" GridPane.halignment="LEFT" />
+                                                <TextField fx:id="textField_xfrom" accessibleText="%display_area_x_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1">
                                                     <tooltip>
-                                                        <Tooltip text="%display_area_x_from"/>
+                                                        <Tooltip text="%display_area_x_from" />
                                                     </tooltip>
                                                 </TextField>
-                                                <Label fx:id="label_xto" alignment="TOP_LEFT" contentDisplay="RIGHT"
-                                                       maxWidth="1.7976931348623157E308" prefHeight="18.0"
-                                                       prefWidth="200.0" text="%label_display_area_x_to"
-                                                       textAlignment="RIGHT" GridPane.halignment="RIGHT"
-                                                       GridPane.rowIndex="1"/>
-                                                <TextField fx:id="textField_xto" accessibleText="%display_area_x_to"
-                                                           maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                           prefHeight="17.0" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="1">
+                                                <Label fx:id="label_xto" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_to" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                                <TextField fx:id="textField_xto" accessibleText="%display_area_x_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                     <tooltip>
-                                                        <Tooltip text="%display_area_x_to"/>
+                                                        <Tooltip text="%display_area_x_to" />
                                                     </tooltip>
                                                 </TextField>
 
-                                                <Label fx:id="label_yfrom" alignment="TOP_LEFT" contentDisplay="RIGHT"
-                                                       maxWidth="1.7976931348623157E308" prefHeight="18.0"
-                                                       prefWidth="200.0" text="%label_display_area_y_from"
-                                                       textAlignment="RIGHT" GridPane.halignment="RIGHT"
-                                                       GridPane.rowIndex="2"/>
-                                                <TextField fx:id="textField_yfrom" accessibleText="%display_area_y_from"
-                                                           maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                           prefHeight="17.0" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="2">
+                                                <Label fx:id="label_yfrom" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_from" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                                <TextField fx:id="textField_yfrom" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                     <tooltip>
-                                                        <Tooltip text="%display_area_y_from"/>
+                                                        <Tooltip text="%display_area_y_from" />
                                                     </tooltip>
                                                 </TextField>
-                                                <Label fx:id="label_yto" contentDisplay="RIGHT"
-                                                       maxWidth="1.7976931348623157E308" prefHeight="18.0"
-                                                       prefWidth="200.0" text="%label_display_area_y_to"
-                                                       textAlignment="RIGHT" GridPane.halignment="RIGHT"
-                                                       GridPane.rowIndex="3"/>
-                                                <TextField fx:id="textField_yto" accessibleText="%display_area_y_to"
-                                                           maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                           prefHeight="17.0" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="3">
+                                                <Label fx:id="label_yto" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_to" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                                <TextField fx:id="textField_yto" accessibleText="%display_area_y_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                     <tooltip>
-                                                        <Tooltip text="%display_area_y_to"/>
+                                                        <Tooltip text="%display_area_y_to" />
                                                     </tooltip>
                                                 </TextField>
                                             </children>
@@ -492,72 +326,42 @@
                                 </AnchorPane>
                             </Tab>
                             <Tab text="Stage5">
-                                <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <GridPane fx:id="stage5" prefHeight="273.0" prefWidth="369.0"
-                                                  AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0"
-                                                  AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                                        <GridPane fx:id="stage5" prefHeight="273.0" prefWidth="369.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308"
-                                                                   minWidth="200.0"/>
-                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                                                   minWidth="10.0"/>
-                                                <ColumnConstraints/>
+                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="200.0" />
+                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                                <ColumnConstraints />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <Label fx:id="label_grid" contentDisplay="RIGHT" prefHeight="17.0"
-                                                       prefWidth="200.0" text="%label_grid_style"/>
-                                                <ChoiceBox fx:id="choicebox_gridStyle"
-                                                           accessibleText="%radio_horizontal"
-                                                           maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                           prefHeight="25.0" visible="true" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="0">
+                                                <Label fx:id="label_grid" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_grid_style" />
+                                                <ChoiceBox fx:id="choicebox_gridStyle" accessibleText="%radio_horizontal" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="0">
                                                     <tooltip>
-                                                        <Tooltip text="%radio_horizontal"/>
+                                                        <Tooltip text="%radio_horizontal" />
                                                     </tooltip>
                                                 </ChoiceBox>
 
-                                                <Label fx:id="label_xlines" contentDisplay="RIGHT" prefHeight="17.0"
-                                                       prefWidth="200.0" text="%label_help_lines_x"
-                                                       GridPane.rowIndex="1"/>
-                                                <TextField fx:id="textField_xlines"
-                                                           accessibleText="X-Achsen-Punkte , durch die Hilflinien verlaufen sollen."
-                                                           maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                           prefHeight="17.0" promptText="x1 x2 x3"
-                                                           GridPane.columnIndex="1" GridPane.columnSpan="2"
-                                                           GridPane.rowIndex="1">
+                                                <Label fx:id="label_xlines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_x" GridPane.rowIndex="1" />
+                                                <TextField fx:id="textField_xlines" accessibleText="X-Achsen-Punkte , durch die Hilflinien verlaufen sollen." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="x1 x2 x3" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                     <tooltip>
-                                                        <Tooltip text="%label_help_lines_x"/>
+                                                        <Tooltip text="%label_help_lines_x" />
                                                     </tooltip>
                                                 </TextField>
 
-                                                <Label fx:id="label_ylines" contentDisplay="RIGHT" prefHeight="17.0"
-                                                       prefWidth="200.0" text="%label_help_lines_y"
-                                                       GridPane.rowIndex="2"/>
-                                                <TextField fx:id="textField_ylines"
-                                                           accessibleText="Y-Achsen-Punkte, durch die Hilfslinien verlaufen sollen."
-                                                           maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                           prefHeight="17.0" promptText="y1 y2 y3"
-                                                           GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                <Label fx:id="label_ylines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_y" GridPane.rowIndex="2" />
+                                                <TextField fx:id="textField_ylines" accessibleText="Y-Achsen-Punkte, durch die Hilfslinien verlaufen sollen." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="y1 y2 y3" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                     <tooltip>
-                                                        <Tooltip text="%label_help_lines_y"/>
+                                                        <Tooltip text="%label_help_lines_y" />
                                                     </tooltip>
                                                 </TextField>
 
@@ -568,88 +372,61 @@
                                 </AnchorPane>
                             </Tab>
                             <Tab text="Stage6">
-                                <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <GridPane fx:id="stage6" prefHeight="273.0" prefWidth="420.0"
-                                                  AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0"
-                                                  AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+                                        <GridPane fx:id="stage6" prefHeight="273.0" prefWidth="420.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308"
-                                                                   minWidth="200.0"/>
-                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
-                                                                   minWidth="10.0"/>
-                                                <ColumnConstraints/>
+                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="200.0" />
+                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                                <ColumnConstraints />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP"
-                                                                vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <Label fx:id="label_css" contentDisplay="RIGHT"
-                                                       maxWidth="1.7976931348623157E308" prefHeight="17.0"
-                                                       prefWidth="200.0" text="%label_csstype" GridPane.columnIndex="0"
-                                                       GridPane.rowIndex="0"/>
-                                                <ChoiceBox fx:id="choiceBox_cssType" accessibleText="%label_csstype"
-                                                           maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="0">
+                                                <Label fx:id="label_css" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_csstype" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                                <ChoiceBox fx:id="choiceBox_cssType" accessibleText="%label_csstype" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="0">
                                                     <tooltip>
-                                                        <Tooltip text="%label_csstype"/>
+                                                        <Tooltip text="%label_csstype" />
                                                     </tooltip>
                                                 </ChoiceBox>
 
-                                                <Label fx:id="label_cssPath" contentDisplay="RIGHT" prefHeight="17.0"
-                                                       prefWidth="200.0" text="%label_css_file" visible="false"
-                                                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                                                <HBox fx:id="hBox_cssPath" alignment="CENTER_RIGHT" spacing="10.0"
-                                                      visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                    <TextField fx:id="textField_cssPath"
-                                                               accessibleText="Pfad zur CSS-Datei"
-                                                               promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS">
+                                                <Label fx:id="label_cssPath" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_file" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                                <HBox fx:id="hBox_cssPath" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                    <TextField fx:id="textField_cssPath" accessibleText="Pfad zur CSS-Datei" promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS">
                                                         <tooltip>
-                                                            <Tooltip text="%prompt_path_to_css"/>
+                                                            <Tooltip text="%prompt_path_to_css" />
                                                         </tooltip>
                                                     </TextField>
-                                                    <Button fx:id="button_cssPath" accessibleText="CSS Datei auswählen"
-                                                            mnemonicParsing="false" styleClass="btn-upload" text="...">
+                                                    <Button fx:id="button_cssPath" accessibleText="CSS Datei auswählen" mnemonicParsing="false" styleClass="btn-upload" text="...">
                                                         <tooltip>
-                                                            <Tooltip text="CSS Datei auswählen"/>
+                                                            <Tooltip text="CSS Datei auswählen" />
                                                         </tooltip>
                                                     </Button>
                                                 </HBox>
-                                                <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0"
-                                                       prefWidth="200.0" text="%label_css_custom" visible="false"
-                                                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                                                <TextArea fx:id="textArea_cssCustom" prefHeight="200.0"
-                                                          prefWidth="200.0" visible="false" GridPane.columnIndex="1"
-                                                          GridPane.rowIndex="1">
+                                                <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                                <TextArea fx:id="textArea_cssCustom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                     <GridPane.margin>
-                                                        <Insets top="10.0"/>
+                                                        <Insets top="10.0" />
                                                     </GridPane.margin>
 
                                                     <tooltip>
-                                                        <Tooltip text="%label_css_custom"/>
+                                                        <Tooltip text="%label_css_custom" />
                                                     </tooltip>
 
                                                 </TextArea>
 
 
-                                                <Label fx:id="label_colors" contentDisplay="RIGHT" prefHeight="17.0"
-                                                       prefWidth="200.0" text="%label_colors" visible="false"
-                                                       GridPane.rowIndex="2"/>
-                                                <CheckComboBox fx:id="checkComboBox_color"
-                                                               accessibleText="Farbe auswählen" items=""
-                                                               maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                               prefHeight="25.0" visible="false"
-                                                               GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                <Label fx:id="label_colors" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_colors" visible="false" GridPane.rowIndex="2" />
+                                                <CheckComboBox fx:id="checkComboBox_color" accessibleText="Farbe auswählen" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                     <tooltip>
-                                                        <Tooltip text="%label_colors"/>
+                                                        <Tooltip text="%label_colors" />
                                                     </tooltip>
                                                 </CheckComboBox>
                                             </children>
@@ -662,9 +439,7 @@
                 </BorderPane>
                 <AnchorPane styleClass="preview-container" GridPane.columnIndex="1" GridPane.rowIndex="0">
                     <children>
-                        <WebView fx:id="webView_svg" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0"
-                                 prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                        <WebView fx:id="webView_svg" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                     </children>
                 </AnchorPane>
             </GridPane>
@@ -673,69 +448,56 @@
         <bottom>
             <AnchorPane BorderPane.alignment="CENTER">
                 <children>
-                    <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                          AnchorPane.topAnchor="0.0">
+                    <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <children>
                             <ButtonBar HBox.hgrow="NEVER">
                                 <buttons>
-                                    <Button fx:id="button_Cancel" accessibleText="%button_cancel" cancelButton="true"
-                                            mnemonicParsing="false" text="%button_cancel" ButtonBar.buttonData="LEFT">
+                                    <Button fx:id="button_Cancel" accessibleText="%button_cancel" cancelButton="true" mnemonicParsing="false" text="%button_cancel" ButtonBar.buttonData="LEFT">
                                         <tooltip>
-                                            <Tooltip text="%button_cancel"/>
+                                            <Tooltip text="%button_cancel" />
                                         </tooltip>
                                     </Button>
                                 </buttons>
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                                    <Button fx:id="button_rerenderPreview" accessibleText="%button_rerender_preview"
-                                            mnemonicParsing="false" styleClass="btn-preview"
-                                            text="%button_rerender_preview">
+                                    <Button fx:id="button_rerenderPreview" accessibleText="%button_rerender_preview" mnemonicParsing="false" styleClass="btn-preview" text="%button_rerender_preview">
                                         <tooltip>
-                                            <Tooltip text="%button_rerender_preview"/>
+                                            <Tooltip text="%button_rerender_preview" />
                                         </tooltip>
                                     </Button>
                                 </buttons>
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                                    <Button fx:id="button_Save_As" accessibleText="%label_back" mnemonicParsing="false" text="%button_save_preset">
+                                    <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back">
                                         <tooltip>
-                                            <Tooltip text="%button_save_preset" />
+                                            <Tooltip text="%label_back" />
                                         </tooltip>
                                     </Button>
-                                    <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false"
-                                            text="%button_back">
+                                    <Button fx:id="button_Load" disable="true" mnemonicParsing="false" text="%button_load">
                                         <tooltip>
-                                            <Tooltip text="%label_back"/>
+                                            <Tooltip text="%button_load" />
                                         </tooltip>
                                     </Button>
-                                    <Button fx:id="button_Load" disable="true" mnemonicParsing="false"
-                                            text="%button_load">
+                                    <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next">
                                         <tooltip>
-                                            <Tooltip text="%button_load"/>
+                                            <Tooltip text="%label_next" />
                                         </tooltip>
                                     </Button>
-                                    <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false"
-                                            text="%button_next">
+                                    <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create">
                                         <tooltip>
-                                            <Tooltip text="%label_next"/>
-                                        </tooltip>
-                                    </Button>
-                                    <Button fx:id="button_Create" accessibleText="%button_diagram_create"
-                                            mnemonicParsing="false" text="%button_create">
-                                        <tooltip>
-                                            <Tooltip text="%button_diagram_create"/>
+                                            <Tooltip text="%button_diagram_create" />
                                         </tooltip>
                                     </Button>
                                 </buttons>
                             </ButtonBar>
                         </children>
                         <opaqueInsets>
-                            <Insets/>
+                            <Insets />
                         </opaqueInsets>
                         <padding>
-                            <Insets bottom="10.0" left="10.0" right="10.0" top="15.0"/>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
                         </padding>
                     </HBox>
                 </children>

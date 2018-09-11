@@ -30,6 +30,7 @@
                         </Menu>
                         <Menu fx:id="menu_Presets" mnemonicParsing="false" text="%menu_presets">
                             <items>
+                        <MenuItem fx:id="menuItem_Save_Preset" mnemonicParsing="false" text="%button_save_preset" />
                                 <MenuItem fx:id="menuItem_Preset_Editor" mnemonicParsing="false" onAction="#startPresetOverview" text="%button_preset" />
                             </items>
                         </Menu>
