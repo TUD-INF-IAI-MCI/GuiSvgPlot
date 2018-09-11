@@ -3,40 +3,48 @@ package application.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
-import com.fasterxml.jackson.databind.ser.std.StringSerializer;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.scene.layout.HBox;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import tud.tangram.svgplot.options.DiagramType;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class Preset {
 
+    private String id;
     private String name;
-    private GuiSvgOptions options;
     @JsonFormat(pattern = "dd.MM.yyyy HH:mm:ss")
     private Date creationDate;
+    private GuiSvgOptions options;
     private DiagramType diagramType;
+
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     // this is necessary for jackson
-    public Preset() {
+    private Preset() {
+        this.id = UUID.randomUUID().toString();
     }
 
-    public Preset(final Preset preset){
+    public Preset(final Preset preset) {
         this(preset.getOptions(), preset.getName(), preset.getDiagramType());
     }
 
     public Preset(GuiSvgOptions options, String name, DiagramType diagramType) {
+        this.id = UUID.randomUUID().toString();
         this.options = options;
         this.creationDate = new Date();
         this.name = name;
         this.diagramType = diagramType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    @JsonSetter("id")
+    private void setId(final String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -72,13 +80,12 @@ public class Preset {
         this.diagramType = diagramType;
     }
 
-
     @JsonIgnore
     public String getFormattedCreationDate() {
         return sdf.format(creationDate);
     }
 
-    public void update( final Preset preset){
+    public void update(final Preset preset) {
         this.options = preset.getOptions();
         this.name = preset.getName();
         this.diagramType = preset.getDiagramType();
@@ -87,11 +94,11 @@ public class Preset {
     @Override
     public String toString() {
         return "Preset{" +
-                "name=" + name +
-                ", options=" + options +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", creationDate=" + creationDate +
+                ", options=" + options +
                 ", diagramType=" + diagramType +
-                ", sdf=" + sdf +
                 '}';
     }
 
@@ -102,8 +109,7 @@ public class Preset {
         if (!(o instanceof Preset)) return false;
 
         Preset preset = (Preset) o;
-
-        return this.name.equals(preset.name) &&
+        return this.id.equals(preset.id) &&
                 this.getFormattedCreationDate().equals(preset.getFormattedCreationDate()) &&
                 this.diagramType.equals(preset.diagramType);
     }

@@ -57,6 +57,24 @@ public class PresetService {
     }
 
     /**
+     * Creates the given {@link Preset}s and adds them to the preset.json.
+     * @param presets the {@link Preset}s to create.
+     */
+    public void createAll(final List<Preset> presets){
+        try {
+            if (!Files.exists(path))
+                Files.createFile(path);
+
+            List<Preset> presetList = getAll();
+            presetList.addAll(presets);
+
+            mapper.writeValue(path.toFile(), presetList);
+        } catch (Exception e) {
+            logger.error(bundle.getString("save_presets_error") + " " + e.getMessage());
+        }
+    }
+
+    /**
      * Gets all saved {@link Preset}s.
      * @return the {@link Preset}s
      */
@@ -76,7 +94,7 @@ public class PresetService {
      */
     public void delete(final Preset preset) {
         try {
-            Preset listElement = new Preset();
+            Preset listElement = null;
             List<Preset> presetList = getAll();
             for(Preset savedPreset: presetList){
                 if (savedPreset.equals(preset)){
@@ -86,7 +104,6 @@ public class PresetService {
             if (listElement != null){
                 presetList.remove(listElement);
             }
-
             mapper.writeValue(path.toFile(), presetList);
         } catch (Exception e) {
             logger.error(bundle.getString("delete_preset_error") + " " + e.getMessage());
@@ -100,13 +117,15 @@ public class PresetService {
      */
     public void save(final Preset preset) {
         try {
+            Preset listElement = new Preset(preset);
             List<Preset> presetList = getAll();
             for(Preset savedPreset: presetList){
                 if (savedPreset.equals(preset)){
-                   savedPreset.update(preset);
+                    listElement = savedPreset;
                 }
             }
-
+            presetList.remove(listElement);
+            presetList.add(preset);
             mapper.writeValue(path.toFile(), presetList);
         } catch (Exception e) {
             logger.error(bundle.getString("delete_preset_error") + " " + e.getMessage());
