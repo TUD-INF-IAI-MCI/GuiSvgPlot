@@ -475,14 +475,14 @@
                                             <Tooltip text="%label_back" />
                                         </tooltip>
                                     </Button>
-                                    <Button fx:id="button_Load" disable="true" mnemonicParsing="false" text="%button_load">
-                                        <tooltip>
-                                            <Tooltip text="%button_load" />
-                                        </tooltip>
-                                    </Button>
                                     <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next">
                                         <tooltip>
                                             <Tooltip text="%label_next" />
+                                        </tooltip>
+                                    </Button>
+                                    <Button fx:id="button_Load" disable="true" mnemonicParsing="false" text="%button_load">
+                                        <tooltip>
+                                            <Tooltip text="%button_load" />
                                         </tooltip>
                                     </Button>
                                     <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create">

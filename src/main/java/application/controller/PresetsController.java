@@ -12,6 +12,8 @@ import application.util.SvgOptionsUtil;
 import application.util.TextFieldUtil;
 import com.google.gson.JsonObject;
 import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -58,8 +60,6 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     @FXML
     public VBox vbox_Preset_DataTable;
-    /*@FXML
-    private TableView<Preset> presetTable;*/
     @FXML
     private TableColumn table_column_name;
     @FXML
@@ -93,19 +93,35 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private TextField textField_yAxisTitle;
     @FXML
-    private TextField textField_displayAreaXfrom;
+    private Label label_x_from;
     @FXML
-    private TextField textField_displayAreaXto;
+    private Label label_x_to;
     @FXML
-    private TextField textField_displayAreaYfrom;
+    private Label label_y_from;
     @FXML
-    private TextField textField_displayAreaYto;
+    private Label label_y_to;
+    @FXML
+    private Label label_cssCustom;
+    @FXML
+    private Label label_cssPath;
+    @FXML
+    private HBox hBox_cssPath;
+    @FXML
+    private TextField textField_x_from;
+    @FXML
+    private TextField textField_x_to;
+    @FXML
+    private TextField textField_y_from;
+    @FXML
+    private TextField textField_y_to;
+    @FXML
+    private TextArea textArea_cssCustom;
     @FXML
     private TextField textField_helpLinesX;
     @FXML
     private TextField textField_helpLinesY;
     @FXML
-    private TextField textFieldPresetName;
+    private TextField textField_PresetName;
     @FXML
     private RadioButton radioBtn_Scale_to_Data;
     @FXML
@@ -114,10 +130,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     private RadioButton radioBtn_Portrait;
     @FXML
     private RadioButton radioBtn_Landscape;
-    @FXML
-    private GridPane settingsDiagramGridPane = new GridPane();
-    @FXML
-    private GridPane settingsFunctionGridPane = new GridPane();
     @FXML
     private BorderPane overViewBorderPane;
     @FXML
@@ -160,17 +172,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
 
-    private void initDiagram(){
-        choiceBox_diagramType.setItems(FXCollections.observableArrayList(DiagramType.values()));
-        DiagramType dt = converter.convert(currentPreset.getDiagramType());
-        switch(dt){
-            case ScatterPlot:
-                choiceBox_diagramType.getSelectionModel().select(1);
-            case LineChart:
-                choiceBox_diagramType.getSelectionModel().select(3);
-            case BarChart:
-                choiceBox_diagramType.getSelectionModel().select(2);
-        }
+    private void initLineChart(){
         //outputdevice
         choiceBox_outputDevice.setItems(FXCollections.observableArrayList(OutputDevice.values()));
         choiceBox_outputDevice.setConverter(svgOptionsUtil.getOutputDeviceStringConverter());
@@ -178,6 +180,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
         ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
         choiceBox_size.setItems(sortedPageSizes);
+        choiceBox_size.setConverter(svgOptionsUtil.getPageSizeStringConverter());
         //CSV
         button_CsvPath.setDisable(false);
         button_CsvPath.setOnAction(event -> {
@@ -194,25 +197,91 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_csvType.setItems(FXCollections.observableArrayList(CsvType.values()));
         choiceBox_csvType.setConverter(svgOptionsUtil.getCsvTypeStringConverter());
         //trendline
-        choiceBox_trendline.setItems(FXCollections.observableArrayList(TrendlineAlgorithm.values()));
-        choiceBox_trendline.setConverter(svgOptionsUtil.getTrendlineAlgorithmStringConverter());
-        choiceBox_trendline.getSelectionModel().select(0);
+//        choiceBox_trendline.setItems(FXCollections.observableArrayList(TrendlineAlgorithm.values()));
+//        choiceBox_trendline.setConverter(svgOptionsUtil.getTrendlineAlgorithmStringConverter());
+//        choiceBox_trendline.getSelectionModel().select(0);
         //gridstyle
         choiceBox_gridStyle.setItems(FXCollections.observableArrayList(GridStyle.values()));
+        choiceBox_gridStyle.setConverter(svgOptionsUtil.getGridStyleStringConverter());
         //doubleaxis
         choiceBox_dblaxes.setItems(FXCollections.observableArrayList(GuiAxisStyle.values()));
+        choiceBox_dblaxes.setConverter(svgOptionsUtil.getAxisStyleStringConverter());
         //css
         choiceBox_cssType.setItems(FXCollections.observableArrayList(CssType.values()));
         choiceBox_cssType.getSelectionModel().select(0);
-        // Radiobutton groupings
-        /*radioBtn_Ascending.setToggleGroup(sortGroup);
-        radioBtn_Ascending.setSelected(true);
-        radioBtn_Descending.setToggleGroup(sortGroup);*/
+        choiceBox_cssType.setConverter(svgOptionsUtil.getCssTypeStringConverter());
+        choiceBox_cssType.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                switch (newValue.toString()){
+                    case "0":
+                        cssCustomHider();
+                        break;
+                    case "1":
+                        cssCustomHider();
+                        label_cssCustom.setVisible(true);
+                        textArea_cssCustom.setVisible(true);
+                        break;
+                    case "2":
+                        cssCustomHider();
+                        label_cssPath.setVisible(true);
+                        hBox_cssPath.setVisible(true);
+                        break;
+                }
+            }
+        });
         radioBtn_Scale_to_Data.setToggleGroup(scaleGroup);
         radioBtn_Scale_to_Data.setSelected(true);
         radioBtn_customScale.setToggleGroup(scaleGroup);
+        radioBtn_customScale.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+                if(isNowSelected){
+                    label_x_from.setVisible(true);
+                    textField_x_from.setVisible(true);
+                    label_x_to.setVisible(true);
+                    textField_x_to.setVisible(true);
+                    label_y_from.setVisible(true);
+                    textField_y_from.setVisible(true);
+                    label_y_to.setVisible(true);
+                    textField_y_to.setVisible(true);
+                }
+            }
+        });
+        radioBtn_Scale_to_Data.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+                if(isNowSelected){
+                    label_x_from.setVisible(false);
+                    textField_x_from.setVisible(false);
+                    label_x_to.setVisible(false);
+                    textField_x_to.setVisible(false);
+                    label_y_from.setVisible(false);
+                    textField_y_from.setVisible(false);
+                    label_y_to.setVisible(false);
+                    textField_y_to.setVisible(false);
+                }
+            }
+        });
 
     }
+
+    private void cssCustomHider(){
+        label_cssCustom.setVisible(false);
+        textArea_cssCustom.setVisible(false);
+        label_cssPath.setVisible(false);
+        hBox_cssPath.setVisible(false);
+    }
+
+    private void initScatterPlot(){
+
+    }
+
+    private void initBarChart(){
+
+    }
+
+
 
     private void initFunction(){
 
@@ -293,6 +362,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 
         Button editButton = new Button();
         Button copyButton = new Button();
+        copyButton.setDisable(true);
         Button removeButton = new Button();
         Glyph editGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.EDIT);
         Glyph copyGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.COPY);
@@ -305,15 +375,20 @@ public class PresetsController extends SVGWizardController implements Initializa
             switch(currentPreset.getDiagramType()){
                 case "FunctionPlot":
                     //functionPlotEditorDisplayer();
+                    //flagSetter(DiagramType.FunctionPlot, currentPreset);
                     break;
                 case "LineChart":
+                    initLineChart();
                     lineChartEditorDisplayer();
+                    flagSetter(DiagramType.LineChart, currentPreset);
                     break;
                 case "ScatterPlot":
                     //scatterPlotEditorDisplayer();
+                    //flagSetter(DiagramType.ScatterPlot, currentPreset);
                     break;
                 case "BarChart":
-                   // barChartEditorDisplayer();
+                    //barChartEditorDisplayer();
+                    //flagSetter(DiagramType.BarChart, currentPreset);
                     break;
             }
         });
@@ -323,7 +398,8 @@ public class PresetsController extends SVGWizardController implements Initializa
         });
 
         removeButton.setOnAction(event -> {
-            vbox_Preset_DataTable.getChildren().remove(row);
+            deleteConfirmationAlert(currentPreset);
+            //vbox_Preset_DataTable.getChildren().remove(row);
         });
 
         row.getChildren().addAll(nameField, creationDateField, diagramTypeField, editButton, copyButton, removeButton);
@@ -360,20 +436,8 @@ public class PresetsController extends SVGWizardController implements Initializa
         currentOptions.setxUnit(textField_xAxisTitle.getText());
         settingsJSON.addProperty("y_axis_title", textField_yAxisTitle.getText());
         currentOptions.setyUnit(textField_yAxisTitle.getText());
-        //TODO: i18n improvement goes here
-        RadioButton selectedRadioButton = (RadioButton) scaleGroup.getSelectedToggle();
         //TODO: scale data implementation in GuiSVGOptions
-        settingsJSON.addProperty("scale_data", selectedRadioButton.getText());
-        if(selectedRadioButton.getId().equals("radioBtn_Scale_to_Data")){
-            currentOptions.setAutoScale(true);
-        }else{
-            currentOptions.setAutoScale(false);
-        }
-        //not sure if necessary to implement
-        settingsJSON.addProperty("display_area_x_from", textField_displayAreaXfrom.getText());
-        settingsJSON.addProperty("display_area_x_to", textField_displayAreaXto.getText());
-        settingsJSON.addProperty("display_area_y_from", textField_displayAreaYfrom.getText());
-        settingsJSON.addProperty("display_area_y_to", textField_displayAreaYto.getText());
+
 
         settingsJSON.addProperty("gridstyle", choiceBox_gridStyle.getSelectionModel().getSelectedItem().toString());
         currentOptions.setGridStyle( (GridStyle) choiceBox_gridStyle.getSelectionModel().getSelectedItem());
@@ -387,49 +451,54 @@ public class PresetsController extends SVGWizardController implements Initializa
         currentOptions.setCss(choiceBox_cssType.getSelectionModel().getSelectedItem().toString());
     }
 
+
     private void flagSetter(DiagramType dt, Preset p){
-        // diagram
-        initDiagram();
-        // can be made dynamic but in the interest of time
-        if(dt.toString() == "FunctionPlot" || dt.toString() == "ScatterPlot" || dt.toString() == "LineChart" || dt.toString() == "Barchart"){
-            GuiSvgOptions options = p.getOptions();
-            options.setDiagramType(dt);
-            //diagramtype
-            choiceBox_diagramType.getSelectionModel().select(options.getDiagramType());
-            textField_Title.setText(options.getTitle());
-            //outputdevice
-            choiceBox_outputDevice.getSelectionModel().select(options.getOutputDevice());
-
-            //choiceBox_size.getSelectionModel().select(options.getSize());
-            //TODO: need help with page size sorcery
-            /*switch (super.pageOrientation){
-                case PageSize.PageOrientation.LANDSCAPE:
-            }*/
-            choiceBox_size.setItems(FXCollections.observableArrayList(PageSize.values()));
-            //TODO: choiceBox_size.getSelectionModel().select(options.getSize().)
-            textField_Csvpath.setText(options.getCsvPath());
-
-            choiceBox_csvOrientation.getSelectionModel().select(options.getCsvOrientation());
-            choiceBox_csvType.getSelectionModel().select(options.getCsvType());
-            if(options.getTrendLine().size()>0){
-                choiceBox_trendline.getSelectionModel().select(options.getTrendLine());
-                choiceBox_gridStyle.getSelectionModel().select(options.getGridStyle());
-            }
-            //textField_xAxisTitle.setText(options.getXAxisTitle());
-            //textField_yAxistitle.setText(options.getYAxisTitle());
-            if(options.isAutoScale()){
-                scaleGroup.selectToggle(radioBtn_Scale_to_Data);
-            }else{
-                scaleGroup.selectToggle(radioBtn_customScale);
-            }
-            //textField_displayAreaXfrom.setText(options.getxRange());
-            choiceBox_dblaxes.getSelectionModel().select(options.getAxisStyle());
-            choiceBox_cssType.getSelectionModel().select(options.getCss());
-
-        // function
-        }else{
-            //TODO
+        switch(dt){
+            case LineChart:
+                //initLineChart();
+                break;
+            case ScatterPlot:
+                initScatterPlot();
+                break;
+            case BarChart:
+                initBarChart();
+                break;
+            case FunctionPlot:
+                initFunction();
+                break;
         }
+        textField_PresetName.setText(p.getPresetName());
+        GuiSvgOptions options = p.getOptions();
+        options.setDiagramType(dt);
+        textField_Title.setText(options.getTitle());
+        //outputdevice
+        choiceBox_outputDevice.getSelectionModel().select(options.getOutputDevice());
+        //choiceBox_size.getSelectionModel().select(options.getSize().);
+        //TODO: need help with page size sorcery
+        /*switch (super.pageOrientation){
+               case PageSize.PageOrientation.LANDSCAPE:
+           }*/
+        choiceBox_size.setItems(FXCollections.observableArrayList(PageSize.values()));
+        //TODO: choiceBox_size.getSelectionModel().select(options.getSize().)
+        textField_Csvpath.setText(options.getCsvPath());
+        choiceBox_csvOrientation.getSelectionModel().select(options.getCsvOrientation());
+        choiceBox_csvType.getSelectionModel().select(options.getCsvType());
+        if(options.getTrendLine().size()>0){
+            choiceBox_trendline.getSelectionModel().select(options.getTrendLine());
+            choiceBox_gridStyle.getSelectionModel().select(options.getGridStyle());
+        }
+        //textField_xAxisTitle.setText(options.getXAxisTitle());
+        //textField_yAxistitle.setText(options.getYAxisTitle());
+        if(options.isAutoScale()){
+            scaleGroup.selectToggle(radioBtn_Scale_to_Data);
+        }else{
+            scaleGroup.selectToggle(radioBtn_customScale);
+        }
+        //textField_displayAreaXfrom.setText(options.getxRange());
+        choiceBox_dblaxes.getSelectionModel().select(options.getAxisStyle());
+        choiceBox_cssType.getSelectionModel().select(options.getCss());
+
+
     }
 
 
@@ -505,11 +574,14 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     @FXML
     private void savePreset(){
-        currentPreset.setPresetName(textFieldPresetName.getText());
+        currentPreset.setPresetName(textField_PresetName.getText());
         //workaround ]:->
         //presetTable.refresh();
         //TODO: gets all the information out of the form and sets the appropriate values in the options
         //flagGetter();
+        hideAllEditors();
+
+        //System.out.println(currentPreset.getPresetHbox().getChildren().get(0).);
         overviewDisplayer();
     }
 

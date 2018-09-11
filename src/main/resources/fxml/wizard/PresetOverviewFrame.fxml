@@ -258,30 +258,30 @@
                               <Insets top="5.0" />
                            </padding>
                         </HBox>
-                        <Label text="%label_display_area_x_from" visible="false" GridPane.rowIndex="14">
+                        <Label fx:id="label_x_from" text="%label_display_area_x_from" visible="false" GridPane.rowIndex="14">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_yfrom" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="14" />
-                        <Label fx:id="label_xto" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_to" textAlignment="RIGHT" visible="false" GridPane.rowIndex="15">
+                        <TextField fx:id="textField_x_from" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                        <Label fx:id="label_x_to" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_to" textAlignment="RIGHT" visible="false" GridPane.rowIndex="15">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_yfrom1" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="15" />
-                        <Label fx:id="label_yfrom" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_from" textAlignment="RIGHT" visible="false" GridPane.rowIndex="16">
+                        <TextField fx:id="textField_x_to" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                        <Label fx:id="label_y_from" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_from" textAlignment="RIGHT" visible="false" GridPane.rowIndex="16">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_yfrom2" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="16" />
-                        <Label fx:id="label_yto" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_to" textAlignment="RIGHT" visible="false" GridPane.rowIndex="17">
+                        <TextField fx:id="textField_y_from" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+                        <Label fx:id="label_y_to" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_to" textAlignment="RIGHT" visible="false" GridPane.rowIndex="17">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_yfrom3" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+                        <TextField fx:id="textField_y_to" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="17" />
                         <Label fx:id="label_grid" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_grid_style" GridPane.rowIndex="18">
                            <padding>
                               <Insets left="5.0" />
@@ -347,7 +347,7 @@
                                     <Insets left="100.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="textFieldPresetName" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="400.0" prefWidth="400.0" />
+                              <TextField fx:id="textField_PresetName" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="400.0" prefWidth="400.0" />
                            </children>
                            <padding>
                               <Insets left="20.0" right="20.0" />
