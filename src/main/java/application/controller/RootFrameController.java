@@ -52,6 +52,8 @@ public class RootFrameController implements Initializable {
     public Menu menu_Presets = new Menu();
     @FXML
     public MenuItem menuItem_Save_Preset;
+    @FXML
+    public MenuItem menuItem_Preset_Editor;
 
     @FXML
     public ScrollPane scrollPane_message;
@@ -106,7 +108,7 @@ public class RootFrameController implements Initializable {
 //                alert.close();
 //            }
         });
-
+        menuItem_Save_Preset.setDisable(true);
         menuItem_Save_Preset.setOnAction(event -> {
             if(wizardPath.contains("Chart")){
                 Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName", svgWizardController.getGuiSvgOptions().getDiagramType());
@@ -136,8 +138,6 @@ public class RootFrameController implements Initializable {
                 }
             }else if(wizardPath.contains("Function")){
                 Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName", svgWizardController.getGuiSvgOptions().getDiagramType());
-            }else{
-                //do nothing since the user is not in either wizard
             }
 
         });
@@ -210,6 +210,7 @@ public class RootFrameController implements Initializable {
             GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
             GuiSvgPlott.getInstance().closeWizard();
         }
+        menuItem_Preset_Editor.setDisable(true);
         this.setSceneTitle("application_preset_overview");
         this.label_Headline.setText(this.bundle.getString("headline_presets"));
         FXMLLoader loader = new FXMLLoader();
@@ -218,7 +219,10 @@ public class RootFrameController implements Initializable {
         try {
             center = borderPane_Content.getCenter();
             borderPane_Content.setCenter(loader.load());
-            presetsController = loader.getController();
+            System.out.println(presetsController);
+            if(presetsController == null){
+                presetsController = loader.getController();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -244,6 +248,7 @@ public class RootFrameController implements Initializable {
         loader.setResources(bundle);
         loader.setLocation((fxmlPath));
         wizardPath = fxmlPath.getPath();
+        menuItem_Save_Preset.setDisable(false);
 
          try {
             center = borderPane_Content.getCenter();

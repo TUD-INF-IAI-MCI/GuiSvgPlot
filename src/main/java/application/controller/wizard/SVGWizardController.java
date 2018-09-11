@@ -3,6 +3,7 @@ package application.controller.wizard;
 import application.GuiSvgPlott;
 import application.controller.CsvEditorController;
 import application.controller.PresetsController;
+import application.controller.RootFrameController;
 import application.controller.wizard.chart.ChartWizardFrameController;
 import application.model.GuiSvgOptions;
 import application.model.Options.CssType;
@@ -713,6 +714,10 @@ public class SVGWizardController implements Initializable {
             GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
             GuiSvgPlott.getInstance().closeWizard();
             wizardPath = "none";
+            if(GuiSvgPlott.getInstance().getRootFrameController().menuItem_Preset_Editor.isDisable()){
+                GuiSvgPlott.getInstance().getRootFrameController().menuItem_Preset_Editor.setDisable(false);
+            }
+            GuiSvgPlott.getInstance().getRootFrameController().menuItem_Save_Preset.setDisable(true);
             this.popOver_warnings.hide();
             this.popOver_infos.hide();
         });
@@ -744,6 +749,8 @@ public class SVGWizardController implements Initializable {
         this.button_rerenderPreview.setOnAction(event ->
                 this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg)
         );
+
+        this.button_Load.graphicProperty().setValue(new Glyph("FontAwesome", FontAwesome.Glyph.FOLDER_OPEN));
 
 
     }
