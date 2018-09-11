@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class PresetService {
-    private static final Logger logger = LoggerFactory.getLogger(SvgOptionsService.class);
+    private static final Logger logger = LoggerFactory.getLogger(PresetService.class);
 
     private static final PresetService INSTANCE = new PresetService();
     private ResourceBundle bundle;
@@ -32,7 +32,7 @@ public class PresetService {
         return INSTANCE;
     }
 
-    public void save(final Preset preset){
+    public void create(final Preset preset){
         try {
             if (!Files.exists(path))
                 Files.createFile(path);
@@ -76,6 +76,21 @@ public class PresetService {
         }
     }
 
+    public void save(final Preset preset) {
+        try {
+            List<Preset> presetList = getAll();
+            for(Preset savedPreset: presetList){
+                if (savedPreset.equals(preset)){
+                   savedPreset.update(preset);
+                }
+            }
+
+            mapper.writeValue(path.toFile(), presetList);
+        } catch (Exception e) {
+            logger.error(bundle.getString("delete_preset_error") + " " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     public void setBundle(final ResourceBundle bundle){
         this.bundle = bundle;

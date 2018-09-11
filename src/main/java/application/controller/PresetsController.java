@@ -6,12 +6,10 @@ import application.model.GuiSvgOptions;
 import application.model.Options.CssType;
 import application.model.Options.GuiAxisStyle;
 import application.model.Options.PageSize;
-import application.model.Options.TrendlineAlgorithm;
 import application.model.Preset;
 import application.service.PresetService;
 import application.util.SvgOptionsUtil;
 import com.google.gson.JsonObject;
-import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -19,9 +17,10 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -42,7 +41,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     private static final Logger logger = LoggerFactory.getLogger(PresetsController.class);
     private ResourceBundle bundle;
 
-    private static final PresetsController presetsController = new PresetsController();
+    private static PresetsController presetsController;
 
 
     public SvgOptionsUtil svgOptionsUtil = SvgOptionsUtil.getInstance();
@@ -142,7 +141,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
     public PresetsController() {
-
+        presetsController = this;
     }
 
     public static PresetsController getInstance() {
@@ -180,6 +179,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
     private void initLineChart(){
+        System.out.println(currentPreset.getOptions().getTitle());
         //outputdevice
         choiceBox_outputDevice.setItems(FXCollections.observableArrayList(OutputDevice.values()));
         choiceBox_outputDevice.setConverter(svgOptionsUtil.getOutputDeviceStringConverter());
@@ -337,7 +337,7 @@ public class PresetsController extends SVGWizardController implements Initializa
             emptyNameAlert();
         } else if (result.isPresent() && !super.presets.stream().map(p -> p.getName()).anyMatch(n -> n.equals(result.get()))) {
             currentPreset = new Preset(currentOptions, result.get(), dt);
-            presetService.save(currentPreset);
+            presetService.create(currentPreset);
             super.presets.add(currentPreset);
 
         } else {
@@ -352,27 +352,27 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
     }
 
-    private HBox generateTableEntry(final Preset currentPreset) {
+    private HBox generateTableEntry(final Preset preset) {
         HBox row = new HBox();
         row.setSpacing(5);
         row.getStyleClass().add("data-row");
-        TextField nameField = new TextField(currentPreset.getName());
+        TextField nameField = new TextField(preset.getName());
         nameField.setFocusTraversable(true);
         nameField.setEditable(false);
         nameField.getStyleClass().add("data-cell-x");
-        TextField creationDateField = new TextField(currentPreset.getFormattedCreationDate());
+        TextField creationDateField = new TextField(preset.getFormattedCreationDate());
         creationDateField.setFocusTraversable(true);
         creationDateField.setEditable(false);
         creationDateField.getStyleClass().add("data-cell-y");
         creationDateField.setPrefWidth(300);
-        creationDateField.setText(bundle.getString("label_created_on") + currentPreset.getFormattedCreationDate());
+        creationDateField.setText(bundle.getString("label_created_on") + preset.getFormattedCreationDate());
         creationDateField.setDisable(true);
         TextField diagramTypeField = new TextField("");
         diagramTypeField.setFocusTraversable(true);
         diagramTypeField.setEditable(false);
         diagramTypeField.setDisable(true);
         diagramTypeField.getStyleClass().add("data-cell-z");
-        diagramTypeField.setText(currentPreset.getDiagramTypeString());
+        diagramTypeField.setText(preset.getDiagramTypeString());
 
         Button editButton = new Button();
         Button copyButton = new Button();
@@ -385,8 +385,9 @@ public class PresetsController extends SVGWizardController implements Initializa
         copyButton.setGraphic(copyGlyph);
         removeButton.setGraphic(removeGlyph);
         editButton.setOnAction(event -> {
+            currentPreset = preset;
             overViewHider();
-            switch (currentPreset.getDiagramType()) {
+            switch (preset.getDiagramType()) {
                 case FunctionPlot:
                     //functionPlotEditorDisplayer();
                     //flagSetter(DiagramType.FunctionPlot, currentPreset);
@@ -394,7 +395,7 @@ public class PresetsController extends SVGWizardController implements Initializa
                 case LineChart:
                     initLineChart();
                     lineChartEditorDisplayer();
-                    flagSetter(DiagramType.LineChart, currentPreset);
+                    flagSetter(DiagramType.LineChart, preset);
                     break;
                 case ScatterPlot:
                     //scatterPlotEditorDisplayer();
@@ -409,18 +410,16 @@ public class PresetsController extends SVGWizardController implements Initializa
 
         copyButton.setOnAction(event -> {
             vbox_Preset_DataTable.getChildren().add(row);
-            Preset copiedPreset = new Preset(currentPreset);
-            this.presetService.save(currentPreset);
+            Preset copiedPreset = new Preset(preset);
+            this.presetService.create(preset);
         });
 
         removeButton.setOnAction(event -> {
-            deleteConfirmationAlert(currentPreset);
+            deleteConfirmationAlert(preset);
             //vbox_Preset_DataTable.getChildren().remove(row);
         });
 
         row.getChildren().addAll(nameField, creationDateField, diagramTypeField, editButton, copyButton, removeButton);
-        currentPreset.setPresetHbox(row);
-
         return row;
     }
 

@@ -23,9 +23,6 @@ public class Preset {
     private Date creationDate;
     private DiagramType diagramType;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-    @JsonIgnore
-    private HBox presetHbox;
-
 
     // this is necessary for jackson
     public Preset() {
@@ -44,14 +41,6 @@ public class Preset {
 
     public String getName() {
         return name;
-    }
-
-    public HBox getPresetHbox() {
-        return presetHbox;
-    }
-
-    public void setPresetHbox(HBox presetHbox) {
-        this.presetHbox = presetHbox;
     }
 
     public void setName(String name) {
@@ -90,6 +79,11 @@ public class Preset {
         return sdf.format(creationDate);
     }
 
+    public void update( final Preset preset){
+        this.options = preset.getOptions();
+        this.name = preset.getName();
+        this.diagramType = preset.getDiagramType();
+    }
 
     @Override
     public String toString() {
