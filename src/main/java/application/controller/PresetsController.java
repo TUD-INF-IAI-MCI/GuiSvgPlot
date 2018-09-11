@@ -172,14 +172,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
 
-
-
-
-
-
-
     private void initLineChart(){
-        System.out.println(currentPreset.getOptions().getTitle());
         //outputdevice
         choiceBox_outputDevice.setItems(FXCollections.observableArrayList(OutputDevice.values()));
         choiceBox_outputDevice.setConverter(svgOptionsUtil.getOutputDeviceStringConverter());
@@ -527,6 +520,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
     private void overviewDisplayer() {
+        loadTable();
         overViewBorderPane.setVisible(true);
     }
 

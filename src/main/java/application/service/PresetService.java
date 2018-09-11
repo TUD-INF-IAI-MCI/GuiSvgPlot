@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * The Preset Service.
+ * This Singleton Class creates, updates, deletes and loads {@link Preset}s and stores it into an json-File on
+ * path: System.getProperty("user.home") + "/svgPlot/presets.json".
+ */
 public class PresetService {
     private static final Logger logger = LoggerFactory.getLogger(PresetService.class);
 
@@ -22,6 +27,7 @@ public class PresetService {
 
     private Path path;
     private ObjectMapper mapper;
+
 
     private PresetService() {
         path = Paths.get(System.getProperty("user.home") + "/svgPlot/presets.json");
@@ -32,6 +38,10 @@ public class PresetService {
         return INSTANCE;
     }
 
+    /**
+     * Creates the given {@link Preset} and adds it to the preset.json.
+     * @param preset the {@link Preset} to create.
+     */
     public void create(final Preset preset){
         try {
             if (!Files.exists(path))
@@ -46,6 +56,10 @@ public class PresetService {
         }
     }
 
+    /**
+     * Gets all saved {@link Preset}s.
+     * @return the {@link Preset}s
+     */
     public List<Preset> getAll() {
         List<Preset> presetList = new ArrayList<>();
         try {
@@ -56,6 +70,10 @@ public class PresetService {
         return presetList;
     }
 
+    /**
+     * Deletes the given {@link Preset} from json-file.
+     * @param preset the {@link Preset} to delete.
+     */
     public void delete(final Preset preset) {
         try {
             Preset listElement = new Preset();
@@ -76,6 +94,10 @@ public class PresetService {
         }
     }
 
+    /**
+     * Updates the given {@link Preset}.
+     * @param preset the {@link Preset} to save.
+     */
     public void save(final Preset preset) {
         try {
             List<Preset> presetList = getAll();
