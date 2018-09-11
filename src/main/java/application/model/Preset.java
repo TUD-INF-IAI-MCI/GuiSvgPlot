@@ -1,5 +1,12 @@
 package application.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
+import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.layout.HBox;
@@ -9,20 +16,34 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Preset {
+
+    private String name;
     private GuiSvgOptions options;
-    private StringProperty presetName;
-    private StringProperty creationDate;
-    private StringProperty diagramType;
+    @JsonFormat(pattern = "dd.MM.yyyy HH:mm:ss")
+    private Date creationDate;
+    private DiagramType diagramType;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-    private Date date = new Date();
+    @JsonIgnore
     private HBox presetHbox;
 
 
-    public Preset(GuiSvgOptions options, String presetName, DiagramType type) {
+    // this is necessary for jackson
+    public Preset() {
+    }
+
+    public Preset(final Preset preset){
+        this(preset.getOptions(), preset.getName(), preset.getDiagramType());
+    }
+
+    public Preset(GuiSvgOptions options, String name, DiagramType diagramType) {
         this.options = options;
-        this.creationDate = new SimpleStringProperty(sdf.format(date));
-        this.presetName = new SimpleStringProperty(presetName);
-        this.diagramType = new SimpleStringProperty(type.toString());
+        this.creationDate = new Date();
+        this.name = name;
+        this.diagramType = diagramType;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public HBox getPresetHbox() {
@@ -33,12 +54,8 @@ public class Preset {
         this.presetHbox = presetHbox;
     }
 
-    public String getPresetName() {
-        return presetName.get();
-    }
-
-    public void setPresetName(String presetName) {
-        this.presetName.set(presetName);
+    public void setName(String name) {
+        this.name = name;
     }
 
     public GuiSvgOptions getOptions() {
@@ -49,28 +66,53 @@ public class Preset {
         this.options = options;
     }
 
-    public String getCreationDate() {
-        return creationDate.get();
-    }
-
-    public String getDiagramType() {
-        return diagramType.get();
-    }
-
-    public void setDiagramType(DiagramType diagramType) {
-        this.diagramType.set(diagramType+"");
-    }
-
-    public StringProperty presetName(){
-        return presetName;
-    }
-
-    public StringProperty creationDate(){
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public StringProperty diagramType(){
+    @JsonGetter("diagramType")
+    public String getDiagramTypeString() {
+        return diagramType.toString();
+    }
+
+    public DiagramType getDiagramType() {
         return diagramType;
+    }
+
+    public void setDiagramType(DiagramType diagramType) {
+        this.diagramType = diagramType;
+    }
+
+
+    @JsonIgnore
+    public String getFormattedCreationDate() {
+        System.out.println(sdf.format(creationDate));
+        return sdf.format(creationDate);
+    }
+
+
+    @Override
+    public String toString() {
+        return "Preset{" +
+                "name=" + name +
+                ", options=" + options +
+                ", creationDate=" + creationDate +
+                ", diagramType=" + diagramType +
+                ", sdf=" + sdf +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Preset)) return false;
+
+        Preset preset = (Preset) o;
+
+        return this.name.equals(preset.name) &&
+                this.getFormattedCreationDate().equals(preset.getFormattedCreationDate()) &&
+                this.diagramType.equals(preset.diagramType);
     }
 
 }

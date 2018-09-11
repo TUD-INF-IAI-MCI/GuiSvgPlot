@@ -65,9 +65,9 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <ScrollPane prefHeight="305.0" prefWidth="600.0">
+                  <ScrollPane prefHeight="305.0" prefWidth="600.0" styleClass="data-table-container">
                      <content>
-                        <VBox fx:id="vbox_Preset_DataTable" />
+                        <VBox fx:id="vbox_Preset_DataTable" styleClass="data-table" />
                      </content>
                   </ScrollPane>
                </children>
@@ -157,10 +157,10 @@
                            <children>
                               <RadioButton fx:id="radioBtn_Portrait" mnemonicParsing="false" selected="true" text="%radio_portrait">
                                  <toggleGroup>
-                                    <ToggleGroup fx:id="pageOrientation" />
+                                    <ToggleGroup fx:id="pageOrientationTG" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton fx:id="radioBtn_Landscape" mnemonicParsing="false" text="%radio_landscape" toggleGroup="$pageOrientation" />
+                              <RadioButton fx:id="radioBtn_Landscape" mnemonicParsing="false" text="%radio_landscape" toggleGroup="$pageOrientationTG" />
                            </children>
                         </HBox>
                         <Label layoutX="10.0" layoutY="65.0" text="%label_size_of_diagram" GridPane.rowIndex="4">

@@ -124,10 +124,8 @@ public class RootFrameController implements Initializable {
                     alarm.setContentText(bundle.getString("alert_preset_empty_content"));
                     alarm.showAndWait();
                 }else if (result.isPresent() && !presetsController.presets.contains(result.get())){
-                    savedPreset.setPresetName(result.get());
+                    savedPreset.setName(result.get());
                     startPresetOverview();
-                    HBox row = presetsController.generateTableEntry();
-                    presetsController.vbox_Preset_DataTable.getChildren().add(row);
                     presetsController.presets.add(savedPreset);
                 }else{
                     Alert alert = new Alert(Alert.AlertType.ERROR);

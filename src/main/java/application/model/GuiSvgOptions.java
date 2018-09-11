@@ -1,16 +1,19 @@
 package application.model;
 
 import application.GuiSvgPlott;
-import application.model.Options.GuiAxisStyle;
-import application.model.Options.LinePointsOption;
-import application.model.Options.SortOrder;
-import application.model.Options.VisibilityOfDataPoints;
+import application.model.Options.*;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
+import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import tud.tangram.svgplot.coordinatesystem.Range;
-import tud.tangram.svgplot.data.Point;
 import tud.tangram.svgplot.data.PointListList;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
@@ -37,6 +40,7 @@ public class GuiSvgOptions {
     public static int MINIMUM_PAGE_WIDTH = 90;
     public static int MINIMUM_PAGE_HEIGHT = 71;
 
+    @JsonIgnore
     private SvgPlotOptions options;
 
     private ObjectProperty<DiagramType> diagramType;
@@ -66,24 +70,45 @@ public class GuiSvgOptions {
     private ObservableList<LineStyle> lineStyles;
     private ObservableList<String> trendLine;
 
+    @JsonDeserialize(using = StringDeserializer.class)
+    @JsonSerialize(using = StringSerializer.class)
     private final StringProperty xLines;
+    @JsonDeserialize(using = StringDeserializer.class)
+    @JsonSerialize(using = StringSerializer.class)
     private final StringProperty yLines;
+    @JsonDeserialize(using = StringDeserializer.class)
+    @JsonSerialize(using = StringSerializer.class)
     private final StringProperty title;
+    @JsonIgnore
     private final StringProperty gnuplot;
+    @JsonDeserialize(using = StringDeserializer.class)
+    @JsonSerialize(using = StringSerializer.class)
     private final StringProperty css;
+    @JsonDeserialize(using = StringDeserializer.class)
+    @JsonSerialize(using = StringSerializer.class)
     private final StringProperty output;
+    @JsonDeserialize(using = StringDeserializer.class)
+    @JsonSerialize(using = StringSerializer.class)
     private final StringProperty csvPath;
+    @JsonDeserialize(using = StringDeserializer.class)
+    @JsonSerialize(using = StringSerializer.class)
     private final StringProperty xUnit;
+    @JsonDeserialize(using = StringDeserializer.class)
+    @JsonSerialize(using = StringSerializer.class)
     private final StringProperty yUnit;
 
-    public GuiSvgOptions(SvgPlotOptions options) {
+    // this necessary for jackson
+    public GuiSvgOptions(){
+        this(new SvgPlotOptions());
+    }
 
+    public GuiSvgOptions(SvgPlotOptions options) {
         this.options = options;
         this.diagramType = new SimpleObjectProperty<>(this.options.getDiagramType());
         this.outputDevice = new SimpleObjectProperty<>(this.options.getOutputDevice());
         this.csvType = new SimpleObjectProperty<>(this.options.getCsvType());
         this.csvOrientation = new SimpleObjectProperty<>(this.options.getCsvOrientation());
-        this.size = new SimpleObjectProperty<>(this.options.getSize());
+        this.size = new SimpleObjectProperty<>(new Point(this.options.getSize()));
         this.xRange = new SimpleObjectProperty<>(this.options.getxRange());
         this.yRange = new SimpleObjectProperty<>(this.options.getyRange());
         this.barAccumulationStyle = new SimpleObjectProperty<>(this.options.getBarAccumulationStyle());
@@ -377,8 +402,18 @@ public class GuiSvgOptions {
         return textures;
     }
 
+    @JsonGetter("textures")
+    public List<Texture> getTexturesAsList() {
+        return textures;
+    }
+
     public void setTextures(final ObservableList<Texture> textures) {
         this.textures = textures;
+    }
+
+    @JsonSetter("textures")
+    public void setTexturesList(final List<Texture> textures) {
+        this.textures.setAll(textures);
     }
 
     public ObservableList<Texture> textureProperty() {
@@ -388,9 +423,18 @@ public class GuiSvgOptions {
     public ObservableList<PointSymbol> getPointSymbols() {
         return pointSymbols;
     }
+    @JsonGetter("pointSymbols")
+    public List<Texture> getPointSymbolsAsList() {
+        return textures;
+    }
 
     public void setPointSymbols(final ObservableList<PointSymbol> pointSymbols) {
         this.pointSymbols = pointSymbols;
+    }
+
+    @JsonSetter("pointSymbols")
+    public void setPointSymbolsList(final List<PointSymbol> pointSymbols) {
+        this.pointSymbols.setAll(pointSymbols);
     }
 
     public SortingType getSortingType() {
@@ -528,12 +572,25 @@ public class GuiSvgOptions {
     public ObservableList<Function> getFunctions() {
         return functions;
     }
+    @JsonGetter("functions")
+    public List<Function> getFunctionsAsList() {
+        return functions;
+    }
 
     public void setFunctions(final ObservableList<Function> functions) {
         this.functions = functions;
     }
 
-    public ObservableList<String> getColors() {
+    @JsonSetter("functions")
+    public void setFunctionsList(final List<Function> functions) {
+        this.functions.addAll(functions);
+    }
+
+    public ObservableList<String> getColors(){
+        return colors;
+    }
+    @JsonGetter("colors")
+    public List<String> getColorAsList() {
         return colors;
     }
 
@@ -541,12 +598,26 @@ public class GuiSvgOptions {
         this.colors = colors;
     }
 
+    @JsonSetter("colors")
+    public void setColorsList(final List<String> colors) {
+        this.colors.addAll(colors);
+    }
+
     public ObservableList<String> getTrendLine() {
+        return trendLine;
+    }
+    @JsonGetter("trendLine")
+    public List<String> getTrendlineAsList() {
         return trendLine;
     }
 
     public void setTrendLine(final ObservableList<String> trendLine) {
         this.trendLine.setAll(trendLine);
+    }
+
+    @JsonSetter("trendLine")
+    public void setTrendlineList(final List<String> trendline) {
+        this.trendLine.addAll(trendline);
     }
 
     public String getxLines() {
@@ -664,8 +735,16 @@ public class GuiSvgOptions {
     public ObservableList<LineStyle> getLineStyles() {
         return lineStyles;
     }
+    @JsonGetter("lineStyles")
+    public List<LineStyle> getLineStylesAsList() {
+        return lineStyles;
+    }
 
     public void setLineStyles(final ObservableList<LineStyle> lineStyles) {
+        this.lineStyles.setAll(lineStyles);
+    }
+    @JsonSetter("lineStyles")
+    public void setLineStylesList(final List<LineStyle> lineStyles) {
         this.lineStyles.setAll(lineStyles);
     }
 
@@ -693,5 +772,43 @@ public class GuiSvgOptions {
                 }
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "GuiSvgOptions{" +
+                "diagramType=" + diagramType +
+                ", csvOrientation=" + csvOrientation +
+                ", outputDevice=" + outputDevice +
+                ", size=" + size +
+                ", barAccumulationStyle=" + barAccumulationStyle +
+                ", sortingType=" + sortingType +
+                ", csvType=" + csvType +
+                ", xRange=" + xRange +
+                ", yRange=" + yRange +
+                ", sortOrder=" + sortOrder +
+                ", hideOriginalPoints=" + hideOriginalPoints +
+                ", linePointsOption=" + linePointsOption +
+                ", gridStyle=" + gridStyle +
+                ", axisStyle=" + axisStyle +
+                ", integral=" + integral +
+                ", pi=" + pi +
+                ", autoScale=" + autoScale +
+                ", functions=" + functions +
+                ", colors=" + colors +
+                ", textures=" + textures +
+                ", pointSymbols=" + pointSymbols +
+                ", lineStyles=" + lineStyles +
+                ", trendLine=" + trendLine +
+                ", xLines=" + xLines +
+                ", yLines=" + yLines +
+                ", title=" + title +
+                ", gnuplot=" + gnuplot +
+                ", css=" + css +
+                ", output=" + output +
+                ", csvPath=" + csvPath +
+                ", xUnit=" + xUnit +
+                ", yUnit=" + yUnit +
+                '}';
     }
 }

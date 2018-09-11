@@ -3,11 +3,11 @@ package application.controller.wizard;
 import application.GuiSvgPlott;
 import application.controller.CsvEditorController;
 import application.controller.PresetsController;
-import application.controller.RootFrameController;
 import application.controller.wizard.chart.ChartWizardFrameController;
 import application.model.GuiSvgOptions;
 import application.model.Options.CssType;
 import application.model.Options.PageSize;
+import application.model.Options.Point;
 import application.model.Preset;
 import application.service.SvgOptionsService;
 import application.util.ChoiceBoxUtil;
@@ -42,7 +42,6 @@ import org.controlsfx.glyphfont.Glyph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.coordinatesystem.Range;
-import tud.tangram.svgplot.data.Point;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.options.DiagramType;
@@ -180,8 +179,7 @@ public class SVGWizardController implements Initializable {
     @FXML
     public ChoiceBox<CsvType> choiceBox_csvType;
 
-    @FXML
-    public static ObservableList<Preset> presets;
+    public ObservableList<Preset> presets;
 
     private ObservableList<String> colors;
 

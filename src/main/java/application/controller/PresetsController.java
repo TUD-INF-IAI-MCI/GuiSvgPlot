@@ -8,40 +8,38 @@ import application.model.Options.GuiAxisStyle;
 import application.model.Options.PageSize;
 import application.model.Options.TrendlineAlgorithm;
 import application.model.Preset;
+import application.service.PresetService;
 import application.util.SvgOptionsUtil;
-import application.util.TextFieldUtil;
 import com.google.gson.JsonObject;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
-import tud.tangram.svgplot.plotting.Function;
 import tud.tangram.svgplot.styles.GridStyle;
 
-import javax.xml.soap.Text;
 import java.io.File;
 import java.net.URL;
 import java.util.*;
 
 public class PresetsController extends SVGWizardController implements Initializable {
-
+    private static final Logger logger = LoggerFactory.getLogger(PresetsController.class);
     private ResourceBundle bundle;
 
     private static final PresetsController presetsController = new PresetsController();
@@ -52,11 +50,12 @@ public class PresetsController extends SVGWizardController implements Initializa
     private GuiSvgOptions defaultOptions;
     private GuiSvgOptions currentOptions = new GuiSvgOptions(new SvgPlotOptions());
     private final ToggleGroup scaleGroup = new ToggleGroup();
+    @FXML
     private final ToggleGroup pageOrientationTG = new ToggleGroup();
     private JsonObject settingsJSON = new JsonObject();
     private ArrayList flags = new ArrayList();
     DiagramType.DiagramTypeConverter converter = new DiagramType.DiagramTypeConverter();
-
+    private PresetService presetService = PresetService.getInstance();
 
     @FXML
     public VBox vbox_Preset_DataTable;
@@ -142,8 +141,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     private BorderPane barChartEditorBorderPane;*/
 
 
-
-    public PresetsController(){
+    public PresetsController() {
 
     }
 
@@ -160,9 +158,18 @@ public class PresetsController extends SVGWizardController implements Initializa
         chartTypeObservableList.add(resources.getString("combo_function"));
         //settingsDiagramGridPane.setVisible(false);
         overViewBorderPane.setVisible(true);
-        if(super.presets == null){
-            presets = FXCollections.observableArrayList();
+
+        this.presetService.setBundle(bundle);
+        if (super.presets == null) {
+            presets = FXCollections.observableArrayList(this.presetService.getAll());
+            loadTable();
         }
+        super.presets.addListener(new ListChangeListener<Preset>() {
+            @Override
+            public void onChanged(Change<? extends Preset> c) {
+                loadTable();
+            }
+        });
     }
 
 
@@ -191,7 +198,8 @@ public class PresetsController extends SVGWizardController implements Initializa
             File file = fileChooser.showOpenDialog(GuiSvgPlott.getInstance().getPrimaryStage());
             if (file != null) {
                 textField_Csvpath.setText(file.getAbsolutePath());
-            }});
+            }
+        });
         choiceBox_csvOrientation.setItems(FXCollections.observableArrayList(CsvOrientation.values()));
         choiceBox_csvOrientation.setConverter(svgOptionsUtil.getCsvOrientationStringConverter());
         choiceBox_csvType.setItems(FXCollections.observableArrayList(CsvType.values()));
@@ -283,18 +291,18 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
 
-    private void initFunction(){
+    private void initFunction() {
 
 
     }
 
 
     @FXML
-    private void createNewPreset(){
-            diagramTypePrompt();
+    private void createNewPreset() {
+        diagramTypePrompt();
     }
 
-    private void diagramTypePrompt(){
+    private void diagramTypePrompt() {
         // arbitrary default value
         DiagramType dt;
         List<String> choices = new ArrayList<>();
@@ -313,7 +321,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         dialogue.setHeaderText(bundle.getString("prompt_diagramtype_header"));
         dialogue.setContentText(bundle.getString("prompt_diagramtype_content"));
         Optional<String> result = dialogue.showAndWait();
-        if(result.isPresent()){
+        if (result.isPresent()) {
             dt = converter.convert(result.get());
             presetNamePrompt(dt);
         }
@@ -325,40 +333,46 @@ public class PresetsController extends SVGWizardController implements Initializa
         nameDialogue.setHeaderText(bundle.getString("prompt_preset_name_header"));
         nameDialogue.setContentText(bundle.getString("prompt_preset_name_content"));
         Optional<String> result = nameDialogue.showAndWait();
-        if(result.get().equals("")){
+        if (result.get().equals("")) {
             emptyNameAlert();
-        }else if (result.isPresent() && !super.presets.stream().map(p -> p.getPresetName()).anyMatch(n -> n.equals(result.get()))){
+        } else if (result.isPresent() && !super.presets.stream().map(p -> p.getName()).anyMatch(n -> n.equals(result.get()))) {
             currentPreset = new Preset(currentOptions, result.get(), dt);
-            HBox row = generateTableEntry();
-            vbox_Preset_DataTable.getChildren().add(row);
+            presetService.save(currentPreset);
             super.presets.add(currentPreset);
 
-        }else{
+        } else {
             duplicateAlert(result);
         }
     }
 
-    public HBox generateTableEntry(){
+    private void loadTable() {
+        vbox_Preset_DataTable.getChildren().clear();
+        for (Preset preset : super.presets) {
+            vbox_Preset_DataTable.getChildren().add(generateTableEntry(preset));
+        }
+    }
+
+    private HBox generateTableEntry(final Preset currentPreset) {
         HBox row = new HBox();
         row.setSpacing(5);
         row.getStyleClass().add("data-row");
-        TextField nameField = new TextField(currentPreset.getPresetName());
+        TextField nameField = new TextField(currentPreset.getName());
         nameField.setFocusTraversable(true);
         nameField.setEditable(false);
         nameField.getStyleClass().add("data-cell-x");
-        TextField creationDateField = new TextField(currentPreset.getCreationDate());
+        TextField creationDateField = new TextField(currentPreset.getFormattedCreationDate());
         creationDateField.setFocusTraversable(true);
         creationDateField.setEditable(false);
         creationDateField.getStyleClass().add("data-cell-y");
         creationDateField.setPrefWidth(300);
-        creationDateField.setText(bundle.getString("label_created_on") + currentPreset.getCreationDate());
+        creationDateField.setText(bundle.getString("label_created_on") + currentPreset.getFormattedCreationDate());
         creationDateField.setDisable(true);
         TextField diagramTypeField = new TextField("");
         diagramTypeField.setFocusTraversable(true);
         diagramTypeField.setEditable(false);
         diagramTypeField.setDisable(true);
         diagramTypeField.getStyleClass().add("data-cell-z");
-        diagramTypeField.setText(currentPreset.getDiagramType());
+        diagramTypeField.setText(currentPreset.getDiagramTypeString());
 
         Button editButton = new Button();
         Button copyButton = new Button();
@@ -372,21 +386,21 @@ public class PresetsController extends SVGWizardController implements Initializa
         removeButton.setGraphic(removeGlyph);
         editButton.setOnAction(event -> {
             overViewHider();
-            switch(currentPreset.getDiagramType()){
-                case "FunctionPlot":
+            switch (currentPreset.getDiagramType()) {
+                case FunctionPlot:
                     //functionPlotEditorDisplayer();
                     //flagSetter(DiagramType.FunctionPlot, currentPreset);
                     break;
-                case "LineChart":
+                case LineChart:
                     initLineChart();
                     lineChartEditorDisplayer();
                     flagSetter(DiagramType.LineChart, currentPreset);
                     break;
-                case "ScatterPlot":
+                case ScatterPlot:
                     //scatterPlotEditorDisplayer();
                     //flagSetter(DiagramType.ScatterPlot, currentPreset);
                     break;
-                case "BarChart":
+                case BarChart:
                     //barChartEditorDisplayer();
                     //flagSetter(DiagramType.BarChart, currentPreset);
                     break;
@@ -395,6 +409,8 @@ public class PresetsController extends SVGWizardController implements Initializa
 
         copyButton.setOnAction(event -> {
             vbox_Preset_DataTable.getChildren().add(row);
+            Preset copiedPreset = new Preset(currentPreset);
+            this.presetService.save(currentPreset);
         });
 
         removeButton.setOnAction(event -> {
@@ -409,11 +425,9 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
 
-
-
-    private void flagGetter(){
-        settingsJSON.addProperty("diagram_type", currentPreset.getDiagramType());
-        currentOptions.setDiagramType((DiagramType)choiceBox_diagramType.getSelectionModel().getSelectedItem());
+    private void flagGetter() {
+        settingsJSON.addProperty("diagram_type", currentPreset.getDiagramTypeString());
+        currentOptions.setDiagramType((DiagramType) choiceBox_diagramType.getSelectionModel().getSelectedItem());
         settingsJSON.addProperty("diagram_title", textField_Title.getText());
         currentOptions.setTitle(textField_Title.getText());
         settingsJSON.addProperty("output_device", choiceBox_outputDevice.getSelectionModel().getSelectedItem().toString());
@@ -427,7 +441,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         // TODO: not sure if this works
         currentOptions.setCsvOrientation((CsvOrientation) choiceBox_csvOrientation.getSelectionModel().getSelectedItem());
         settingsJSON.addProperty("csv_type", choiceBox_csvType.getSelectionModel().getSelectedItem().toString());
-        currentOptions.setCsvType((CsvType)choiceBox_csvType.getSelectionModel().getSelectedItem());
+        currentOptions.setCsvType((CsvType) choiceBox_csvType.getSelectionModel().getSelectedItem());
         settingsJSON.addProperty("trendline", choiceBox_trendline.getSelectionModel().getSelectedItem().toString());
         //wtf why u want list of trendlines
         //currentOptions.setTrendLine(choiceBox_trendline.getSelectionModel().getSelectedItem());
@@ -440,13 +454,13 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
         settingsJSON.addProperty("gridstyle", choiceBox_gridStyle.getSelectionModel().getSelectedItem().toString());
-        currentOptions.setGridStyle( (GridStyle) choiceBox_gridStyle.getSelectionModel().getSelectedItem());
+        currentOptions.setGridStyle((GridStyle) choiceBox_gridStyle.getSelectionModel().getSelectedItem());
         settingsJSON.addProperty("help_lines_x", textField_helpLinesX.getText());
         currentOptions.setxLines(textField_helpLinesX.getText());
         settingsJSON.addProperty("help_lines_y", textField_helpLinesY.getText());
         currentOptions.setyLines(textField_helpLinesY.getText());
         settingsJSON.addProperty("axis_style", choiceBox_dblaxes.getSelectionModel().getSelectedItem().toString());
-        currentOptions.setAxisStyle( (GuiAxisStyle) choiceBox_dblaxes.getSelectionModel().getSelectedItem());
+        currentOptions.setAxisStyle((GuiAxisStyle) choiceBox_dblaxes.getSelectionModel().getSelectedItem());
         settingsJSON.addProperty("css_type", choiceBox_cssType.getSelectionModel().getSelectedItem().toString());
         currentOptions.setCss(choiceBox_cssType.getSelectionModel().getSelectedItem().toString());
     }
@@ -467,7 +481,7 @@ public class PresetsController extends SVGWizardController implements Initializa
                 initFunction();
                 break;
         }
-        textField_PresetName.setText(p.getPresetName());
+        textField_PresetName.setText(p.getName());
         GuiSvgOptions options = p.getOptions();
         options.setDiagramType(dt);
         textField_Title.setText(options.getTitle());
@@ -502,10 +516,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
 
-    private void loadPreset(String presetName){
+    private void loadPreset(String presetName) {
         Preset queriedPreset;
         for (Preset p : presets) {
-            if (p.getPresetName() == presetName){
+            if (p.getName() == presetName) {
                 // If shit goes down, look here for problems
                 queriedPreset = p;
                 currentPreset = queriedPreset;
@@ -513,11 +527,11 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
     }
 
-    private void overviewDisplayer(){
+    private void overviewDisplayer() {
         overViewBorderPane.setVisible(true);
     }
 
-    private void overViewHider(){
+    private void overViewHider() {
         overViewBorderPane.setVisible(false);
     }
 
@@ -556,9 +570,8 @@ public class PresetsController extends SVGWizardController implements Initializa
 */
 
 
-
     @FXML
-    private void deletePreset(){
+    private void deletePreset() {
         Preset tobedeletedPreset = currentPreset;
         deleteConfirmationAlert(tobedeletedPreset);
         hideAllEditors();
@@ -574,7 +587,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     @FXML
     private void savePreset(){
-        currentPreset.setPresetName(textField_PresetName.getText());
+        currentPreset.setName(textField_PresetName.getText());
         //workaround ]:->
         //presetTable.refresh();
         //TODO: gets all the information out of the form and sets the appropriate values in the options
@@ -582,26 +595,25 @@ public class PresetsController extends SVGWizardController implements Initializa
         hideAllEditors();
 
         //System.out.println(currentPreset.getPresetHbox().getChildren().get(0).);
+        presetService.save(currentPreset);
         overviewDisplayer();
     }
 
-    public void deleteConfirmationAlert(Preset p){
+    public void deleteConfirmationAlert(Preset p) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(bundle.getString("alert_preset_delete_title"));
         alert.setHeaderText(bundle.getString("alert_preset_delete_header"));
-        alert.setContentText(bundle.getString("alert_preset_delete_content1") + p.getPresetName() + bundle.getString("alert_preset_delete_content2"));
+        alert.setContentText(bundle.getString("alert_preset_delete_content1") + p.getName() + bundle.getString("alert_preset_delete_content2"));
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            System.out.println(presets);
-            presets.remove(p);
-            vbox_Preset_DataTable.getChildren().remove(p.getPresetHbox());
-            System.out.println(presets);
+            this.presetService.delete(p);
+            super.presets.remove(p);
         } else {
             // ... user chose CANCEL or closed the dialog, hence do nothing
         }
     }
 
-    public void duplicateAlert(Optional o){
+    public void duplicateAlert(Optional o) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(bundle.getString("alert_preset_duplicate_title"));
         alert.setHeaderText(bundle.getString("alert_preset_duplicate_header1") + o.get() + bundle.getString("alert_preset_duplicate_header2"));
@@ -609,7 +621,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         alert.showAndWait();
     }
 
-    public void emptyNameAlert(){
+    public void emptyNameAlert() {
         Alert alarm = new Alert(Alert.AlertType.ERROR);
         alarm.setTitle(bundle.getString("alert_preset_empty_title"));
         alarm.setHeaderText(bundle.getString("alert_preset_empty_header"));
@@ -618,11 +630,11 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
     @FXML
-    private void quitToMainMenu(){
+    private void quitToMainMenu() {
         GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
         GuiSvgPlott.getInstance().closeWizard();
         int amountOfMenuItems = GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size();
-        GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().get(amountOfMenuItems-1).setDisable(false);
+        GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().get(amountOfMenuItems - 1).setDisable(false);
     }
 
 

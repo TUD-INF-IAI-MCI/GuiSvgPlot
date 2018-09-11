@@ -23,9 +23,12 @@
         -fx-background-color: none;
 
         &:focused {
-          -fx-border-color: none;
+          //-fx-border-color: none;
         }
       }
+    }
+    > Button {
+       @extend .data-cell-button;
     }
 
   }

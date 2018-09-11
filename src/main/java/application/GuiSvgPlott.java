@@ -8,12 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
@@ -180,7 +178,6 @@ public class GuiSvgPlott extends Application {
     public void closeWizard() {
         if (rootFrameController != null)
             rootFrameController.closeWizard();
-
     }
 
     public Stage getPrimaryStage() {
