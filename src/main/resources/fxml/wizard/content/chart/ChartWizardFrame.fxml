@@ -416,10 +416,22 @@
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                                    <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back" />
-                                    <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next" />
-                           <Button fx:id="button_Load" disable="true" mnemonicParsing="false" text="%button_load" />
-                                    <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create" />
+                                    <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back">
+                              <tooltip>
+                                 <Tooltip text="%button_back_tooltip" />
+                              </tooltip></Button>
+                                    <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next">
+                              <tooltip>
+                                 <Tooltip text="%button_next_tooltip" />
+                              </tooltip></Button>
+                           <Button fx:id="button_Load" disable="true" mnemonicParsing="false" text="%button_load">
+                              <tooltip>
+                                 <Tooltip text="%button_load_tooltip" />
+                              </tooltip></Button>
+                                    <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create">
+                              <tooltip>
+                                 <Tooltip text="%button_create_tooltip" />
+                              </tooltip></Button>
                                 </buttons>
                             </ButtonBar>
                         </children>
