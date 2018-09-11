@@ -279,8 +279,4 @@ public class RootFrameController implements Initializable {
         Stage scene = GuiSvgPlott.getInstance().getPrimaryStage();
         scene.titleProperty().set(this.bundle.getString(messageCode));
     }
-
-    public Menu getMenu_Presets() {
-        return menu_Presets;
-    }
 }

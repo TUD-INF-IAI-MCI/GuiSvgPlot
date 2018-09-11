@@ -71,6 +71,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private Button button_CsvPath;
     @FXML
+    private Button button_cssPath;
+    @FXML
+    private Button button_Back_To_Overview;
+    @FXML
     private ChoiceBox choiceBox_csvOrientation;
     @FXML
     private ChoiceBox choiceBox_csvType;
@@ -91,6 +95,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private TextField textField_yAxisTitle;
     @FXML
+    private Label label_customSizeWidth;
+    @FXML
+    private Label label_customSizeHeight;
+    @FXML
     private Label label_x_from;
     @FXML
     private Label label_x_to;
@@ -104,6 +112,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     private Label label_cssPath;
     @FXML
     private HBox hBox_cssPath;
+    @FXML
+    private TextField textField_customSizeWidth;
+    @FXML
+    private TextField textField_customSizeHeight;
     @FXML
     private TextField textField_x_from;
     @FXML
@@ -132,12 +144,12 @@ public class PresetsController extends SVGWizardController implements Initializa
     private BorderPane overViewBorderPane;
     @FXML
     private BorderPane lineChartEditorBorderPane;
-    /*@FXML
+    @FXML
     private BorderPane scatterPlotEditorBorderPane;
     @FXML
     private BorderPane functionPlotEditorBorderPane;
     @FXML
-    private BorderPane barChartEditorBorderPane;*/
+    private BorderPane barChartEditorBorderPane;
 
 
     public PresetsController() {
@@ -155,7 +167,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         this.svgOptionsUtil.setBundle(resources);
         chartTypeObservableList.add(resources.getString("combo_diagram"));
         chartTypeObservableList.add(resources.getString("combo_function"));
-        //settingsDiagramGridPane.setVisible(false);
         overViewBorderPane.setVisible(true);
 
         this.presetService.setBundle(bundle);
@@ -173,6 +184,12 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
     private void initLineChart(){
+
+    }
+
+
+    private void initEditor(){
+        System.out.println(currentPreset.getOptions().getTitle());
         //outputdevice
         choiceBox_outputDevice.setItems(FXCollections.observableArrayList(OutputDevice.values()));
         choiceBox_outputDevice.setConverter(svgOptionsUtil.getOutputDeviceStringConverter());
@@ -181,6 +198,22 @@ public class PresetsController extends SVGWizardController implements Initializa
         ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
         choiceBox_size.setItems(sortedPageSizes);
         choiceBox_size.setConverter(svgOptionsUtil.getPageSizeStringConverter());
+        choiceBox_size.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if(newValue.equals(0)){
+                    label_customSizeHeight.setVisible(true);
+                    label_customSizeWidth.setVisible(true);
+                    textField_customSizeHeight.setVisible(true);
+                    textField_customSizeWidth.setVisible(true);
+                }else{
+                    label_customSizeHeight.setVisible(false);
+                    label_customSizeWidth.setVisible(false);
+                    textField_customSizeHeight.setVisible(false);
+                    textField_customSizeWidth.setVisible(false);
+                }
+            }
+        });
         //CSV
         button_CsvPath.setDisable(false);
         button_CsvPath.setOnAction(event -> {
@@ -229,6 +262,16 @@ public class PresetsController extends SVGWizardController implements Initializa
                         hBox_cssPath.setVisible(true);
                         break;
                 }
+            }
+        });
+        this.button_cssPath.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(this.userDir);
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSS files (*.css)", "*.css");
+            fileChooser.getExtensionFilters().add(extFilter);
+            File file = fileChooser.showOpenDialog(GuiSvgPlott.getInstance().getPrimaryStage());
+            if (file != null) {
+                this.textField_cssPath.setText(file.getAbsolutePath());
             }
         });
         radioBtn_Scale_to_Data.setToggleGroup(scaleGroup);
@@ -382,20 +425,27 @@ public class PresetsController extends SVGWizardController implements Initializa
             overViewHider();
             switch (preset.getDiagramType()) {
                 case FunctionPlot:
-                    //functionPlotEditorDisplayer();
+                    initEditor();
+                    initFunction();
+                    functionPlotEditorDisplayer();
                     //flagSetter(DiagramType.FunctionPlot, currentPreset);
                     break;
                 case LineChart:
+                    initEditor();
                     initLineChart();
                     lineChartEditorDisplayer();
                     flagSetter(DiagramType.LineChart, preset);
                     break;
                 case ScatterPlot:
-                    //scatterPlotEditorDisplayer();
+                    initEditor();
+                    initScatterPlot();
+                    scatterPlotEditorDisplayer();
                     //flagSetter(DiagramType.ScatterPlot, currentPreset);
                     break;
                 case BarChart:
-                    //barChartEditorDisplayer();
+                    initEditor();
+                    initBarChart();
+                    barChartEditorDisplayer();
                     //flagSetter(DiagramType.BarChart, currentPreset);
                     break;
             }
@@ -415,7 +465,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         row.getChildren().addAll(nameField, creationDateField, diagramTypeField, editButton, copyButton, removeButton);
         return row;
     }
-
 
     private void flagGetter() {
         settingsJSON.addProperty("diagram_type", currentPreset.getDiagramTypeString());
@@ -528,6 +577,14 @@ public class PresetsController extends SVGWizardController implements Initializa
         overViewBorderPane.setVisible(false);
     }
 
+    private void functionPlotEditorDisplayer(){
+        functionPlotEditorBorderPane.setVisible(true);
+    }
+
+    private void functionPlotEditorHider(){
+        functionPlotEditorBorderPane.setVisible(false);
+    }
+
     private void lineChartEditorDisplayer() {
         lineChartEditorBorderPane.setVisible(true);
     }
@@ -535,22 +592,13 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void lineChartEditorHider() {
         lineChartEditorBorderPane.setVisible(false);
     }
-/*
+
     private void scatterPlotEditorDisplayer(){
         scatterPlotEditorBorderPane.setVisible(true);
     }
 
     private void scatterPlotEditorHider(){
         scatterPlotEditorBorderPane.setVisible(false);
-    }
-
-    private void functionPlotEditorDisplayer(){
-        functionPlotEditorBorderPane.setVisible(true);
-
-    }
-
-    private void functionPlotEditorHider(){
-        functionPlotEditorBorderPane.setVisible(false);
     }
 
     private void barChartEditorDisplayer() {
@@ -560,7 +608,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void barChartEditorHider() {
         barChartEditorBorderPane.setVisible(false);
     }
-*/
 
 
     @FXML
@@ -573,21 +620,24 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     private void hideAllEditors() {
         lineChartEditorHider();
-        /*scatterPlotEditorHider();
+        scatterPlotEditorHider();
         functionPlotEditorHider();
-        barChartEditorHider();*/
+        barChartEditorHider();
+    }
+
+    @FXML
+    private void backToOverview(){
+        hideAllEditors();
+        overviewDisplayer();
     }
 
     @FXML
     private void savePreset(){
         currentPreset.setName(textField_PresetName.getText());
-        //workaround ]:->
-        //presetTable.refresh();
         //TODO: gets all the information out of the form and sets the appropriate values in the options
         //flagGetter();
         hideAllEditors();
 
-        //System.out.println(currentPreset.getPresetHbox().getChildren().get(0).);
         presetService.save(currentPreset);
         overviewDisplayer();
     }
@@ -625,9 +675,8 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private void quitToMainMenu() {
         GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
+        GuiSvgPlott.getInstance().getRootFrameController().menuItem_Preset_Editor.setDisable(false);
         GuiSvgPlott.getInstance().closeWizard();
-        int amountOfMenuItems = GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().size();
-        GuiSvgPlott.getInstance().getRootFrameController().getMenu_Presets().getItems().get(amountOfMenuItems - 1).setDisable(false);
     }
 
 
