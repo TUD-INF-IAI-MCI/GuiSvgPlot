@@ -116,7 +116,8 @@ public class GuiSvgPlott extends Application {
                 }
                 case S: {
                     if (event.isControlDown()) {
-                        rootFrameController.svgWizardController.initSaveAsPreset();
+                        //TODO: update this upon completing the functionality
+                        //rootFrameController.svgWizardController.initSaveAsPreset();
                         break;
                     }
                 }

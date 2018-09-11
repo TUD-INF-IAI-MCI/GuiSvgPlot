@@ -2,6 +2,7 @@ package application.model;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.layout.HBox;
 import tud.tangram.svgplot.options.DiagramType;
 
 import java.text.SimpleDateFormat;
@@ -14,6 +15,7 @@ public class Preset {
     private StringProperty diagramType;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     private Date date = new Date();
+    private HBox presetHbox;
 
 
     public Preset(GuiSvgOptions options, String presetName, DiagramType type) {
@@ -21,6 +23,14 @@ public class Preset {
         this.creationDate = new SimpleStringProperty(sdf.format(date));
         this.presetName = new SimpleStringProperty(presetName);
         this.diagramType = new SimpleStringProperty(type.toString());
+    }
+
+    public HBox getPresetHbox() {
+        return presetHbox;
+    }
+
+    public void setPresetHbox(HBox presetHbox) {
+        this.presetHbox = presetHbox;
     }
 
     public String getPresetName() {

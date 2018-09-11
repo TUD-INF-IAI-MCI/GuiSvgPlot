@@ -180,7 +180,6 @@ public class ChartWizardFrameController extends SVGWizardController {
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES, null);
         this.initiateAllStages();
         this.initOptionListeners();
-        super.initSaveAsPreset();
         super.initloadPreset();
         this.initFieldListenersForChartPreview();
     }
