@@ -1,7 +1,7 @@
 package application;
 
+import application.controller.LanguageDialogController;
 import application.controller.RootFrameController;
-import application.infrastructure.UTF8Control;
 import com.google.gson.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,10 +17,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class GuiSvgPlott extends Application {
-//    private static final Logger logger = LoggerFactory.getLogger(GuiSvgPlott.class);
+
 
     private static GuiSvgPlott instance;
 
@@ -28,6 +29,7 @@ public class GuiSvgPlott extends Application {
     private Stage primaryStage;
     private JsonObject settings;
     private ResourceBundle bundle;
+    private Locale locale;
 
 
     ///// PATHS ////
@@ -40,7 +42,7 @@ public class GuiSvgPlott extends Application {
     public static URL CsvEditorFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/CsvEditor.fxml");
     public static URL FunctionWizardFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/functions/FunctionWizardFrame.fxml");
     public static URL ChartWizardFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/chart/ChartWizardFrame.fxml");
-
+    public static URL LanguageDialog = GuiSvgPlott.class.getResource("/fxml/wizard/LanguageDialog.fxml");
 
     ////////////////
 
@@ -50,7 +52,8 @@ public class GuiSvgPlott extends Application {
         try {
             // only works in macos
             //com.apple.eawt.Application.getApplication().setDockIconImage(new ImageIcon(getClass().getResource("/images/barchart_circle.png")).getImage());
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
         instance = this;
     }
 
@@ -61,11 +64,58 @@ public class GuiSvgPlott extends Application {
         return instance;
     }
 
+    public void setLanguageDialog() {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+        loader.setLocation(GuiSvgPlott.LanguageDialog);
+
+        try {
+            AnchorPane anchorPane = loader.load();
+
+            Scene scene = new Scene(anchorPane);
+            Stage stage = new Stage();
+            stage.setResizable(true);
+            stage.setTitle(bundle.getString("application_language"));
+            stage.setScene(scene);
+
+            LanguageDialogController controller = loader.getController();
+            controller.init(stage);
+
+            String lang = locale.getCountry();
+            stage.showAndWait();
+
+            if (!locale.getCountry().equals(lang))
+                start(primaryStage);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void setLanguage(String lang) {
+        for (Locale l : Locale.getAvailableLocales()) {
+            if (l.getLanguage().equals(lang)) {
+                locale = l;
+            }
+        }
+    }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.bundle = ResourceBundle.getBundle("langBundle", new UTF8Control());
+
+        if (locale == null)
+            locale = Locale.GERMAN;
+
+        this.bundle = ResourceBundle.getBundle("langBundle", locale);
+
         setSettings();
+
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
         loader.setLocation(GuiSvgPlott.RootFrame);
