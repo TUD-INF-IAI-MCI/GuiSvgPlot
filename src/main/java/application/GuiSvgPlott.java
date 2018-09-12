@@ -241,4 +241,8 @@ public class GuiSvgPlott extends Application {
     public RootFrameController getRootFrameController() {
         return rootFrameController;
     }
+
+    public Locale getLocale() {
+        return locale;
+    }
 }

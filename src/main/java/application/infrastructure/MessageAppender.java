@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import org.controlsfx.glyphfont.Glyph;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -28,11 +29,12 @@ import java.util.ResourceBundle;
  */
 public class MessageAppender extends AppenderBase<ILoggingEvent> {
 
-    private RootFrameController rootFrameController = GuiSvgPlott.getInstance().getRootFrameController();
+    private RootFrameController rootFrameController;
 
     private PatternLayout patternLayoutWithLevel;
     private PatternLayout patternLayoutOnlyMsg;
-    private ResourceBundle bundle = ResourceBundle.getBundle("langBundle", new UTF8Control());
+    private Locale locale = GuiSvgPlott.getInstance().getLocale();
+    private ResourceBundle bundle = ResourceBundle.getBundle("langBundle", locale, new UTF8Control());
 
     @Override
     public void start() {
@@ -51,7 +53,7 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
 
     @Override
     protected void append(final ILoggingEvent event) {
-        String formattedMsg = patternLayoutWithLevel.doLayout(event);
+        rootFrameController = GuiSvgPlott.getInstance().getRootFrameController();
         // https://controlsfx.bitbucket.io/ --> NotificationPane/Notification
 //        Notifications notifications = Notifications.create()
 //                .title(this.bundle.getString(event.getLevel().levelStr.toLowerCase()))
@@ -70,6 +72,7 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
                 }
                 break;
             default:
+                System.out.println("error case");
 //                notifications.showError();
                 renderMessage(event);
                 break;
@@ -80,8 +83,8 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
     private void renderMessage(final ILoggingEvent event) {
         String formattedMsg = patternLayoutWithLevel.doLayout(event);
         formattedMsg = formattedMsg.replace(event.getLevel().levelStr, this.bundle.getString(event.getLevel().levelStr.toLowerCase()));
-        VBox vBox_messages = rootFrameController.vBox_messages;
 
+        VBox vBox_messages = rootFrameController.vBox_messages;
         Label label = new Label(formattedMsg);
         label.setAccessibleText(formattedMsg);
         label.getStyleClass().add("notification");
