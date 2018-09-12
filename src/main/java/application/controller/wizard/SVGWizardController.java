@@ -118,6 +118,8 @@ public class SVGWizardController implements Initializable {
     private RadioButton radioBtn_portrait;
     @FXML
     private RadioButton radioBtn_landscape;
+    @FXML
+    private ToggleGroup toggleGroup_pageOrientation;
 
     // grid and axis styling options
     @FXML
@@ -128,10 +130,6 @@ public class SVGWizardController implements Initializable {
     public TextField textField_ylines;
 
     // general axis options
-    @FXML
-    protected RadioButton radioBtn_autoscale;
-    @FXML
-    protected RadioButton radioBtn_customScale;
     @FXML
     protected TextField textField_xfrom;
     @FXML
@@ -270,6 +268,8 @@ public class SVGWizardController implements Initializable {
         this.pageOrientation.addListener((observable, oldValue, newValue) -> {
             this.size = new Point(this.size.getY(), this.size.getX());
             this.guiSvgOptions.setSize(this.size);
+
+            this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
 
             this.textField_customSizeWidth.setText(this.size.x());
             this.textField_customSizeHeight.setText(this.size.y());
@@ -1004,5 +1004,9 @@ public class SVGWizardController implements Initializable {
         this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
                 this.choiceBox_outputDevice, this.choiceBox_size, this.choicebox_gridStyle,
                 this.choiceBox_csvOrientation, this.choiceBox_csvType, this.choiceBox_cssType);
+        this.textFieldUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
+                this.textField_title, this.textField_customSizeWidth, this.textField_customSizeHeight,
+                this.textField_xfrom, this.textField_xto, this.textField_yfrom, this.textField_yto,
+                this.textField_xlines, this.textField_ylines);
     }
 }

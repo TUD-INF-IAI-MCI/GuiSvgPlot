@@ -37,7 +37,7 @@ public class GuiSvgOptions {
 
     // These values were determined by trial and error, if the values are lower, the application crashes!
     public static int MINIMUM_PAGE_WIDTH = 90;
-    public static int MINIMUM_PAGE_HEIGHT = 71;
+    public static int MINIMUM_PAGE_HEIGHT = 100; // don't crash on >71 but when <100, svg-plott does strange things
 
     @JsonIgnore
     private SvgPlotOptions options;

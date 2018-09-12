@@ -85,10 +85,10 @@
                                                       <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" prefHeight="17.0" text="%radio_portrait" GridPane.valignment="CENTER">
                                                           <tooltip><Tooltip text="%radio_portrait" /></tooltip>
                                                           <toggleGroup>
-                                                              <ToggleGroup fx:id="togglePageOrientationTG" />
+                                                              <ToggleGroup fx:id="toggleGroup_pageOrientation"/>
                                                           </toggleGroup>
                                                       </RadioButton>
-                                                      <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_landscape" toggleGroup="$togglePageOrientationTG">
+                                                      <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_landscape" toggleGroup="$toggleGroup_pageOrientation">
                                                           <tooltip><Tooltip text="%radio_landscape" /></tooltip>
                                                       </RadioButton>
                                                   </children>
@@ -276,10 +276,10 @@
                                                       <RadioButton fx:id="radioBtn_autoscale" accessibleText="%help_radio_scale_to_data_area" mnemonicParsing="false" prefHeight="17.0" text="%radio_scale_to_data_area" GridPane.valignment="CENTER">
                                                           <tooltip><Tooltip text="%help_radio_scale_to_data_area" /></tooltip>
                                                           <toggleGroup>
-                                                              <ToggleGroup fx:id="autoScale" />
+                                                              <ToggleGroup fx:id="toggleGroup_autoScale"/>
                                                           </toggleGroup>
                                                       </RadioButton>
-                                                      <RadioButton fx:id="radioBtn_customScale" accessibleText="%help_radio_custom_scale" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$autoScale">
+                                                      <RadioButton fx:id="radioBtn_customScale" accessibleText="%help_radio_custom_scale" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$toggleGroup_autoScale">
                                                           <tooltip><Tooltip text="%help_radio_custom_scale" /></tooltip>
                                                       </RadioButton>
                                                   </children>

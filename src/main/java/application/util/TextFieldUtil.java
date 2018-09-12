@@ -1,18 +1,24 @@
 package application.util;
 
 import application.GuiSvgPlott;
+import application.model.GuiSvgOptions;
+import application.service.SvgOptionsService;
 import javafx.scene.Node;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javafx.scene.control.Label;
 
+import javax.xml.soap.Text;
 import java.util.ResourceBundle;
 
 public class TextFieldUtil {
     private static final Logger logger = LoggerFactory.getLogger(TextFieldUtil.class);
     private static final TextFieldUtil INSTANCE = new TextFieldUtil();
+    private SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
     private ResourceBundle bundle;
 
     private TextFieldUtil() {
@@ -175,6 +181,23 @@ public class TextFieldUtil {
                 textField.setText(defaultVal.toString());
             }
         });
+    }
+
+
+    /**
+     * Adds a change listener to each given {@link TextField}'s focusedProperty that updates the preview when user left the field.
+     * @param webView_svg the {@link WebView} for the preview
+     * @param guiSvgOptions the {@link GuiSvgOptions}, needed for the preview rendering
+     * @param textFields all {@link TextField}s
+     */
+    public void addReloadPreviewOnChangeListener(final WebView webView_svg, final GuiSvgOptions guiSvgOptions, final TextField... textFields){
+        for(TextField textField : textFields) {
+            textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue){
+                    this.svgOptionsService.buildPreviewSVG(guiSvgOptions, webView_svg);
+                }
+            });
+        }
     }
 
     /**

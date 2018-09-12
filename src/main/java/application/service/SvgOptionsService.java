@@ -237,8 +237,8 @@ public class SvgOptionsService {
 
 
     private boolean isSvgPlottOptionsValid(final SvgPlotOptions svgPlotOptions) {
-        boolean hasErrorInXRange = svgPlotOptions.getxRange().getFrom() == svgPlotOptions.getxRange().getTo();
-        boolean hasErrorInYRange = svgPlotOptions.getyRange().getFrom() == svgPlotOptions.getyRange().getTo();
+        boolean hasErrorInXRange =  svgPlotOptions.getxRange() != null && svgPlotOptions.getxRange().getFrom() == svgPlotOptions.getxRange().getTo();
+        boolean hasErrorInYRange =  svgPlotOptions.getyRange() != null && svgPlotOptions.getyRange().getFrom() == svgPlotOptions.getyRange().getTo();
 
         boolean hasErrorInCustomSizeWidth = svgPlotOptions.getSize().getX() < GuiSvgOptions.MINIMUM_PAGE_WIDTH;
         boolean hasErrorInCustomSizeHeight = svgPlotOptions.getSize().getY() < GuiSvgOptions.MINIMUM_PAGE_HEIGHT;

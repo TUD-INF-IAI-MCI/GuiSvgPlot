@@ -15,8 +15,8 @@ import java.util.ResourceBundle;
 
 public class ChoiceBoxUtil {
     private static final Logger logger = LoggerFactory.getLogger(ChoiceBoxUtil.class);
-    private SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
     private static final ChoiceBoxUtil INSTANCE = new ChoiceBoxUtil();
+    private SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
     private ResourceBundle bundle;
 
     private ChoiceBoxUtil() {
@@ -53,6 +53,12 @@ public class ChoiceBoxUtil {
         });
     }
 
+    /**
+     * Adds a change listener to each given ChoiceBox that updates the preview.
+     * @param webView_svg the {@link WebView} for the preview
+     * @param guiSvgOptions the {@link GuiSvgOptions}, needed for the preview rendering
+     * @param choiceBoxes all {@link ChoiceBox}es
+     */
     public void addReloadPreviewOnChangeListener(final WebView webView_svg, final GuiSvgOptions guiSvgOptions, final ChoiceBox... choiceBoxes){
         for(ChoiceBox choiceBox : choiceBoxes) {
             choiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

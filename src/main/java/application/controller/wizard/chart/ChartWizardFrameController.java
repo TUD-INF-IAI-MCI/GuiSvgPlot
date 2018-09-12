@@ -6,10 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import org.controlsfx.control.CheckComboBox;
@@ -148,7 +145,12 @@ public class ChartWizardFrameController extends SVGWizardController {
     protected TextField textField_xunit;
     @FXML
     protected TextField textField_yunit;
-
+    @FXML
+    protected ToggleGroup toggleGroup_autoScale;
+    @FXML
+    protected RadioButton radioBtn_autoscale;
+    @FXML
+    protected RadioButton radioBtn_customScale;
 
     /* stage 5 */
     @FXML
@@ -459,6 +461,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                 guiSvgOptions.setTrendLine(trendline);
             }
         });
+        this.textFieldUtil.addIntegerValidationWithMinimum(this.textField_trendline_n, 1);
         this.textField_trendline_n.textProperty().addListener((observable, oldValue, newValue) -> {
             setValueToIndex(trendline, 1, newValue);
         });
@@ -497,8 +500,10 @@ public class ChartWizardFrameController extends SVGWizardController {
                     show(label_originalPoints, choiceBox_originalPoints);
                     hide(label_trendline_n, textField_trendline_n);
                     // default alpha
+                    setValueToIndex(trendline, 1, "0.0");
                     textField_trendline_alpha.setText("0.0");
                     // default forecast
+                    setValueToIndex(trendline, 2, "1");
                     textField_trendline_forecast.setText("1");
                     break;
                 case ExponentialSmoothing:
@@ -701,7 +706,7 @@ public class ChartWizardFrameController extends SVGWizardController {
     }
 
     private void setValueToIndex(ObservableList<String> trendline, int index, String newValue) {
-        if (trendline.size() > index) {
+        if (trendline.size() - 1 >= index) {
             trendline.set(index, newValue);
         } else {
             trendline.add(index, newValue);
@@ -735,5 +740,8 @@ public class ChartWizardFrameController extends SVGWizardController {
                 this.choiceBox_secondTexture, this.choiceBox_thirdTexture, this.choicebox_dblaxes, this.choiceBox_firstLineStyle,
                 this.choiceBox_secondLineStyle, this.choiceBox_thirdLineStyle, this.choiceBox_linepoints, this.choiceBox_originalPoints,
                 this.choiceBox_sorting, this.choicebox_sortOrder, this.choiceBox_trendline);
+        this.textFieldUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
+                this.textField_xunit, this.textField_yunit, this.textField_trendline_n,
+                this.textField_trendline_forecast, this.textField_trendline_alpha);
     }
 }
