@@ -1,10 +1,15 @@
 package application.service;
 
 import application.model.Preset;
+import application.infrastructure.JacksonDeserializer.PointDeserializer;
+import application.infrastructure.JacksonDeserializer.RangeDeserializer;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tud.tangram.svgplot.coordinatesystem.Range;
+import tud.tangram.svgplot.data.Point;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,6 +37,10 @@ public class PresetService {
     private PresetService() {
         path = Paths.get(System.getProperty("user.home") + "/svgPlot/presets.json");
         mapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(Point.class, new PointDeserializer());
+        module.addDeserializer(Range.class, new RangeDeserializer());
+        mapper.registerModule(module);
     }
 
     public static PresetService getInstance() {
@@ -84,6 +93,7 @@ public class PresetService {
             presetList = mapper.readValue(path.toFile(), new TypeReference<List<Preset>>() {});
         } catch (IOException e) {
             logger.error(bundle.getString("load_presets_error") + " " + e.getMessage());
+            e.printStackTrace();
         }
         return presetList;
     }

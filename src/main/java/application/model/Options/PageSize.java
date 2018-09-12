@@ -1,6 +1,6 @@
 package application.model.Options;
 
-import application.model.Options.Point;
+import tud.tangram.svgplot.data.Point;
 
 public enum PageSize {
     CUSTOM("custom", 210, 297),

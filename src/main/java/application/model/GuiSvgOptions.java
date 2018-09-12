@@ -1,7 +1,10 @@
 package application.model;
 
 import application.GuiSvgPlott;
-import application.model.Options.*;
+import application.model.Options.GuiAxisStyle;
+import application.model.Options.LinePointsOption;
+import application.model.Options.SortOrder;
+import application.model.Options.VisibilityOfDataPoints;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -13,6 +16,8 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import tud.tangram.svgplot.coordinatesystem.Range;
+import tud.tangram.svgplot.data.Point;
 import tud.tangram.svgplot.data.PointListList;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
@@ -57,7 +62,7 @@ public class GuiSvgOptions {
     private ObjectProperty<GridStyle> gridStyle;
     private ObjectProperty<GuiAxisStyle> axisStyle;
     private ObjectProperty<IntegralPlotSettings> integral;
-
+    private ObjectProperty<PointListList> points;
 
     private BooleanProperty pi;
     private BooleanProperty autoScale;
@@ -108,8 +113,8 @@ public class GuiSvgOptions {
         this.csvType = new SimpleObjectProperty<>(this.options.getCsvType());
         this.csvOrientation = new SimpleObjectProperty<>(this.options.getCsvOrientation());
         this.size = new SimpleObjectProperty<>(new Point(this.options.getSize()));
-        this.xRange = new SimpleObjectProperty<>(this.options.getxRange() == null ? null : new Range(this.options.getxRange()));
-        this.yRange = new SimpleObjectProperty<>(this.options.getxRange() == null ? null : new Range(this.options.getyRange()));
+        this.xRange = new SimpleObjectProperty<>(this.options.getxRange());
+        this.yRange = new SimpleObjectProperty<>(this.options.getyRange());
         this.barAccumulationStyle = new SimpleObjectProperty<>(this.options.getBarAccumulationStyle());
         this.sortingType = new SimpleObjectProperty<>(this.options.getSortingType());
         this.sortOrder = new SimpleObjectProperty<>(this.options.isSortDescending() ? SortOrder.DESC : SortOrder.ASC);
@@ -118,6 +123,7 @@ public class GuiSvgOptions {
         this.gridStyle = new SimpleObjectProperty<>(GridStyle.NONE);
         this.axisStyle = new SimpleObjectProperty<>(GuiAxisStyle.Barchart);
         this.integral = new SimpleObjectProperty<>(this.options.getIntegral());
+        this.points = new SimpleObjectProperty<>(this.options.getPoints());
         initSimpleObjectListeners();
 
 
@@ -215,6 +221,9 @@ public class GuiSvgOptions {
                 this.options.setShowDoubleAxes(null);
             }
         });
+        this.points.addListener((observable, oldValue, newValue) -> {
+            this.options.setPoints(newValue);
+        });
     }
 
     private void initSimpleStringListerners() {
@@ -311,9 +320,9 @@ public class GuiSvgOptions {
     }
 
     private void setScatterPlotDefaultOptions() {
-//        if (this.pointSymbols.size() == 0) {
-//            this.pointSymbols.addAll(PointSymbol.getOrdered());
-//        }
+        if (this.pointSymbols.size() == 0) {
+            this.pointSymbols.addAll(PointSymbol.getOrdered());
+        }
         this.axisStyle.set(GuiAxisStyle.Box);
     }
 
@@ -423,8 +432,8 @@ public class GuiSvgOptions {
         return pointSymbols;
     }
     @JsonGetter("pointSymbols")
-    public List<Texture> getPointSymbolsAsList() {
-        return textures;
+    public List<PointSymbol> getPointSymbolsAsList() {
+        return pointSymbols;
     }
 
     public void setPointSymbols(final ObservableList<PointSymbol> pointSymbols) {
@@ -755,6 +764,13 @@ public class GuiSvgOptions {
         return this.integral.get();
     }
 
+    public ObjectProperty<PointListList> pointsProperty() {
+        return points;
+    }
+
+    public void setPoints(final PointListList points) {
+        this.points.set(points);
+    }
 
     public void updatePointSpecificOptions() {
         if (this.diagramType.get() == DiagramType.ScatterPlot) {

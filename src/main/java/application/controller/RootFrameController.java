@@ -80,9 +80,9 @@ public class RootFrameController implements Initializable {
 
 
     public void init() {
+        presetService.setBundle(bundle);
         button_StartDiagram.setOnAction(this::startDiagram);
         button_StartFunction.setOnAction(event -> startFunction(true));
-
 
         menuItem_Language.setOnAction(event -> GuiSvgPlott.getInstance().setLanguageDialog());
 
