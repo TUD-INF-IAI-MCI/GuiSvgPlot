@@ -203,9 +203,8 @@ public class FunctionWizardFrameController extends SVGWizardController {
             @Override
             public String toString(Function function) {
                 f = function;
-                if (f != null)
-                    return function.getTitle() + ": " + function.getFunction();
-                return "";
+                return function.toString();
+//                return "";
             }
 
             @Override
