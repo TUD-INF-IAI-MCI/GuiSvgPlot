@@ -588,10 +588,11 @@ public class SVGWizardController implements Initializable {
         this.button_Warnings = new Button("", warnIcon);
         this.button_Warnings.getStyleClass().add("notification");
         this.button_Warnings.getStyleClass().add("notification-btn");
-        this.button_Warnings.setAccessibleHelp(this.bundle.getString("warn_message_help"));
+        this.button_Warnings.setAccessibleText(this.bundle.getString("warn_message_help"));
+        this.button_Warnings.setAccessibleHelp(this.bundle.getString("warn_message_no_warnings"));
         this.button_Warnings.setTooltip(new Tooltip(this.bundle.getString("warn_message_help")));
         this.button_Warnings.setId("btn_warnings");
-        this.button_Warnings.setDisable(true);
+        this.button_Warnings.setFocusTraversable(true);
         hBox_pagination.getChildren().add(this.button_Warnings);
 
         hBox_pagination.getChildren().remove(this.button_Infos);
@@ -600,10 +601,11 @@ public class SVGWizardController implements Initializable {
         this.button_Infos = new Button("", infoIcon);
         this.button_Infos.getStyleClass().add("notification");
         this.button_Infos.getStyleClass().add("notification-btn");
-        this.button_Infos.setAccessibleHelp(this.bundle.getString("info_message_help"));
+        this.button_Infos.setAccessibleText(this.bundle.getString("info_message_help"));
+        this.button_Infos.setAccessibleHelp(this.bundle.getString("info_message_no_infos"));
         this.button_Infos.setTooltip(new Tooltip(this.bundle.getString("info_message_help")));
         this.button_Infos.setId("btn_infos");
-        this.button_Infos.setDisable(true);
+        this.button_Infos.setFocusTraversable(true);
         hBox_pagination.getChildren().add(this.button_Infos);
         this.messageBtns.add(this.button_Infos);
 
@@ -621,40 +623,44 @@ public class SVGWizardController implements Initializable {
         this.vBox_warnings.setFocusTraversable(true);
 
         this.button_Infos.setOnAction(event -> {
-            ScrollPane infoScrollPane = new ScrollPane(this.vBox_infos);
-            infoScrollPane.getStyleClass().add("notification");
-            infoScrollPane.getStyleClass().add("notification-scrollPane");
-            infoScrollPane.getStyleClass().add("info");
-            infoScrollPane.setMaxSize(340, 500);
-            infoScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
-            infoScrollPane.setPadding(new Insets(0, 10, 0, 0));
+            if (this.vBox_infos.getChildren().size() > 0) {
+                ScrollPane infoScrollPane = new ScrollPane(this.vBox_infos);
+                infoScrollPane.getStyleClass().add("notification");
+                infoScrollPane.getStyleClass().add("notification-scrollPane");
+                infoScrollPane.getStyleClass().add("info");
+                infoScrollPane.setMaxSize(340, 500);
+                infoScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
+                infoScrollPane.setPadding(new Insets(0, 10, 0, 0));
 
-            this.popOver_infos.setTitle(this.bundle.getString("popup_info_title"));
-            this.popOver_warnings.getStyleClass().add("notification");
-            this.popOver_warnings.getStyleClass().add("info");
-            this.popOver_infos.setHeaderAlwaysVisible(true);
-            this.popOver_infos.setContentNode(infoScrollPane);
-            this.popOver_infos.show(this.button_Infos);
-            this.vBox_infos.getChildren().get(0).requestFocus();
-            this.fixBlurryText(infoScrollPane);
+                this.popOver_infos.setTitle(this.bundle.getString("popup_info_title"));
+                this.popOver_warnings.getStyleClass().add("notification");
+                this.popOver_warnings.getStyleClass().add("info");
+                this.popOver_infos.setHeaderAlwaysVisible(true);
+                this.popOver_infos.setContentNode(infoScrollPane);
+                this.popOver_infos.show(this.button_Infos);
+                this.vBox_infos.getChildren().get(0).requestFocus();
+                this.fixBlurryText(infoScrollPane);
+            }
         });
         button_Warnings.setOnAction(event -> {
-            ScrollPane warningScrollPane = new ScrollPane(this.vBox_warnings);
-            warningScrollPane.getStyleClass().add("notification");
-            warningScrollPane.getStyleClass().add("notification-scrollPane");
-            warningScrollPane.getStyleClass().add("warn");
-            warningScrollPane.setMaxSize(340, 500);
-            warningScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
-            warningScrollPane.setPadding(new Insets(0, 10, 0, 0));
+            if (this.vBox_infos.getChildren().size() > 0) {
+                ScrollPane warningScrollPane = new ScrollPane(this.vBox_warnings);
+                warningScrollPane.getStyleClass().add("notification");
+                warningScrollPane.getStyleClass().add("notification-scrollPane");
+                warningScrollPane.getStyleClass().add("warn");
+                warningScrollPane.setMaxSize(340, 500);
+                warningScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
+                warningScrollPane.setPadding(new Insets(0, 10, 0, 0));
 
-            this.popOver_warnings.setTitle(this.bundle.getString("popup_warn_title"));
-            this.popOver_warnings.getStyleClass().add("notification");
-            this.popOver_warnings.getStyleClass().add("warn");
-            this.popOver_warnings.setHeaderAlwaysVisible(true);
-            this.popOver_warnings.setContentNode(warningScrollPane);
-            this.popOver_warnings.show(this.button_Warnings);
-            this.vBox_warnings.getChildren().get(0).requestFocus();
-            this.fixBlurryText(warningScrollPane);
+                this.popOver_warnings.setTitle(this.bundle.getString("popup_warn_title"));
+                this.popOver_warnings.getStyleClass().add("notification");
+                this.popOver_warnings.getStyleClass().add("warn");
+                this.popOver_warnings.setHeaderAlwaysVisible(true);
+                this.popOver_warnings.setContentNode(warningScrollPane);
+                this.popOver_warnings.show(this.button_Warnings);
+                this.vBox_warnings.getChildren().get(0).requestFocus();
+                this.fixBlurryText(warningScrollPane);
+            }
         });
 
     }

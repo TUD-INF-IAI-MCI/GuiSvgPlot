@@ -7,8 +7,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -147,6 +150,21 @@ public class GuiSvgPlott extends Application {
                     break;
                 }
                 case F1: {
+                    VBox messages =  rootFrameController.vBox_messages;
+                    ScrollPane messages_container =  rootFrameController.scrollPane_message;
+                    if (messages.getChildren().size() > 0){
+                        messages.getChildren().get(0).requestFocus();
+                    } else {
+                        messages_container.setFocusTraversable(true);
+                        messages_container.requestFocus();
+                    }
+                    break;
+                }
+                case I: {
+                    rootFrameController.svgWizardController.button_Infos.requestFocus();
+                    break;
+                }
+                case W: {
                     rootFrameController.svgWizardController.button_Warnings.requestFocus();
                     break;
                 }

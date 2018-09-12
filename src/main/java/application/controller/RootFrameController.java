@@ -235,17 +235,18 @@ public class RootFrameController implements Initializable {
 
     public void clearMessageLabel() {
 //        this.scrollPane_message.setContent(new Text());
-        this.scrollPane_message.setVisible(false);
-        this.scrollPane_message.getStyleClass().clear();
+//        this.scrollPane_message.setVisible(false);
+//        this.scrollPane_message.getStyleClass().clear();
+        this.scrollPane_message.setAccessibleText(bundle.getString("no_error_messages"));
         this.vBox_messages.getChildren().clear();
 
         try {
             this.svgWizardController.vBox_infos.getChildren().clear();
             this.svgWizardController.vBox_warnings.getChildren().clear();
             this.svgWizardController.button_Warnings.setGraphic(this.svgWizardController.getWarnIcon());
-            this.svgWizardController.button_Warnings.setDisable(true);
+            this.svgWizardController.button_Warnings.setAccessibleHelp(this.bundle.getString("warn_message_no_warning"));
             this.svgWizardController.button_Infos.setGraphic(this.svgWizardController.getInfoIcon());
-            this.svgWizardController.button_Infos.setDisable(true);
+            this.svgWizardController.button_Infos.setAccessibleHelp(this.bundle.getString("info_message_no_infos"));
         } catch (Exception e) {
         }
     }

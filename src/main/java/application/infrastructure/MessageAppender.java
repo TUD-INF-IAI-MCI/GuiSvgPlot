@@ -95,9 +95,10 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
 
         // TODO: set accassible help text
         ScrollPane scrollPane = rootFrameController.scrollPane_message;
+        scrollPane.setAccessibleText("");
         scrollPane.setVisible(true);
         label.setFocusTraversable(true);
-        label.requestFocus();
+//        label.requestFocus();
     }
 
     private void renderInfoMessage(final ILoggingEvent event) {
@@ -107,7 +108,7 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
         Text formattedMsg = getTextOfMessage(event, infos, "info");
         infos.getChildren().add(formattedMsg);
         button_infos.setDisable(false);
-        button_infos.setAccessibleText(this.bundle.getString("info_message") + " " + infos.getChildren().size());
+        button_infos.setAccessibleHelp(this.bundle.getString("info_message") + " " + infos.getChildren().size());
         button_infos.setAccessibleRole(AccessibleRole.MENU_ITEM);
 
         createNotification(button_infos, "" + infos.getChildren().size(), rootFrameController.svgWizardController.getInfoIcon());
@@ -120,7 +121,7 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
         Text formattedMsg = getTextOfMessage(event, warnings, "warn");
         warnings.getChildren().add(formattedMsg);
         button_warnings.setDisable(false);
-        button_warnings.setAccessibleText(this.bundle.getString("warn_message") + ":" + warnings.getChildren().size());
+        button_warnings.setAccessibleHelp(this.bundle.getString("warn_message") + ":" + warnings.getChildren().size());
         button_warnings.setAccessibleRole(AccessibleRole.MENU_ITEM);
 
         createNotification(button_warnings, "" + warnings.getChildren().size(), rootFrameController.svgWizardController.getWarnIcon());
