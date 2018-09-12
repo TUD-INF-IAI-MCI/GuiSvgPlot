@@ -24,7 +24,7 @@
 <?import javafx.scene.web.WebView?>
 <?import org.controlsfx.control.CheckComboBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.functions.FunctionWizardFrameController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.functions.FunctionWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
             <VBox BorderPane.alignment="CENTER">
@@ -126,16 +126,15 @@
                             <Tab text="Stage2">
                                 <AnchorPane>
                                     <children>
-                                        <VBox prefHeight="473.0" prefWidth="317.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <VBox prefHeight="473.0" prefWidth="317.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <children>
-                                                <GridPane fx:id="stage2" prefHeight="273.0" prefWidth="317.0">
+                                                <GridPane fx:id="stage2" minHeight="60.0">
                                                     <columnConstraints>
                                                         <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="200.0" />
                                                         <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                                                     </columnConstraints>
                                                     <rowConstraints>
                                                         <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
                                                         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
                                                     </rowConstraints>
                                                     <children>
@@ -155,10 +154,9 @@
                                                                 </children>
                                                             </HBox>
                                                         </HBox>
-                                                        <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                         <AnchorPane GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
                                                             <children>
-                                                                <Button fx:id="button_EditDataSet" accessibleText="%label_csv_edit" mnemonicParsing="false" prefHeight="25.0" text="%label_functions" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+                                                                <Button fx:id="button_EditDataSet" accessibleText="%label_csv_edit" mnemonicParsing="false" prefHeight="25.0" text="%label_functions" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                                                                     <tooltip>
                                                                         <Tooltip text="%label_csv_edit" />
                                                                     </tooltip>
@@ -168,7 +166,7 @@
                                                         <Label id="label_CsvFile" fx:id="label_addFunction" contentDisplay="RIGHT" text="%label_csv_file" />
                                                     </children>
                                                 </GridPane>
-                                                <ScrollPane fx:id="scrollPane_dataTable" prefHeight="200.0" prefWidth="200.0" styleClass="data-table-container">
+                                                <ScrollPane fx:id="scrollPane_dataTable" styleClass="data-table-container" VBox.vgrow="ALWAYS">
                                                     <content>
                                                         <VBox fx:id="vBox_DataTable" />
                                                     </content>

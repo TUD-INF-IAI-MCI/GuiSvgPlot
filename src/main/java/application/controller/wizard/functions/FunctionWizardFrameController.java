@@ -24,6 +24,7 @@ import tud.tangram.svgplot.plotting.IntegralPlotSettings;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class FunctionWizardFrameController extends SVGWizardController {
 
@@ -170,7 +171,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
                 nodes.getAddedSubList().forEach(row -> {
                     if (row instanceof HBox) {
-                        functionList.add((Function) row.getUserData());
+                        Function f = (Function) ((HBox) row).getUserData();
+                        if (!(f.getFunction().isEmpty() && f.getTitle().isEmpty()))
+                            functionList.add((Function) row.getUserData());
                     }
                 });
 
@@ -200,7 +203,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
             @Override
             public String toString(Function function) {
                 f = function;
-                return function.getTitle() + ": " + function.getFunction();
+                if (f != null)
+                    return function.getTitle() + ": " + function.getFunction();
+                return "";
             }
 
             @Override
@@ -318,6 +323,8 @@ public class FunctionWizardFrameController extends SVGWizardController {
         row.setSpacing(5);
         row.setUserData(f);
 
+        if ((f.getTitle().isEmpty() && f.getFunction().isEmpty()))
+            functionList.remove(row.getUserData());
 
         TextField titleField = new TextField(function.getTitle());
         titleField.getStyleClass().add("data-cell-x");
@@ -330,9 +337,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
         functionField.setPromptText("Funktion");
 
         InvalidationListener invalidationListener = args -> {
+            functionList.remove(row.getUserData());
 
-            if (!(titleField.getText().isEmpty() || functionField.getText().isEmpty())) {
-                functionList.remove(row.getUserData());
+            if (!(titleField.getText().trim().isEmpty() && functionField.getText().trim().isEmpty())) {
                 Function func = new Function(titleField.getText(), functionField.getText());
                 row.setUserData(func);
                 functionList.add(func);
