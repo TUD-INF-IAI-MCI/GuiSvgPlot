@@ -321,10 +321,10 @@ public class SVGWizardController implements Initializable {
         this.xRange.addListener((args, oldVal, newVal) -> {
             if (!this.guiSvgOptions.isAutoScale()) {
                 this.guiSvgOptions.setxRange(xRange.get());
-                if (!this.textField_xfrom.getText().equals(newVal.getFrom())) {
+                if (!this.textField_xfrom.getText().equals("" + newVal.getFrom())) {
                     this.textField_xfrom.setText("" + newVal.getFrom());
                 }
-                if (!this.textField_xto.getText().equals(newVal.getTo())) {
+                if (!this.textField_xto.getText().equals("" + newVal.getTo())) {
                     this.textField_xto.setText("" + newVal.getTo());
                 }
             }
@@ -363,10 +363,10 @@ public class SVGWizardController implements Initializable {
         this.yRange.addListener((args, oldVal, newVal) -> {
             if (!this.guiSvgOptions.isAutoScale()) {
                 this.guiSvgOptions.setyRange(this.yRange.get());
-                if (!this.textField_yfrom.getText().equals(newVal.getFrom())) {
+                if (!this.textField_yfrom.getText().equals("" + newVal.getFrom())) {
                     this.textField_yfrom.setText("" + newVal.getFrom());
                 }
-                if (!this.textField_yto.getText().equals(newVal.getTo())) {
+                if (!this.textField_yto.getText().equals("" + newVal.getTo())) {
                     this.textField_yto.setText("" + newVal.getTo());
                 }
             }
@@ -889,6 +889,9 @@ public class SVGWizardController implements Initializable {
     }
 
 
+    /**
+     * Initializes Listeners on {@link GuiSvgOptions}.
+     */
     private void initOptionListeners() {
         this.guiSvgOptions.gridStyleProperty().addListener((observable, oldValue, newValue) -> {
             this.choicebox_gridStyle.getSelectionModel().select(newValue);
@@ -903,7 +906,7 @@ public class SVGWizardController implements Initializable {
      * DragHandler for Path-TextFields. Only one dragged File is acceptable.
      *
      * @param fileType determines which kind of files can be used for dragging
-     * @return
+     * @return the EventHandler
      */
     private EventHandler<? super DragEvent> dragOverHandler(String fileType) {
 

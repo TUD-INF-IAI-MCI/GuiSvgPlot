@@ -465,9 +465,11 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.textField_trendline_n.textProperty().addListener((observable, oldValue, newValue) -> {
             setValueToIndex(trendline, 1, newValue);
         });
+        this.textFieldUtil.addDoubleValidationWithMinimumAndMaximum(this.textField_trendline_alpha, this.label_trendline_alpha, 0, 1);
         this.textField_trendline_alpha.textProperty().addListener((observable, oldValue, newValue) -> {
             setValueToIndex(trendline, 1, newValue);
         });
+        this.textFieldUtil.addDoubleValidationWithMinimum(this.textField_trendline_forecast, this.label_trendline_forecast, 0);
         this.textField_trendline_forecast.textProperty().addListener((observable, oldValue, newValue) -> {
             setValueToIndex(trendline, 2, newValue);
         });
@@ -661,6 +663,9 @@ public class ChartWizardFrameController extends SVGWizardController {
         }
     }
 
+    /**
+     * Initiates Listeners in {@link application.model.GuiSvgOptions}
+     */
     private void initOptionListeners() {
         this.guiSvgOptions.textureProperty().addListener(new ListChangeListener<Texture>() {
             @Override
@@ -721,9 +726,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         ObservableList<PointSymbol> oldItems =
                 allPointSymbols.filtered(pointSymbol -> !checkedItems.contains(pointSymbol) && checkedPointSymbols.contains(pointSymbol));
         if (newItems.size() > 0) {
-            for (PointSymbol pointSymbol : newItems) {
-                checkedPointSymbols.add(pointSymbol);
-            }
+            checkedPointSymbols.addAll(newItems);
         }
         if (oldItems.size() > 0) {
             for (PointSymbol pointSymbol : oldItems) {
@@ -743,5 +746,9 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.textFieldUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
                 this.textField_xunit, this.textField_yunit, this.textField_trendline_n,
                 this.textField_trendline_forecast, this.textField_trendline_alpha);
+
+        this.radioBtn_autoscale.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
+        });
     }
 }

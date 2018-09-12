@@ -171,6 +171,48 @@ public class TextFieldUtil {
     }
 
     /**
+     * Checks if the value of the {@link TextField} is an double greater or equal then given minimum and less or equal the given maximum.
+     * @param textField the {@link TextField},whose entry is to be validated.
+     * @param label the label
+     * @param minimum the minimum value.
+     * @param maximum the maximum value.
+     */
+    public void addDoubleValidationWithMinimumAndMaximum(final TextField textField, final Label label,  final int minimum, final int maximum) {
+        this.addNotEmptyValidationListener(textField, minimum);
+        this.addDoubleValidation(textField, label);
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                double number = Double.parseDouble(newValue);
+                if (number < minimum || number > maximum) throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                textField.setText(oldValue);
+            }
+
+        });
+    }
+
+    /**
+     * Checks if the value of the {@link TextField} is an double greater or equal then given minimum.
+     * @param textField the {@link TextField},whose entry is to be validated.
+     * @param label the label
+     * @param minimum the minimum value.
+     */
+
+    public void addDoubleValidationWithMinimum(final TextField textField, final Label label,  final int minimum) {
+        this.addNotEmptyValidationListener(textField, minimum);
+        this.addDoubleValidation(textField, label);
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                double number = Double.parseDouble(newValue);
+                if (number < minimum) throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                textField.setText(oldValue);
+            }
+
+        });
+    }
+
+    /**
      * If {@link TextField} is empty, it sets the given defaultValue to the TextField.
      * @param textField the {@link TextField},whose entry is to be validated.
      * @param defaultVal the defaultVal
