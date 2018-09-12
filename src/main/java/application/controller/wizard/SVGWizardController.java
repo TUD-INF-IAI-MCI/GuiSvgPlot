@@ -643,7 +643,7 @@ public class SVGWizardController implements Initializable {
             }
         });
         button_Warnings.setOnAction(event -> {
-            if (this.vBox_infos.getChildren().size() > 0) {
+            if (this.vBox_warnings.getChildren().size() > 0) {
                 ScrollPane warningScrollPane = new ScrollPane(this.vBox_warnings);
                 warningScrollPane.getStyleClass().add("notification");
                 warningScrollPane.getStyleClass().add("notification-scrollPane");
