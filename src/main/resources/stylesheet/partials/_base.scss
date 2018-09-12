@@ -23,7 +23,6 @@ Label {
   -fx-padding: 0 10 0 10;
   -fx-wrap-text: true;
   -fx-pref-height: 17px;
-  -fx-max-width: 1.7976931348623157E308;
 
   &.invalid {
     -fx-text-fill: $error-font-color;
@@ -60,7 +59,6 @@ ChoiceBox,
   }
   .context-menu {
     -fx-min-width: 210px;
-    -fx-max-width: 1.7976931348623157E308;
   }
 
   &.invalid {
