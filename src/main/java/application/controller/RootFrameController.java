@@ -2,14 +2,13 @@ package application.controller;
 
 import application.GuiSvgPlott;
 import application.controller.wizard.SVGWizardController;
-import application.model.GuiSvgOptions;
 import application.model.Preset;
+import application.service.PresetService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,7 +17,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -70,6 +68,8 @@ public class RootFrameController implements Initializable {
 
     public PresetsController presetsController = PresetsController.getInstance();
 
+    private PresetService presetService = PresetService.getInstance();
+
     public static String wizardPath = "none";
 
 
@@ -96,22 +96,18 @@ public class RootFrameController implements Initializable {
                 nameDialogue.setHeaderText(bundle.getString("prompt_preset_name_header"));
                 nameDialogue.setContentText(bundle.getString("prompt_preset_name_content"));
                 Optional<String> result = nameDialogue.showAndWait();
-                if (result.get().equals("")) {
-                    Alert alarm = new Alert(Alert.AlertType.ERROR);
-                    alarm.setTitle(bundle.getString("alert_preset_empty_title"));
-                    alarm.setHeaderText(bundle.getString("alert_preset_empty_header"));
-                    alarm.setContentText(bundle.getString("alert_preset_empty_content"));
-                    alarm.showAndWait();
-                } else if (result.isPresent() && !presetsController.presets.contains(result.get())) {
+                if (result.isPresent() && result.get().equals("")) {
+                    showErrorAlert(bundle.getString("alert_preset_empty_title"), bundle.getString("alert_preset_empty_header"), bundle.getString("alert_preset_empty_content"));
+                } else if (result.isPresent() && presetService.findByName(result.get()).size() == 0) {
                     savedPreset.setName(result.get());
-                    startPresetOverview();
-                    presetsController.presets.add(savedPreset);
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle(bundle.getString("alert_preset_duplicate_title"));
-                    alert.setHeaderText(bundle.getString("alert_preset_duplicate_header1") + result.get() + bundle.getString("alert_preset_duplicate_header2"));
-                    alert.setContentText(bundle.getString("alert_preset_duplicate_content"));
-                    alert.showAndWait();
+                    /*startPresetOverview();
+                    presetsController.presets.add(savedPreset);*/
+                    presetService.create(savedPreset);
+                } else if(result.isPresent()) {
+                    String header = bundle.getString("alert_preset_duplicate_header1") + result.get() + bundle.getString("alert_preset_duplicate_header2");
+                    showErrorAlert(bundle.getString("alert_preset_duplicate_title"), header,
+                            bundle.getString("alert_preset_duplicate_content"));
+
                 }
             } else if (wizardPath.contains("Function")) {
                 Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName", svgWizardController.getGuiSvgOptions().getDiagramType());
@@ -158,7 +154,7 @@ public class RootFrameController implements Initializable {
         alert.setHeaderText(bundle.getString("alert_exit_header"));
         alert.setContentText(bundle.getString("alert_exit_content"));
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             // ... user chose OK
             GuiSvgPlott.getInstance().getPrimaryStage().close();
         } else {
@@ -257,5 +253,13 @@ public class RootFrameController implements Initializable {
     public void setSceneTitle(final String messageCode) {
         Stage scene = GuiSvgPlott.getInstance().getPrimaryStage();
         scene.titleProperty().set(this.bundle.getString(messageCode));
+    }
+
+    private void showErrorAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

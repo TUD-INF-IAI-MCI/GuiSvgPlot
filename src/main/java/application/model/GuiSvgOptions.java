@@ -13,7 +13,6 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.data.PointListList;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
@@ -109,8 +108,8 @@ public class GuiSvgOptions {
         this.csvType = new SimpleObjectProperty<>(this.options.getCsvType());
         this.csvOrientation = new SimpleObjectProperty<>(this.options.getCsvOrientation());
         this.size = new SimpleObjectProperty<>(new Point(this.options.getSize()));
-        this.xRange = new SimpleObjectProperty<>(this.options.getxRange());
-        this.yRange = new SimpleObjectProperty<>(this.options.getyRange());
+        this.xRange = new SimpleObjectProperty<>(this.options.getxRange() == null ? null : new Range(this.options.getxRange()));
+        this.yRange = new SimpleObjectProperty<>(this.options.getxRange() == null ? null : new Range(this.options.getyRange()));
         this.barAccumulationStyle = new SimpleObjectProperty<>(this.options.getBarAccumulationStyle());
         this.sortingType = new SimpleObjectProperty<>(this.options.getSortingType());
         this.sortOrder = new SimpleObjectProperty<>(this.options.isSortDescending() ? SortOrder.DESC : SortOrder.ASC);

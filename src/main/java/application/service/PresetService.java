@@ -133,6 +133,21 @@ public class PresetService {
         }
     }
 
+    public List<Preset> findByName(final String name){
+        List<Preset> resultList = new ArrayList<>();
+        try {
+            List<Preset> presetList = getAll();
+            for(Preset savedPreset: presetList){
+                if (savedPreset.getName().equals(name)){
+                    resultList.add(savedPreset);
+                }
+            }
+        } catch (Exception e) {
+            logger.error(bundle.getString("find_preset_error") + " " + e.getMessage());
+        }
+        return resultList;
+    }
+
     public void setBundle(final ResourceBundle bundle){
         this.bundle = bundle;
     }

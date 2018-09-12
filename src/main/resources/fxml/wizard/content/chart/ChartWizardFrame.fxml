@@ -409,7 +409,7 @@
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                                    <Button fx:id="button_rerenderPreview" accessibleText="%button_rerender_preview" mnemonicParsing="false" styleClass="btn-preview" text="%button_rerender_preview">
+                                    <Button fx:id="button_rerenderPreview" accessibleText="%button_rerender_preview" mnemonicParsing="false" styleClass="btn-preview" text="%button_rerender_preview_text">
                                         <tooltip><Tooltip text="%button_rerender_preview" /></tooltip>
                                     </Button>
                                 </buttons>

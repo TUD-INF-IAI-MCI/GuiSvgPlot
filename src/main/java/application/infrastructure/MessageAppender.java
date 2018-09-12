@@ -72,7 +72,6 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
                 }
                 break;
             default:
-                System.out.println("error case");
 //                notifications.showError();
                 renderMessage(event);
                 break;
