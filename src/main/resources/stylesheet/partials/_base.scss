@@ -39,7 +39,7 @@ Label {
 
 }
 
-ChoiceBox,
+ChoiceBox, Combobox,
 .check-combo-box > .combo-box {
   @extend Label;
   -fx-cursor: hand;
@@ -68,7 +68,7 @@ ChoiceBox,
   }
 }
 
-TextField {
+TextField, TextArea {
   @extend ChoiceBox;;
   -fx-cursor: text;
   -fx-border-radius: 3;
@@ -79,20 +79,22 @@ TextField {
     -fx-border-radius: 3;
   }
 }
+TextArea {
+  -fx-padding: 0;
+}
 
-RadioButton {
+RadioButton, CheckBox {
   -fx-cursor: hand;
   -fx-mark-color: $tud-blue;
-  .radio {
+  .radio{
     -fx-background-color: white;
     //-fx-background-image: null;
     -fx-border-width: 1px;
     -fx-border-color: lighten(grey, 10%);
     -fx-border-radius: 15px;
   }
-
   &:focused {
-    .radio {
+    .radio, .mark, .box {
       -fx-border-color: $tud-blue;
     }
   }

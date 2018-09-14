@@ -2,6 +2,7 @@ package application;
 
 import application.controller.LanguageDialogController;
 import application.controller.RootFrameController;
+import application.infrastructure.UTF8Control;
 import com.google.gson.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -115,7 +116,7 @@ public class GuiSvgPlott extends Application {
         if (locale == null)
             locale = Locale.GERMAN;
 
-        this.bundle = ResourceBundle.getBundle("langBundle", locale);
+        this.bundle = ResourceBundle.getBundle("langBundle", locale, new UTF8Control());
 
         setSettings();
 
