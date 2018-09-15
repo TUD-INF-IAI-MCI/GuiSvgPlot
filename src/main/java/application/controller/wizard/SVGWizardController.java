@@ -569,6 +569,7 @@ public class SVGWizardController implements Initializable {
             stageBtn.getStyleClass().add("stageBtn");
             if (this.currentStage.get() == stage) {
                 stageBtn.getStyleClass().add("active");
+                stageBtn.setAccessibleHelp(bundle.getString("active_stage"));
             }
 
             final int stageNumber = stage;
@@ -698,7 +699,9 @@ public class SVGWizardController implements Initializable {
 
             if (oldVal.intValue() < this.stageBtns.size()) {
                 this.stageBtns.get(oldVal.intValue()).getStyleClass().remove("active");
+                this.stageBtns.get(oldVal.intValue()).setAccessibleHelp("");
                 this.stageBtns.get(this.currentStage.get()).getStyleClass().add("active");
+                this.stageBtns.get(this.currentStage.get()).setAccessibleHelp(bundle.getString("active_stage"));
             }
 
             this.borderPane_WizardContent.setCenter(this.stages.get(this.currentStage.get()));
