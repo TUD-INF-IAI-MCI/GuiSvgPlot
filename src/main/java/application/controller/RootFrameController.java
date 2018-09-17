@@ -95,7 +95,7 @@ public class RootFrameController implements Initializable {
         menuItem_Language.setOnAction(event -> GuiSvgPlott.getInstance().setLanguageDialog());
         menuItem_Save_Preset.setDisable(true);
         menuItem_Save_Preset.setOnAction(event -> {
-            if (wizardPath.contains("Chart")) {
+            if (wizardPath.contains("Chart") || wizardPath.contains("Function")) {
                 Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName", svgWizardController.getGuiSvgOptions().getDiagramType());
                 TextInputDialog nameDialogue = new TextInputDialog();
                 nameDialogue.setTitle(bundle.getString("prompt_preset_name_title"));
@@ -117,12 +117,8 @@ public class RootFrameController implements Initializable {
                     String header = bundle.getString("alert_preset_duplicate_header1") + result.get() + bundle.getString("alert_preset_duplicate_header2");
                     showErrorAlert(bundle.getString("alert_preset_duplicate_title"), header,
                             bundle.getString("alert_preset_duplicate_content"));
-
                 }
-            } else if (wizardPath.contains("Function")) {
-                Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName", svgWizardController.getGuiSvgOptions().getDiagramType());
             }
-
         });
 
         menuItem_About.setOnAction(event -> {
