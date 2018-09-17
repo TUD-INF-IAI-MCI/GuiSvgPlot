@@ -220,6 +220,7 @@ public class RootFrameController implements Initializable {
             GuiSvgPlott.getInstance().closeWizard();
         }
         menuItem_Preset_Editor.setDisable(true);
+        menuItem_Save_Preset.setDisable(true);
         this.setSceneTitle("application_preset_overview");
         this.label_Headline.setText(this.bundle.getString("headline_presets"));
         FXMLLoader loader = new FXMLLoader();

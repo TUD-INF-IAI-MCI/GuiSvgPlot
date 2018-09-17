@@ -6,6 +6,7 @@ import application.model.GuiSvgOptions;
 import application.model.Options.CssType;
 import application.model.Options.GuiAxisStyle;
 import application.model.Options.PageSize;
+import application.model.Options.TrendlineAlgorithm;
 import application.model.Preset;
 import application.service.PresetService;
 import application.util.SvgOptionsUtil;
@@ -24,6 +25,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.slf4j.Logger;
@@ -33,6 +35,7 @@ import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
+import tud.tangram.svgplot.plotting.point.PointSymbol;
 import tud.tangram.svgplot.styles.GridStyle;
 
 import java.io.File;
@@ -57,6 +60,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     private ArrayList flags = new ArrayList();
     DiagramType.DiagramTypeConverter converter = new DiagramType.DiagramTypeConverter();
     private PresetService presetService = PresetService.getInstance();
+    private ObservableList<PointSymbol> customPointSymbols_scatterPlott;
 
     @FXML
     public VBox vbox_Preset_DataTable;
@@ -89,6 +93,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private ChoiceBox choiceBox_cssType;
     @FXML
+    private CheckComboBox<PointSymbol> checkComboBox_pointSymbols_lineChart;
+    @FXML
+    private CheckComboBox<PointSymbol> checkComboBox_pointSymbols_scatterPlot;
+    @FXML
     private TextField textField_Title;
     @FXML
     private TextField textField_Csvpath;
@@ -100,6 +108,12 @@ public class PresetsController extends SVGWizardController implements Initializa
     private Label label_customSizeWidth;
     @FXML
     private Label label_customSizeHeight;
+    @FXML
+    private Label label_pointSymbols_lineChart;
+    @FXML
+    private Label label_pointSymbols_scatterPlot;
+    @FXML
+    private Label label_trendline;
     @FXML
     private Label label_x_from;
     @FXML
@@ -133,7 +147,13 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private TextField textField_helpLinesY;
     @FXML
-    private TextField textField_PresetName;
+    private TextField textField_PresetNameLine;
+    @FXML
+    private TextField textField_PresetNameFunction;
+    @FXML
+    private TextField textField_PresetNameBar;
+    @FXML
+    private TextField textField_PresetNameScatter;
     @FXML
     private RadioButton radioBtn_Scale_to_Data;
     @FXML
@@ -185,13 +205,9 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
 
-    private void initLineChart(){
-
-    }
 
 
     private void initEditor(){
-        System.out.println(currentPreset.getOptions().getTitle());
         //outputdevice
         choiceBox_outputDevice.setItems(FXCollections.observableArrayList(OutputDevice.values()));
         choiceBox_outputDevice.setConverter(svgOptionsUtil.getOutputDeviceStringConverter());
@@ -319,21 +335,69 @@ public class PresetsController extends SVGWizardController implements Initializa
         hBox_cssPath.setVisible(false);
     }
 
+    private void initLineChart(){
+        textField_PresetNameLine.setText(currentPreset.getName());
+        //label_pointSymbols_lineChart.setVisible(true);
+        //checkComboBox_pointSymbols_lineChart.setVisible(true);
+
+
+
+    }
+
     private void initScatterPlot(){
+        textField_PresetNameScatter.setText(currentPreset.getName());
+        ObservableList<PointSymbol> pointSymbolObservableList = FXCollections.observableArrayList(PointSymbol.getOrdered());
+        label_pointSymbols_scatterPlot.setVisible(true);
+        //this.customPointSymbols_scatterPlott = guiSvgOptions.getPointSymbols();
+        checkComboBox_pointSymbols_scatterPlot.setVisible(true);
+        checkComboBox_pointSymbols_scatterPlot.getItems().addAll(pointSymbolObservableList);
+        checkComboBox_pointSymbols_scatterPlot.setConverter(this.svgOptionsUtil.getPointSymbolStringConverter());
+        checkComboBox_pointSymbols_scatterPlot.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PointSymbol>() {
+            public void onChanged(ListChangeListener.Change<? extends PointSymbol> ps) {
+                changePointSymbols(customPointSymbols_scatterPlott, checkComboBox_pointSymbols_scatterPlot, pointSymbolObservableList);
+            }
+        });
+        ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
+        label_trendline.setVisible(true);
+        choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
+        choiceBox_trendline.setConverter(this.svgOptionsUtil.getTrendlineAlgorithmStringConverter());
+        choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
+
+
+        choiceBox_trendline.setVisible(true);
+
 
     }
 
     private void initBarChart(){
-
+        textField_PresetNameBar.setText(currentPreset.getName());
     }
 
 
 
     private void initFunction() {
-
+        textField_PresetNameFunction.setText(currentPreset.getName());
 
     }
-
+    private void changePointSymbols(ObservableList<PointSymbol> checkedPointSymbols, CheckComboBox<PointSymbol> checkComboBox, ObservableList<PointSymbol> allPointSymbols) {
+        checkedPointSymbols.clear();
+        ObservableList<PointSymbol> checkedItems = checkComboBox.getCheckModel().getCheckedItems();
+        ObservableList<PointSymbol> newItems =
+                checkedItems.filtered(pointSymbol -> !checkedPointSymbols.contains(pointSymbol));
+        ObservableList<PointSymbol> oldItems =
+                allPointSymbols.filtered(pointSymbol -> !checkedItems.contains(pointSymbol) && checkedPointSymbols.contains(pointSymbol));
+        if (newItems.size() > 0) {
+            for (PointSymbol pointSymbol : newItems) {
+                checkedPointSymbols.add(pointSymbol);
+            }
+        }
+        if (oldItems.size() > 0) {
+            for (PointSymbol pointSymbol : oldItems) {
+                checkedPointSymbols.remove(pointSymbol);
+            }
+        }
+        guiSvgOptions.setPointSymbols(checkedPointSymbols);
+    }
 
     @FXML
     private void createNewPreset() {
@@ -398,13 +462,10 @@ public class PresetsController extends SVGWizardController implements Initializa
 
         TextField nameField = new TextField(preset.getName());
         nameField.setFocusTraversable(true);
-        nameField.setEditable(false);
         nameField.getStyleClass().add("data-cell-x");
-        TextField creationDateField = new TextField(preset.getFormattedCreationDate());
+        Text creationDateField = new Text(preset.getFormattedCreationDate());
         creationDateField.setFocusTraversable(true);
-        creationDateField.setEditable(false);
         creationDateField.getStyleClass().add("data-cell-y");
-        creationDateField.setPrefWidth(300);
         creationDateField.setText(bundle.getString("label_created_on") + preset.getFormattedCreationDate());
         creationDateField.setDisable(true);
         //TODO: textfields to text
@@ -457,12 +518,12 @@ public class PresetsController extends SVGWizardController implements Initializa
         copyButton.setOnAction(event -> {
             vbox_Preset_DataTable.getChildren().add(row);
             Preset copiedPreset = new Preset(preset);
+            copiedPreset.setName(copiedPreset.getName() + " Kopie");
             this.presetService.create(preset);
         });
 
         removeButton.setOnAction(event -> {
             deleteConfirmationAlert(preset);
-            //vbox_Preset_DataTable.getChildren().remove(row);
         });
 
         row.getChildren().addAll(nameField, creationDateField, diagramTypeField, editButton, copyButton, removeButton);
@@ -473,6 +534,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         HBox.setHgrow(copyButton, Priority.NEVER);
         HBox.setHgrow(removeButton, Priority.NEVER);
         return row;
+    }
+
+    private void addCopy(){
+
     }
 
     private void flagGetter() {
@@ -531,7 +596,7 @@ public class PresetsController extends SVGWizardController implements Initializa
                 initFunction();
                 break;
         }
-        textField_PresetName.setText(p.getName());
+
         GuiSvgOptions options = p.getOptions();
         options.setDiagramType(dt);
         textField_Title.setText(options.getTitle());
@@ -642,7 +707,21 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     @FXML
     private void savePreset(){
-        currentPreset.setName(textField_PresetName.getText());
+        switch (currentPreset.getDiagramType()) {
+            case FunctionPlot:
+                currentPreset.setName(textField_PresetNameFunction.getText());
+                break;
+            case LineChart:
+                currentPreset.setName(textField_PresetNameLine.getText());
+                break;
+            case ScatterPlot:
+                currentPreset.setName(textField_PresetNameScatter.getText());
+                break;
+            case BarChart:
+                currentPreset.setName(textField_PresetNameBar.getText());
+                break;
+        }
+
         //TODO: gets all the information out of the form and sets the appropriate values in the options
         //flagGetter();
         hideAllEditors();
