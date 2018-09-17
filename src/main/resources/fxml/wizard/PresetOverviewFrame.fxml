@@ -65,7 +65,7 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <ScrollPane prefHeight="305.0" prefWidth="600.0" styleClass="data-table-container">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="305.0" prefWidth="600.0" styleClass="data-table-container" VBox.vgrow="ALWAYS">
                      <content>
                         <VBox fx:id="vbox_Preset_DataTable" styleClass="data-table" />
                      </content>
@@ -93,7 +93,7 @@
                            <tooltip>
                               <Tooltip text="%button_delete_tooltip" />
                            </tooltip></Button>
-                        <Button fx:id="button_savePreset11" layoutX="488.0" layoutY="17.0" mnemonicParsing="false" onAction="#savePreset" text="%button_save">
+                        <Button fx:id="button_savePreset11" disable="true" layoutX="488.0" layoutY="17.0" mnemonicParsing="false" onAction="#savePreset" text="%button_save">
                            <tooltip>
                               <Tooltip text="%button_save_tooltip" />
                            </tooltip></Button>
@@ -391,7 +391,7 @@
                            <tooltip>
                               <Tooltip text="%button_delete_tooltip" />
                            </tooltip></Button>
-                        <Button fx:id="button_savePreset1" layoutX="488.0" layoutY="17.0" mnemonicParsing="false" onAction="#savePreset" text="%button_save">
+                        <Button fx:id="button_savePreset1" disable="true" layoutX="488.0" layoutY="17.0" mnemonicParsing="false" onAction="#savePreset" text="%button_save">
                            <tooltip>
                               <Tooltip text="%button_save_tooltip" />
                            </tooltip></Button>
@@ -689,7 +689,7 @@
                            <tooltip>
                               <Tooltip text="%button_delete_tooltip" />
                            </tooltip></Button>
-                        <Button fx:id="button_savePreset" layoutX="488.0" layoutY="17.0" mnemonicParsing="false" onAction="#savePreset" text="%button_save">
+                        <Button fx:id="button_savePreset" disable="true" layoutX="488.0" layoutY="17.0" mnemonicParsing="false" onAction="#savePreset" text="%button_save">
                            <tooltip>
                               <Tooltip text="%button_save_tooltip" />
                            </tooltip></Button>
@@ -987,7 +987,7 @@
                            <tooltip>
                               <Tooltip text="%button_delete_tooltip" />
                            </tooltip></Button>
-                        <Button fx:id="button_savePreset111" layoutX="488.0" layoutY="17.0" mnemonicParsing="false" onAction="#savePreset" text="%button_save">
+                        <Button fx:id="button_savePreset111" disable="true" layoutX="488.0" layoutY="17.0" mnemonicParsing="false" onAction="#savePreset" text="%button_save">
                            <tooltip>
                               <Tooltip text="%button_save_tooltip" />
                            </tooltip></Button>

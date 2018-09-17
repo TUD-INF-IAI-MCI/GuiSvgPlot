@@ -20,7 +20,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -392,6 +394,8 @@ public class PresetsController extends SVGWizardController implements Initializa
         HBox row = new HBox();
         row.setSpacing(5);
         row.getStyleClass().add("data-row");
+
+
         TextField nameField = new TextField(preset.getName());
         nameField.setFocusTraversable(true);
         nameField.setEditable(false);
@@ -403,10 +407,9 @@ public class PresetsController extends SVGWizardController implements Initializa
         creationDateField.setPrefWidth(300);
         creationDateField.setText(bundle.getString("label_created_on") + preset.getFormattedCreationDate());
         creationDateField.setDisable(true);
-        TextField diagramTypeField = new TextField("");
+        //TODO: textfields to text
+        Text diagramTypeField = new Text("");
         diagramTypeField.setFocusTraversable(true);
-        diagramTypeField.setEditable(false);
-        diagramTypeField.setDisable(true);
         diagramTypeField.getStyleClass().add("data-cell-z");
         diagramTypeField.setText(preset.getDiagramTypeString());
 
@@ -463,6 +466,12 @@ public class PresetsController extends SVGWizardController implements Initializa
         });
 
         row.getChildren().addAll(nameField, creationDateField, diagramTypeField, editButton, copyButton, removeButton);
+        HBox.setHgrow(nameField, Priority.ALWAYS);
+        HBox.setHgrow(diagramTypeField, Priority.ALWAYS);
+        HBox.setHgrow(creationDateField, Priority.ALWAYS);
+        HBox.setHgrow(editButton, Priority.NEVER);
+        HBox.setHgrow(copyButton, Priority.NEVER);
+        HBox.setHgrow(removeButton, Priority.NEVER);
         return row;
     }
 
