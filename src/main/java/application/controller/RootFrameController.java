@@ -93,8 +93,6 @@ public class RootFrameController implements Initializable {
         button_StartFunction.setOnAction(event -> startFunction(true));
 
         menuItem_Language.setOnAction(event -> GuiSvgPlott.getInstance().setLanguageDialog());
-
-
         menuItem_Save_Preset.setDisable(true);
         menuItem_Save_Preset.setOnAction(event -> {
             if (wizardPath.contains("Chart")) {
@@ -108,9 +106,13 @@ public class RootFrameController implements Initializable {
                     showErrorAlert(bundle.getString("alert_preset_empty_title"), bundle.getString("alert_preset_empty_header"), bundle.getString("alert_preset_empty_content"));
                 } else if (result.isPresent() && presetService.findByName(result.get()).size() == 0) {
                     savedPreset.setName(result.get());
-                    /*startPresetOverview();
-                    presetsController.presets.add(savedPreset);*/
                     presetService.create(savedPreset);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle(bundle.getString("alert_preset_created_title"));
+                    alert.setHeaderText(bundle.getString("alert_preset_created_header"));
+                    alert.setContentText(bundle.getString("alert_preset_created_content"));
+                    alert.getDialogPane().setMinSize(500, 150);
+                    alert.showAndWait();
                 } else if (result.isPresent()) {
                     String header = bundle.getString("alert_preset_duplicate_header1") + result.get() + bundle.getString("alert_preset_duplicate_header2");
                     showErrorAlert(bundle.getString("alert_preset_duplicate_title"), header,
