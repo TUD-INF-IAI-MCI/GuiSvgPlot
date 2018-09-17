@@ -22,7 +22,7 @@
 <?import javafx.scene.web.WebView?>
 <?import org.controlsfx.control.CheckComboBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
             <VBox BorderPane.alignment="CENTER">
@@ -74,7 +74,7 @@
                                               <Label fx:id="label_diagramType" contentDisplay="RIGHT" text="%label_diagram_type" textOverrun="CLIP" wrapText="true" GridPane.rowIndex="0" />
                                               <ChoiceBox fx:id="choiceBox_diagramType" accessibleText="Diagrammtyp auswählen" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" />
                                               <Label fx:id="label_title" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_diagram_title" GridPane.rowIndex="1" />
-                                              <TextField fx:id="textField_title" accessibleText="%diagram_title" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%prompt_title" GridPane.columnIndex="1" GridPane.rowIndex="1" >
+                                              <TextField fx:id="textField_title" accessibleText="%diagram_title" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%prompt_title" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                 <tooltip><Tooltip text="%diagram_title" /></tooltip>
                                               </TextField>
       
@@ -87,7 +87,7 @@
                                                       <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" prefHeight="17.0" text="%radio_portrait" GridPane.valignment="CENTER">
                                                           <tooltip><Tooltip text="%radio_portrait" /></tooltip>
                                                           <toggleGroup>
-                                                              <ToggleGroup fx:id="toggleGroup_pageOrientation"/>
+                                                              <ToggleGroup fx:id="toggleGroup_pageOrientation" />
                                                           </toggleGroup>
                                                       </RadioButton>
                                                       <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_landscape" toggleGroup="$toggleGroup_pageOrientation">
@@ -98,11 +98,11 @@
                                               <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram" GridPane.rowIndex="4" />
                                               <ChoiceBox fx:id="choiceBox_size" accessibleText="%label_size_of_diagram" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                               <Label fx:id="label_customSizeWidth" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_width" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                                              <TextField fx:id="textField_customSizeWidth" accessibleText="%size_of_diagram_width" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_width" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" >
+                                              <TextField fx:id="textField_customSizeWidth" accessibleText="%size_of_diagram_width" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_width" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                 <tooltip><Tooltip text="%size_of_diagram_width" /></tooltip>
                                               </TextField>
                                               <Label fx:id="label_customSizeHeight" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_height" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                                              <TextField fx:id="textField_customSizeHeight" accessibleText="%size_of_diagram_height" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_height" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" >
+                                              <TextField fx:id="textField_customSizeHeight" accessibleText="%size_of_diagram_height" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_height" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                                 <tooltip><Tooltip text="%size_of_diagram_height" /></tooltip>
                                               </TextField>
                                           </children>
@@ -141,8 +141,8 @@
                                                   </Button>
                                               </HBox>
       
-                                              <Label fx:id="label_CsvOrientation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_orientation" GridPane.rowIndex="1" />
-                                              <ChoiceBox id="choiceBox_CsvOrientation" fx:id="choiceBox_csvOrientation" accessibleText="CSV Orientierung" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                              <Label fx:id="label_CsvOrientation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_orientation" visible="false" GridPane.rowIndex="1" />
+                                              <ChoiceBox id="choiceBox_CsvOrientation" fx:id="choiceBox_csvOrientation" accessibleText="CSV Orientierung" focusTraversable="false" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                               <Label fx:id="label_Title1" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_type" GridPane.rowIndex="2" />
                                               <ChoiceBox id="choiceBox_CsvType" fx:id="choiceBox_csvType" accessibleText="CSV Typ" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <AnchorPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
@@ -238,11 +238,11 @@
                                               <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="1" />
                                               <ChoiceBox fx:id="choiceBox_trendline" accessibleText="Trendlinienalgorithmus" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                               <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                                              <TextField fx:id="textField_trendline_alpha" accessibleText="%text_trendline_alpha" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" >
+                                              <TextField fx:id="textField_trendline_alpha" accessibleText="%text_trendline_alpha" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                   <tooltip><Tooltip text="%text_trendline_alpha" /></tooltip>
                                               </TextField>
                                               <Label fx:id="label_trendline_forecast" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_forecast" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                                              <TextField fx:id="textField_trendline_forecast" accessibleText="%text_trendline_forecast" maxWidth="1.7976931348623157E308" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" >
+                                              <TextField fx:id="textField_trendline_forecast" accessibleText="%text_trendline_forecast" maxWidth="1.7976931348623157E308" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                   <tooltip><Tooltip text="%text_trendline_forecast" /></tooltip>
                                               </TextField>
                                               <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_n" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
@@ -280,12 +280,12 @@
                                           </padding>
                                           <children>
                                               <Label fx:id="label_xunit" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_x_axis_title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                              <TextField fx:id="textField_xunit" accessibleText="%label_x_axis_title" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="%prompt_x_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="0" >
-                                                <tooltip><Tooltip text="%label_x_axis_title"/></tooltip>
+                                              <TextField fx:id="textField_xunit" accessibleText="%label_x_axis_title" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="%prompt_x_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                                <tooltip><Tooltip text="%label_x_axis_title" /></tooltip>
                                               </TextField>
                                               <Label fx:id="label_yunit" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_y_axis_title" GridPane.rowIndex="1" />
-                                              <TextField fx:id="textField_yunit" accessibleText="%label_y_axis_title" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="%prompt_y_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="1" >
-                                                <tooltip><Tooltip text="%label_y_axis_title"/> </tooltip>
+                                              <TextField fx:id="textField_yunit" accessibleText="%label_y_axis_title" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="%prompt_y_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <tooltip><Tooltip text="%label_y_axis_title" /> </tooltip>
                                               </TextField>
       
                                               <Label fx:id="label_Autoscale" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_scale_data" GridPane.columnIndex="0" GridPane.rowIndex="2" />
@@ -294,7 +294,7 @@
                                                       <RadioButton fx:id="radioBtn_autoscale" accessibleText="%help_radio_scale_to_data_area" mnemonicParsing="false" prefHeight="17.0" text="%radio_scale_to_data_area" GridPane.valignment="CENTER">
                                                           <tooltip><Tooltip text="%help_radio_scale_to_data_area" /></tooltip>
                                                           <toggleGroup>
-                                                              <ToggleGroup fx:id="toggleGroup_autoScale"/>
+                                                              <ToggleGroup fx:id="toggleGroup_autoScale" />
                                                           </toggleGroup>
                                                       </RadioButton>
                                                       <RadioButton fx:id="radioBtn_customScale" accessibleText="%help_radio_custom_scale" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$toggleGroup_autoScale">
@@ -304,21 +304,21 @@
                                               </HBox>
 
                                               <Label fx:id="label_yfrom" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_from" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                              <TextField fx:id="textField_yfrom" accessibleHelp="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3" >
-                                                <tooltip><Tooltip text="%display_area_y_from"/></tooltip>
+                                              <TextField fx:id="textField_yfrom" accessibleHelp="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                <tooltip><Tooltip text="%display_area_y_from" /></tooltip>
                                               </TextField>
                                               <Label fx:id="label_yto" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_to" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                                              <TextField fx:id="textField_yto" accessibleHelp="%display_area_y_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="4" >
-                                                <tooltip><Tooltip text="%display_area_y_to"/></tooltip>
+                                              <TextField fx:id="textField_yto" accessibleHelp="%display_area_y_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                <tooltip><Tooltip text="%display_area_y_to" /></tooltip>
                                               </TextField>
 
                                               <Label fx:id="label_xfrom" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_from" textAlignment="RIGHT" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
-                                              <TextField fx:id="textField_xfrom" accessibleHelp="%display_area_x_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="5" >
+                                              <TextField fx:id="textField_xfrom" accessibleHelp="%display_area_x_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                 <tooltip><Tooltip text="%display_area_x_from" /></tooltip>
                                               </TextField>
                                               <Label fx:id="label_xto" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_to" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                                              <TextField fx:id="textField_xto" accessibleHelp="%display_area_x_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="6" >
-                                                <tooltip><Tooltip text="%display_area_x_to"/></tooltip>
+                                              <TextField fx:id="textField_xto" accessibleHelp="%display_area_x_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                <tooltip><Tooltip text="%display_area_x_to" /></tooltip>
                                               </TextField>
                                           </children>
                                       </GridPane>
@@ -351,12 +351,12 @@
                                               <ChoiceBox fx:id="choicebox_gridStyle" accessibleText="%radio_horizontal" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
       
                                               <Label fx:id="label_xlines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_x" GridPane.rowIndex="1" />
-                                              <TextField fx:id="textField_xlines" accessibleText="%help_lines_x_helptext" accessibleHelp="%help_text_space_seperated" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="x1 x2 x3" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" >
+                                              <TextField fx:id="textField_xlines" accessibleHelp="%help_text_space_seperated" accessibleText="%help_lines_x_helptext" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="x1 x2 x3" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                 <tooltip><Tooltip text="%help_lines_x_tooltip_text" /> </tooltip>
                                               </TextField>
       
                                               <Label fx:id="label_ylines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_y" GridPane.rowIndex="2" />
-                                              <TextField fx:id="textField_ylines" accessibleText="%help_lines_y_helptext" accessibleHelp="%help_text_space_seperated" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="y1 y2 y3" GridPane.columnIndex="1" GridPane.rowIndex="2" >
+                                              <TextField fx:id="textField_ylines" accessibleHelp="%help_text_space_seperated" accessibleText="%help_lines_y_helptext" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="y1 y2 y3" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                 <tooltip><Tooltip text="%help_lines_y_tooltip_text" /></tooltip>
                                               </TextField>
       
@@ -394,7 +394,7 @@
       
                                               <Label fx:id="label_cssPath" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_file" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                                               <HBox fx:id="hBox_cssPath" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                  <TextField fx:id="textField_cssPath" accessibleText="%label_css_path_text_field" promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS" >
+                                                  <TextField fx:id="textField_cssPath" accessibleText="%label_css_path_text_field" promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS">
                                                     <tooltip><Tooltip text="%label_css_path_text_field" /></tooltip>
                                                   </TextField>
                                                   <Button fx:id="button_cssPath" accessibleText="%label_css_path_button" mnemonicParsing="false" styleClass="btn-upload" text="...">
@@ -402,7 +402,7 @@
                                                   </Button>
                                               </HBox>
                                               <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                              <TextArea fx:id="textArea_cssCustom" prefHeight="200.0" prefWidth="200.0" visible="false" accessibleText="%label_css_custom" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                              <TextArea fx:id="textArea_cssCustom" accessibleText="%label_css_custom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                   <tooltip><Tooltip text="%label_css_custom" /></tooltip>
                                                   <GridPane.margin>
                                                       <Insets top="10.0" />
@@ -411,7 +411,7 @@
       
       
                                               <Label fx:id="label_colors" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_colors" visible="false" GridPane.rowIndex="2" />
-                                              <CheckComboBox fx:id="checkComboBox_color" accessibleHelp="%help_checkcombobox" accessibleText="%color_select_text" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" >
+                                              <CheckComboBox fx:id="checkComboBox_color" accessibleHelp="%help_checkcombobox" accessibleText="%color_select_text" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                               <tooltip>
                                                   <Tooltip text="%color_select_text" />
                                               </tooltip>
