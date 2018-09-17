@@ -783,6 +783,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         Button resetBtn = new Button();
         resetBtn.setTooltip(new Tooltip(bundle.getString("button_point_symbol_reset")));
         resetBtn.setGraphic(closeGlyph);
+        resetBtn.getStyleClass().add("btn-reset");
         resetBtn.setOnAction(event -> {
             pointSymbolChoiceBox.getSelectionModel().select(null);
         });
