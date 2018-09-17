@@ -188,7 +188,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         super.initialize(location, resources);
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES, null);
         this.initiateAllStages();
-        this.initOptionListeners();
+        this.initChartOptionListeners();
         super.initloadPreset();
         this.initFieldListenersForChartPreview();
     }
@@ -677,7 +677,8 @@ public class ChartWizardFrameController extends SVGWizardController {
     /**
      * Initiates Listeners in {@link application.model.GuiSvgOptions}
      */
-    private void initOptionListeners() {
+    private void initChartOptionListeners() {
+        super.initOptionListeners();
         this.guiSvgOptions.textureProperty().addListener(new ListChangeListener<Texture>() {
             @Override
             public void onChanged(final Change<? extends Texture> c) {

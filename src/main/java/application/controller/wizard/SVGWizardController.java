@@ -166,6 +166,12 @@ public class SVGWizardController implements Initializable {
     @FXML
     public TextArea textArea_cssCustom;
     @FXML
+    private HBox hbox_firstColor;
+    @FXML
+    private HBox hbox_secondColor;
+    @FXML
+    private HBox hbox_thirdColor;
+    @FXML
     private Label label_color1;
     @FXML
     private Label label_color2;
@@ -177,6 +183,12 @@ public class SVGWizardController implements Initializable {
     private ChoiceBox<Color> choiceBox_color2;
     @FXML
     private ChoiceBox<Color> choiceBox_color3;
+    @FXML
+    private Button button_resetFirstColor;
+    @FXML
+    private Button button_resetSecondColor;
+    @FXML
+    private Button button_resetThirdColor;
     // csv fields
     @FXML
     public TextField textField_csvPath;
@@ -191,7 +203,7 @@ public class SVGWizardController implements Initializable {
 
     public ObservableList<Preset> presets;
 
-    private ObservableList<String> colors;
+    private ObservableList<Color> colors;
 
     public VBox vBox_warnings;
     private PopOver popOver_warnings;
@@ -243,7 +255,7 @@ public class SVGWizardController implements Initializable {
         this.pointMap = new HashMap<>();
 
         this.initListener();
-        this.initOptionListeners();
+        //this.initOptionListeners();
         this.preProcessContent();
         initloadPreset();
         if (presets == null) {
@@ -276,9 +288,9 @@ public class SVGWizardController implements Initializable {
         this.choiceBox_outputDevice.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.guiSvgOptions.setOutputDevice(newValue);
             boolean isColorDevice = newValue == OutputDevice.ScreenColor;
-            this.toggleVisibility(isColorDevice, this.label_color1, this.choiceBox_color1);
-            this.toggleVisibility(isColorDevice, this.label_color2, this.choiceBox_color2);
-            this.toggleVisibility(isColorDevice, this.label_color3, this.choiceBox_color3);
+            this.toggleVisibility(isColorDevice, this.label_color1, this.hbox_firstColor);
+            this.toggleVisibility(isColorDevice, this.label_color2, this.hbox_secondColor);
+            this.toggleVisibility(isColorDevice, this.label_color3, this.hbox_thirdColor);
         });
 
         // size
@@ -464,25 +476,67 @@ public class SVGWizardController implements Initializable {
 
         // colors
         this.colors = guiSvgOptions.getColors();
-        this.colors.addListener(new ListChangeListener<String>() {
+        this.colors.addListener(new ListChangeListener<Color>() {
             @Override
-            public void onChanged(Change<? extends String> c) {
+            public void onChanged(final Change<? extends Color> c) {
                 guiSvgOptions.setColors(colors);
             }
         });
-        ObservableList<Color> colorsObservableList = FXCollections.observableArrayList(Color.values());
-        this.choiceBox_color1.getItems().addAll(colorsObservableList);
+        ObservableList<Color> firstColorObservableList = FXCollections.observableArrayList(Color.values());
+        ObservableList<Color> secondColorObservableList = FXCollections.observableArrayList(Color.values());
+        ObservableList<Color> thirdColorObservableList = FXCollections.observableArrayList(Color.values());
+        this.choiceBox_color1.setItems(firstColorObservableList);
+       // this.choiceBox_color1.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_color1, this.label_color1);
         this.choiceBox_color1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            colors.add(0, newValue.getName());
+            if (oldValue != null) {
+                secondColorObservableList.add(oldValue);
+                thirdColorObservableList.add(oldValue);
+            }
+            if (newValue != null) {
+                secondColorObservableList.remove(newValue);
+                thirdColorObservableList.remove(newValue);
+            }
+
+            this.colors.set(0, newValue);
         });
-        this.choiceBox_color2.getItems().addAll(colorsObservableList);
-        this.choiceBox_color2.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            colors.add(1, newValue.getName());
-        }));
-        this.choiceBox_color3.getItems().addAll(colorsObservableList);
-        this.choiceBox_color3.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            colors.add(2, newValue.getName());
-        }));
+        this.button_resetFirstColor.setOnAction(event -> {
+            this.colors.set(0, null);
+        });
+        this.choiceBox_color2.setItems(secondColorObservableList);
+       // this.choiceBox_color2.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_color2, this.label_color2);
+        this.choiceBox_color2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null) {
+                firstColorObservableList.add(oldValue);
+                thirdColorObservableList.add(oldValue);
+            }
+            if (newValue != null) {
+                firstColorObservableList.remove(newValue);
+                thirdColorObservableList.remove(newValue);
+            }
+            this.colors.set(1, newValue);
+        });
+        this.button_resetSecondColor.setOnAction(event -> {
+            this.colors.set(1, null);
+        });
+        this.choiceBox_color3.setItems(thirdColorObservableList);
+     //   this.choiceBox_color3.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_color3, this.label_color3);
+        this.choiceBox_color3.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null) {
+                firstColorObservableList.add(oldValue);
+                secondColorObservableList.add(oldValue);
+            }
+            if (newValue != null) {
+                firstColorObservableList.remove(newValue);
+                secondColorObservableList.remove(newValue);
+            }
+            this.colors.set(2, newValue);
+        });
+        this.button_resetThirdColor.setOnAction(event -> {
+            this.colors.set(2, null);
+        });
     }
 
     protected void initCsvFieldListeners() {
@@ -908,12 +962,20 @@ public class SVGWizardController implements Initializable {
     /**
      * Initializes Listeners on {@link GuiSvgOptions}.
      */
-    private void initOptionListeners() {
+    protected void initOptionListeners() {
         this.guiSvgOptions.gridStyleProperty().addListener((observable, oldValue, newValue) -> {
             this.choicebox_gridStyle.getSelectionModel().select(newValue);
         });
         this.guiSvgOptions.csvTypeProperty().addListener((observable, oldValue, newValue) -> {
             this.choiceBox_csvType.getSelectionModel().select(newValue);
+        });
+        this.guiSvgOptions.getColors().addListener(new ListChangeListener<Color>() {
+            @Override
+            public void onChanged(Change<? extends Color> c) {
+                choiceBox_color1.getSelectionModel().select( guiSvgOptions.getColors().get(0));
+                choiceBox_color2.getSelectionModel().select( guiSvgOptions.getColors().get(1));
+                choiceBox_color3.getSelectionModel().select( guiSvgOptions.getColors().get(2));
+            }
         });
     }
 

@@ -32,6 +32,7 @@ import tud.tangram.svgplot.plotting.point.PointSymbol;
 import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.AxisStyle;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
+import tud.tangram.svgplot.styles.Color;
 import tud.tangram.svgplot.styles.GridStyle;
 
 import java.io.File;
@@ -72,7 +73,7 @@ public class GuiSvgOptions {
     private BooleanProperty autoScale;
 
     private ObservableList<Function> functions;
-    private ObservableList<String> colors;
+    private ObservableList<Color> colors;
     private ObservableList<Texture> textures;
     private ObservableList<PointSymbol> pointSymbols;
     private ObservableList<LineStyle> lineStyles;
@@ -182,6 +183,10 @@ public class GuiSvgOptions {
         this.outputDevice.addListener((observable, oldValue, newValue) -> {
             this.options.setOutputDevice(newValue);
             this.lineStyles.setAll(LineStyle.getByOutputDeviceOrderedById(newValue));
+            if (newValue == OutputDevice.ScreenColor){
+               // this.colors.setAll(Color.values());
+                this.colors.setAll(Color.values()[0], Color.values()[1], Color.values()[2]);
+            }
         });
         this.csvType.addListener((observable, oldValue, newValue) -> {
             this.options.setCsvType(newValue);
@@ -273,10 +278,19 @@ public class GuiSvgOptions {
                 options.setFunctions(functions);
             }
         });
-        this.colors.addListener(new ListChangeListener<String>() {
+        this.colors.addListener(new ListChangeListener<Color>() {
             @Override
-            public void onChanged(Change<? extends String> c) {
-                options.setCustomColors(colors);
+            public void onChanged(Change<? extends Color> c)
+            {
+                List<String> colorStringList = new ArrayList<>();
+                for (Color color : colors){
+                    String colorString = null;
+                    if (color != null){
+                        colorString = color.getName();
+                    }
+                    colorStringList.add(colorString);
+                }
+                options.setCustomColors(colorStringList);
             }
         });
         this.trendLine.addListener(new ListChangeListener<String>() {
@@ -598,20 +612,20 @@ public class GuiSvgOptions {
         this.functions.addAll(functions);
     }
 
-    public ObservableList<String> getColors(){
+    public ObservableList<Color> getColors(){
         return colors;
     }
     @JsonGetter("colors")
-    public List<String> getColorAsList() {
+    public List<Color> getColorAsList() {
         return colors;
     }
 
-    public void setColors(final ObservableList<String> colors) {
+    public void setColors(final ObservableList<Color> colors) {
         this.colors = colors;
     }
 
     @JsonSetter("colors")
-    public void setColorsList(final List<String> colors) {
+    public void setColorsList(final List<Color> colors) {
         this.colors.addAll(colors);
     }
 

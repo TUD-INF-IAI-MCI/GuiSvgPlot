@@ -248,7 +248,9 @@ public class SvgOptionsService {
         boolean hasErrorInTextures = svgPlotOptions.getDiagramType().equals(DiagramType.BarChart) && svgPlotOptions.getTextures().contains(null);
         boolean hasErrorInLineTypes = svgPlotOptions.getDiagramType().equals(DiagramType.LineChart) && svgPlotOptions.getLineStyles().contains(null);
 
-        boolean hasError = hasErrorInXRange || hasErrorInYRange || hasErrorInCustomSizeWidth || hasErrorInCustomSizeHeight || hasErrorInTextures || hasErrorInLineTypes;
+        boolean hasErrorInColors = svgPlotOptions.getCustomColors() != null && svgPlotOptions.getCustomColors().contains(null);
+
+        boolean hasError = hasErrorInXRange || hasErrorInYRange || hasErrorInCustomSizeWidth || hasErrorInCustomSizeHeight || hasErrorInTextures || hasErrorInLineTypes || hasErrorInColors;
         if (hasError) {
             GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
             if (hasErrorInXRange) {
@@ -268,6 +270,9 @@ public class SvgOptionsService {
             }
             if (hasErrorInLineTypes){
                 logger.error(this.bundle.getString("preview_load_emptyLineStyle_error"));
+            }
+            if (hasErrorInColors){
+                logger.error(this.bundle.getString("preview_load_emptyColor_error"));
             }
             return false;
         }

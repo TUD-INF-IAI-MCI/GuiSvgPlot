@@ -412,23 +412,38 @@
       
       
                                               <Label fx:id="label_color1" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_color1" visible="false" GridPane.rowIndex="2" />
-                                              <ChoiceBox fx:id="choiceBox_color1" accessibleText="%color1_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                              <tooltip>
-                                                  <Tooltip text="%color1_select_text" />
-                                              </tooltip>
-                                              </ChoiceBox>
+                                              <HBox fx:id="hbox_firstColor" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                <ChoiceBox fx:id="choiceBox_color1" accessibleText="%color1_select_text" prefHeight="25.0" maxWidth="1.7976931348623157E308" minWidth="50.0" HBox.hgrow="ALWAYS" >
+                                                    <tooltip>
+                                                            <Tooltip text="%color1_select_text" />
+                                                    </tooltip>
+                                                </ChoiceBox>
+                                                  <Button fx:id="button_resetFirstColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
+                                                      <tooltip><Tooltip text="%button_color_reset" /></tooltip>
+                                                  </Button>
+                                              </HBox>
                                               <Label fx:id="label_color2" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_color2" visible="false" GridPane.rowIndex="3" />
-                                              <ChoiceBox fx:id="choiceBox_color2" accessibleText="%color2_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                                  <tooltip>
-                                                      <Tooltip text="%color2_select_text" />
-                                                  </tooltip>
-                                              </ChoiceBox>
+                                              <HBox fx:id="hbox_secondColor" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                 <ChoiceBox fx:id="choiceBox_color2" accessibleText="%color2_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" >
+                                                     <tooltip>
+                                                         <Tooltip text="%color2_select_text" />
+                                                     </tooltip>
+                                                 </ChoiceBox>
+                                                  <Button fx:id="button_resetSecondColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
+                                                      <tooltip><Tooltip text="%button_color_reset" /></tooltip>
+                                                  </Button>
+                                              </HBox>
                                               <Label fx:id="label_color3" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_color3" visible="false" GridPane.rowIndex="4" />
-                                              <ChoiceBox fx:id="choiceBox_color3" accessibleText="%color3_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                                  <tooltip>
-                                                      <Tooltip text="%color3_select_text" />
-                                                  </tooltip>
-                                              </ChoiceBox>
+                                              <HBox fx:id="hbox_thirdColor" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" >
+                                                 <ChoiceBox fx:id="choiceBox_color3" accessibleText="%color3_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" >
+                                                     <tooltip>
+                                                         <Tooltip text="%color3_select_text" />
+                                                     </tooltip>
+                                                 </ChoiceBox>
+                                                  <Button fx:id="button_resetThirdColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
+                                                      <tooltip><Tooltip text="%button_color_reset" /></tooltip>
+                                                  </Button>
+                                              </HBox>
                                           </children>
                                       </GridPane>
                            </children>

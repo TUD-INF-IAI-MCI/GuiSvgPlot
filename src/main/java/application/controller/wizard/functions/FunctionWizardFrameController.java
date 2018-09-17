@@ -140,8 +140,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         initStage4();
         initStage5();
         initStage6();
-
-
+        super.initOptionListeners();
     }
 
 
