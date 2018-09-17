@@ -5,6 +5,7 @@ Button {
 
   &:focused {
     -fx-border-color: $tud-blue;
+    -fx-padding: 2;
   }
 
   &.btn{
@@ -16,9 +17,12 @@ Button {
     }
     &-upload {
       -fx-pref-width: 10px;
+      &:focused {
+        -fx-padding: 5 7;
+      }
     }
     &-reset{
-      -fx-pref-width: 10px;
+      @extend .btn-upload;
     }
   }
 

@@ -239,18 +239,20 @@ public class SvgOptionsService {
 
 
     private boolean isSvgPlottOptionsValid(final SvgPlotOptions svgPlotOptions) {
-        boolean hasErrorInXRange =  svgPlotOptions.getxRange() != null && svgPlotOptions.getxRange().getFrom() == svgPlotOptions.getxRange().getTo();
-        boolean hasErrorInYRange =  svgPlotOptions.getyRange() != null && svgPlotOptions.getyRange().getFrom() == svgPlotOptions.getyRange().getTo();
+        boolean hasErrorInXRange = svgPlotOptions.getxRange() != null && svgPlotOptions.getxRange().getFrom() == svgPlotOptions.getxRange().getTo();
+        boolean hasErrorInYRange = svgPlotOptions.getyRange() != null && svgPlotOptions.getyRange().getFrom() == svgPlotOptions.getyRange().getTo();
 
         boolean hasErrorInCustomSizeWidth = svgPlotOptions.getSize().getX() < GuiSvgOptions.MINIMUM_PAGE_WIDTH;
         boolean hasErrorInCustomSizeHeight = svgPlotOptions.getSize().getY() < GuiSvgOptions.MINIMUM_PAGE_HEIGHT;
 
         boolean hasErrorInTextures = svgPlotOptions.getDiagramType().equals(DiagramType.BarChart) && svgPlotOptions.getTextures().contains(null);
         boolean hasErrorInLineTypes = svgPlotOptions.getDiagramType().equals(DiagramType.LineChart) && svgPlotOptions.getLineStyles().contains(null);
+        boolean hasErrorInPointSymbols = svgPlotOptions.getDiagramType().equals(DiagramType.ScatterPlot) && svgPlotOptions.getPointSymbols().contains(null)
+                || svgPlotOptions.getDiagramType().equals(DiagramType.LineChart) && svgPlotOptions.getShowLinePoints().equals("on") && svgPlotOptions.getPointSymbols().contains(null);
 
         boolean hasErrorInColors = svgPlotOptions.getCustomColors() != null && svgPlotOptions.getCustomColors().contains(null);
 
-        boolean hasError = hasErrorInXRange || hasErrorInYRange || hasErrorInCustomSizeWidth || hasErrorInCustomSizeHeight || hasErrorInTextures || hasErrorInLineTypes || hasErrorInColors;
+        boolean hasError = hasErrorInXRange || hasErrorInYRange || hasErrorInCustomSizeWidth || hasErrorInCustomSizeHeight || hasErrorInTextures || hasErrorInLineTypes || hasErrorInPointSymbols || hasErrorInColors;
         if (hasError) {
             GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
             if (hasErrorInXRange) {
@@ -259,19 +261,22 @@ public class SvgOptionsService {
             if (hasErrorInYRange) {
                 logger.error(this.bundle.getString("preview_load_yrange_error"));
             }
-            if (hasErrorInCustomSizeWidth){
+            if (hasErrorInCustomSizeWidth) {
                 logger.error(this.bundle.getString("preview_load_customWidth_error"));
             }
-            if (hasErrorInCustomSizeHeight){
+            if (hasErrorInCustomSizeHeight) {
                 logger.error(this.bundle.getString("preview_load_customHeight_error"));
             }
-            if (hasErrorInTextures){
+            if (hasErrorInTextures) {
                 logger.error(this.bundle.getString("preview_load_emptyTexture_error"));
             }
-            if (hasErrorInLineTypes){
+            if (hasErrorInLineTypes) {
                 logger.error(this.bundle.getString("preview_load_emptyLineStyle_error"));
             }
-            if (hasErrorInColors){
+            if (hasErrorInPointSymbols) {
+                logger.error(this.bundle.getString("preview_load_emptyPointSymbol_error"));
+            }
+            if (hasErrorInColors) {
                 logger.error(this.bundle.getString("preview_load_emptyColor_error"));
             }
             return false;

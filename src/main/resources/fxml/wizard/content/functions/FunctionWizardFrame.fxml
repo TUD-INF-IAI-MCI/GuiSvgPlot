@@ -23,6 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
+<?import org.controlsfx.glyphfont.Glyph?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.functions.FunctionWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
@@ -427,11 +428,14 @@
                                                 <Label fx:id="label_color1" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_color1" visible="false" GridPane.rowIndex="2" />
                                                 <HBox fx:id="hbox_firstColor" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                     <ChoiceBox fx:id="choiceBox_color1" accessibleText="%color1_select_text" prefHeight="25.0" maxWidth="1.7976931348623157E308" minWidth="50.0" HBox.hgrow="ALWAYS" >
-                                                        <tooltip>
+                                                       <tooltip>
                                                             <Tooltip text="%color1_select_text" />
                                                         </tooltip>
                                                     </ChoiceBox>
-                                                    <Button fx:id="button_resetFirstColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
+                                                    <Button fx:id="button_resetFirstColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
+                                                        <graphic>
+                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE"/>
+                                                        </graphic>
                                                         <tooltip><Tooltip text="%button_color_reset" /></tooltip>
                                                     </Button>
                                                 </HBox>
@@ -442,7 +446,10 @@
                                                             <Tooltip text="%color2_select_text" />
                                                         </tooltip>
                                                     </ChoiceBox>
-                                                    <Button fx:id="button_resetSecondColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
+                                                    <Button fx:id="button_resetSecondColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
+                                                        <graphic>
+                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE"/>
+                                                        </graphic>
                                                         <tooltip><Tooltip text="%button_color_reset" /></tooltip>
                                                     </Button>
                                                 </HBox>
@@ -453,7 +460,10 @@
                                                             <Tooltip text="%color3_select_text" />
                                                         </tooltip>
                                                     </ChoiceBox>
-                                                    <Button fx:id="button_resetThirdColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
+                                                    <Button fx:id="button_resetThirdColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
+                                                        <graphic>
+                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE"/>
+                                                        </graphic>
                                                         <tooltip><Tooltip text="%button_color_reset" /></tooltip>
                                                     </Button>
                                                 </HBox>
@@ -481,6 +491,9 @@
                             <ButtonBar HBox.hgrow="NEVER">
                                 <buttons>
                                     <Button fx:id="button_Cancel" accessibleText="%button_cancel" cancelButton="true" mnemonicParsing="false" text="%button_cancel" ButtonBar.buttonData="LEFT">
+                                        <graphic>
+                                            <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                        </graphic>
                                         <tooltip>
                                             <Tooltip text="%button_cancel" />
                                         </tooltip>
@@ -499,23 +512,32 @@
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
                                     <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back">
+                                        <graphic>
+                                            <Glyph fontFamily="FontAwesome" icon="CHEVRON_LEFT" />
+                                        </graphic>
                                         <tooltip>
-                                            <Tooltip text="%label_back" />
+                                            <Tooltip text="%button_back_tooltip" />
                                         </tooltip>
                                     </Button>
-                                    <Button fx:id="button_Next" accessibleText="%label_next" mnemonicParsing="false" text="%button_next">
+                                    <Button fx:id="button_Next" accessibleText="%label_next" contentDisplay="RIGHT" mnemonicParsing="false" text="%button_next">
+                                        <graphic>
+                                            <Glyph fontFamily="FontAwesome" icon="CHEVRON_RIGHT" />
+                                        </graphic>
                                         <tooltip>
-                                            <Tooltip text="%label_next" />
+                                            <Tooltip text="%button_next_tooltip" />
                                         </tooltip>
                                     </Button>
                                     <Button fx:id="button_Load" disable="true" mnemonicParsing="false" text="%button_load">
                                         <tooltip>
-                                            <Tooltip text="%button_load" />
+                                            <Tooltip text="%button_load_tooltip" />
                                         </tooltip>
                                     </Button>
                                     <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create">
+                                        <graphic>
+                                            <Glyph fontFamily="FontAwesome" icon="SAVE" />
+                                        </graphic>
                                         <tooltip>
-                                            <Tooltip text="%button_diagram_create" />
+                                            <Tooltip text="%button_create_tooltip" />
                                         </tooltip>
                                     </Button>
                                 </buttons>
