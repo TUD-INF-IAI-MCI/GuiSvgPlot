@@ -20,8 +20,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
-<?import org.controlsfx.control.CheckComboBox?>
 
+<?import javafx.scene.control.ScrollPane?>
+<?import org.controlsfx.glyphfont.Glyph?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
@@ -161,7 +162,8 @@
                             <Tab text="Stage3">
                         <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                                      <GridPane fx:id="stage3" prefHeight="273.0" prefWidth="369.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <!--   <VBox styleClass="stage3_container" prefHeight="273.0" prefWidth="369.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" >-->
+                                      <GridPane fx:id="stage3" VBox.vgrow="ALWAYS" minHeight="60" prefHeight="273.0" prefWidth="369.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" >
                                           <columnConstraints>
                                               <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                                               <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
@@ -176,7 +178,7 @@
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           </rowConstraints>
                                           <padding>
-                                              <Insets left="10.0" right="10.0" />
+                                              <Insets left="10.0" right="10.0" top="20.0"/>
                                           </padding>
                                           <children>
                                               <!--bar chart-->
@@ -186,21 +188,30 @@
                                               <Label fx:id="label_firstTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_first_bar" visible="false" GridPane.rowIndex="1" />
                                               <HBox fx:id="hbox_firstTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                   <ChoiceBox fx:id="choiceBox_firstTexture" accessibleText="%texture_first_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_resetFirstTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
-                                                    <tooltip><Tooltip text="%button_texture_reset" /></tooltip>
+                                                  <Button fx:id="button_resetFirstTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset">
+                                                      <graphic>
+                                                          <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                      </graphic>
+                                                      <tooltip><Tooltip text="%button_texture_reset" /></tooltip>
                                                   </Button>
                                               </HBox>
                                               <Label fx:id="label_secondTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_second_bar" visible="false" GridPane.rowIndex="2" />
                                               <HBox fx:id="hbox_secondTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                   <ChoiceBox fx:id="choiceBox_secondTexture" accessibleText="%texture_second_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_resetSecondTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
+                                                  <Button fx:id="button_resetSecondTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset">
+                                                      <graphic>
+                                                          <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                      </graphic>
                                                       <tooltip><Tooltip text="%button_texture_reset" /></tooltip>
                                                   </Button>
                                               </HBox>
                                               <Label fx:id="label_thirdTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_third_bar" visible="false" GridPane.rowIndex="3" />
                                               <HBox fx:id="hbox_thirdTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                   <ChoiceBox fx:id="choiceBox_thirdTexture" accessibleText="%texture_third_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_resetThirdTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
+                                                  <Button fx:id="button_resetThirdTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset">
+                                                      <graphic>
+                                                          <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                      </graphic>
                                                       <tooltip><Tooltip text="%button_texture_reset" /></tooltip>
                                                   </Button>
                                               </HBox>
@@ -214,48 +225,97 @@
                                               <Label fx:id="label_secondLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_second" visible="false" GridPane.rowIndex="0" />
                                               <HBox fx:id="hbox_secondLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0">
                                                   <ChoiceBox fx:id="choiceBox_secondLineStyle" accessibleText="%label_line_style_second" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_resetSecondLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" />
+                                                  <Button fx:id="button_resetSecondLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" >
+                                                      <graphic>
+                                                          <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                      </graphic>
+                                                      <tooltip><Tooltip text="%button_line_style_reset"></Tooltip></tooltip>
+                                                  </Button>
                                               </HBox>
 
                                               <Label fx:id="label_thirdLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_third" visible="false" GridPane.rowIndex="1" />
                                               <HBox fx:id="hbox_thirdLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                   <ChoiceBox fx:id="choiceBox_thirdLineStyle" accessibleText="%label_line_style_third" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_resetThirdLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" />
+                                                  <Button fx:id="button_resetThirdLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" >
+                                                  <graphic>
+                                                      <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                  </graphic>
+                                                  <tooltip><Tooltip text="%button_line_style_reset"></Tooltip></tooltip>
+                                                  </Button>
                                               </HBox>
 
                                               <Label fx:id="label_firstLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_default" visible="false" GridPane.rowIndex="2" />
                                               <HBox fx:id="hbox_firstLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                   <ChoiceBox fx:id="choiceBox_firstLineStyle" accessibleText="%label_line_style_default" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
-                                                  <Button fx:id="button_resetFirstLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" />
+                                                  <Button fx:id="button_resetFirstLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset" >
+                                                      <graphic>
+                                                          <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                      </graphic>
+                                                      <tooltip><Tooltip text="%button_line_style_reset"></Tooltip></tooltip>
+                                                  </Button>
                                               </HBox>
 
 
                                               <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_mark_data" visible="false" GridPane.rowIndex="3" />
                                               <ChoiceBox fx:id="choiceBox_linepoints" accessibleText="%mark_data_on_line" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                              <Label fx:id="label_pointSymbols_lineChart" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_pointSymbols" visible="false" GridPane.rowIndex="4" />
-                                              <CheckComboBox fx:id="checkComboBox_pointSymbols_lineChart" accessibleHelp="%help_checkcombobox" accessibleText="%label_pointSymbols" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      
+
+
+                                           <!--   <Label fx:id="label_firstPointSymbol_lineChart" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_first_pointSymbols" visible="false" GridPane.rowIndex="4" />
+                                              <HBox fx:id="hbox_firstPointSymbol_lineChart" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" >
+                                                 <ChoiceBox fx:id="choiceBox_firstPointSymbol_lineChart" accessibleText="%label_first_pointSymbols" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                  <Button fx:id="button_resetFirstLPointSymbol_lineChart" accessibleText="%button_point_symbol_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" />
+                                              </HBox>
+                                              <Label fx:id="label_secondPointSymbol_lineChart" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_second_pointSymbols" visible="false" GridPane.rowIndex="5" />
+                                              <HBox fx:id="hbox_secondPointSymbol_lineChart" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" >
+                                                  <ChoiceBox fx:id="choiceBox_secondPointSymbol_lineChart" accessibleText="%label_second_pointSymbols" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                  <Button fx:id="button_resetSecondPointSymbol_lineChart" accessibleText="%button_point_symbol_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" />
+                                              </HBox>
+                                              <Label fx:id="label_thirdPointSymbol_lineChart" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_third_pointSymbols" visible="false" GridPane.rowIndex="6" />
+                                              <HBox fx:id="hbox_thirdPointSymbol_lineChart" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" >
+                                                  <ChoiceBox fx:id="choiceBox_thirdPointSymbol_lineChart" accessibleText="%label_third_pointSymbols" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                  <Button fx:id="button_resetThirdPointSymbol_lineChart" accessibleText="%button_point_symbol_reset" mnemonicParsing="false" styleClass="btn-reset" text="X" />
+                                              </HBox>-->
+
+
                                               <!--scatter plot-->
-                                              <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="1" />
-                                              <ChoiceBox fx:id="choiceBox_trendline" accessibleText="Trendlinienalgorithmus" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                              <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                                              <TextField fx:id="textField_trendline_alpha" accessibleText="%text_trendline_alpha" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                              <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="0" />
+                                              <ChoiceBox fx:id="choiceBox_trendline" accessibleText="Trendlinienalgorithmus" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                              <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                              <TextField fx:id="textField_trendline_alpha" accessibleText="%text_trendline_alpha" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                   <tooltip><Tooltip text="%text_trendline_alpha" /></tooltip>
                                               </TextField>
-                                              <Label fx:id="label_trendline_forecast" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_forecast" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                                              <TextField fx:id="textField_trendline_forecast" accessibleText="%text_trendline_forecast" maxWidth="1.7976931348623157E308" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                              <Label fx:id="label_trendline_forecast" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_forecast" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                              <TextField fx:id="textField_trendline_forecast" accessibleText="%text_trendline_forecast" maxWidth="1.7976931348623157E308" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                   <tooltip><Tooltip text="%text_trendline_forecast" /></tooltip>
                                               </TextField>
-                                              <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_n" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                                              <TextField fx:id="textField_trendline_n" accessibleText="%text_trendline_n" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                              <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_n" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                              <TextField fx:id="textField_trendline_n" accessibleText="%text_trendline_n" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                 <tooltip><Tooltip text="%text_trendline_n" /></tooltip>
                                               </TextField>
-                                              <Label fx:id="label_originalPoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_hide_original_points" visible="false" GridPane.rowIndex="4" />
-                                              <ChoiceBox fx:id="choiceBox_originalPoints" accessibleText="%label_hide_original_points" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                              <Label fx:id="label_pointSymbols_scatterPlot" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_pointSymbols" visible="false" GridPane.rowIndex="0" />
-                                              <CheckComboBox fx:id="checkComboBox_pointSymbols_scatterPlot" accessibleHelp="%help_checkcombobox" accessibleText="%label_pointSymbols" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                              <Label fx:id="label_originalPoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_hide_original_points" visible="false" GridPane.rowIndex="3" />
+                                              <ChoiceBox fx:id="choiceBox_originalPoints" accessibleText="%label_hide_original_points" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        <!--
+                                              <Label fx:id="label_pointSymbols_scatterPlot" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_first_pointSymbols" visible="false" GridPane.rowIndex="0" />
+                                              <HBox fx:id="hbox_firstPointSymbol_scatterPlot" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" >
+                                                  <ChoiceBox fx:id="choiceBox_firstPointSymbol_scatterPlot" accessibleText="%label_first_pointSymbols"  maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                  <Button fx:id="button_resetFirstLPointSymbol_scatterplot" accessibleText="%button_point_symbol_reset" mnemonicParsing="false" styleClass="btn-reset" >
+                                                      <graphic>
+                                                          <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                      </graphic>
+                                                      <tooltip><Tooltip text="%button_point_symbol_reset"/></tooltip>
+                                                  </Button>
+                                              </HBox>-->
                                           </children>
                                       </GridPane>
+<!--
+                                   <ScrollPane fx:id="scrollPane_pointSymbols" styleClass="data-table-container" VBox.vgrow="ALWAYS" >
+                                       <content>
+                                           <VBox fx:id="vBox_pointSymbols_lineCharts" visible="false"/>
+                                          <!- <VBox fx:id="vBox_pointSymbols_scatterPlot" visible="false" />->
+                                       </content>
+                                   </ScrollPane>
+
+                               </VBox>-->
                            </children>
                         </AnchorPane>
                             </Tab>
@@ -418,7 +478,10 @@
                                                             <Tooltip text="%color1_select_text" />
                                                     </tooltip>
                                                 </ChoiceBox>
-                                                  <Button fx:id="button_resetFirstColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
+                                                  <Button fx:id="button_resetFirstColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
+                                                      <graphic>
+                                                          <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                      </graphic>
                                                       <tooltip><Tooltip text="%button_color_reset" /></tooltip>
                                                   </Button>
                                               </HBox>
@@ -429,7 +492,10 @@
                                                          <Tooltip text="%color2_select_text" />
                                                      </tooltip>
                                                  </ChoiceBox>
-                                                  <Button fx:id="button_resetSecondColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
+                                                  <Button fx:id="button_resetSecondColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
+                                                      <graphic>
+                                                          <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                      </graphic>
                                                       <tooltip><Tooltip text="%button_color_reset" /></tooltip>
                                                   </Button>
                                               </HBox>
@@ -440,7 +506,10 @@
                                                          <Tooltip text="%color3_select_text" />
                                                      </tooltip>
                                                  </ChoiceBox>
-                                                  <Button fx:id="button_resetThirdColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset" text="X">
+                                                  <Button fx:id="button_resetThirdColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
+                                                      <graphic>
+                                                          <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                      </graphic>
                                                       <tooltip><Tooltip text="%button_color_reset" /></tooltip>
                                                   </Button>
                                               </HBox>

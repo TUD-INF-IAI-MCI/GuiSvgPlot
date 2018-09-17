@@ -6,10 +6,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import org.controlsfx.control.CheckComboBox;
+import javafx.scene.layout.Priority;
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.data.sorting.SortingType;
@@ -20,17 +23,20 @@ import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 
 import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * The controller for chart-wizard.
+ *
  * @author Emma Müller
  */
 public class ChartWizardFrameController extends SVGWizardController {
     private static final Logger logger = LoggerFactory.getLogger(ChartWizardFrameController.class);
 
     private static final int AMOUNTOFSTAGES = 6;
+
+    // TODO: replace with readed number of data
+    private static final int AMOUNT_OF_POINTSYMBOL_INPUTS = 3;
 
     /*Begin: FXML Nodes*/
 
@@ -131,14 +137,6 @@ public class ChartWizardFrameController extends SVGWizardController {
     private Label label_originalPoints;
     @FXML
     private ChoiceBox<VisibilityOfDataPoints> choiceBox_originalPoints;
-    @FXML
-    private Label label_pointSymbols_lineChart;
-    @FXML
-    private CheckComboBox<PointSymbol> checkComboBox_pointSymbols_lineChart;
-    @FXML
-    private Label label_pointSymbols_scatterPlot;
-    @FXML
-    private CheckComboBox<PointSymbol> checkComboBox_pointSymbols_scatterPlot;
 
     @FXML
     private Button button_EditDataSet;
@@ -170,12 +168,13 @@ public class ChartWizardFrameController extends SVGWizardController {
 
     private ObservableList<Texture> textures;
     private ObservableList<LineStyle> lineStyles;
-    private ObservableList<PointSymbol> customPointSymbols_scatterPlott;
-    private ObservableList<PointSymbol> customPointSymbols_lineChart;
+    private ObservableList<PointSymbol> customPointSymbols;
+    private Map<Label, HBox> pointSymbolInputs;
+    private Map<Label, PointSymbol> selectedPointSymbols;
 
-    ObservableList<LineStyle> lineStyleFirstObservableList;
-    ObservableList<LineStyle> lineStyleSecondObservableList;
-    ObservableList<LineStyle> lineStyleThirdObservableList;
+    private ObservableList<LineStyle> lineStyleFirstObservableList;
+    private ObservableList<LineStyle> lineStyleSecondObservableList;
+    private ObservableList<LineStyle> lineStyleThirdObservableList;
 
     private boolean isInitial = true;
 
@@ -346,23 +345,20 @@ public class ChartWizardFrameController extends SVGWizardController {
             guiSvgOptions.setLinePointsOption(newValue);
             switch (newValue) {
                 case Hide:
-                    hide(label_pointSymbols_lineChart, checkComboBox_pointSymbols_lineChart);
+                    pointSymbolInputs.forEach((label, hBox) -> hide(label, hBox));
                     break;
                 default:
-                    show(label_pointSymbols_lineChart, checkComboBox_pointSymbols_lineChart);
+                    pointSymbolInputs.forEach((label, hBox) -> show(label, hBox));
                     break;
             }
         });
+        this.selectedPointSymbols = new HashMap<>();
+        this.customPointSymbols = guiSvgOptions.getPointSymbols();
 
-        this.customPointSymbols_lineChart = guiSvgOptions.getPointSymbols();
-        ObservableList<PointSymbol> pointSymbolObservableList = FXCollections.observableArrayList(PointSymbol.getOrdered());
-        this.checkComboBox_pointSymbols_lineChart.getItems().addAll(pointSymbolObservableList);
-        this.checkComboBox_pointSymbols_lineChart.setConverter(this.svgOptionsUtil.getPointSymbolStringConverter());
-        this.checkComboBox_pointSymbols_lineChart.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PointSymbol>() {
-            public void onChanged(ListChangeListener.Change<? extends PointSymbol> ps) {
-                changePointSymbols(customPointSymbols_lineChart, checkComboBox_pointSymbols_lineChart, pointSymbolObservableList);
-            }
-        });
+        this.pointSymbolInputs = new HashMap<>();
+        for (int i = 0; i < AMOUNT_OF_POINTSYMBOL_INPUTS; i++) {
+            this.drawPointSymbolField(pointSymbolInputs, this.customPointSymbols, 4 + i, i, "pointSymbol", true);
+        }
 
         // line style
         List<LineStyle> lineStylesArray = LineStyle.getByOutputDeviceOrderedById(this.guiSvgOptions.getOutputDevice());
@@ -544,13 +540,15 @@ public class ChartWizardFrameController extends SVGWizardController {
             }
         });
 
-
-        this.customPointSymbols_scatterPlott = guiSvgOptions.getPointSymbols();
-        this.checkComboBox_pointSymbols_scatterPlot.getItems().addAll(pointSymbolObservableList);
-        this.checkComboBox_pointSymbols_scatterPlot.setConverter(this.svgOptionsUtil.getPointSymbolStringConverter());
-        this.checkComboBox_pointSymbols_scatterPlot.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PointSymbol>() {
-            public void onChanged(ListChangeListener.Change<? extends PointSymbol> ps) {
-                changePointSymbols(customPointSymbols_scatterPlott, checkComboBox_pointSymbols_scatterPlot, pointSymbolObservableList);
+   /*     this.pointSymbolInputs_scatterPlott = new HashMap<>();
+        for (int i = 0; i < AMOUNT_OF_POINTSYMBOL_INPUTS; i++) {
+            this.drawPointSymbolField(this.pointSymbolInputs_scatterPlott, this.customPointSymbols, 4 + i, i, "scatterPlot_pointSymbol", true);
+        }*/
+        selectedPointSymbols.forEach((label, pointSymbol) -> {
+            HBox hBox_scatter = pointSymbolInputs.get(label);
+            if (hBox_scatter != null) {
+                ChoiceBox<PointSymbol> pointSymbolChoiceBox = (ChoiceBox<PointSymbol>) hBox_scatter.getChildren().get(0);
+                pointSymbolChoiceBox.getSelectionModel().select(pointSymbol);
             }
         });
     }
@@ -629,6 +627,9 @@ public class ChartWizardFrameController extends SVGWizardController {
             this.hide(this.label_sortOrder, this.choicebox_sortOrder);
         } else {
             this.choicebox_dblaxes.getItems().add(GuiAxisStyle.Barchart);
+            if (pointSymbolInputs != null ) {
+                pointSymbolInputs.forEach((label, hBox) -> hide(label, hBox));
+            }
         }
     }
 
@@ -643,12 +644,13 @@ public class ChartWizardFrameController extends SVGWizardController {
         toggleVisibility(show, label_secondLineStyle, hbox_secondLineStyle);
         toggleVisibility(show, label_thirdLineStyle, hbox_thirdLineStyle);
 
-        if (!show) {
-            hide(label_pointSymbols_lineChart, checkComboBox_pointSymbols_lineChart);
-        } else if (this.guiSvgOptions.getLinePointsOption().isShowLinePoints()) {
-            show(label_pointSymbols_lineChart, checkComboBox_pointSymbols_lineChart);
+        if (pointSymbolInputs != null) {
+            if (!show || !this.guiSvgOptions.getLinePointsOption().isShowLinePoints()) {
+                pointSymbolInputs.forEach((label, hBox) -> hide(label, hBox));
+            } else if (this.guiSvgOptions.getLinePointsOption().isShowLinePoints()) {
+                pointSymbolInputs.forEach((label, hBox) -> show(label, hBox));
+            }
         }
-
     }
 
     /**
@@ -658,7 +660,9 @@ public class ChartWizardFrameController extends SVGWizardController {
      */
     private void toggleScatterPlotOptions(final boolean show) {
         if (show) {
-            show(label_pointSymbols_scatterPlot, checkComboBox_pointSymbols_scatterPlot);
+            if (pointSymbolInputs != null) {
+                pointSymbolInputs.forEach((label, hBox) -> show(label, hBox));
+            }
             show(label_trendline, choiceBox_trendline);
             // show corresponding other fields
             TrendlineAlgorithm trendlineAlgorithm = choiceBox_trendline.getValue();
@@ -670,8 +674,8 @@ public class ChartWizardFrameController extends SVGWizardController {
             hide(label_trendline_forecast, textField_trendline_forecast);
             hide(label_trendline_n, textField_trendline_n);
             hide(label_originalPoints, choiceBox_originalPoints);
-            hide(label_pointSymbols_scatterPlot, checkComboBox_pointSymbols_scatterPlot);
         }
+
     }
 
     /**
@@ -692,8 +696,10 @@ public class ChartWizardFrameController extends SVGWizardController {
             @Override
             public void onChanged(final Change<? extends PointSymbol> c) {
 
+
             }
         });
+
         this.guiSvgOptions.axisStyleProperty().addListener((observable, oldValue, newValue) -> {
             this.choicebox_dblaxes.getSelectionModel().select(newValue);
         });
@@ -730,24 +736,6 @@ public class ChartWizardFrameController extends SVGWizardController {
         }
     }
 
-    private void changePointSymbols(ObservableList<PointSymbol> checkedPointSymbols, CheckComboBox<PointSymbol> checkComboBox, ObservableList<PointSymbol> allPointSymbols) {
-        checkedPointSymbols.clear();
-        ObservableList<PointSymbol> checkedItems = checkComboBox.getCheckModel().getCheckedItems();
-        ObservableList<PointSymbol> newItems =
-                checkedItems.filtered(pointSymbol -> !checkedPointSymbols.contains(pointSymbol));
-        ObservableList<PointSymbol> oldItems =
-                allPointSymbols.filtered(pointSymbol -> !checkedItems.contains(pointSymbol) && checkedPointSymbols.contains(pointSymbol));
-        if (newItems.size() > 0) {
-            checkedPointSymbols.addAll(newItems);
-        }
-        if (oldItems.size() > 0) {
-            for (PointSymbol pointSymbol : oldItems) {
-                checkedPointSymbols.remove(pointSymbol);
-            }
-        }
-        guiSvgOptions.setPointSymbols(checkedPointSymbols);
-    }
-
     private void initFieldListenersForChartPreview() {
         super.initFieldListenersForPreview();
         this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
@@ -759,8 +747,76 @@ public class ChartWizardFrameController extends SVGWizardController {
                 this.textField_xunit, this.textField_yunit, this.textField_trendline_n,
                 this.textField_trendline_forecast, this.textField_trendline_alpha);
 
+        pointSymbolInputs.forEach((label, hBox) -> {
+            ChoiceBox<PointSymbol> pointSymbolChoiceBox = (ChoiceBox<PointSymbol>) hBox.getChildren().get(0);
+            this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions, pointSymbolChoiceBox);
+        });
         this.radioBtn_autoscale.selectedProperty().addListener((observable, oldValue, newValue) -> {
             this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
         });
+    }
+
+    private void drawPointSymbolField(final Map<Label, HBox> map, ObservableList<PointSymbol> observableList, final int row, final int index, final String id, final boolean visible) {
+
+        String labelStr = (index + 1) + ". " + this.bundle.getString("label_pointSymbol");
+
+        Label label = new Label(labelStr);
+        label.setId("label_" + id + "_" + (index + 1));
+        label.setVisible(visible);
+
+        HBox inputGoup = new HBox();
+        inputGoup.setAlignment(Pos.CENTER_RIGHT);
+        inputGoup.setSpacing(10.0);
+
+        ChoiceBox<PointSymbol> pointSymbolChoiceBox = new ChoiceBox<>();
+        pointSymbolChoiceBox.setId("choiceBox_" + id + "_" + (index + 1));
+        pointSymbolChoiceBox.setAccessibleText(labelStr);
+        pointSymbolChoiceBox.setMinWidth(50.0);
+        pointSymbolChoiceBox.setPrefHeight(25.0);
+        pointSymbolChoiceBox.setMaxWidth(1.7976931348623157E308);
+        ObservableList<PointSymbol> pointSymbolObservableList = FXCollections.observableArrayList(PointSymbol.getOrdered());
+        pointSymbolChoiceBox.setItems(pointSymbolObservableList);
+        pointSymbolChoiceBox.setConverter(this.svgOptionsUtil.getPointSymbolStringConverter());
+
+        pointSymbolChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            changePointSymbols(map, observableList, index, label, newValue, oldValue);
+        });
+
+        Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
+        Button resetBtn = new Button();
+        resetBtn.setTooltip(new Tooltip(bundle.getString("button_point_symbol_reset")));
+        resetBtn.setGraphic(closeGlyph);
+        resetBtn.setOnAction(event -> {
+            pointSymbolChoiceBox.getSelectionModel().select(null);
+        });
+
+        inputGoup.getChildren().addAll(pointSymbolChoiceBox, resetBtn);
+        HBox.setHgrow(pointSymbolChoiceBox, Priority.ALWAYS);
+        HBox.setHgrow(resetBtn, Priority.NEVER);
+        inputGoup.setVisible(visible);
+        stage3.add(label, 0, row);
+        stage3.add(inputGoup, 1, row);
+        map.put(label, inputGoup);
+        selectedPointSymbols.put(label,  PointSymbol.getOrdered().get(index));
+    }
+
+    private void changePointSymbols(final Map<Label, HBox> map, ObservableList<PointSymbol> observableList, final int index, Label label, final PointSymbol newValue, final PointSymbol oldValue) {
+        if (oldValue != null) {
+            map.forEach((label1, hBox) -> {
+                if (!label1.equals(label)) {
+                    ChoiceBox<PointSymbol> pointSymbolChoiceBox = (ChoiceBox<PointSymbol>) hBox.getChildren().get(0);
+                    pointSymbolChoiceBox.getItems().add(oldValue);
+                }
+            });
+        }
+        if (newValue != null) {
+            map.forEach((label1, hBox) -> {
+                if (!label1.equals(label)) {
+                    ChoiceBox<PointSymbol> pointSymbolChoiceBox = (ChoiceBox<PointSymbol>) hBox.getChildren().get(0);
+                    pointSymbolChoiceBox.getItems().remove(newValue);
+                }
+            });
+        }
+        observableList.set(index, newValue);
     }
 }
