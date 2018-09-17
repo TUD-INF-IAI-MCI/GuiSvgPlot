@@ -42,6 +42,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * @author Constantin Amend
+ */
 public class PresetsController extends SVGWizardController implements Initializable {
     private static final Logger logger = LoggerFactory.getLogger(PresetsController.class);
     private ResourceBundle bundle;

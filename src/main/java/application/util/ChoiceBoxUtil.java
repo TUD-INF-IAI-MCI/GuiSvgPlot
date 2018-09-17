@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ResourceBundle;
 
+/**
+ * @author Emma Müller
+ */
 public class ChoiceBoxUtil {
     private static final Logger logger = LoggerFactory.getLogger(ChoiceBoxUtil.class);
     private static final ChoiceBoxUtil INSTANCE = new ChoiceBoxUtil();

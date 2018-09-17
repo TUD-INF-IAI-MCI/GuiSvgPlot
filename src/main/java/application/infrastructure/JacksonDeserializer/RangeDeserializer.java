@@ -10,6 +10,9 @@ import tud.tangram.svgplot.coordinatesystem.Range;
 
 import java.io.IOException;
 
+/**
+ * @author Emma Müller
+ */
 public class RangeDeserializer extends StdDeserializer<Range> {
     public RangeDeserializer() {
         this(null);

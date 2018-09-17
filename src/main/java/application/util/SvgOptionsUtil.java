@@ -16,6 +16,9 @@ import tud.tangram.svgplot.styles.GridStyle;
 
 import java.util.ResourceBundle;
 
+/**
+ * @author Emma Müller
+ */
 public class SvgOptionsUtil {
     private static final SvgOptionsUtil INSTANCE = new SvgOptionsUtil();
     private ResourceBundle bundle;

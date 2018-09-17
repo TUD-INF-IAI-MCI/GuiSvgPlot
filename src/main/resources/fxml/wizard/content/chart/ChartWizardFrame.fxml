@@ -141,11 +141,12 @@
                                                   </Button>
                                               </HBox>
       
-                                              <Label fx:id="label_CsvOrientation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_orientation" visible="false" GridPane.rowIndex="1" />
-                                              <ChoiceBox id="choiceBox_CsvOrientation" fx:id="choiceBox_csvOrientation" accessibleText="CSV Orientierung" focusTraversable="false" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                              <Label fx:id="label_Title1" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_type" GridPane.rowIndex="2" />
-                                              <ChoiceBox id="choiceBox_CsvType" fx:id="choiceBox_csvType" accessibleText="CSV Typ" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <AnchorPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                                              <Label fx:id="label_Title1" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_type" GridPane.rowIndex="1" />
+                                              <ChoiceBox id="choiceBox_CsvType" fx:id="choiceBox_csvType" accessibleText="CSV Typ" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                              <Label fx:id="label_CsvOrientation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_orientation" visible="false" GridPane.rowIndex="2" />
+                                              <ChoiceBox id="choiceBox_CsvOrientation" fx:id="choiceBox_csvOrientation" accessibleText="CSV Orientierung" focusTraversable="false" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                                              <AnchorPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
                                        <children>
                                           <Button fx:id="button_EditDataSet" accessibleText="%label_csv_edit" mnemonicParsing="false" text="%label_csv_edit" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
                                               <tooltip><Tooltip text="%label_csv_edit" /></tooltip>

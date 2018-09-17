@@ -10,6 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * @author Constantin Amend, Emma Müller
+ */
 public class Preset {
 
     private String id;

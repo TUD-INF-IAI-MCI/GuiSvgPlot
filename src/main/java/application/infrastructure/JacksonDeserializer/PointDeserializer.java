@@ -11,6 +11,9 @@ import tud.tangram.svgplot.data.Point;
 
 import java.io.IOException;
 
+/**
+ * @author Emma Müller
+ */
 public class PointDeserializer extends StdDeserializer<Point> {
     public PointDeserializer() {
         this(null);

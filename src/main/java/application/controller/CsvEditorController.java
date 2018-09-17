@@ -23,6 +23,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
+/**
+ * @author Robert Schlegel.
+ */
 public class CsvEditorController implements Initializable {
 
 

@@ -27,6 +27,8 @@ import java.util.ResourceBundle;
 
 /**
  * This class provides methods for {@link SvgPlotOptions}.
+ *
+ * @author Emma Müller
  */
 public class SvgOptionsService {
     private static final Logger logger = LoggerFactory.getLogger(SvgOptionsService.class);

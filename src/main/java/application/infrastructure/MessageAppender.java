@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
+ * @author Emma Müller
  * LogBack-Appender for slf4j logs. This renders log messages into the label_message of {@link RootFrameController}
  */
 public class MessageAppender extends AppenderBase<ILoggingEvent> {

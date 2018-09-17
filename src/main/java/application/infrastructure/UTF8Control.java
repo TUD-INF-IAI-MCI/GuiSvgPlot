@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 /**
+ * @author Emma Müller
  * UTF-8 coding of the resource bundle.
  * https://stackoverflow.com/questions/4659929/how-to-use-utf-8-in-resource-properties-with-resourcebundle
  */

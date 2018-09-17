@@ -26,6 +26,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+/**
+ * @author Robert Schlegel
+ */
 public class FunctionWizardFrameController extends SVGWizardController {
 
     private static final int AMOUNTOFSTAGES = 6;

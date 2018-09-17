@@ -38,6 +38,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Robert Schlegel, Emma Müller
+ */
 public class GuiSvgOptions {
 
     // These values were determined by trial and error, if the values are lower, the application crashes!

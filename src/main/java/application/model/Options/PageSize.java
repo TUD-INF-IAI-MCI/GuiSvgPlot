@@ -2,6 +2,9 @@ package application.model.Options;
 
 import tud.tangram.svgplot.data.Point;
 
+/**
+ * @author Emma Müller
+ */
 public enum PageSize {
     CUSTOM("custom", 210, 297),
     A0("A0", 841, 1189),

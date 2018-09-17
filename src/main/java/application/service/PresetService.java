@@ -23,6 +23,8 @@ import java.util.ResourceBundle;
  * The Preset Service.
  * This Singleton Class creates, updates, deletes and loads {@link Preset}s and stores it into an json-File on
  * path: System.getProperty("user.home") + "/svgPlot/presets.json".
+ *
+ * @author Emma Müller
  */
 public class PresetService {
     private static final Logger logger = LoggerFactory.getLogger(PresetService.class);

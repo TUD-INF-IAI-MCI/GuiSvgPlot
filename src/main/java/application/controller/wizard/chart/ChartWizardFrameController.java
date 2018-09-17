@@ -23,6 +23,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * The controller for chart-wizard.
+ * @author Emma Müller
+ */
 public class ChartWizardFrameController extends SVGWizardController {
     private static final Logger logger = LoggerFactory.getLogger(ChartWizardFrameController.class);
 

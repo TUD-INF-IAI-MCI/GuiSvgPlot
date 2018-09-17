@@ -2,6 +2,9 @@ package application.model.Options;
 
 import tud.tangram.svgplot.styles.AxisStyle;
 
+/**
+ * @author Emma Müller
+ */
 public enum GuiAxisStyle {
     Barchart(null),
     Box(AxisStyle.BOX),

@@ -1,5 +1,8 @@
 package application.model.Options;
 
+/**
+ * @author Emma Müller
+ */
 public enum TrendlineAlgorithm {
     None,
     MovingAverage,

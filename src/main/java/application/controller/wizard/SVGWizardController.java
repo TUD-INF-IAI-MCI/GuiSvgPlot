@@ -65,6 +65,10 @@ import java.util.*;
 
 import static application.controller.RootFrameController.wizardPath;
 
+/**
+ * The controller for wizards. Parent of {@link ChartWizardFrameController} and {@link application.controller.wizard.functions.FunctionWizardFrameController}.
+ * @author Emma Müller, Robert Schlegel
+ */
 public class SVGWizardController implements Initializable {
     // start logger
     private static final Logger logger = LoggerFactory.getLogger(SVGWizardController.class);

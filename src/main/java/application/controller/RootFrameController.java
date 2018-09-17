@@ -26,6 +26,9 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * @author Robert Schlegel
+ */
 public class RootFrameController implements Initializable {
 
     @FXML

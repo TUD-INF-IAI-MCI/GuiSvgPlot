@@ -23,6 +23,9 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * @author Robert Schlegel
+ */
 public class GuiSvgPlott extends Application {
 
 

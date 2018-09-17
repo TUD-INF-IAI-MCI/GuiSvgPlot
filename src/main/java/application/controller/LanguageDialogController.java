@@ -14,6 +14,9 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * @author Robert Schlegel
+ */
 public class LanguageDialogController implements Initializable {
     private ResourceBundle bundle;
 

@@ -15,6 +15,9 @@ import javafx.scene.control.Label;
 import javax.xml.soap.Text;
 import java.util.ResourceBundle;
 
+/**
+ * @author Emma Müller
+ */
 public class TextFieldUtil {
     private static final Logger logger = LoggerFactory.getLogger(TextFieldUtil.class);
     private static final TextFieldUtil INSTANCE = new TextFieldUtil();
