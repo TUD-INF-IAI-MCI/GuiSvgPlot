@@ -338,8 +338,6 @@
                         </HBox>
                         <Label fx:id="label_cssCustom11" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.rowIndex="23" />
                         <TextArea fx:id="textArea_cssCustom11" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="23" />
-                        <Label fx:id="label_colors11" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_colors" visible="false" GridPane.rowIndex="24" />
-                        <CheckComboBox fx:id="checkComboBox_color11" accessibleHelp="%help_checkcombobox" accessibleText="%label_colors" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="24" />
                      </children>
                      <padding>
                         <Insets left="5.0" />
@@ -639,8 +637,6 @@
                         </HBox>
                         <Label fx:id="label_cssCustom1" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.rowIndex="25" />
                         <TextArea fx:id="textArea_cssCustom1" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="25" />
-                        <Label fx:id="label_colors1" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_colors" visible="false" GridPane.rowIndex="26" />
-                        <CheckComboBox fx:id="checkComboBox_color1" accessibleHelp="%help_checkcombobox" accessibleText="%label_colors" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="26" />
                      </children>
                      <padding>
                         <Insets left="5.0" />
@@ -937,8 +933,6 @@
                         </HBox>
                         <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.rowIndex="23" />
                         <TextArea fx:id="textArea_cssCustom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="23" />
-                        <Label fx:id="label_colors" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_colors" visible="false" GridPane.rowIndex="24" />
-                        <CheckComboBox fx:id="checkComboBox_color" accessibleHelp="%help_checkcombobox" accessibleText="%label_colors" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="24" />
                      </children>
                      <padding>
                         <Insets left="5.0" />
@@ -1235,8 +1229,6 @@
                         </HBox>
                         <Label fx:id="label_cssCustom111" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.rowIndex="23" />
                         <TextArea fx:id="textArea_cssCustom111" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="23" />
-                        <Label fx:id="label_colors111" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_colors" visible="false" GridPane.rowIndex="24" />
-                        <CheckComboBox fx:id="checkComboBox_color111" accessibleHelp="%help_checkcombobox" accessibleText="%label_colors" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="24" />
                      </children>
                      <padding>
                         <Insets left="5.0" />
