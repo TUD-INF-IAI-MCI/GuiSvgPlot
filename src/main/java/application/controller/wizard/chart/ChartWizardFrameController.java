@@ -486,6 +486,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_originalPoints.getSelectionModel().select(VisibilityOfDataPoints.SHOW);
         this.choiceBox_originalPoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.guiSvgOptions.setHideOriginalPoints(newValue);
+            pointSymbolInputs.forEach((label, hBox) -> toggleVisibility(newValue.equals(VisibilityOfDataPoints.SHOW), label, hBox));
         });
         ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
         this.choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
@@ -540,10 +541,6 @@ public class ChartWizardFrameController extends SVGWizardController {
             }
         });
 
-   /*     this.pointSymbolInputs_scatterPlott = new HashMap<>();
-        for (int i = 0; i < AMOUNT_OF_POINTSYMBOL_INPUTS; i++) {
-            this.drawPointSymbolField(this.pointSymbolInputs_scatterPlott, this.customPointSymbols, 4 + i, i, "scatterPlot_pointSymbol", true);
-        }*/
         selectedPointSymbols.forEach((label, pointSymbol) -> {
             HBox hBox_scatter = pointSymbolInputs.get(label);
             if (hBox_scatter != null) {
