@@ -778,7 +778,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         pointSymbolChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             changePointSymbols(map, observableList, index, label, newValue, oldValue);
         });
-
+        choiceBoxUtil.addNotEmptyValidationListener(pointSymbolChoiceBox, label);
         Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
         Button resetBtn = new Button();
         resetBtn.setTooltip(new Tooltip(bundle.getString("button_point_symbol_reset")));
