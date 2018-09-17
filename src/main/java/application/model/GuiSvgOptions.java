@@ -64,6 +64,7 @@ public class GuiSvgOptions {
     private ObjectProperty<IntegralPlotSettings> integral;
     private ObjectProperty<PointListList> points;
 
+
     private BooleanProperty pi;
     private BooleanProperty autoScale;
 

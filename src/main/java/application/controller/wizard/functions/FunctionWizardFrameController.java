@@ -87,6 +87,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
     @FXML
     private GridPane stage4;
 
+    @FXML
+    CheckBox checkBox_pi;
+
 
     /* stage 5 */
     @FXML
@@ -255,8 +258,14 @@ public class FunctionWizardFrameController extends SVGWizardController {
      * Will initiate the forth stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage4() {
+
+
         super.initAxisFieldListeners();
         super.toggleAxesRanges(true);
+
+        guiSvgOptions.piProperty().bind(checkBox_pi.selectedProperty());
+
+
     }
 
     /**
