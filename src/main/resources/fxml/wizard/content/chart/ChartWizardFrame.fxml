@@ -411,12 +411,24 @@
                                               </TextArea>
       
       
-                                              <Label fx:id="label_colors" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_colors" visible="false" GridPane.rowIndex="2" />
-                                              <CheckComboBox fx:id="checkComboBox_color" accessibleHelp="%help_checkcombobox" accessibleText="%color_select_text" items="" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                              <Label fx:id="label_color1" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_color1" visible="false" GridPane.rowIndex="2" />
+                                              <ChoiceBox fx:id="choiceBox_color1" accessibleText="%color1_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                               <tooltip>
-                                                  <Tooltip text="%color_select_text" />
+                                                  <Tooltip text="%color1_select_text" />
                                               </tooltip>
-                                              </CheckComboBox>
+                                              </ChoiceBox>
+                                              <Label fx:id="label_color2" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_color2" visible="false" GridPane.rowIndex="3" />
+                                              <ChoiceBox fx:id="choiceBox_color2" accessibleText="%color2_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                  <tooltip>
+                                                      <Tooltip text="%color2_select_text" />
+                                                  </tooltip>
+                                              </ChoiceBox>
+                                              <Label fx:id="label_color3" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_color3" visible="false" GridPane.rowIndex="4" />
+                                              <ChoiceBox fx:id="choiceBox_color3" accessibleText="%color3_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                  <tooltip>
+                                                      <Tooltip text="%color3_select_text" />
+                                                  </tooltip>
+                                              </ChoiceBox>
                                           </children>
                                       </GridPane>
                            </children>

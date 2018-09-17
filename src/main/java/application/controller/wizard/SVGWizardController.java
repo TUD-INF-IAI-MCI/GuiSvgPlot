@@ -35,7 +35,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -167,9 +166,17 @@ public class SVGWizardController implements Initializable {
     @FXML
     public TextArea textArea_cssCustom;
     @FXML
-    public Label label_colors;
-
-    public CheckComboBox<Color> checkComboBox_color = new CheckComboBox<>();
+    private Label label_color1;
+    @FXML
+    private Label label_color2;
+    @FXML
+    private Label label_color3;
+    @FXML
+    private ChoiceBox<Color> choiceBox_color1;
+    @FXML
+    private ChoiceBox<Color> choiceBox_color2;
+    @FXML
+    private ChoiceBox<Color> choiceBox_color3;
     // csv fields
     @FXML
     public TextField textField_csvPath;
@@ -269,7 +276,9 @@ public class SVGWizardController implements Initializable {
         this.choiceBox_outputDevice.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.guiSvgOptions.setOutputDevice(newValue);
             boolean isColorDevice = newValue == OutputDevice.ScreenColor;
-            this.toggleVisibility(isColorDevice, this.label_colors, this.checkComboBox_color);
+            this.toggleVisibility(isColorDevice, this.label_color1, this.choiceBox_color1);
+            this.toggleVisibility(isColorDevice, this.label_color2, this.choiceBox_color2);
+            this.toggleVisibility(isColorDevice, this.label_color3, this.choiceBox_color3);
         });
 
         // size
@@ -455,29 +464,25 @@ public class SVGWizardController implements Initializable {
 
         // colors
         this.colors = guiSvgOptions.getColors();
-        ObservableList<Color> colorsObservableList = FXCollections.observableArrayList(Color.values());
-        this.checkComboBox_color.getItems().addAll(colorsObservableList);
-        this.checkComboBox_color.getCheckModel().getCheckedItems().addListener(new ListChangeListener<Color>() {
-            public void onChanged(ListChangeListener.Change<? extends Color> c) {
-//                colors.clear();
-                ObservableList<Color> checkedItems = checkComboBox_color.getCheckModel().getCheckedItems();
-                ObservableList<Color> newItems =
-                        checkedItems.filtered(color -> !colors.contains(color.getName()));
-                ObservableList<Color> oldItems =
-                        colorsObservableList.filtered(color -> !checkedItems.contains(color) && colors.contains(color.getName()));
-                if (newItems.size() > 0) {
-                    for (Color color : newItems) {
-                        colors.add(color.getName());
-                    }
-                }
-                if (oldItems.size() > 0) {
-                    for (Color color : oldItems) {
-                        colors.remove(color.getName());
-                    }
-                }
+        this.colors.addListener(new ListChangeListener<String>() {
+            @Override
+            public void onChanged(Change<? extends String> c) {
                 guiSvgOptions.setColors(colors);
             }
         });
+        ObservableList<Color> colorsObservableList = FXCollections.observableArrayList(Color.values());
+        this.choiceBox_color1.getItems().addAll(colorsObservableList);
+        this.choiceBox_color1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            colors.add(0, newValue.getName());
+        });
+        this.choiceBox_color2.getItems().addAll(colorsObservableList);
+        this.choiceBox_color2.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            colors.add(1, newValue.getName());
+        }));
+        this.choiceBox_color3.getItems().addAll(colorsObservableList);
+        this.choiceBox_color3.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            colors.add(2, newValue.getName());
+        }));
     }
 
     protected void initCsvFieldListeners() {
@@ -1017,7 +1022,8 @@ public class SVGWizardController implements Initializable {
     protected void initFieldListenersForPreview() {
         this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
                 this.choiceBox_outputDevice, this.choiceBox_size, this.choicebox_gridStyle,
-                this.choiceBox_csvOrientation, this.choiceBox_csvType, this.choiceBox_cssType);
+                this.choiceBox_csvOrientation, this.choiceBox_csvType, this.choiceBox_cssType,
+                this.choiceBox_color1, this.choiceBox_color2, this.choiceBox_color3);
         this.textFieldUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
                 this.textField_title, this.textField_customSizeWidth, this.textField_customSizeHeight,
                 this.textField_xfrom, this.textField_xto, this.textField_yfrom, this.textField_yto,
