@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -45,6 +46,10 @@ public class RootFrameController implements Initializable {
 
     @FXML
     private MenuItem menuItem_About;
+
+    @FXML
+    private MenuItem menuItem_csvHelp;
+
     @FXML
     private MenuItem menuItem_Language;
     @FXML
@@ -103,7 +108,7 @@ public class RootFrameController implements Initializable {
                     /*startPresetOverview();
                     presetsController.presets.add(savedPreset);*/
                     presetService.create(savedPreset);
-                } else if(result.isPresent()) {
+                } else if (result.isPresent()) {
                     String header = bundle.getString("alert_preset_duplicate_header1") + result.get() + bundle.getString("alert_preset_duplicate_header2");
                     showErrorAlert(bundle.getString("alert_preset_duplicate_title"), header,
                             bundle.getString("alert_preset_duplicate_content"));
@@ -124,6 +129,37 @@ public class RootFrameController implements Initializable {
             alert.setContentText(bundle.getString("menu_help_about_content"));
             alert.showAndWait();
         });
+
+        menuItem_csvHelp.setOnAction(event -> {
+            showCsvHelper();
+        });
+
+    }
+
+    private void showCsvHelper() {
+
+        this.label_Headline.setText(this.bundle.getString("headline_presets"));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+        loader.setLocation((GuiSvgPlott.CsvFormatHelper));
+        try {
+
+            Stage stage = new Stage();
+            Scene s = new Scene(loader.load());
+            stage.setScene(s);
+
+            ((Button) stage.getScene().lookup("#CloseButton")).setOnAction(event -> {
+                stage.close();
+            });
+
+            stage.show();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void closeWizard() {

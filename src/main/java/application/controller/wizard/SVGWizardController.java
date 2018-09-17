@@ -24,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
@@ -249,6 +250,9 @@ public class SVGWizardController implements Initializable {
 
     protected void initGeneralFieldListeners() {
         // title
+
+        focusInit();
+
         this.textField_title.textProperty().addListener((observable, oldValue, newValue) -> {
             this.guiSvgOptions.setTitle(newValue);
         });
@@ -721,7 +725,7 @@ public class SVGWizardController implements Initializable {
             GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
             GuiSvgPlott.getInstance().closeWizard();
             wizardPath = "none";
-            if(GuiSvgPlott.getInstance().getRootFrameController().menuItem_Preset_Editor.isDisable()){
+            if (GuiSvgPlott.getInstance().getRootFrameController().menuItem_Preset_Editor.isDisable()) {
                 GuiSvgPlott.getInstance().getRootFrameController().menuItem_Preset_Editor.setDisable(false);
             }
             GuiSvgPlott.getInstance().getRootFrameController().menuItem_Save_Preset.setDisable(true);
@@ -1015,4 +1019,46 @@ public class SVGWizardController implements Initializable {
                 this.textField_xfrom, this.textField_xto, this.textField_yfrom, this.textField_yto,
                 this.textField_xlines, this.textField_ylines);
     }
+
+    private void focusInit() {
+        getAllNodes(tabPane_ContentHolder).forEach(node -> {
+            if (node instanceof TextField)
+                setFocusRenderPeviewProperty(node);
+            if (node instanceof TextArea)
+                setFocusRenderPeviewProperty(node);
+            if (node instanceof ChoiceBox)
+                setFocusRenderPeviewProperty(node);
+            if (node instanceof CheckBox)
+                setFocusRenderPeviewProperty(node);
+            if (node instanceof RadioButton)
+                setFocusRenderPeviewProperty(node);
+
+        });
+
+    }
+
+    public static ArrayList<Node> getAllNodes(Parent root) {
+        ArrayList<Node> nodes = new ArrayList<Node>();
+        addAllDescendents(root, nodes);
+        return nodes;
+    }
+
+    private static void addAllDescendents(Parent parent, ArrayList<Node> nodes) {
+        for (Node node : parent.getChildrenUnmodifiable()) {
+            nodes.add(node);
+            if (node instanceof Parent)
+                addAllDescendents((Parent) node, nodes);
+        }
+    }
+
+
+    protected void setFocusRenderPeviewProperty(Node node) {
+
+        if (node != null)
+            node.focusedProperty().addListener((args, oldVal, newVal) -> {
+                if (!newVal)
+                    this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
+            });
+    }
+
 }

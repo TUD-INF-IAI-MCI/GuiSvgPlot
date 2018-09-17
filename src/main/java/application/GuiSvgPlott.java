@@ -46,6 +46,7 @@ public class GuiSvgPlott extends Application {
     public static URL FunctionWizardFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/functions/FunctionWizardFrame.fxml");
     public static URL ChartWizardFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/chart/ChartWizardFrame.fxml");
     public static URL LanguageDialog = GuiSvgPlott.class.getResource("/fxml/wizard/LanguageDialog.fxml");
+    public static URL CsvFormatHelper = GuiSvgPlott.class.getResource("/fxml/wizard/content/CSVFormatHelp.fxml");
 
     ////////////////
 
@@ -113,7 +114,7 @@ public class GuiSvgPlott extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         if (locale == null)
-            locale = Locale.GERMAN;
+            locale = Locale.getDefault();
 
         this.bundle = ResourceBundle.getBundle("langBundle", locale, new UTF8Control());
 

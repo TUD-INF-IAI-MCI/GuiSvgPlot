@@ -136,6 +136,9 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private CheckComboBox<PointSymbol> checkComboBox_pointSymbols_scatterPlot;
 
+    @FXML
+    private Button button_EditDataSet;
+
     /* stage 4 */
     @FXML
     private GridPane stage4;
@@ -231,6 +234,10 @@ public class ChartWizardFrameController extends SVGWizardController {
      * Will initiate the third stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage3() {
+
+        button_EditDataSet.setVisible(false);
+
+
         // baraccumulation
         ObservableList<BarAccumulationStyle> csvOrientationObservableList = FXCollections.observableArrayList(BarAccumulationStyle.values());
         this.choiceBox_baraccumulation.setItems(csvOrientationObservableList);
