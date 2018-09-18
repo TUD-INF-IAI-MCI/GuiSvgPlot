@@ -2,6 +2,7 @@ package application.controller.wizard.chart;
 
 import application.controller.wizard.SVGWizardController;
 import application.model.Options.*;
+import application.util.KeyValuePair;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -11,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.stage.Modality;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.slf4j.Logger;
@@ -49,6 +51,13 @@ public class ChartWizardFrameController extends SVGWizardController {
     /* stage 2*/
     @FXML
     private GridPane stage2;
+    @FXML
+    private Button button_EditDataSet;
+    @FXML
+    private Button button_addDataPoint;
+    @FXML
+    private ListView<String> listView_SetNames;
+
 
     /* stage 3 */
     @FXML
@@ -138,8 +147,6 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private ChoiceBox<VisibilityOfDataPoints> choiceBox_originalPoints;
 
-    @FXML
-    private Button button_EditDataSet;
 
     /* stage 4 */
     @FXML
@@ -176,6 +183,11 @@ public class ChartWizardFrameController extends SVGWizardController {
     private ObservableList<LineStyle> lineStyleSecondObservableList;
     private ObservableList<LineStyle> lineStyleThirdObservableList;
 
+
+    private ObservableList<String> setNames;
+    private HashMap<String, ArrayList<KeyValuePair>> keyMap;
+
+
     private boolean isInitial = true;
 
     public ChartWizardFrameController() {
@@ -190,6 +202,9 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.initChartOptionListeners();
         super.initloadPreset();
         this.initFieldListenersForChartPreview();
+
+        this.setNames = FXCollections.observableArrayList();
+        this.keyMap = new HashMap<>();
     }
 
 
@@ -221,6 +236,7 @@ public class ChartWizardFrameController extends SVGWizardController {
             toggleBarChartOptions(newValue == DiagramType.BarChart);
             toggleLineChartOptions(newValue == DiagramType.LineChart);
             toggleScatterPlotOptions(newValue == DiagramType.ScatterPlot);
+            textField_csvPath.clear();
         });
         this.choiceBox_diagramType.getSelectionModel().select(0);
     }
@@ -231,14 +247,30 @@ public class ChartWizardFrameController extends SVGWizardController {
      */
     private void initStage2() {
         super.initCsvFieldListeners();
+
+
+        button_EditDataSet.setOnAction(event -> {
+            Dialog d = new TextInputDialog();
+            d.setHeaderText("header");
+            d.setContentText("content");
+            d.initModality(Modality.APPLICATION_MODAL);
+            d.showAndWait();
+            if (d.getResult() != null) {
+                String result = ((TextInputDialog) d).getResult();
+                if (!result.isEmpty()) {
+                    setNames.add(result);
+                    System.out.println(result);
+                }
+            }
+        });
+        listView_SetNames.setItems(setNames);
+
     }
 
     /**
      * Will initiate the third stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage3() {
-
-        button_EditDataSet.setVisible(false);
 
 
         // baraccumulation
@@ -624,7 +656,7 @@ public class ChartWizardFrameController extends SVGWizardController {
             this.hide(this.label_sortOrder, this.choicebox_sortOrder);
         } else {
             this.choicebox_dblaxes.getItems().add(GuiAxisStyle.Barchart);
-            if (pointSymbolInputs != null ) {
+            if (pointSymbolInputs != null) {
                 pointSymbolInputs.forEach((label, hBox) -> hide(label, hBox));
             }
         }
@@ -795,7 +827,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         stage3.add(label, 0, row);
         stage3.add(inputGoup, 1, row);
         map.put(label, inputGoup);
-        selectedPointSymbols.put(label,  PointSymbol.getOrdered().get(index));
+        selectedPointSymbols.put(label, PointSymbol.getOrdered().get(index));
     }
 
     private void changePointSymbols(final Map<Label, HBox> map, ObservableList<PointSymbol> observableList, final int index, Label label, final PointSymbol newValue, final PointSymbol oldValue) {
@@ -817,4 +849,22 @@ public class ChartWizardFrameController extends SVGWizardController {
         }
         observableList.set(index, newValue);
     }
+
+
+    private void parseCSV() {
+
+        switch (this.choiceBox_diagramType.getSelectionModel().getSelectedItem()) {
+
+            case BarChart: {
+
+                break;
+            }
+            default: {
+
+            }
+
+        }
+    }
+
+
 }

@@ -66,6 +66,7 @@ import static application.controller.RootFrameController.wizardPath;
 
 /**
  * The controller for wizards. Parent of {@link ChartWizardFrameController} and {@link application.controller.wizard.functions.FunctionWizardFrameController}.
+ *
  * @author Emma Müller, Robert Schlegel
  */
 public class SVGWizardController implements Initializable {
@@ -486,7 +487,7 @@ public class SVGWizardController implements Initializable {
         ObservableList<Color> secondColorObservableList = FXCollections.observableArrayList(Color.values());
         ObservableList<Color> thirdColorObservableList = FXCollections.observableArrayList(Color.values());
         this.choiceBox_color1.setItems(firstColorObservableList);
-       // this.choiceBox_color1.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        // this.choiceBox_color1.setConverter(this.svgOptionsUtil.getTextureStringConverter());
         this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_color1, this.label_color1);
         this.choiceBox_color1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
@@ -504,7 +505,7 @@ public class SVGWizardController implements Initializable {
             this.colors.set(0, null);
         });
         this.choiceBox_color2.setItems(secondColorObservableList);
-       // this.choiceBox_color2.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        // this.choiceBox_color2.setConverter(this.svgOptionsUtil.getTextureStringConverter());
         this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_color2, this.label_color2);
         this.choiceBox_color2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
@@ -521,7 +522,7 @@ public class SVGWizardController implements Initializable {
             this.colors.set(1, null);
         });
         this.choiceBox_color3.setItems(thirdColorObservableList);
-     //   this.choiceBox_color3.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        //   this.choiceBox_color3.setConverter(this.svgOptionsUtil.getTextureStringConverter());
         this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_color3, this.label_color3);
         this.choiceBox_color3.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
@@ -554,6 +555,7 @@ public class SVGWizardController implements Initializable {
         });
 
         textField_csvPath.setOnDragOver(dragOverHandler(".csv"));
+
         textField_csvPath.setOnDragDropped(event -> {
             String path = event.getDragboard().getFiles().get(0).getAbsolutePath();
             textField_csvPath.setText(path);
@@ -972,9 +974,9 @@ public class SVGWizardController implements Initializable {
         this.guiSvgOptions.getColors().addListener(new ListChangeListener<Color>() {
             @Override
             public void onChanged(Change<? extends Color> c) {
-                choiceBox_color1.getSelectionModel().select( guiSvgOptions.getColors().get(0));
-                choiceBox_color2.getSelectionModel().select( guiSvgOptions.getColors().get(1));
-                choiceBox_color3.getSelectionModel().select( guiSvgOptions.getColors().get(2));
+                choiceBox_color1.getSelectionModel().select(guiSvgOptions.getColors().get(0));
+                choiceBox_color2.getSelectionModel().select(guiSvgOptions.getColors().get(1));
+                choiceBox_color3.getSelectionModel().select(guiSvgOptions.getColors().get(2));
             }
         });
     }
@@ -1044,6 +1046,7 @@ public class SVGWizardController implements Initializable {
         try {
             tempFile = Files.createTempFile("dataset", ".csv");
             mergeDataSet(textField_csvPath.getText(), tempFile);
+            System.out.println(tempFile);
 
 
         } catch (IOException e) {
@@ -1109,6 +1112,7 @@ public class SVGWizardController implements Initializable {
 
     }
 
+
     public static ArrayList<Node> getAllNodes(Parent root) {
         ArrayList<Node> nodes = new ArrayList<Node>();
         addAllDescendents(root, nodes);
@@ -1132,5 +1136,9 @@ public class SVGWizardController implements Initializable {
                     this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
             });
     }
+
+
+
+
 
 }

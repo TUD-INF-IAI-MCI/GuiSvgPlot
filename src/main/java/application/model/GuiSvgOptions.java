@@ -107,7 +107,7 @@ public class GuiSvgOptions {
     private final StringProperty yUnit;
 
     // this necessary for jackson
-    public GuiSvgOptions(){
+    public GuiSvgOptions() {
         this(new SvgPlotOptions());
     }
 
@@ -133,7 +133,7 @@ public class GuiSvgOptions {
 
 
         this.gnuplot = new SimpleStringProperty(GuiSvgPlott.getInstance().getGnuPlot());
-        if (!this.gnuplot.get().isEmpty()){
+        if (!this.gnuplot.get().isEmpty()) {
             this.options.setGnuplot(this.gnuplot.getValue());
         }
         this.title = new SimpleStringProperty(this.options.getTitle());
@@ -183,8 +183,8 @@ public class GuiSvgOptions {
         this.outputDevice.addListener((observable, oldValue, newValue) -> {
             this.options.setOutputDevice(newValue);
             this.lineStyles.setAll(LineStyle.getByOutputDeviceOrderedById(newValue));
-            if (newValue == OutputDevice.ScreenColor){
-               // this.colors.setAll(Color.values());
+            if (newValue == OutputDevice.ScreenColor) {
+                // this.colors.setAll(Color.values());
                 this.colors.setAll(Color.values()[0], Color.values()[1], Color.values()[2]);
             }
         });
@@ -280,12 +280,11 @@ public class GuiSvgOptions {
         });
         this.colors.addListener(new ListChangeListener<Color>() {
             @Override
-            public void onChanged(Change<? extends Color> c)
-            {
+            public void onChanged(Change<? extends Color> c) {
                 List<String> colorStringList = new ArrayList<>();
-                for (Color color : colors){
+                for (Color color : colors) {
                     String colorString = null;
-                    if (color != null){
+                    if (color != null) {
                         colorString = color.getName();
                     }
                     colorStringList.add(colorString);
@@ -449,6 +448,7 @@ public class GuiSvgOptions {
     public ObservableList<PointSymbol> getPointSymbols() {
         return pointSymbols;
     }
+
     @JsonGetter("pointSymbols")
     public List<PointSymbol> getPointSymbolsAsList() {
         return pointSymbols;
@@ -598,6 +598,7 @@ public class GuiSvgOptions {
     public ObservableList<Function> getFunctions() {
         return functions;
     }
+
     @JsonGetter("functions")
     public List<Function> getFunctionsAsList() {
         return functions;
@@ -612,9 +613,10 @@ public class GuiSvgOptions {
         this.functions.addAll(functions);
     }
 
-    public ObservableList<Color> getColors(){
+    public ObservableList<Color> getColors() {
         return colors;
     }
+
     @JsonGetter("colors")
     public List<Color> getColorAsList() {
         return colors;
@@ -632,6 +634,7 @@ public class GuiSvgOptions {
     public ObservableList<String> getTrendLine() {
         return trendLine;
     }
+
     @JsonGetter("trendLine")
     public List<String> getTrendlineAsList() {
         return trendLine;
@@ -727,6 +730,7 @@ public class GuiSvgOptions {
     }
 
     public void setCsvPath(final String csvPath) {
+        System.out.println("times");
         this.csvPath.set(csvPath);
     }
 
@@ -761,6 +765,7 @@ public class GuiSvgOptions {
     public ObservableList<LineStyle> getLineStyles() {
         return lineStyles;
     }
+
     @JsonGetter("lineStyles")
     public List<LineStyle> getLineStylesAsList() {
         return lineStyles;
@@ -769,6 +774,7 @@ public class GuiSvgOptions {
     public void setLineStyles(final ObservableList<LineStyle> lineStyles) {
         this.lineStyles.setAll(lineStyles);
     }
+
     @JsonSetter("lineStyles")
     public void setLineStylesList(final List<LineStyle> lineStyles) {
         this.lineStyles.setAll(lineStyles);

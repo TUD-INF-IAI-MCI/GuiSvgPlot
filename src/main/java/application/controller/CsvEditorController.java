@@ -230,10 +230,5 @@ public class CsvEditorController implements Initializable {
 
     }
 
-    private void initTable() {
-
-
-    }
-
 
 }
