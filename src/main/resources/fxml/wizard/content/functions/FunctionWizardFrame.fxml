@@ -22,8 +22,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
-
 <?import org.controlsfx.glyphfont.Glyph?>
+
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.functions.FunctionWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
@@ -83,7 +83,7 @@
                                                 <ChoiceBox fx:id="choiceBox_outputDevice" accessibleText="%label_output_device" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                                                 <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram" GridPane.rowIndex="3" />
-                                                <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                <HBox maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                     <children>
                                                         <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" prefHeight="17.0" text="%radio_portrait" GridPane.valignment="CENTER">
                                                             <tooltip>
@@ -427,42 +427,42 @@
 
                                                 <Label fx:id="label_color1" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_color1" visible="false" GridPane.rowIndex="2" />
                                                 <HBox fx:id="hbox_firstColor" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                                    <ChoiceBox fx:id="choiceBox_color1" accessibleText="%color1_select_text" prefHeight="25.0" maxWidth="1.7976931348623157E308" minWidth="50.0" HBox.hgrow="ALWAYS" >
+                                                    <ChoiceBox fx:id="choiceBox_color1" accessibleText="%color1_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS">
                                                        <tooltip>
                                                             <Tooltip text="%color1_select_text" />
                                                         </tooltip>
                                                     </ChoiceBox>
                                                     <Button fx:id="button_resetFirstColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
                                                         <graphic>
-                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE"/>
+                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE" />
                                                         </graphic>
                                                         <tooltip><Tooltip text="%button_color_reset" /></tooltip>
                                                     </Button>
                                                 </HBox>
                                                 <Label fx:id="label_color2" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_color2" visible="false" GridPane.rowIndex="3" />
                                                 <HBox fx:id="hbox_secondColor" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                                    <ChoiceBox fx:id="choiceBox_color2" accessibleText="%color2_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" >
+                                                    <ChoiceBox fx:id="choiceBox_color2" accessibleText="%color2_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS">
                                                         <tooltip>
                                                             <Tooltip text="%color2_select_text" />
                                                         </tooltip>
                                                     </ChoiceBox>
                                                     <Button fx:id="button_resetSecondColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
                                                         <graphic>
-                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE"/>
+                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE" />
                                                         </graphic>
                                                         <tooltip><Tooltip text="%button_color_reset" /></tooltip>
                                                     </Button>
                                                 </HBox>
                                                 <Label fx:id="label_color3" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_color3" visible="false" GridPane.rowIndex="4" />
-                                                <HBox fx:id="hbox_thirdColor" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" >
-                                                    <ChoiceBox fx:id="choiceBox_color3" accessibleText="%color3_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" >
+                                                <HBox fx:id="hbox_thirdColor" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                    <ChoiceBox fx:id="choiceBox_color3" accessibleText="%color3_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS">
                                                         <tooltip>
                                                             <Tooltip text="%color3_select_text" />
                                                         </tooltip>
                                                     </ChoiceBox>
                                                     <Button fx:id="button_resetThirdColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
                                                         <graphic>
-                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE"/>
+                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE" />
                                                         </graphic>
                                                         <tooltip><Tooltip text="%button_color_reset" /></tooltip>
                                                     </Button>
