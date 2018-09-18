@@ -236,7 +236,6 @@ public class ChartWizardFrameController extends SVGWizardController {
             toggleBarChartOptions(newValue == DiagramType.BarChart);
             toggleLineChartOptions(newValue == DiagramType.LineChart);
             toggleScatterPlotOptions(newValue == DiagramType.ScatterPlot);
-            textField_csvPath.clear();
         });
         this.choiceBox_diagramType.getSelectionModel().select(0);
     }
