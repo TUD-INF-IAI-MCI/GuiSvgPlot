@@ -22,7 +22,9 @@ import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.plotting.Function;
 import tud.tangram.svgplot.plotting.IntegralPlotSettings;
 
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -165,9 +167,22 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
         super.initCsvFieldListeners();
 
+
         button_EditDataSet.setOnAction(event -> {
             HBox row = generateTableEntry(new Function("", ""));
             vBox_DataTable.getChildren().add(row);
+        });
+
+        getResultFileProp().addListener(inval -> {
+            try {
+                Files.readAllLines(getResultFileProp().get()).forEach(item -> {
+                    HBox row = generateTableEntry(new Function(item.substring(0, item.indexOf(",")).trim(), item.substring(item.indexOf(",") + 1).trim()));
+                    vBox_DataTable.getChildren().add(row);
+                });
+            } catch (IOException e) {
+            }
+
+
         });
 
 
@@ -242,14 +257,31 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
         });
 
-        radioButton_Function2.visibleProperty().addListener(args -> {
-            integral2.set("y=0");
+        radioButton_Function2.selectedProperty().addListener((args, oldVal, newVal) -> {
+            if (!newVal)
+                integral2.set("y=0");
             integralOptionBuilder();
+            this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
         });
 
 
         textField_rangeFrom.visibleProperty().bind(checkBox_ValueRange.selectedProperty());
         textField_rangeTo.visibleProperty().bind(checkBox_ValueRange.selectedProperty());
+
+
+        textField_rangeFrom.textProperty().addListener(inv -> {
+            integralOptionBuilder();
+        });
+        textField_rangeTo.textProperty().addListener(inv -> {
+            integralOptionBuilder();
+        });
+        checkBox_ValueRange.selectedProperty().addListener(args -> {
+            integralOptionBuilder();
+        });
+        checkBox_pi.selectedProperty().addListener(args -> {
+            integralOptionBuilder();
+        });
+
         label_RangeFrom.visibleProperty().bind(checkBox_ValueRange.selectedProperty());
         label_RangeTo.visibleProperty().bind(checkBox_ValueRange.selectedProperty());
 
@@ -261,6 +293,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
      */
     private void initStage4() {
 
+
+        textField_rangeFrom.setText("-10");
+        textField_rangeTo.setText("10");
 
         super.initAxisFieldListeners();
         super.toggleAxesRanges(true);
@@ -288,13 +323,14 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
 
         int f1 = comboBox_function1.getSelectionModel().getSelectedIndex();
-        int f2 = radioButton_Function2.isVisible() ? comboBox_function2.getSelectionModel().getSelectedIndex() : -1;
+        int f2 = radioButton_Function2.isSelected() ? comboBox_function2.getSelectionModel().getSelectedIndex() : -1;
         double from = -10;
         double to = 10;
 
         if (checkBox_ValueRange.isSelected()) {
-            from = Double.parseDouble(textField_rangeFrom.getText());
-            to = Double.parseDouble(textField_rangeTo.getText());
+
+            from = Double.parseDouble(textField_rangeFrom.getText().replaceAll(",", "."));
+            to = Double.parseDouble(textField_rangeTo.getText().replaceAll(",", "."));
         }
         String name = textField_IntegralName.getText();
 
@@ -305,16 +341,13 @@ public class FunctionWizardFrameController extends SVGWizardController {
         guiSvgOptions.getFunctions().clear();
 
 
-//        if (f2 == -1) {
-//            f.add(new Function("0x"));
-//            f2 = f.size();
-//        }
         guiSvgOptions.getFunctions().addAll(f);
-        IntegralPlotSettings integalSettings = new IntegralPlotSettings(f1, f2, name, new Range(from, to));
-        guiSvgOptions.setIntegral(integalSettings);
 
-        this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
-
+        if (!f.isEmpty()) {
+            IntegralPlotSettings integalSettings = new IntegralPlotSettings(f1, f2, name, new Range(from, to));
+            guiSvgOptions.setIntegral(integalSettings);
+            this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
+        }
     }
 
     public ObservableList<Function> getFunctionList() {
@@ -325,6 +358,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
     private HBox generateTableEntry(Function function) {
 
         Function f = new Function(function.getTitle(), function.getFunction());
+        System.out.println(f);
 
         HBox row = new HBox();
 

@@ -234,6 +234,7 @@ public class SVGWizardController implements Initializable {
     protected HashMap<DiagramType, File> pointMap;
 
     protected SimpleObjectProperty<File> currentDataSet;
+    private ObjectProperty<Path> tempFileProp;
 
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -254,6 +255,7 @@ public class SVGWizardController implements Initializable {
         this.webView_svg.setAccessibleHelp(this.bundle.getString("preview"));
         this.currentDataSet = new SimpleObjectProperty<>();
         this.pointMap = new HashMap<>();
+        this.tempFileProp = new SimpleObjectProperty<>();
 
         this.initListener();
         //this.initOptionListeners();
@@ -1046,12 +1048,13 @@ public class SVGWizardController implements Initializable {
         try {
             tempFile = Files.createTempFile("dataset", ".csv");
             mergeDataSet(textField_csvPath.getText(), tempFile);
-            System.out.println(tempFile);
 
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        tempFileProp.set(tempFile);
 
         return (tempFile != null) ? tempFile.toString() : "";
     }
@@ -1082,6 +1085,12 @@ public class SVGWizardController implements Initializable {
 
             });
         f.deleteOnExit();
+
+
+    }
+
+    protected ObjectProperty<Path> getResultFileProp() {
+        return tempFileProp;
     }
 
     protected void initFieldListenersForPreview() {
@@ -1136,9 +1145,6 @@ public class SVGWizardController implements Initializable {
                     this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
             });
     }
-
-
-
 
 
 }

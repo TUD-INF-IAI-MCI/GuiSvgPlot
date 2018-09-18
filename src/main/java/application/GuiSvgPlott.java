@@ -154,9 +154,9 @@ public class GuiSvgPlott extends Application {
                     break;
                 }
                 case F1: {
-                    VBox messages =  rootFrameController.vBox_messages;
-                    ScrollPane messages_container =  rootFrameController.scrollPane_message;
-                    if (messages.getChildren().size() > 0){
+                    VBox messages = rootFrameController.vBox_messages;
+                    ScrollPane messages_container = rootFrameController.scrollPane_message;
+                    if (messages.getChildren().size() > 0) {
                         messages.getChildren().get(0).requestFocus();
                     } else {
                         messages_container.setFocusTraversable(true);
@@ -165,12 +165,16 @@ public class GuiSvgPlott extends Application {
                     break;
                 }
                 case I: {
-                    rootFrameController.svgWizardController.button_Infos.requestFocus();
-                    break;
+                    if (event.isControlDown()) {
+                        rootFrameController.svgWizardController.button_Infos.requestFocus();
+                        break;
+                    }
                 }
                 case W: {
-                    rootFrameController.svgWizardController.button_Warnings.requestFocus();
-                    break;
+                    if (event.isControlDown()) {
+                        rootFrameController.svgWizardController.button_Warnings.requestFocus();
+                        break;
+                    }
                 }
                 case Q: {
                     if (event.isControlDown()) {
