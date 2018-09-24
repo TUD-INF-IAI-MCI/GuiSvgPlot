@@ -42,7 +42,6 @@ public class GuiSvgPlott extends Application {
 
     public static URL RootFrame = GuiSvgPlott.class.getResource("/fxml/RootFrame.fxml");
     public static URL WizardFrame = GuiSvgPlott.class.getResource("/fxml/wizard/Wizard.fxml");
-    public static URL PresetEditorFrame = GuiSvgPlott.class.getResource("/fxml/wizard/PresetEditorFrame.fxml");
     public static URL PresetOverviewFrame = GuiSvgPlott.class.getResource("/fxml/wizard/PresetOverviewFrame.fxml");
     public static URL IntroFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/Intro.fxml");
     public static URL CsvEditorFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/CsvEditor.fxml");
