@@ -148,13 +148,12 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
                         <Label alignment="CENTER" prefHeight="24.0" prefWidth="299.0" text="%key" textAlignment="CENTER" />
                         <Label alignment="CENTER" prefHeight="28.0" prefWidth="300.0" text="%value" GridPane.columnIndex="1" />
                         <Label text="%chart_stage0" underline="true" GridPane.rowIndex="1" />
-                        <Label layoutX="10.0" layoutY="15.0" text="%label_diagram_title" GridPane.rowIndex="2">
+                        <Label layoutX="10.0" layoutY="40.0" text="%label_output_device" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -162,22 +161,13 @@
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_Title" accessibleText="Diagramm Titel" maxWidth="1.7976931348623157E308" minWidth="50.0" promptText="%prompt_title" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label layoutX="10.0" layoutY="40.0" text="%label_output_device" GridPane.rowIndex="3">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
+                        <ChoiceBox fx:id="choiceBox_outputDevice" layoutX="310.0" layoutY="10.0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="%label_pageOrientation" GridPane.rowIndex="3">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <ChoiceBox fx:id="choiceBox_outputDevice" layoutX="310.0" layoutY="10.0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="%label_pageOrientation" GridPane.rowIndex="4">
-                           <padding>
-                              <Insets left="5.0" />
-                           </padding>
-                        </Label>
-                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
                               <RadioButton fx:id="radioBtn_Portrait" mnemonicParsing="false" selected="true" text="%radio_portrait">
                                  <toggleGroup>
@@ -187,7 +177,7 @@
                               <RadioButton fx:id="radioBtn_Landscape" mnemonicParsing="false" text="%radio_landscape" toggleGroup="$pageOrientationTG" />
                            </children>
                         </HBox>
-                        <Label layoutX="10.0" layoutY="65.0" text="%label_size_of_diagram" GridPane.rowIndex="5">
+                        <Label layoutX="10.0" layoutY="65.0" text="%label_size_of_diagram" GridPane.rowIndex="4">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -195,13 +185,13 @@
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <ChoiceBox fx:id="choiceBox_size" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label text="%chart_stage1" underline="true" GridPane.rowIndex="8" />
-                        <Label fx:id="label_customSizeWidth" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_width" visible="false" GridPane.rowIndex="6" />
-                        <TextField fx:id="textField_customSizeWidth" accessibleText="%size_of_diagram_width" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_width" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <Label fx:id="label_customSizeHeight" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_height" visible="false" GridPane.rowIndex="7" />
-                        <TextField fx:id="textField_customSizeHeight" accessibleText="%size_of_diagram_height" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_height" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <Label layoutX="10.0" layoutY="90.0" text="%label_csv_file" GridPane.rowIndex="9">
+                        <ChoiceBox fx:id="choiceBox_size" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label text="%chart_stage1" underline="true" GridPane.rowIndex="7" />
+                        <Label fx:id="label_customSizeWidth" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_width" visible="false" GridPane.rowIndex="5" />
+                        <TextField fx:id="textField_customSizeWidth" accessibleText="%size_of_diagram_width" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_width" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label fx:id="label_customSizeHeight" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_height" visible="false" GridPane.rowIndex="6" />
+                        <TextField fx:id="textField_customSizeHeight" accessibleText="%size_of_diagram_height" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_height" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label layoutX="10.0" layoutY="90.0" text="%label_csv_file" GridPane.rowIndex="8">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -209,13 +199,13 @@
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <HBox layoutX="310.0" layoutY="87.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                        <HBox layoutX="310.0" layoutY="87.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                            <children>
                               <TextField fx:id="textField_Csvpath" accessibleText="Diagramm Titel" maxWidth="1.7976931348623157E308" minWidth="50.0" promptText="%prompt_path_to_csv" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_CsvPath" accessibleText="CSV Datei auswählen" alignment="TOP_RIGHT" maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="..." />
                            </children>
                         </HBox>
-                        <Label text="%label_csv_type" GridPane.rowIndex="10">
+                        <Label text="%label_csv_type" GridPane.rowIndex="9">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -223,9 +213,9 @@
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <ChoiceBox fx:id="choiceBox_csvType" maxWidth="1.7976931348623157E308" prefHeight="26.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                        <Label text="%chart_stage3" underline="true" GridPane.rowIndex="11" />
-                        <Label text="%label_x_axis_title" GridPane.rowIndex="12">
+                        <ChoiceBox fx:id="choiceBox_csvType" maxWidth="1.7976931348623157E308" prefHeight="26.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <Label text="%chart_stage3" underline="true" GridPane.rowIndex="10" />
+                        <Label text="%label_x_axis_title" GridPane.rowIndex="11">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -233,8 +223,8 @@
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_xAxisTitle" promptText="%prompt_x_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-                        <Label text="%label_y_axis_title" GridPane.rowIndex="13">
+                        <TextField fx:id="textField_xAxisTitle" promptText="%prompt_x_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                        <Label text="%label_y_axis_title" GridPane.rowIndex="12">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -242,8 +232,8 @@
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_yAxisTitle" promptText="%prompt_y_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="13" />
-                        <Label text="%label_scale_data" GridPane.rowIndex="14">
+                        <TextField fx:id="textField_yAxisTitle" promptText="%prompt_y_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                        <Label text="%label_scale_data" GridPane.rowIndex="13">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -251,7 +241,7 @@
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="13">
                            <children>
                               <RadioButton fx:id="radioBtn_Scale_to_Data" mnemonicParsing="false" selected="true" text="%radio_scale_to_data_area">
                                  <opaqueInsets>
@@ -271,78 +261,78 @@
                               <Insets top="5.0" />
                            </padding>
                         </HBox>
-                        <Label fx:id="label_x_from" text="%label_display_area_x_from" visible="false" GridPane.rowIndex="15">
+                        <Label fx:id="label_x_from" text="%label_display_area_x_from" visible="false" GridPane.rowIndex="14">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_x_from" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="15" />
-                        <Label fx:id="label_x_to" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_to" textAlignment="RIGHT" visible="false" GridPane.rowIndex="16">
+                        <TextField fx:id="textField_x_from" accessibleText="%display_area_x_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                        <Label fx:id="label_x_to" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_to" textAlignment="RIGHT" visible="false" GridPane.rowIndex="15">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_x_to" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="16" />
-                        <Label fx:id="label_y_from" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_from" textAlignment="RIGHT" visible="false" GridPane.rowIndex="17">
+                        <TextField fx:id="textField_x_to" accessibleText="%display_area_x_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                        <Label fx:id="label_y_from" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_from" textAlignment="RIGHT" visible="false" GridPane.rowIndex="16">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_y_from" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="17" />
-                        <Label fx:id="label_y_to" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_to" textAlignment="RIGHT" visible="false" GridPane.rowIndex="18">
+                        <TextField fx:id="textField_y_from" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+                        <Label fx:id="label_y_to" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_to" textAlignment="RIGHT" visible="false" GridPane.rowIndex="17">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_y_to" accessibleText="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="18" />
-                        <Label text="%chart_stage4" underline="true" GridPane.rowIndex="19" />
-                        <Label fx:id="label_grid" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_grid_style" GridPane.rowIndex="20">
+                        <TextField fx:id="textField_y_to" accessibleText="%display_area_y_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+                        <Label text="%chart_stage4" underline="true" GridPane.rowIndex="18" />
+                        <Label fx:id="label_grid" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_grid_style" GridPane.rowIndex="19">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <ChoiceBox fx:id="choiceBox_gridStyle" accessibleText="%radio_horizontal" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="20" />
-                        <Label fx:id="label_xlines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_x" GridPane.rowIndex="21">
+                        <ChoiceBox fx:id="choiceBox_gridStyle" accessibleText="%label_grid_style" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="19" />
+                        <Label fx:id="label_xlines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_x" GridPane.rowIndex="20">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_helpLinesX" accessibleText="X-Achsen-Punkte , durch die Hilflinien verlaufen sollen." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="x1 x2 x3" GridPane.columnIndex="1" GridPane.rowIndex="21" />
-                        <Label fx:id="label_ylines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_y" GridPane.rowIndex="22">
+                        <TextField fx:id="textField_helpLinesX" accessibleHelp="%help_text_space_seperated" accessibleText="%help_lines_x_helptext" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="x1 x2 x3" GridPane.columnIndex="1" GridPane.rowIndex="20" />
+                        <Label fx:id="label_ylines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_y" GridPane.rowIndex="21">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_helpLinesY" accessibleText="Y-Achsen-Punkte, durch die Hilfslinien verlaufen sollen." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="y1 y2 y3" GridPane.columnIndex="1" GridPane.rowIndex="22" />
-                        <Label fx:id="label_dblaxes" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_axis_style" GridPane.rowIndex="23">
+                        <TextField fx:id="textField_helpLinesY" accessibleHelp="%help_text_space_seperated" accessibleText="%help_lines_y_helptext" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="y1 y2 y3" GridPane.columnIndex="1" GridPane.rowIndex="21" />
+                        <Label fx:id="label_dblaxes" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_axis_style" GridPane.rowIndex="22">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <ChoiceBox fx:id="choiceBox_dblaxes" accessibleText="%label_axis_style" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="23" />
-                        <Label text="%chart_stage5" underline="true" GridPane.rowIndex="24" />
-                        <Label fx:id="label_css" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_csstype" GridPane.rowIndex="25">
+                        <ChoiceBox fx:id="choiceBox_dblaxes" accessibleText="%label_axis_style" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="22" />
+                        <Label text="%chart_stage5" underline="true" GridPane.rowIndex="23" />
+                        <Label fx:id="label_css" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_csstype" GridPane.rowIndex="24">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <ChoiceBox fx:id="choiceBox_cssType" accessibleText="%label_csstype" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="25" />
-                        <Label fx:id="label_cssPath" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_file" visible="false" GridPane.rowIndex="26">
+                        <ChoiceBox fx:id="choiceBox_cssType" accessibleText="%label_csstype" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="24" />
+                        <Label fx:id="label_cssPath" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_file" visible="false" GridPane.rowIndex="25">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <HBox fx:id="hBox_cssPath" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="26">
+                        <HBox fx:id="hBox_cssPath" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="25">
                            <children>
                               <TextField fx:id="textField_cssPath" accessibleText="Pfad zur CSS-Datei" promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_cssPath" accessibleText="CSS Datei auswählen" mnemonicParsing="false" styleClass="btn-upload" text="..." />
                            </children>
                         </HBox>
-                        <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.rowIndex="27" />
-                        <TextArea fx:id="textArea_cssCustom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="27" />
-                        <Label text="%chart_stage2" underline="true" GridPane.rowIndex="28" />
-                        <Label fx:id="label_secondLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_second" visible="false" GridPane.rowIndex="29" />
-                        <HBox fx:id="hbox_secondLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29">
+                        <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.rowIndex="26" />
+                        <TextArea fx:id="textArea_cssCustom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="26" />
+                        <Label text="%chart_stage2" underline="true" GridPane.rowIndex="27" />
+                        <Label fx:id="label_secondLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_second" visible="false" GridPane.rowIndex="28" />
+                        <HBox fx:id="hbox_secondLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="28">
                            <children>
                               <ChoiceBox fx:id="choiceBox_secondLineStyle" accessibleText="%label_line_style_second" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_resetSecondLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset">
@@ -355,8 +345,8 @@
                               </Button>
                            </children>
                         </HBox>
-                        <Label fx:id="label_thirdLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_third" visible="false" GridPane.rowIndex="30" />
-                        <HBox fx:id="hbox_thirdLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="30">
+                        <Label fx:id="label_thirdLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_third" visible="false" GridPane.rowIndex="29" />
+                        <HBox fx:id="hbox_thirdLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29">
                            <children>
                               <ChoiceBox fx:id="choiceBox_thirdLineStyle" accessibleText="%label_line_style_third" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_resetThirdLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset">
@@ -369,8 +359,8 @@
                               </Button>
                            </children>
                         </HBox>
-                        <Label fx:id="label_firstLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_default" visible="false" GridPane.rowIndex="31" />
-                        <HBox fx:id="hbox_firstLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="31">
+                        <Label fx:id="label_firstLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_default" visible="false" GridPane.rowIndex="30" />
+                        <HBox fx:id="hbox_firstLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="30">
                            <children>
                               <ChoiceBox fx:id="choiceBox_firstLineStyle" accessibleText="%label_line_style_default" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_resetFirstLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset">
@@ -383,12 +373,12 @@
                               </Button>
                            </children>
                         </HBox>
-                        <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_mark_data" visible="false" GridPane.rowIndex="32" />
-                        <ChoiceBox fx:id="choiceBox_linepoints" accessibleText="%mark_data_on_line" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="32" />
-                        <Label fx:id="label_baraccumulation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_acc" visible="false" GridPane.rowIndex="29" />
-                        <ChoiceBox fx:id="choiceBox_baraccumulation" accessibleText="Art, in der mehrere Datenreihen in Balkendiagrammen akkumuliert werden." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29" />
-                        <Label fx:id="label_firstTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_first_bar" visible="false" GridPane.rowIndex="30" />
-                        <HBox fx:id="hbox_firstTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="30">
+                        <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_mark_data" visible="false" GridPane.rowIndex="31" />
+                        <ChoiceBox fx:id="choiceBox_linepoints" accessibleText="%mark_data_on_line" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="31" />
+                        <Label fx:id="label_baraccumulation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_acc" visible="false" GridPane.rowIndex="28" />
+                        <ChoiceBox fx:id="choiceBox_baraccumulation" accessibleText="Art, in der mehrere Datenreihen in Balkendiagrammen akkumuliert werden." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="28" />
+                        <Label fx:id="label_firstTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_first_bar" visible="false" GridPane.rowIndex="29" />
+                        <HBox fx:id="hbox_firstTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29">
                            <children>
                               <ChoiceBox fx:id="choiceBox_firstTexture" accessibleText="%texture_first_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_resetFirstTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset">
@@ -401,8 +391,8 @@
                               </Button>
                            </children>
                         </HBox>
-                        <Label fx:id="label_secondTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_second_bar" visible="false" GridPane.rowIndex="31" />
-                        <HBox fx:id="hbox_secondTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="31">
+                        <Label fx:id="label_secondTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_second_bar" visible="false" GridPane.rowIndex="30" />
+                        <HBox fx:id="hbox_secondTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="30">
                            <children>
                               <ChoiceBox fx:id="choiceBox_secondTexture" accessibleText="%texture_second_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_resetSecondTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset">
@@ -415,8 +405,8 @@
                               </Button>
                            </children>
                         </HBox>
-                        <Label fx:id="label_thirdTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_third_bar" visible="false" GridPane.rowIndex="32" />
-                        <HBox fx:id="hbox_thirdTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="32">
+                        <Label fx:id="label_thirdTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_third_bar" visible="false" GridPane.rowIndex="31" />
+                        <HBox fx:id="hbox_thirdTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="31">
                            <children>
                               <ChoiceBox fx:id="choiceBox_thirdTexture" accessibleText="%texture_third_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_resetThirdTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset">
@@ -429,26 +419,26 @@
                               </Button>
                            </children>
                         </HBox>
-                        <Label fx:id="label_sorting" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sorting" visible="false" GridPane.rowIndex="33" />
-                        <ChoiceBox fx:id="choiceBox_sorting" accessibleText="%label_sorting" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="33" />
-                        <Label fx:id="label_sortOrder" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sort_order" visible="false" GridPane.rowIndex="34" />
-                        <ChoiceBox fx:id="choicebox_sortOrder" accessibleText="%label_sort_order" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="34" />
-                        <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="29" />
-                        <ChoiceBox fx:id="choiceBox_trendline" accessibleText="Trendlinienalgorithmus" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29" />
-                        <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha" visible="false" GridPane.rowIndex="30" />
-                        <TextField fx:id="textField_trendline_alpha" accessibleText="%text_trendline_alpha" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="30">
+                        <Label fx:id="label_sorting" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sorting" visible="false" GridPane.rowIndex="32" />
+                        <ChoiceBox fx:id="choiceBox_sorting" accessibleText="%label_sorting" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="32" />
+                        <Label fx:id="label_sortOrder" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sort_order" visible="false" GridPane.rowIndex="33" />
+                        <ChoiceBox fx:id="choicebox_sortOrder" accessibleText="%label_sort_order" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="33" />
+                        <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="28" />
+                        <ChoiceBox fx:id="choiceBox_trendline" accessibleText="Trendlinienalgorithmus" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="28" />
+                        <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha" visible="false" GridPane.rowIndex="29" />
+                        <TextField fx:id="textField_trendline_alpha" accessibleText="%text_trendline_alpha" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29">
                            <tooltip>
                               <Tooltip text="%text_trendline_alpha" />
                            </tooltip>
                         </TextField>
-                        <Label fx:id="label_trendline_forecast" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_forecast" visible="false" GridPane.rowIndex="31" />
-                        <TextField fx:id="textField_trendline_forecast" accessibleText="%text_trendline_forecast" maxWidth="1.7976931348623157E308" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="31">
+                        <Label fx:id="label_trendline_forecast" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_forecast" visible="false" GridPane.rowIndex="30" />
+                        <TextField fx:id="textField_trendline_forecast" accessibleText="%text_trendline_forecast" maxWidth="1.7976931348623157E308" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="30">
                            <tooltip>
                               <Tooltip text="%text_trendline_forecast" />
                            </tooltip>
                         </TextField>
-                        <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_n" visible="false" GridPane.rowIndex="29" />
-                        <TextField fx:id="textField_trendline_n" accessibleText="%text_trendline_n" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29">
+                        <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_n" visible="false" GridPane.rowIndex="28" />
+                        <TextField fx:id="textField_trendline_n" accessibleText="%text_trendline_n" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="28">
                            <tooltip>
                               <Tooltip text="%text_trendline_n" />
                            </tooltip>
