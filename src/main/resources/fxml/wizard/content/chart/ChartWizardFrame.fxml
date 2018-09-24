@@ -308,7 +308,7 @@
 
                                                 <!--scatter plot-->
                                                 <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="0" />
-                                                <ChoiceBox fx:id="choiceBox_trendline" accessibleText="%label_trendline_help" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                                <ChoiceBox fx:id="choiceBox_trendline" accessibleText="%label_trendline_helptext" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                                                 <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                                                 <TextField fx:id="textField_trendline_alpha" accessibleText="%text_trendline_alpha" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                     <tooltip>
