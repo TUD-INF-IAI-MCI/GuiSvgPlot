@@ -29,7 +29,7 @@
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <ButtonBar buttonMinWidth="200.0" prefHeight="50.0" prefWidth="221.0">
                      <buttons>
-                        <Button fx:id="button_newPreset" alignment="CENTER" contentDisplay="RIGHT" minWidth="350.0" mnemonicParsing="false" onAction="#createNewPreset" prefHeight="26.0" text="%button_create_preset" textAlignment="CENTER">
+                        <Button fx:id="button_newPreset" accessibleText="%button_create_preset" alignment="CENTER" contentDisplay="RIGHT" minWidth="350.0" mnemonicParsing="false" onAction="#createNewPreset" prefHeight="26.0" text="%button_create_preset" textAlignment="CENTER">
                            <tooltip>
                               <Tooltip text="%button_create_preset_tooltip" />
                            </tooltip></Button>
@@ -161,7 +161,7 @@
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <ChoiceBox fx:id="choiceBox_outputDevice" layoutX="310.0" layoutY="10.0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ChoiceBox fx:id="choiceBox_outputDevice" accessibleText="%label_output_device" layoutX="310.0" layoutY="10.0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label text="%label_pageOrientation" GridPane.rowIndex="3">
                            <padding>
                               <Insets left="5.0" />
@@ -169,12 +169,12 @@
                         </Label>
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
-                              <RadioButton fx:id="radioBtn_Portrait" mnemonicParsing="false" selected="true" text="%radio_portrait">
+                              <RadioButton fx:id="radioBtn_Portrait" accessibleText="%radio_portrait" mnemonicParsing="false" selected="true" text="%radio_portrait">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="pageOrientationTG" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton fx:id="radioBtn_Landscape" mnemonicParsing="false" text="%radio_landscape" toggleGroup="$pageOrientationTG" />
+                              <RadioButton fx:id="radioBtn_Landscape" accessibleText="%radio_landscape" mnemonicParsing="false" text="%radio_landscape" toggleGroup="$pageOrientationTG" />
                            </children>
                         </HBox>
                         <Label layoutX="10.0" layoutY="65.0" text="%label_size_of_diagram" GridPane.rowIndex="4">
@@ -185,7 +185,7 @@
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <ChoiceBox fx:id="choiceBox_size" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <ChoiceBox fx:id="choiceBox_size" accessibleText="%label_size_of_diagram" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Label text="%chart_stage1" underline="true" GridPane.rowIndex="7" />
                         <Label fx:id="label_customSizeWidth" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_width" visible="false" GridPane.rowIndex="5" />
                         <TextField fx:id="textField_customSizeWidth" accessibleText="%size_of_diagram_width" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_width" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
@@ -201,8 +201,8 @@
                         </Label>
                         <HBox layoutX="310.0" layoutY="87.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                            <children>
-                              <TextField fx:id="textField_Csvpath" accessibleText="Diagramm Titel" maxWidth="1.7976931348623157E308" minWidth="50.0" promptText="%prompt_path_to_csv" HBox.hgrow="ALWAYS" />
-                              <Button fx:id="button_CsvPath" accessibleText="CSV Datei auswählen" alignment="TOP_RIGHT" maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="..." />
+                              <TextField fx:id="textField_Csvpath" accessibleText="%csv_file_help_text_field" maxWidth="1.7976931348623157E308" minWidth="50.0" promptText="%prompt_path_to_csv" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="button_CsvPath" accessibleText="%csv_file_help_button" alignment="TOP_RIGHT" maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="..." />
                            </children>
                         </HBox>
                         <Label text="%label_csv_type" GridPane.rowIndex="9">
@@ -213,7 +213,7 @@
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <ChoiceBox fx:id="choiceBox_csvType" maxWidth="1.7976931348623157E308" prefHeight="26.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <ChoiceBox fx:id="choiceBox_csvType" accessibleText="%label_csv_type" maxWidth="1.7976931348623157E308" prefHeight="26.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                         <Label text="%chart_stage3" underline="true" GridPane.rowIndex="10" />
                         <Label text="%label_x_axis_title" GridPane.rowIndex="11">
                            <GridPane.margin>
@@ -223,7 +223,7 @@
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_xAxisTitle" promptText="%prompt_x_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                        <TextField fx:id="textField_xAxisTitle" accessibleText="%label_x_axis_title" promptText="%prompt_x_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="11" />
                         <Label text="%label_y_axis_title" GridPane.rowIndex="12">
                            <GridPane.margin>
                               <Insets />
@@ -232,7 +232,7 @@
                               <Insets left="5.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="textField_yAxisTitle" promptText="%prompt_y_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                        <TextField fx:id="textField_yAxisTitle" accessibleText="%label_y_axis_title" promptText="%prompt_y_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="12" />
                         <Label text="%label_scale_data" GridPane.rowIndex="13">
                            <GridPane.margin>
                               <Insets />
@@ -243,7 +243,7 @@
                         </Label>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="13">
                            <children>
-                              <RadioButton fx:id="radioBtn_Scale_to_Data" mnemonicParsing="false" selected="true" text="%radio_scale_to_data_area">
+                              <RadioButton fx:id="radioBtn_Scale_to_Data" accessibleText="%radio_scale_to_data_area" mnemonicParsing="false" selected="true" text="%radio_scale_to_data_area">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -251,7 +251,7 @@
                                     <ToggleGroup fx:id="autoScale" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton fx:id="radioBtn_customScale" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$autoScale">
+                              <RadioButton fx:id="radioBtn_customScale" accessibleText="%radio_custom_scale" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$autoScale">
                                  <padding>
                                     <Insets left="10.0" />
                                  </padding>
@@ -324,12 +324,18 @@
                         </Label>
                         <HBox fx:id="hBox_cssPath" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="25">
                            <children>
-                              <TextField fx:id="textField_cssPath" accessibleText="Pfad zur CSS-Datei" promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS" />
-                              <Button fx:id="button_cssPath" accessibleText="CSS Datei auswählen" mnemonicParsing="false" styleClass="btn-upload" text="..." />
+                              <TextField fx:id="textField_cssPath" accessibleText="%label_css_path_text_field" promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS">
+                                 <tooltip>
+                                    <Tooltip text="%label_css_path_text_field" />
+                                 </tooltip></TextField>
+                              <Button fx:id="button_cssPath" accessibleText="%label_css_path_button" mnemonicParsing="false" styleClass="btn-upload" text="...">
+                                 <tooltip>
+                                    <Tooltip text="%label_css_path_button" />
+                                 </tooltip></Button>
                            </children>
                         </HBox>
                         <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.rowIndex="26" />
-                        <TextArea fx:id="textArea_cssCustom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="26" />
+                        <TextArea fx:id="textArea_cssCustom" accessibleText="%label_css_custom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="26" />
                         <Label text="%chart_stage2" underline="true" GridPane.rowIndex="27" />
                         <Label fx:id="label_secondLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_second" visible="false" GridPane.rowIndex="28" />
                         <HBox fx:id="hbox_secondLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="28">

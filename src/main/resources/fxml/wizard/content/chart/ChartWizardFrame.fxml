@@ -24,7 +24,7 @@
 <?import javafx.scene.web.WebView?>
 <?import org.controlsfx.glyphfont.Glyph?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <top>
             <VBox BorderPane.alignment="CENTER">
@@ -74,7 +74,7 @@
                                             </padding>
                                             <children>
                                                 <Label fx:id="label_diagramType" contentDisplay="RIGHT" text="%label_diagram_type" textOverrun="CLIP" wrapText="true" GridPane.rowIndex="0" />
-                                                <ChoiceBox fx:id="choiceBox_diagramType" accessibleText="Diagrammtyp auswählen" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" />
+                                                <ChoiceBox fx:id="choiceBox_diagramType" accessibleText="%prompt_diagramtype_title" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" />
                                                 <Label fx:id="label_title" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_diagram_title" GridPane.rowIndex="1" />
                                                 <TextField fx:id="textField_title" accessibleText="%diagram_title" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%prompt_title" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                     <tooltip>
@@ -156,7 +156,7 @@
                                                       </HBox>
       
                                                             <Label fx:id="label_Title1" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_type" GridPane.rowIndex="1" />
-                                                      <ChoiceBox id="choiceBox_CsvType" fx:id="choiceBox_csvType" accessibleText="CSV Typ" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <ChoiceBox id="choiceBox_CsvType" fx:id="choiceBox_csvType" accessibleText="%label_csv_type" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                       <Label fx:id="label_CsvOrientation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_orientation" visible="false" GridPane.rowIndex="2" />
                                                       <ChoiceBox id="choiceBox_CsvOrientation" fx:id="choiceBox_csvOrientation" accessibleText="CSV Orientierung" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       
@@ -308,7 +308,7 @@
 
                                                 <!--scatter plot-->
                                                 <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="0" />
-                                                <ChoiceBox fx:id="choiceBox_trendline" accessibleText="Trendlinienalgorithmus" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                                <ChoiceBox fx:id="choiceBox_trendline" accessibleText="%label_trendline_help" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                                                 <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                                                 <TextField fx:id="textField_trendline_alpha" accessibleText="%text_trendline_alpha" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                     <tooltip>
