@@ -238,18 +238,6 @@ public class RootFrameController implements Initializable {
         }
     }
 
-    protected void startPresetEditor() {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setResources(bundle);
-        loader.setLocation(GuiSvgPlott.PresetEditorFrame);
-        try {
-            center = borderPane_Content.getCenter();
-            borderPane_Content.setCenter(loader.load());
-            //presetsController = loader.getController();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     private void startWizard(URL fxmlPath, boolean isExtended) {
