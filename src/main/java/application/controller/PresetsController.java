@@ -59,6 +59,8 @@ public class PresetsController extends SVGWizardController implements Initializa
     private ObservableList<PointSymbol> customPointSymbols_scatterPlott;
 
     @FXML
+    private Button button_Cancel;
+    @FXML
     public VBox vbox_Preset_DataTable;
     @FXML
     private HBox hbox_firstLineStyle;
@@ -261,6 +263,7 @@ public class PresetsController extends SVGWizardController implements Initializa
                 loadTable();
             }
         });
+        button_Cancel.graphicProperty();
     }
 
 
@@ -417,12 +420,15 @@ public class PresetsController extends SVGWizardController implements Initializa
         button_resetFirstLineStyle.setOnAction(event -> {
             choiceBox_firstLineStyle.getSelectionModel().select(null);
         });
+        button_resetFirstLineStyle.getStyleClass().add("btn-reset");
         button_resetSecondLineStyle.setOnAction(event -> {
             choiceBox_secondLineStyle.getSelectionModel().select(null);
         });
+        button_resetSecondLineStyle.getStyleClass().add("btn-reset");
         button_resetThirdLineStyle.setOnAction(event -> {
             choiceBox_thirdLineStyle.getSelectionModel().select(null);
         });
+        button_resetThirdLineStyle.getStyleClass().add("btn-reset");
 
 
     }
@@ -470,12 +476,15 @@ public class PresetsController extends SVGWizardController implements Initializa
         button_resetFirstTexture.setOnAction(event -> {
             choiceBox_firstTexture.getSelectionModel().select(null);
         });
+        button_resetFirstTexture.getStyleClass().add("btn-reset");
         button_resetSecondTexture.setOnAction(event -> {
             choiceBox_secondTexture.getSelectionModel().select(null);
         });
+        button_resetSecondTexture.getStyleClass().add("btn-reset");
         button_resetThirdTexture.setOnAction(event -> {
             choiceBox_thirdTexture.getSelectionModel().select(null);
         });
+        button_resetThirdTexture.getStyleClass().add("btn-reset");
         ObservableList<BarAccumulationStyle> barAccumulationStyleObservableList = FXCollections.observableArrayList(BarAccumulationStyle.values());
         choiceBox_baraccumulation.setItems(barAccumulationStyleObservableList);
         choiceBox_baraccumulation.setConverter(svgOptionsUtil.getBarAccumulationStyleStringConverter());
@@ -669,7 +678,6 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     private void flagGetter() {
         //Stage 1: basics
-        currentPreset.getOptions().setTitle(textField_Title.getText());
         currentPreset.getOptions().setOutputDevice(choiceBox_outputDevice.getSelectionModel().getSelectedItem());
         //TODO: page orientation
         //currentPreset.getOptions().set
@@ -720,10 +728,10 @@ public class PresetsController extends SVGWizardController implements Initializa
 
         //Stage 5: special
         currentPreset.getOptions().setGridStyle((GridStyle) choiceBox_gridStyle.getSelectionModel().getSelectedItem());
-        if(textField_helpLinesX != null && !textField_helpLinesX.getText().isEmpty()){
+        if(textField_helpLinesX.getText() != null && !textField_helpLinesX.getText().isEmpty()){
             currentPreset.getOptions().setxLines(textField_helpLinesX.getText());
         }
-        if(textField_helpLinesY != null && !textField_helpLinesY.getText().isEmpty()){
+        if(textField_helpLinesY.getText() != null && !textField_helpLinesY.getText().isEmpty()){
             currentPreset.getOptions().setyLines(textField_helpLinesY.getText());
         }
         currentPreset.getOptions().setAxisStyle((GuiAxisStyle) choiceBox_dblaxes.getSelectionModel().getSelectedItem());
@@ -742,7 +750,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         options.setDiagramType(dt);
 
         //Stage 1: basics
-        textField_Title.setText(options.getTitle());
         choiceBox_outputDevice.getSelectionModel().select(options.getOutputDevice());
         //TODO how to get page orientation from presets?
         //if(currentPreset.getOptions().)
