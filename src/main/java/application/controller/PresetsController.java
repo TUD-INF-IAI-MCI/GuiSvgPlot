@@ -51,6 +51,8 @@ public class PresetsController extends SVGWizardController implements Initializa
     private Preset currentPreset;
     private GuiSvgOptions currentOptions = new GuiSvgOptions(new SvgPlotOptions());
     private final ToggleGroup scaleGroup = new ToggleGroup();
+    private final ToggleGroup valueRangeGroup = new ToggleGroup();
+    private final ToggleGroup integralToggle = new ToggleGroup();
     @FXML
     private final ToggleGroup pageOrientationTG = new ToggleGroup();
     DiagramType.DiagramTypeConverter converter = new DiagramType.DiagramTypeConverter();
@@ -58,22 +60,29 @@ public class PresetsController extends SVGWizardController implements Initializa
     private ObservableList<Texture> textures;
     private ObservableList<PointSymbol> customPointSymbols_scatterPlott;
 
+    Glyph abortGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
+    Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
+    Glyph backGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.BACKWARD);
+    Glyph saveGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.SAVE);
+    Glyph deleteGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.TRASH);
+
+
     @FXML
-    private Button button_Cancel;
+    public VBox vBox_Preset_DataTable;
     @FXML
-    public VBox vbox_Preset_DataTable;
+    private HBox hBox_firstLineStyle;
     @FXML
-    private HBox hbox_firstLineStyle;
+    private HBox hBox_secondLineStyle;
     @FXML
-    private HBox hbox_secondLineStyle;
+    private HBox hBox_thirdLineStyle;
     @FXML
-    private HBox hbox_thirdLineStyle;
+    private HBox hBox_firstTexture;
     @FXML
-    private HBox hbox_firstTexture;
+    private HBox hBox_secondTexture;
     @FXML
-    private HBox hbox_secondTexture;
+    private HBox hBox_thirdTexture;
     @FXML
-    private HBox hbox_thirdTexture;
+    private HBox hBox_integral_integral;
     @FXML
     private ChoiceBox choiceBox_sorting;
     @FXML
@@ -94,7 +103,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private Label label_sortOrder;
     @FXML
-    private ChoiceBox choicebox_sortOrder;
+    private ChoiceBox choiceBox_sortOrder;
     @FXML
     private Label label_sorting;
 
@@ -108,7 +117,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     private ObservableList<String> chartTypeObservableList = FXCollections.observableArrayList();
 
     @FXML
-    private Button button_CsvPath;
+    private Button button_csvPath;
     @FXML
     private Button button_cssPath;
     @FXML
@@ -123,6 +132,16 @@ public class PresetsController extends SVGWizardController implements Initializa
     private Button button_resetSecondLineStyle;
     @FXML
     private Button button_resetThirdLineStyle;
+    @FXML
+    private Button button_cancel;
+    @FXML
+    private Button button_cancel_editor;
+    @FXML
+    private Button button_back;
+    @FXML
+    private Button button_savePreset;
+    @FXML
+    private Button button_deletePreset;
 
     @FXML
     private ChoiceBox choiceBox_csvType;
@@ -145,7 +164,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private TextField textField_trendline_alpha;
     @FXML
-    private TextField textField_Csvpath;
+    private TextField textField_csvpath;
     @FXML
     private TextField textField_xAxisTitle;
     @FXML
@@ -213,15 +232,19 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private TextField textField_helpLinesY;
     @FXML
-    private TextField textField_PresetName;
+    private TextField textField_presetName;
     @FXML
-    private RadioButton radioBtn_Scale_to_Data;
+    private RadioButton radioBtn_scale_to_data;
     @FXML
     private RadioButton radioBtn_customScale;
     @FXML
-    private RadioButton radioBtn_Portrait;
+    private RadioButton radioBtn_portrait;
     @FXML
-    private RadioButton radioBtn_Landscape;
+    private RadioButton radioBtn_landscape;
+    @FXML
+    private RadioButton radioBtn_valueRange_default;
+    @FXML
+    private RadioButton radioBtn_valueRange_custom;
     @FXML
     private BorderPane overViewBorderPane;
     @FXML
@@ -236,7 +259,34 @@ public class PresetsController extends SVGWizardController implements Initializa
     private Label label_hide_original_points;
     @FXML
     private ChoiceBox choiceBox_hide_original_points;
-
+    @FXML
+    private TextField textField_rangeFrom;
+    @FXML
+    private TextField textField_rangeTo;
+    @FXML
+    private Label label_rangeFrom;
+    @FXML
+    private Label label_rangeTo;
+    @FXML
+    private Label label_integral_name;
+    @FXML
+    private TextField textField_integralName;
+    @FXML
+    private Label label_integral_function1;
+    @FXML
+    private ChoiceBox choiceBox_function1;
+    @FXML
+    private ChoiceBox choiceBox_function2;
+    @FXML
+    private Label label_integral_measuring;
+    @FXML
+    private RadioButton radioBtn_x_axis;
+    @FXML
+    private RadioButton radioBtn_integral_func_1;
+    @FXML
+    private Label label_valueRange;
+    @FXML
+    private HBox hBox_valueRange;
 
 
     public PresetsController() {
@@ -267,10 +317,33 @@ public class PresetsController extends SVGWizardController implements Initializa
                 loadTable();
             }
         });
-        button_Cancel.graphicProperty();
+        button_cancel.setGraphic(abortGlyph);
+        button_cancel_editor.setGraphic(closeGlyph);
+        button_back.setGraphic(backGlyph);
+        button_savePreset.setGraphic(saveGlyph);
+        button_deletePreset.setGraphic(deleteGlyph);
     }
 
 
+    private void resetSpecifics(){
+        toggleVisibility(false, label_secondLineStyle, hBox_secondLineStyle);
+        toggleVisibility(false, label_thirdLineStyle, hBox_thirdLineStyle);
+        toggleVisibility(false, label_firstLineStyle, hBox_firstLineStyle);
+        toggleVisibility(false, label_linepoints, choiceBox_linepoints);
+        toggleVisibility(false, label_baraccumulation, choiceBox_baraccumulation);
+        toggleVisibility(false, label_firstTexture, hBox_firstTexture);
+        toggleVisibility(false, label_secondTexture, hBox_secondTexture);
+        toggleVisibility(false, label_thirdTexture, hBox_thirdTexture);
+        toggleVisibility(false, label_sorting, choiceBox_sorting);
+        toggleVisibility(false, label_integral_name, textField_integralName);
+        toggleVisibility(false, label_integral_function1, choiceBox_function1);
+        toggleVisibility(false, label_integral_measuring, hBox_integral_integral);
+        toggleVisibility(false, label_valueRange, hBox_valueRange);
+        toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
+        toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
+        toggleVisibility(false, label_trendline_n, textField_trendline_n);
+        toggleVisibility(false, label_hide_original_points, choiceBox_hide_original_points);
+    }
 
 
     private void initEditor(){
@@ -299,15 +372,15 @@ public class PresetsController extends SVGWizardController implements Initializa
             }
         });
         //CSV
-        button_CsvPath.setDisable(false);
-        button_CsvPath.setOnAction(event -> {
+        button_csvPath.setDisable(false);
+        button_csvPath.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setInitialDirectory(userDir);
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
             fileChooser.getExtensionFilters().add(extFilter);
             File file = fileChooser.showOpenDialog(GuiSvgPlott.getInstance().getPrimaryStage());
             if (file != null) {
-                textField_Csvpath.setText(file.getAbsolutePath());
+                textField_csvpath.setText(file.getAbsolutePath());
             }
         });
         choiceBox_csvType.setItems(FXCollections.observableArrayList(CsvType.values()));
@@ -356,8 +429,8 @@ public class PresetsController extends SVGWizardController implements Initializa
                 this.textField_cssPath.setText(file.getAbsolutePath());
             }
         });
-        radioBtn_Scale_to_Data.setToggleGroup(scaleGroup);
-        radioBtn_Scale_to_Data.setSelected(true);
+        radioBtn_scale_to_data.setToggleGroup(scaleGroup);
+        radioBtn_scale_to_data.setSelected(true);
         radioBtn_customScale.setToggleGroup(scaleGroup);
         radioBtn_customScale.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -374,7 +447,7 @@ public class PresetsController extends SVGWizardController implements Initializa
                 }
             }
         });
-        radioBtn_Scale_to_Data.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        radioBtn_scale_to_data.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean wasPreviouslySelected, Boolean isNowSelected) {
                 if(isNowSelected){
@@ -393,17 +466,15 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
     private void cssCustomHider(){
-        label_cssCustom.setVisible(false);
-        textArea_cssCustom.setVisible(false);
-        label_cssPath.setVisible(false);
-        hBox_cssPath.setVisible(false);
+        toggleVisibility(false, label_cssCustom, textArea_cssCustom);
+        toggleVisibility(false, label_cssPath, hBox_cssPath);
     }
 
     private void initLineChart(){
-        textField_PresetName.setText(currentPreset.getName());
-        toggleVisibility(true, label_secondLineStyle, hbox_secondLineStyle);
-        toggleVisibility(true, label_thirdLineStyle, hbox_thirdLineStyle);
-        toggleVisibility(true, label_firstLineStyle, hbox_firstLineStyle);
+        textField_presetName.setText(currentPreset.getName());
+        toggleVisibility(true, label_secondLineStyle, hBox_secondLineStyle);
+        toggleVisibility(true, label_thirdLineStyle, hBox_thirdLineStyle);
+        toggleVisibility(true, label_firstLineStyle, hBox_firstLineStyle);
         toggleVisibility(true, label_linepoints, choiceBox_linepoints);
         ObservableList<LineStyle> secondLineStyleObservableList = FXCollections.observableArrayList(LineStyle.getByOutputDeviceOrderedById(currentPreset.getOptions().getOutputDevice()));
         choiceBox_secondLineStyle.setItems(secondLineStyleObservableList);
@@ -458,7 +529,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
     private void initScatterPlot(){
-        textField_PresetName.setText(currentPreset.getName());
+        textField_presetName.setText(currentPreset.getName());
         toggleVisibility(true, label_trendline, choiceBox_trendline);
         ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
         choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
@@ -511,30 +582,43 @@ public class PresetsController extends SVGWizardController implements Initializa
 //        });
     }
 
+
+    /**
+     *
+     */
     private void initBarChart(){
-        textField_PresetName.setText(currentPreset.getName());
-        label_baraccumulation.setVisible(true);
-        label_firstTexture.setVisible(true);
-        hbox_firstTexture.setVisible(true);
-        label_secondTexture.setVisible(true);
-        hbox_secondTexture.setVisible(true);
-        label_thirdTexture.setVisible(true);
-        hbox_thirdTexture.setVisible(true);
-        choicebox_sortOrder.setVisible(true);
-        label_sortOrder.setVisible(true);
-        choiceBox_baraccumulation.setVisible(true);
-        button_resetFirstTexture.setOnAction(event -> {
-            choiceBox_firstTexture.getSelectionModel().select(null);
-        });
-        button_resetFirstTexture.getStyleClass().add("btn-reset");
-        button_resetSecondTexture.setOnAction(event -> {
-            choiceBox_secondTexture.getSelectionModel().select(null);
-        });
-        button_resetSecondTexture.getStyleClass().add("btn-reset");
-        button_resetThirdTexture.setOnAction(event -> {
-            choiceBox_thirdTexture.getSelectionModel().select(null);
-        });
-        button_resetThirdTexture.getStyleClass().add("btn-reset");
+        textField_presetName.setText(currentPreset.getName());
+        toggleVisibility(true, label_baraccumulation, choiceBox_baraccumulation);
+        toggleVisibility(true, label_firstTexture, hBox_firstTexture);
+        toggleVisibility(true, label_secondTexture, hBox_secondTexture);
+        toggleVisibility(true, label_thirdTexture, hBox_thirdTexture);
+        toggleVisibility(true, label_sorting, choiceBox_sorting);
+
+        List<Button> resetButtons = new ArrayList<>();
+        resetButtons.add(button_resetFirstTexture);
+        resetButtons.add(button_resetSecondTexture);
+        resetButtons.add(button_resetThirdTexture);
+        System.out.println(button_resetFirstTexture.getId());
+        System.out.println(button_resetSecondTexture.getId());
+        System.out.println(button_resetThirdTexture.getId());
+
+        for (Button b : resetButtons) {
+            b.setOnAction(event -> {
+                String buttonName = b.getId();
+                switch (buttonName){
+                    case "button_resetFirstTexture":
+                        choiceBox_firstTexture.getSelectionModel().select(null);
+                        break;
+                    case "button_resetSecondTexture":
+                        choiceBox_secondTexture.getSelectionModel().select(null);
+                        break;
+                    case "button_resetThirdTexture":
+                        choiceBox_thirdTexture.getSelectionModel().select(null);
+                        break;
+                }
+                b.getStyleClass().add("btn-reset");
+            });
+        }
         ObservableList<BarAccumulationStyle> barAccumulationStyleObservableList = FXCollections.observableArrayList(BarAccumulationStyle.values());
         choiceBox_baraccumulation.setItems(barAccumulationStyleObservableList);
         choiceBox_baraccumulation.setConverter(svgOptionsUtil.getBarAccumulationStyleStringConverter());
@@ -553,34 +637,73 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_sorting.setItems(sortingTypeObservableList);
         choiceBox_sorting.setConverter(svgOptionsUtil.getSortingTypeStringConverter());
         choiceBox_sorting.getSelectionModel().select(SortingType.None);
-        label_sorting.setVisible(true);
-        choiceBox_sorting.setVisible(true);
+
         choiceBox_sorting.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue != null){
                 if (!newValue.toString().equals("None")){
-                    choicebox_sortOrder.setVisible(true);
+                    choiceBox_sortOrder.setVisible(true);
                     label_sortOrder.setVisible(true);
                 }else{
-                    choicebox_sortOrder.setVisible(false);
+                    choiceBox_sortOrder.setVisible(false);
                     label_sortOrder.setVisible(false);
                 }
             }
         }));
-
-        choicebox_sortOrder.setVisible(false);
-        label_sortOrder.setVisible(false);
+        toggleVisibility(false, label_sortOrder, choiceBox_sortOrder);
         ObservableList<SortOrder> sortOrderObservableList = FXCollections.observableArrayList(SortOrder.values());
-        choicebox_sortOrder.setItems(sortOrderObservableList);
-        choicebox_sortOrder.setConverter(svgOptionsUtil.getSortOrderStringConverter());
-        choicebox_sortOrder.getSelectionModel().select(SortOrder.ASC);
+        choiceBox_sortOrder.setItems(sortOrderObservableList);
+        choiceBox_sortOrder.setConverter(svgOptionsUtil.getSortOrderStringConverter());
+        choiceBox_sortOrder.getSelectionModel().select(SortOrder.ASC);
 
     }
 
 
 
     private void initFunction() {
-        //TODO
-        textField_PresetName.setText(currentPreset.getName());
+        textField_presetName.setText(currentPreset.getName());
+        toggleVisibility(true, label_integral_name, textField_integralName);
+        toggleVisibility(true, label_integral_function1, choiceBox_function1);
+        toggleVisibility(true, label_integral_measuring, hBox_integral_integral);
+        toggleVisibility(true, label_valueRange, hBox_valueRange);
+
+        radioBtn_x_axis.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+                if(isNowSelected){
+                    choiceBox_function2.setVisible(false);
+                }
+            }
+        });
+
+        radioBtn_integral_func_1.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+                if(isNowSelected){
+                    choiceBox_function2.setVisible(true);
+                }
+            }
+        });
+
+        radioBtn_valueRange_default.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(newValue){
+                    toggleVisibility(false, label_rangeFrom, textField_rangeFrom);
+                    toggleVisibility(false, label_rangeTo, textField_rangeTo);
+                }
+            }
+        });
+        radioBtn_valueRange_custom.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(newValue){
+                    toggleVisibility(true, label_rangeFrom, textField_rangeFrom);
+                    toggleVisibility(true, label_rangeTo, textField_rangeTo);
+                }
+            }
+        });
+
+
 
     }
     private void changePointSymbols(ObservableList<PointSymbol> checkedPointSymbols, CheckComboBox<PointSymbol> checkComboBox, ObservableList<PointSymbol> allPointSymbols) {
@@ -648,9 +771,9 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
     private void loadTable() {
-        vbox_Preset_DataTable.getChildren().clear();
+        vBox_Preset_DataTable.getChildren().clear();
         for (Preset preset : super.presets) {
-            vbox_Preset_DataTable.getChildren().add(generateTableEntry(preset));
+            vBox_Preset_DataTable.getChildren().add(generateTableEntry(preset));
         }
     }
 
@@ -721,7 +844,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         });
 
         copyButton.setOnAction(event -> {
-            vbox_Preset_DataTable.getChildren().add(row);
+            vBox_Preset_DataTable.getChildren().add(row);
             Preset copiedPreset = new Preset(preset);
             //TODO: fix double id entry exception
             copiedPreset.setName(copiedPreset.getName() + " Kopie");
@@ -751,7 +874,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         //currentOptions.setSize(PageSize.A4.getPageSizeWithOrientation(PageSize.A4));
 
         //Stage 2: data
-        currentPreset.getOptions().setCsvPath(textField_Csvpath.getText());
+        currentPreset.getOptions().setCsvPath(textField_csvpath.getText());
         currentPreset.getOptions().setCsvType((CsvType) choiceBox_csvType.getSelectionModel().getSelectedItem());
 
         //Stage 3: specific
@@ -767,7 +890,7 @@ public class PresetsController extends SVGWizardController implements Initializa
                 currentPreset.getOptions().setBarAccumulationStyle((BarAccumulationStyle)choiceBox_baraccumulation.getSelectionModel().getSelectedItem());
 
                 currentPreset.getOptions().setSortingType((SortingType) choiceBox_sorting.getSelectionModel().getSelectedItem());
-                currentPreset.getOptions().setSortOrder((SortOrder) choicebox_sortOrder.getSelectionModel().getSelectedItem());
+                currentPreset.getOptions().setSortOrder((SortOrder) choiceBox_sortOrder.getSelectionModel().getSelectedItem());
                 break;
             case "LineChart":
                 //TODO
@@ -786,7 +909,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         //Stage 4: axis
         currentPreset.getOptions().setxUnit(textField_xAxisTitle.getText());
         currentPreset.getOptions().setyUnit(textField_yAxisTitle.getText());
-        if(radioBtn_Scale_to_Data.isSelected()){
+        if(radioBtn_scale_to_data.isSelected()){
             currentPreset.getOptions().setAutoScale(true);
         }else{
             currentPreset.getOptions().setAutoScale(false);
@@ -819,12 +942,12 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_outputDevice.getSelectionModel().select(options.getOutputDevice());
         //TODO how to get page orientation from presets?
         //if(currentPreset.getOptions().)
-        pageOrientationTG.selectToggle(radioBtn_Portrait);
+        pageOrientationTG.selectToggle(radioBtn_portrait);
         //TODO how to get size of diagram from presets/options?
         choiceBox_size.getSelectionModel().select(PageSize.A4);
 
         //Stage 2: data
-        textField_Csvpath.setText(options.getCsvPath());
+        textField_csvpath.setText(options.getCsvPath());
         choiceBox_csvType.getSelectionModel().select(options.getCsvType());
 
         //Stage 3: specific
@@ -842,7 +965,7 @@ public class PresetsController extends SVGWizardController implements Initializa
                 choiceBox_secondTexture.getSelectionModel().select(currentPreset.getOptions().getTextures().get(1));
                 choiceBox_thirdTexture.getSelectionModel().select(currentPreset.getOptions().getTextures().get(2));
                 choiceBox_sorting.getSelectionModel().select(currentPreset.getOptions().getSortingType());
-                choicebox_sortOrder.getSelectionModel().select(currentPreset.getOptions().getSortOrder());
+                choiceBox_sortOrder.getSelectionModel().select(currentPreset.getOptions().getSortOrder());
                 break;
             case "LineChart":
                 //TODO
@@ -861,7 +984,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         textField_xAxisTitle.setText(options.getxUnit());
         textField_yAxisTitle.setText(options.getyUnit());
         if(options.isAutoScale()){
-            scaleGroup.selectToggle(radioBtn_Scale_to_Data);
+            scaleGroup.selectToggle(radioBtn_scale_to_data);
         }else{
             scaleGroup.selectToggle(radioBtn_customScale);
             if( options.getxRange() != null || options.getyRange() != null) {
@@ -906,11 +1029,11 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     private void lineChartEditorHider(){
         label_secondLineStyle.setVisible(false);
-        hbox_secondLineStyle.setVisible(false);
+        hBox_secondLineStyle.setVisible(false);
         label_thirdLineStyle.setVisible(false);
-        hbox_thirdLineStyle.setVisible(false);
+        hBox_thirdLineStyle.setVisible(false);
         label_firstLineStyle.setVisible(false);
-        hbox_firstLineStyle.setVisible(false);
+        hBox_firstLineStyle.setVisible(false);
         label_linepoints.setVisible(false);
         choiceBox_linepoints.setVisible(false);
     }
@@ -928,12 +1051,12 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void barChartEditorHider() {
         label_baraccumulation.setVisible(false);
         label_firstTexture.setVisible(false);
-        hbox_firstTexture.setVisible(false);
+        hBox_firstTexture.setVisible(false);
         label_secondTexture.setVisible(false);
-        hbox_secondTexture.setVisible(false);
+        hBox_secondTexture.setVisible(false);
         label_thirdTexture.setVisible(false);
-        hbox_thirdTexture.setVisible(false);
-        choicebox_sortOrder.setVisible(false);
+        hBox_thirdTexture.setVisible(false);
+        choiceBox_sortOrder.setVisible(false);
         label_sortOrder.setVisible(false);
         choiceBox_baraccumulation.setVisible(false);
     }
@@ -947,8 +1070,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void deletePreset() {
         Preset tobedeletedPreset = currentPreset;
         deleteConfirmationAlert(tobedeletedPreset);
-        hideAllEditors();
-        overviewDisplayer();
     }
 
     private void hideAllEditors() {
@@ -963,6 +1084,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void backToOverview(){
         hideAllEditors();
         overviewDisplayer();
+        resetSpecifics();
     }
 
     @FXML
@@ -978,7 +1100,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
     public boolean isPresetNameEmpty(){
-        if(textField_PresetName.getText().isEmpty()){
+        if(textField_presetName.getText().isEmpty()){
             return true;
         }else{
             return false;
@@ -994,6 +1116,8 @@ public class PresetsController extends SVGWizardController implements Initializa
         if (result.get() == ButtonType.OK) {
             this.presetService.delete(p);
             super.presets.remove(p);
+            hideAllEditors();
+            overviewDisplayer();
         } else {
             // ... user chose CANCEL or closed the dialog, hence do nothing
         }
@@ -1019,6 +1143,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void quitToMainMenu() {
         GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
         GuiSvgPlott.getInstance().getRootFrameController().menuItem_Preset_Editor.setDisable(false);
+        resetSpecifics();
         GuiSvgPlott.getInstance().closeWizard();
     }
 

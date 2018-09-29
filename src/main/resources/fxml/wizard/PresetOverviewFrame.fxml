@@ -49,7 +49,7 @@
                <children>
                   <ButtonBar AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <buttons>
-                        <Button fx:id="button_Cancel" accessibleText="%button_cancel" cancelButton="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#quitToMainMenu" text="%button_cancel" ButtonBar.buttonData="LEFT">
+                        <Button fx:id="button_cancel" accessibleText="%button_cancel" cancelButton="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#quitToMainMenu" text="%button_cancel" ButtonBar.buttonData="LEFT">
                            <tooltip>
                               <Tooltip text="%button_cancel" />
                            </tooltip>
@@ -67,7 +67,7 @@
                <children>
                   <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="305.0" prefWidth="600.0" styleClass="data-table-container" VBox.vgrow="ALWAYS">
                      <content>
-                        <VBox fx:id="vbox_Preset_DataTable" styleClass="data-table" />
+                        <VBox fx:id="vBox_Preset_DataTable" styleClass="data-table" />
                      </content>
                   </ScrollPane>
                </children>
@@ -78,13 +78,13 @@
          <bottom>
             <AnchorPane fx:id="settingsBottomAnchorPane">
                <children>
-                  <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <ButtonBar AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <buttons>
-                        <Button fx:id="button_Cancel_Line" accessibleText="Abbrechen" cancelButton="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#quitToMainMenu" text="%button_cancel" ButtonBar.buttonData="LEFT">
+                        <Button fx:id="button_cancel_editor" accessibleText="Abbrechen" cancelButton="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#quitToMainMenu" text="%button_cancel" ButtonBar.buttonData="LEFT">
                            <tooltip>
                               <Tooltip text="%button_cancel" />
                            </tooltip></Button>
-                        <Button fx:id="button_Back_To_Overview" mnemonicParsing="false" onAction="#backToOverview" text="%button_back_to_overview">
+                        <Button fx:id="button_back" mnemonicParsing="false" onAction="#backToOverview" text="%button_back_to_overview">
                            <tooltip>
                               <Tooltip text="%button_back_to_overview_tooltip" />
                            </tooltip>
@@ -148,6 +148,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
                         <Label alignment="CENTER" prefHeight="24.0" prefWidth="299.0" text="%key" textAlignment="CENTER" />
@@ -169,12 +170,12 @@
                         </Label>
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
-                              <RadioButton fx:id="radioBtn_Portrait" accessibleText="%radio_portrait" mnemonicParsing="false" selected="true" text="%radio_portrait">
+                              <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" selected="true" text="%radio_portrait">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="pageOrientationTG" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton fx:id="radioBtn_Landscape" accessibleText="%radio_landscape" mnemonicParsing="false" text="%radio_landscape" toggleGroup="$pageOrientationTG" />
+                              <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" mnemonicParsing="false" text="%radio_landscape" toggleGroup="$pageOrientationTG" />
                            </children>
                         </HBox>
                         <Label layoutX="10.0" layoutY="65.0" text="%label_size_of_diagram" GridPane.rowIndex="4">
@@ -201,8 +202,8 @@
                         </Label>
                         <HBox layoutX="310.0" layoutY="87.0" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                            <children>
-                              <TextField fx:id="textField_Csvpath" accessibleText="%csv_file_help_text_field" maxWidth="1.7976931348623157E308" minWidth="50.0" promptText="%prompt_path_to_csv" HBox.hgrow="ALWAYS" />
-                              <Button fx:id="button_CsvPath" accessibleText="%csv_file_help_button" alignment="TOP_RIGHT" maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="..." />
+                              <TextField fx:id="textField_csvpath" accessibleText="%csv_file_help_text_field" maxWidth="1.7976931348623157E308" minWidth="50.0" promptText="%prompt_path_to_csv" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="button_csvPath" accessibleText="%csv_file_help_button" alignment="TOP_RIGHT" maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="..." />
                            </children>
                         </HBox>
                         <Label text="%label_csv_type" GridPane.rowIndex="9">
@@ -243,7 +244,7 @@
                         </Label>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="13">
                            <children>
-                              <RadioButton fx:id="radioBtn_Scale_to_Data" accessibleText="%radio_scale_to_data_area" mnemonicParsing="false" selected="true" text="%radio_scale_to_data_area">
+                              <RadioButton fx:id="radioBtn_scale_to_data" accessibleText="%radio_scale_to_data_area" mnemonicParsing="false" selected="true" text="%radio_scale_to_data_area">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -338,7 +339,7 @@
                         <TextArea fx:id="textArea_cssCustom" accessibleText="%label_css_custom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="26" />
                         <Label text="%chart_stage2_editor" underline="true" GridPane.rowIndex="27" />
                         <Label fx:id="label_secondLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_second" visible="false" GridPane.rowIndex="28" />
-                        <HBox fx:id="hbox_secondLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="28">
+                        <HBox fx:id="hBox_secondLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="28">
                            <children>
                               <ChoiceBox fx:id="choiceBox_secondLineStyle" accessibleText="%label_line_style_second" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_resetSecondLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset">
@@ -352,7 +353,7 @@
                            </children>
                         </HBox>
                         <Label fx:id="label_thirdLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_third" visible="false" GridPane.rowIndex="29" />
-                        <HBox fx:id="hbox_thirdLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29">
+                        <HBox fx:id="hBox_thirdLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29">
                            <children>
                               <ChoiceBox fx:id="choiceBox_thirdLineStyle" accessibleText="%label_line_style_third" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_resetThirdLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset">
@@ -366,7 +367,7 @@
                            </children>
                         </HBox>
                         <Label fx:id="label_firstLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_default" visible="false" GridPane.rowIndex="30" />
-                        <HBox fx:id="hbox_firstLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="30">
+                        <HBox fx:id="hBox_firstLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="30">
                            <children>
                               <ChoiceBox fx:id="choiceBox_firstLineStyle" accessibleText="%label_line_style_default" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_resetFirstLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset">
@@ -384,7 +385,7 @@
                         <Label fx:id="label_baraccumulation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_acc" visible="false" GridPane.rowIndex="28" />
                         <ChoiceBox fx:id="choiceBox_baraccumulation" accessibleText="Art, in der mehrere Datenreihen in Balkendiagrammen akkumuliert werden." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="28" />
                         <Label fx:id="label_firstTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_first_bar" visible="false" GridPane.rowIndex="29" />
-                        <HBox fx:id="hbox_firstTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29">
+                        <HBox fx:id="hBox_firstTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29">
                            <children>
                               <ChoiceBox fx:id="choiceBox_firstTexture" accessibleText="%texture_first_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_resetFirstTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset">
@@ -398,7 +399,7 @@
                            </children>
                         </HBox>
                         <Label fx:id="label_secondTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_second_bar" visible="false" GridPane.rowIndex="30" />
-                        <HBox fx:id="hbox_secondTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="30">
+                        <HBox fx:id="hBox_secondTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="30">
                            <children>
                               <ChoiceBox fx:id="choiceBox_secondTexture" accessibleText="%texture_second_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_resetSecondTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset">
@@ -412,7 +413,7 @@
                            </children>
                         </HBox>
                         <Label fx:id="label_thirdTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_third_bar" visible="false" GridPane.rowIndex="31" />
-                        <HBox fx:id="hbox_thirdTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="31">
+                        <HBox fx:id="hBox_thirdTexture" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="31">
                            <children>
                               <ChoiceBox fx:id="choiceBox_thirdTexture" accessibleText="%texture_third_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
                               <Button fx:id="button_resetThirdTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset">
@@ -428,7 +429,7 @@
                         <Label fx:id="label_sorting" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sorting" visible="false" GridPane.rowIndex="32" />
                         <ChoiceBox fx:id="choiceBox_sorting" accessibleText="%label_sorting" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="32" />
                         <Label fx:id="label_sortOrder" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sort_order" visible="false" GridPane.rowIndex="33" />
-                        <ChoiceBox fx:id="choicebox_sortOrder" accessibleText="%label_sort_order" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="33" />
+                        <ChoiceBox fx:id="choiceBox_sortOrder" accessibleText="%label_sort_order" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="33" />
                         <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="28" />
                         <ChoiceBox fx:id="choiceBox_trendline" accessibleText="Trendlinienalgorithmus" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="28" />
                         <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha" visible="false" GridPane.rowIndex="29" />
@@ -451,6 +452,55 @@
                         </TextField>
                         <Label fx:id="label_hide_original_points" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_hide_original_points" visible="false" GridPane.rowIndex="31" />
                         <ChoiceBox fx:id="choiceBox_hide_original_points" accessibleText="%label_hide_original_points" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="31" />
+                        <Label fx:id="label_integral_name" text="%label_integral_name" visible="false" GridPane.rowIndex="28" />
+                        <TextField fx:id="textField_integralName" accessibleText="%label_integral_name" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="28">
+                           <tooltip>
+                              <Tooltip text="%label_integral_name" />
+                           </tooltip>
+                        </TextField>
+                        <Label fx:id="label_integral_function1" text="%label_integral_func1" visible="false" GridPane.rowIndex="29" />
+                        <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="29">
+                           <children>
+                              <ChoiceBox fx:id="choiceBox_function1" maxHeight="30.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <Label fx:id="label_integral_measuring" alignment="TOP_CENTER" text="%label_integral_integral" visible="false" GridPane.rowIndex="30" />
+                        <HBox fx:id="hBox_integral_integral" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="30">
+                           <children>
+                              <RadioButton fx:id="radioBtn_x_axis" accessibleText="%integral_x_axis" mnemonicParsing="false" selected="true" text="%label_x_axis">
+                                 <tooltip>
+                                    <Tooltip text="%integral_x_axis" />
+                                 </tooltip>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="integralToggle" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="radioBtn_integral_func_1" accessibleText="%label_integral_func1" mnemonicParsing="false" text="%label_integral_func1" toggleGroup="$integralToggle">
+                                 <tooltip>
+                                    <Tooltip text="%label_integral_func1" />
+                                 </tooltip>
+                              </RadioButton>
+                           </children>
+                        </HBox>
+                        <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="31">
+                           <children>
+                              <ChoiceBox fx:id="choiceBox_function2" maxHeight="30.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <Label fx:id="label_valueRange" text="%label_integral_valuerange" visible="false" GridPane.rowIndex="32" />
+                        <HBox fx:id="hBox_valueRange" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="32">
+                           <children>
+                              <RadioButton fx:id="radioBtn_valueRange_default" mnemonicParsing="false" text="%radio_valuerange_default">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="valueRangeToggle" />
+                                 </toggleGroup></RadioButton>
+                              <RadioButton fx:id="radioBtn_valueRange_custom" mnemonicParsing="false" text="%radio_valuerange_custom" toggleGroup="$valueRangeToggle" />
+                           </children>
+                        </HBox>
+                        <Label fx:id="label_rangeFrom" text="%label_integral_from" visible="false" GridPane.rowIndex="33" />
+                        <TextField fx:id="textField_rangeFrom" accessibleText="%text_integral_to" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="33" />
+                        <Label fx:id="label_rangeTo" text="%label_integral_to" visible="false" GridPane.rowIndex="34" />
+                        <TextField fx:id="textField_rangeTo" accessibleText="%text_integral_from" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="34" />
                      </children>
                      <padding>
                         <Insets left="5.0" />
@@ -471,7 +521,7 @@
                                     <Insets left="100.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="textField_PresetName" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="400.0" prefWidth="400.0" />
+                              <TextField fx:id="textField_presetName" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="400.0" prefWidth="400.0" />
                            </children>
                            <padding>
                               <Insets left="20.0" right="20.0" />
