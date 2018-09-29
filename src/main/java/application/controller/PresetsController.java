@@ -232,6 +232,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     private ChoiceBox choiceBox_firstLineStyle;
     @FXML
     private ChoiceBox choiceBox_baraccumulation;
+    @FXML
+    private Label label_hide_original_points;
+    @FXML
+    private ChoiceBox choiceBox_hide_original_points;
 
 
 
@@ -397,14 +401,10 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     private void initLineChart(){
         textField_PresetName.setText(currentPreset.getName());
-        label_secondLineStyle.setVisible(true);
-        hbox_secondLineStyle.setVisible(true);
-        label_thirdLineStyle.setVisible(true);
-        hbox_thirdLineStyle.setVisible(true);
-        label_firstLineStyle.setVisible(true);
-        hbox_firstLineStyle.setVisible(true);
-        label_linepoints.setVisible(true);
-        choiceBox_linepoints.setVisible(true);
+        toggleVisibility(true, label_secondLineStyle, hbox_secondLineStyle);
+        toggleVisibility(true, label_thirdLineStyle, hbox_thirdLineStyle);
+        toggleVisibility(true, label_firstLineStyle, hbox_firstLineStyle);
+        toggleVisibility(true, label_linepoints, choiceBox_linepoints);
         ObservableList<LineStyle> secondLineStyleObservableList = FXCollections.observableArrayList(LineStyle.getByOutputDeviceOrderedById(currentPreset.getOptions().getOutputDevice()));
         choiceBox_secondLineStyle.setItems(secondLineStyleObservableList);
         choiceBox_secondLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
@@ -417,6 +417,29 @@ public class PresetsController extends SVGWizardController implements Initializa
         ObservableList<LinePointsOption> linePointsOptionObservableList = FXCollections.observableArrayList(LinePointsOption.values());
         choiceBox_linepoints.setItems(linePointsOptionObservableList);
         choiceBox_linepoints.setConverter(svgOptionsUtil.getLinePointsOptionStringConverter());
+
+        choiceBox_linepoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println(newValue);
+            //TODO linepointsymbols
+//            switch (newValue.toString()){
+//                case "ShowWithBorder":
+//                    toggleVisibility(true, );
+//                    toggleVisibility(true, );
+//                    toggleVisibility(true, );
+//                    break;
+//                case "ShowBorderless":
+//                    toggleVisibility(true, );
+//                    toggleVisibility(true, );
+//                    toggleVisibility(true, );
+//                    break;
+//                default:
+//                    toggleVisibility(false, );
+//                    toggleVisibility(false, );
+//                    toggleVisibility(false, );
+//                    break;
+//            }
+        });
+
         button_resetFirstLineStyle.setOnAction(event -> {
             choiceBox_firstLineStyle.getSelectionModel().select(null);
         });
@@ -431,34 +454,61 @@ public class PresetsController extends SVGWizardController implements Initializa
         button_resetThirdLineStyle.getStyleClass().add("btn-reset");
 
 
+
     }
 
     private void initScatterPlot(){
         textField_PresetName.setText(currentPreset.getName());
-
-        //label_pointSymbols_scatterPlot.setVisible(true);
-        label_trendline.setVisible(true);
-        label_trendline.setVisible(true);
-        choiceBox_trendline.setVisible(true);
-        //TODO: needs visibility handling
+        toggleVisibility(true, label_trendline, choiceBox_trendline);
         ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
         choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
         choiceBox_trendline.setConverter(svgOptionsUtil.getTrendlineAlgorithmStringConverter());
         choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
-//
+        choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        switch (newValue.toString()){
+            case "MovingAverage":
+                toggleVisibility(true, label_trendline_n, textField_trendline_n);
+                toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
+                toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
+                toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
+                break;
+            case "ExponentialSmoothing":
+                toggleVisibility(true, label_trendline_alpha, textField_trendline_alpha);
+                toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
+                toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
+                toggleVisibility(false, label_trendline_n, textField_trendline_n);
+                break;
+            case "BrownLES":
+                toggleVisibility(true, label_trendline_alpha, textField_trendline_alpha);
+                toggleVisibility(true, label_trendline_forecast, textField_trendline_forecast);
+                toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
+                toggleVisibility(false, label_trendline_n, textField_trendline_n);
+                break;
+            case "LinearRegression":
+                toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
+                toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
+                toggleVisibility(false, label_trendline_n, textField_trendline_n);
+                toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
+                break;
+            case "None":
+                toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
+                toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
+                toggleVisibility(false, label_trendline_n, textField_trendline_n);
+                toggleVisibility(false, label_hide_original_points, choiceBox_hide_original_points);
+
+        }
+        });
+        //TODO Pointsymbols
 //        ObservableList<PointSymbol> pointSymbolObservableList = FXCollections.observableArrayList(PointSymbol.getOrdered());
-//        //this.customPointSymbols_scatterPlott = guiSvgOptions.getPointSymbols();
+//        this.customPointSymbols_scatterPlott = guiSvgOptions.getPointSymbols();
 //        choiceBox_pointSymbols_scatterPlot.setVisible(true);
 //        choiceBox_pointSymbols_scatterPlot.getItems().addAll(pointSymbolObservableList);
 //        choiceBox_pointSymbols_scatterPlot.setConverter(this.svgOptionsUtil.getPointSymbolStringConverter());
-////        choiceBox_pointSymbols_scatterPlot.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PointSymbol>() {
-////            public void onChanged(ListChangeListener.Change<? extends PointSymbol> ps) {
-////                changePointSymbols(customPointSymbols_scatterPlott, choiceBox_pointSymbols_scatterPlot, pointSymbolObservableList);
-////            }
-////        });
-
-
-
+//        choiceBox_pointSymbols_scatterPlot.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PointSymbol>() {
+//            public void onChanged(ListChangeListener.Change<? extends PointSymbol> ps) {
+//                changePointSymbols(customPointSymbols_scatterPlott, choiceBox_pointSymbols_scatterPlot, pointSymbolObservableList);
+//            }
+//        });
     }
 
     private void initBarChart(){
@@ -503,11 +553,27 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_sorting.setItems(sortingTypeObservableList);
         choiceBox_sorting.setConverter(svgOptionsUtil.getSortingTypeStringConverter());
         choiceBox_sorting.getSelectionModel().select(SortingType.None);
+        label_sorting.setVisible(true);
+        choiceBox_sorting.setVisible(true);
+        choiceBox_sorting.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue != null){
+                if (!newValue.toString().equals("None")){
+                    choicebox_sortOrder.setVisible(true);
+                    label_sortOrder.setVisible(true);
+                }else{
+                    choicebox_sortOrder.setVisible(false);
+                    label_sortOrder.setVisible(false);
+                }
+            }
+        }));
 
+        choicebox_sortOrder.setVisible(false);
+        label_sortOrder.setVisible(false);
         ObservableList<SortOrder> sortOrderObservableList = FXCollections.observableArrayList(SortOrder.values());
         choicebox_sortOrder.setItems(sortOrderObservableList);
         choicebox_sortOrder.setConverter(svgOptionsUtil.getSortOrderStringConverter());
         choicebox_sortOrder.getSelectionModel().select(SortOrder.ASC);
+
     }
 
 

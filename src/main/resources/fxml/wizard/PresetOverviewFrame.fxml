@@ -336,7 +336,7 @@
                         </HBox>
                         <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.rowIndex="26" />
                         <TextArea fx:id="textArea_cssCustom" accessibleText="%label_css_custom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="26" />
-                        <Label text="%chart_stage2" underline="true" GridPane.rowIndex="27" />
+                        <Label text="%chart_stage2_editor" underline="true" GridPane.rowIndex="27" />
                         <Label fx:id="label_secondLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_second" visible="false" GridPane.rowIndex="28" />
                         <HBox fx:id="hbox_secondLineStyle" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="28">
                            <children>
@@ -443,12 +443,14 @@
                               <Tooltip text="%text_trendline_forecast" />
                            </tooltip>
                         </TextField>
-                        <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_n" visible="false" GridPane.rowIndex="28" />
-                        <TextField fx:id="textField_trendline_n" accessibleText="%text_trendline_n" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="28">
+                        <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_n" visible="false" GridPane.rowIndex="29" />
+                        <TextField fx:id="textField_trendline_n" accessibleText="%text_trendline_n" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29">
                            <tooltip>
                               <Tooltip text="%text_trendline_n" />
                            </tooltip>
                         </TextField>
+                        <Label fx:id="label_hide_original_points" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_hide_original_points" visible="false" GridPane.rowIndex="31" />
+                        <ChoiceBox fx:id="choiceBox_hide_original_points" accessibleText="%label_hide_original_points" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="31" />
                      </children>
                      <padding>
                         <Insets left="5.0" />

@@ -621,7 +621,7 @@
                                             <Tooltip text="%button_next_tooltip" />
                                         </tooltip>
                                     </Button>
-                                    <Button fx:id="button_Load" disable="true" mnemonicParsing="false" text="%button_load">
+                                    <Button fx:id="button_Load" mnemonicParsing="false" text="%button_load">
                                         <tooltip>
                                             <Tooltip text="%button_load_tooltip" />
                                         </tooltip>

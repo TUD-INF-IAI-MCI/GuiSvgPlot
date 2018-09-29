@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
+import com.google.gson.annotations.SerializedName;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -730,7 +731,7 @@ public class GuiSvgOptions {
     }
 
     public void setCsvPath(final String csvPath) {
-        System.out.println("times");
+        //System.out.println("times");
         this.csvPath.set(csvPath);
     }
 

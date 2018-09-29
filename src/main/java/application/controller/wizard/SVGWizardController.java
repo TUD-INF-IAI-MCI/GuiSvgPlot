@@ -8,6 +8,7 @@ import application.model.GuiSvgOptions;
 import application.model.Options.CssType;
 import application.model.Options.PageSize;
 import application.model.Preset;
+import application.service.PresetService;
 import application.service.SvgOptionsService;
 import application.util.ChoiceBoxUtil;
 import application.util.SvgOptionsUtil;
@@ -73,7 +74,6 @@ public class SVGWizardController implements Initializable {
     // start logger
     private static final Logger logger = LoggerFactory.getLogger(SVGWizardController.class);
 
-    public PresetsController presetsController;
     @FXML
     protected Button button_Back;
     @FXML
@@ -203,6 +203,7 @@ public class SVGWizardController implements Initializable {
     public ChoiceBox<CsvType> choiceBox_csvType;
 
     public ObservableList<Preset> presets;
+    private PresetService presetService = PresetService.getInstance();
 
     private ObservableList<Color> colors;
 
@@ -834,27 +835,35 @@ public class SVGWizardController implements Initializable {
     }
 
     protected void initloadPreset() {
+        if(presets == null){
+            presets = FXCollections.observableArrayList(this.presetService.getAll());
+        }
         button_Load.setOnAction(event -> {
-            //TODO
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("NOT YET IMPLEMENTED");
-            alert.setHeaderText("NOT YET IMPLEMENTED");
-            alert.setContentText("NOT YET IMPLEMENTED");
-            alert.showAndWait();
-            /*List<String> choices = new ArrayList<>();
+            List<String> choices = new ArrayList<>();
+            System.out.println(presets);
             for (Preset p : presets) {
-                choices.add(p.toString());
+                choices.add(p.getName());
             }
-            ChoiceDialog<String> dialog = new ChoiceDialog<>("",choices);
+            ChoiceDialog<String> dialog = new ChoiceDialog<>(bundle.getString("combo_preset_prompt"),choices);
             dialog.setTitle(bundle.getString("prompt_load_title"));
             dialog.setHeaderText(bundle.getString("prompt_load_header"));
             dialog.setContentText(bundle.getString("prompt_load_content"));
             Optional<String> result = dialog.showAndWait();
             if(result.isPresent()){
+                System.out.println(result.get());
+                for(Preset preset : presets){
+                    if (preset.getName().equals(result.get())){
+                        this.guiSvgOptions = preset.getOptions();
+                        System.out.println(preset.getOptions().getOutputDevice());
+                        System.out.println(this.guiSvgOptions);
 
-            }*/
+                    }
+
+                }
+            }
         });
     }
+
 
     public Glyph getWarnIcon() {
         return warnIcon;
