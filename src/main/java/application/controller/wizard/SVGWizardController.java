@@ -666,6 +666,7 @@ public class SVGWizardController implements Initializable {
         this.button_Warnings.setTooltip(new Tooltip(this.bundle.getString("warn_message_help")));
         this.button_Warnings.setId("btn_warnings");
         this.button_Warnings.setFocusTraversable(true);
+        this.button_Warnings.setDisable(true);
         hBox_pagination.getChildren().add(this.button_Warnings);
 
         hBox_pagination.getChildren().remove(this.button_Infos);
@@ -679,6 +680,7 @@ public class SVGWizardController implements Initializable {
         this.button_Infos.setTooltip(new Tooltip(this.bundle.getString("info_message_help")));
         this.button_Infos.setId("btn_infos");
         this.button_Infos.setFocusTraversable(true);
+        this.button_Infos.setDisable(true);
         hBox_pagination.getChildren().add(this.button_Infos);
         this.messageBtns.add(this.button_Infos);
 
