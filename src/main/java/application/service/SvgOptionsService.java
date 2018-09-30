@@ -13,6 +13,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.SvgPlotOptions;
+import tud.tangram.svgplot.plotting.point.PointSymbol;
 import tud.tangram.svgplot.svgcreator.SvgCreator;
 
 import javax.xml.bind.ValidationException;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -239,16 +241,21 @@ public class SvgOptionsService {
 
 
     private boolean isSvgPlottOptionsValid(final SvgPlotOptions svgPlotOptions) {
+        DiagramType diagramType = svgPlotOptions.getDiagramType();
+
         boolean hasErrorInXRange = svgPlotOptions.getxRange() != null && svgPlotOptions.getxRange().getFrom() == svgPlotOptions.getxRange().getTo();
         boolean hasErrorInYRange = svgPlotOptions.getyRange() != null && svgPlotOptions.getyRange().getFrom() == svgPlotOptions.getyRange().getTo();
 
         boolean hasErrorInCustomSizeWidth = svgPlotOptions.getSize().getX() < GuiSvgOptions.MINIMUM_PAGE_WIDTH;
         boolean hasErrorInCustomSizeHeight = svgPlotOptions.getSize().getY() < GuiSvgOptions.MINIMUM_PAGE_HEIGHT;
 
-        boolean hasErrorInTextures = svgPlotOptions.getDiagramType().equals(DiagramType.BarChart) && svgPlotOptions.getTextures().contains(null);
-        boolean hasErrorInLineTypes = svgPlotOptions.getDiagramType().equals(DiagramType.LineChart) && svgPlotOptions.getLineStyles().contains(null);
-        boolean hasErrorInPointSymbols = svgPlotOptions.getDiagramType().equals(DiagramType.ScatterPlot) && svgPlotOptions.getPointSymbols().contains(null)
-                || svgPlotOptions.getDiagramType().equals(DiagramType.LineChart) && svgPlotOptions.getShowLinePoints().equals("on") && svgPlotOptions.getPointSymbols().contains(null);
+        boolean hasErrorInTextures = diagramType.equals(DiagramType.BarChart) && svgPlotOptions.getTextures().contains(null);
+        boolean hasErrorInLineTypes = diagramType.equals(DiagramType.LineChart) && svgPlotOptions.getLineStyles().contains(null);
+
+        List<PointSymbol> pointSymbols = svgPlotOptions.getPointSymbols();
+        String showLinePoints = svgPlotOptions.getShowLinePoints();
+        boolean hasErrorInPointSymbols = diagramType.equals(DiagramType.ScatterPlot) && pointSymbols.contains(null)
+                || diagramType.equals(DiagramType.LineChart) && showLinePoints != null && showLinePoints.equals("on") && pointSymbols.contains(null);
 
         boolean hasErrorInColors = svgPlotOptions.getCustomColors() != null && svgPlotOptions.getCustomColors().contains(null);
 
