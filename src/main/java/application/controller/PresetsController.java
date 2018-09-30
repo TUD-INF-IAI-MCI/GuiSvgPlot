@@ -274,9 +274,9 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private Label label_integral_function1;
     @FXML
-    private ChoiceBox choiceBox_function1;
+    private AnchorPane anchorPane_function1;
     @FXML
-    private ChoiceBox choiceBox_function2;
+    private AnchorPane anchorPane_function2;
     @FXML
     private Label label_integral_measuring;
     @FXML
@@ -336,7 +336,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         toggleVisibility(false, label_thirdTexture, hBox_thirdTexture);
         toggleVisibility(false, label_sorting, choiceBox_sorting);
         toggleVisibility(false, label_integral_name, textField_integralName);
-        toggleVisibility(false, label_integral_function1, choiceBox_function1);
+        toggleVisibility(false, label_integral_function1, anchorPane_function1);
         toggleVisibility(false, label_integral_measuring, hBox_integral_integral);
         toggleVisibility(false, label_valueRange, hBox_valueRange);
         toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
@@ -662,7 +662,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void initFunction() {
         textField_presetName.setText(currentPreset.getName());
         toggleVisibility(true, label_integral_name, textField_integralName);
-        toggleVisibility(true, label_integral_function1, choiceBox_function1);
+        toggleVisibility(true, label_integral_function1, anchorPane_function1);
         toggleVisibility(true, label_integral_measuring, hBox_integral_integral);
         toggleVisibility(true, label_valueRange, hBox_valueRange);
 
@@ -670,7 +670,7 @@ public class PresetsController extends SVGWizardController implements Initializa
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean wasPreviouslySelected, Boolean isNowSelected) {
                 if(isNowSelected){
-                    choiceBox_function2.setVisible(false);
+                    anchorPane_function2.setVisible(false);
                 }
             }
         });
@@ -679,7 +679,7 @@ public class PresetsController extends SVGWizardController implements Initializa
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean wasPreviouslySelected, Boolean isNowSelected) {
                 if(isNowSelected){
-                    choiceBox_function2.setVisible(true);
+                    anchorPane_function2.setVisible(true);
                 }
             }
         });
@@ -735,7 +735,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         // arbitrary default value
         DiagramType dt;
         List<String> choices = new ArrayList<>();
-        //TODO: needs i18n implementation that doesnt suck
+        //TODO: needs i18n implementation that doesn't suck
         choices.add(DiagramType.FunctionPlot.toString());
         choices.add(DiagramType.ScatterPlot.toString());
         choices.add(DiagramType.LineChart.toString());
@@ -953,8 +953,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         //Stage 3: specific
         switch (currentPreset.getDiagramTypeString()){
             case "FunctionPlot":
-                //TODO
-
+                //TODO: Robert code goes here -> fill choiceBox_function1 + choiceBox_function2 with saved functions
 
                 break;
             case "BarChart":

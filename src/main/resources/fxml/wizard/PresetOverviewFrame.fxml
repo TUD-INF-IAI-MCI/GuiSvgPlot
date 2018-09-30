@@ -459,9 +459,9 @@
                            </tooltip>
                         </TextField>
                         <Label fx:id="label_integral_function1" text="%label_integral_func1" visible="false" GridPane.rowIndex="29" />
-                        <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="29">
+                        <AnchorPane fx:id="anchorPane_function1" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29">
                            <children>
-                              <ChoiceBox fx:id="choiceBox_function1" maxHeight="30.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                              <ChoiceBox fx:id="choiceBox_function1" maxHeight="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                            </children>
                         </AnchorPane>
                         <Label fx:id="label_integral_measuring" alignment="TOP_CENTER" text="%label_integral_integral" visible="false" GridPane.rowIndex="30" />
@@ -482,9 +482,9 @@
                               </RadioButton>
                            </children>
                         </HBox>
-                        <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="31">
+                        <AnchorPane fx:id="anchorPane_function2" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="31">
                            <children>
-                              <ChoiceBox fx:id="choiceBox_function2" maxHeight="30.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                              <ChoiceBox fx:id="choiceBox_function2" maxHeight="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                            </children>
                         </AnchorPane>
                         <Label fx:id="label_valueRange" text="%label_integral_valuerange" visible="false" GridPane.rowIndex="32" />
