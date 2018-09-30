@@ -631,17 +631,20 @@ public class SVGWizardController implements Initializable {
         this.stageBtns = new ArrayList<>();
         for (int stage = 0; stage < AMOUNTOFSTAGES; stage++) {
             Button stageBtn = new Button(bundle.getString("chart_stage" + stage));
-
+            stageBtn.setAccessibleText(bundle.getString("chart_stage" + stage + "_help"));
             if (stage == 2 && DiagramType.FunctionPlot.equals(diagramType)) {
                 stageBtn = new Button(bundle.getString("chart_stage" + stage + "Func"));
+                stageBtn.setAccessibleText(bundle.getString("chart_stage" + stage + "_help_Func"));
             }
 
-//            stageBtn.wrapTextProperty().setValue(true);
             stageBtn.setTextAlignment(TextAlignment.CENTER);
             stageBtn.getStyleClass().add("stageBtn");
+            stageBtn.setFocusTraversable(false);
             if (this.currentStage.get() == stage) {
                 stageBtn.getStyleClass().add("active");
-                stageBtn.setAccessibleHelp(bundle.getString("active_stage"));
+                stageBtn.requestFocus();
+                stageBtn.setFocusTraversable(true);
+//                stageBtn.setAccessibleHelp(bundle.getString("active_stage"));
             }
 
             final int stageNumber = stage;
@@ -649,8 +652,9 @@ public class SVGWizardController implements Initializable {
                 this.currentStage.set(stageNumber);
             });
             hBox_pagination.getChildren().add(stageBtn);
-            hBox_pagination.setAccessibleRole(AccessibleRole.MENU);
-            stageBtn.accessibleRoleProperty().set(AccessibleRole.MENU_ITEM);
+            hBox_pagination.setAccessibleRole(AccessibleRole.TAB_PANE);
+            stageBtn.accessibleRoleProperty().set(AccessibleRole.TAB_ITEM);
+
             this.stageBtns.add(stageBtn);
         }
 
@@ -667,6 +671,7 @@ public class SVGWizardController implements Initializable {
         this.button_Warnings.setId("btn_warnings");
         this.button_Warnings.setFocusTraversable(true);
         this.button_Warnings.setDisable(true);
+        this.button_Warnings.setAccessibleRole(AccessibleRole.BUTTON);
         hBox_pagination.getChildren().add(this.button_Warnings);
 
         hBox_pagination.getChildren().remove(this.button_Infos);
@@ -706,6 +711,7 @@ public class SVGWizardController implements Initializable {
                 infoScrollPane.setMaxSize(340, 500);
                 infoScrollPane.hbarPolicyProperty().set(ScrollPane.ScrollBarPolicy.NEVER);
                 infoScrollPane.setPadding(new Insets(0, 10, 0, 0));
+                infoScrollPane.setAccessibleText("Infos:");
 
                 this.popOver_infos.setTitle(this.bundle.getString("popup_info_title"));
                 this.popOver_warnings.getStyleClass().add("notification");
@@ -713,6 +719,8 @@ public class SVGWizardController implements Initializable {
                 this.popOver_infos.setHeaderAlwaysVisible(true);
                 this.popOver_infos.setContentNode(infoScrollPane);
                 this.popOver_infos.show(this.button_Infos);
+                String accessibleText = this.vBox_infos.getChildren().size() + " " + this.bundle.getString("info_message") + " " + this.vBox_infos.getChildren().get(0).getAccessibleText();
+                this.vBox_infos.getChildren().get(0).setAccessibleText(accessibleText);
                 this.vBox_infos.getChildren().get(0).requestFocus();
                 this.fixBlurryText(infoScrollPane);
             }
@@ -733,6 +741,8 @@ public class SVGWizardController implements Initializable {
                 this.popOver_warnings.setHeaderAlwaysVisible(true);
                 this.popOver_warnings.setContentNode(warningScrollPane);
                 this.popOver_warnings.show(this.button_Warnings);
+                String accessibleText = this.vBox_warnings.getChildren().size() + " " + this.bundle.getString("warn_message") + " " + this.vBox_warnings.getChildren().get(0).getAccessibleText();
+                this.vBox_warnings.getChildren().get(0).setAccessibleText(accessibleText);
                 this.vBox_warnings.getChildren().get(0).requestFocus();
                 this.fixBlurryText(warningScrollPane);
             }
@@ -771,15 +781,17 @@ public class SVGWizardController implements Initializable {
                 this.currentStage.set(oldVal.intValue());
             }
 
-            if (oldVal.intValue() < this.stageBtns.size()) {
-                this.stageBtns.get(oldVal.intValue()).getStyleClass().remove("active");
-                this.stageBtns.get(oldVal.intValue()).setAccessibleHelp("");
-                this.stageBtns.get(this.currentStage.get()).getStyleClass().add("active");
-                this.stageBtns.get(this.currentStage.get()).setAccessibleHelp(bundle.getString("active_stage"));
-            }
+            if(newVal.intValue() >= 0) {
+                if (oldVal.intValue() < this.stageBtns.size()) {
+                    this.stageBtns.get(oldVal.intValue()).getStyleClass().remove("active");
+                    this.stageBtns.get(oldVal.intValue()).setFocusTraversable(false);
+                    this.stageBtns.get(this.currentStage.get()).getStyleClass().add("active");
+                    this.stageBtns.get(this.currentStage.get()).requestFocus();
+                }
 
-            this.borderPane_WizardContent.setCenter(this.stages.get(this.currentStage.get()));
-            this.borderPane_WizardContent.getCenter().requestFocus();
+                this.borderPane_WizardContent.setCenter(this.stages.get(this.currentStage.get()));
+//                this.borderPane_WizardContent.getCenter().requestFocus();
+            }
         });
 
         // increment the currentStage counter. Will trigger its changeListener
@@ -1157,5 +1169,12 @@ public class SVGWizardController implements Initializable {
             });
     }
 
-
+    public void incrementCurrentStage(){
+        this.currentStage.set(this.currentStage.get() + 1);
+    }
+    public void decrementCurrentStage(){
+        if (this.currentStage.get() >= 0) {
+            this.currentStage.set(this.currentStage.get() - 1);
+        }
+    }
 }

@@ -270,11 +270,9 @@ public class RootFrameController implements Initializable {
             this.svgWizardController.vBox_infos.getChildren().clear();
             this.svgWizardController.vBox_warnings.getChildren().clear();
             this.svgWizardController.button_Warnings.setGraphic(this.svgWizardController.getWarnIcon());
-            this.svgWizardController.button_Warnings.setAccessibleHelp(this.bundle.getString("warn_message_no_warning"));
-            this.svgWizardController.button_Infos.setGraphic(this.svgWizardController.getInfoIcon());
-            this.svgWizardController.button_Infos.setAccessibleHelp(this.bundle.getString("info_message_no_infos"));
-            this.svgWizardController.button_Infos.setDisable(true);
             this.svgWizardController.button_Warnings.setDisable(true);
+            this.svgWizardController.button_Infos.setGraphic(this.svgWizardController.getInfoIcon());
+            this.svgWizardController.button_Infos.setDisable(true);
         } catch (Exception e) {
         }
     }

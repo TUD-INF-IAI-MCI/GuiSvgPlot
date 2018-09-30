@@ -165,13 +165,13 @@ public class GuiSvgPlott extends Application {
                 }
                 case I: {
                     if (event.isControlDown()) {
-                        rootFrameController.svgWizardController.button_Infos.requestFocus();
+                        rootFrameController.svgWizardController.button_Infos.fire();
                         break;
                     }
                 }
                 case W: {
                     if (event.isControlDown()) {
-                        rootFrameController.svgWizardController.button_Warnings.requestFocus();
+                        rootFrameController.svgWizardController.button_Warnings.fire();
                         break;
                     }
                 }
@@ -203,6 +203,15 @@ public class GuiSvgPlott extends Application {
                         }
                     }
                     break;
+                }
+                case TAB: {
+                    if (event.isControlDown()) {
+                        if (!event.isShiftDown()) {
+                            rootFrameController.svgWizardController.incrementCurrentStage();
+                        } else {
+                            rootFrameController.svgWizardController.decrementCurrentStage();
+                        }
+                    }
                 }
             }
         });
