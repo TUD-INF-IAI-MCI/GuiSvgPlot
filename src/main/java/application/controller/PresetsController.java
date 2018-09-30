@@ -346,10 +346,14 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
 
+    /**
+     * initiates the general options in the preset editor. Depending on {@code extended}, some parts will be dis- or enabled.
+     */
     private void initEditor(){
         //outputdevice
         choiceBox_outputDevice.setItems(FXCollections.observableArrayList(OutputDevice.values()));
         choiceBox_outputDevice.setConverter(svgOptionsUtil.getOutputDeviceStringConverter());
+
         //pagesize
         ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
         ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
@@ -371,6 +375,7 @@ public class PresetsController extends SVGWizardController implements Initializa
                 }
             }
         });
+
         //CSV
         button_csvPath.setDisable(false);
         button_csvPath.setOnAction(event -> {
@@ -385,17 +390,21 @@ public class PresetsController extends SVGWizardController implements Initializa
         });
         choiceBox_csvType.setItems(FXCollections.observableArrayList(CsvType.values()));
         choiceBox_csvType.setConverter(svgOptionsUtil.getCsvTypeStringConverter());
+
         //trendline
 //        choiceBox_trendline.setItems(FXCollections.observableArrayList(TrendlineAlgorithm.values()));
 //        choiceBox_trendline.setConverter(svgOptionsUtil.getTrendlineAlgorithmStringConverter());
 //        choiceBox_trendline.getSelectionModel().select(0);
+
         //gridstyle
         choiceBox_gridStyle.setItems(FXCollections.observableArrayList(GridStyle.values()));
         choiceBox_gridStyle.setConverter(svgOptionsUtil.getGridStyleStringConverter());
+
         //doubleaxis
         choiceBox_dblaxes.setItems(FXCollections.observableArrayList(GuiAxisStyle.values()));
         choiceBox_dblaxes.setConverter(svgOptionsUtil.getAxisStyleStringConverter());
-        //css
+
+        //CSS
         choiceBox_cssType.setItems(FXCollections.observableArrayList(CssType.values()));
         choiceBox_cssType.getSelectionModel().select(0);
         choiceBox_cssType.setConverter(svgOptionsUtil.getCssTypeStringConverter());
@@ -470,6 +479,9 @@ public class PresetsController extends SVGWizardController implements Initializa
         toggleVisibility(false, label_cssPath, hBox_cssPath);
     }
 
+    /**
+     * initiates the linechart specific options in the preset editor. Depending on {@code extended}, some parts will be dis- or enabled.
+     */
     private void initLineChart(){
         textField_presetName.setText(currentPreset.getName());
         toggleVisibility(true, label_secondLineStyle, hBox_secondLineStyle);
@@ -523,11 +535,11 @@ public class PresetsController extends SVGWizardController implements Initializa
             choiceBox_thirdLineStyle.getSelectionModel().select(null);
         });
         button_resetThirdLineStyle.getStyleClass().add("btn-reset");
-
-
-
     }
 
+    /**
+     * initiates the scatterplot specific options in the preset editor. Depending on {@code extended}, some parts will be dis- or enabled.
+     */
     private void initScatterPlot(){
         textField_presetName.setText(currentPreset.getName());
         toggleVisibility(true, label_trendline, choiceBox_trendline);
@@ -584,7 +596,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
     /**
-     *
+     * initiates the barchart specific options in the preset editor. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initBarChart(){
         textField_presetName.setText(currentPreset.getName());
@@ -658,7 +670,9 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
 
-
+    /**
+     * initiates the function specific options in the preset editor. Depending on {@code extended}, some parts will be dis- or enabled.
+     */
     private void initFunction() {
         textField_presetName.setText(currentPreset.getName());
         toggleVisibility(true, label_integral_name, textField_integralName);
@@ -726,11 +740,19 @@ public class PresetsController extends SVGWizardController implements Initializa
         guiSvgOptions.setPointSymbols(checkedPointSymbols);
     }
 
+    /**
+     * handle for the create new preset button from the fxml file.
+     * leads to the diagramTypePrompt function
+     */
     @FXML
     private void createNewPreset() {
         diagramTypePrompt();
     }
 
+    /**
+     * starts the prompt in which the user can choose the {@link DiagramType}
+     * leads to the presetNamePrompt function with the chosen {@link DiagramType}
+     */
     private void diagramTypePrompt() {
         // arbitrary default value
         DiagramType dt;
@@ -752,6 +774,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
     }
 
+    /**
+     * handles the preset name prompt. Checks whether there is already a preset with that name present and rejects the call if it is.
+     * @param dt {@link DiagramType} in order to know which flag to set
+     */
     private void presetNamePrompt(DiagramType dt) {
         TextInputDialog nameDialogue = new TextInputDialog();
         nameDialogue.setTitle(bundle.getString("prompt_preset_name_title"));
@@ -770,6 +796,9 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
     }
 
+    /**
+     * refreshes the content of the table by iterating through the preset list and adding each one to the vBox_Preset_DataTable
+     */
     private void loadTable() {
         vBox_Preset_DataTable.getChildren().clear();
         for (Preset preset : super.presets) {
@@ -777,6 +806,12 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
     }
 
+    /**
+     * dynamically fills the HBox in which the presets are stored visually.
+     * adds three columns (name, date, diagramtype) and another 3 for edit/copy/delete buttons     *
+     * @param preset
+     * @return the {@link HBox}
+     */
     private HBox generateTableEntry(final Preset preset) {
         HBox row = new HBox();
         row.setSpacing(5);
@@ -865,6 +900,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         return row;
     }
 
+
+    /**
+     * loads the saved options of the current editor frame and sets the corresponding option into the current preset
+     */
     private void flagGetter() {
         //Stage 1: basics
         currentPreset.getOptions().setOutputDevice(choiceBox_outputDevice.getSelectionModel().getSelectedItem());
@@ -933,7 +972,11 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
     }
 
-
+    /**
+     * sets the flags from the {@link Preset} into the corresponding {@link TextField}'s, {@link ChoiceBox}es etc.
+     * @param dt the {@link DiagramType} of {@link Preset}
+     * @param p the {@link Preset}, that the flags are being taken out of
+     */
     private void flagSetter(DiagramType dt, Preset p){
         GuiSvgOptions options = p.getOptions();
         options.setDiagramType(dt);
@@ -1026,45 +1069,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         editorBorderPane.setVisible(false);
     }
 
-    private void lineChartEditorHider(){
-        label_secondLineStyle.setVisible(false);
-        hBox_secondLineStyle.setVisible(false);
-        label_thirdLineStyle.setVisible(false);
-        hBox_thirdLineStyle.setVisible(false);
-        label_firstLineStyle.setVisible(false);
-        hBox_firstLineStyle.setVisible(false);
-        label_linepoints.setVisible(false);
-        choiceBox_linepoints.setVisible(false);
-    }
 
-
-
-    private void scatterPlotEditorHider(){
-        label_trendline.setVisible(false);
-        label_trendline.setVisible(false);
-        choiceBox_trendline.setVisible(false);
-    }
-
-
-
-    private void barChartEditorHider() {
-        label_baraccumulation.setVisible(false);
-        label_firstTexture.setVisible(false);
-        hBox_firstTexture.setVisible(false);
-        label_secondTexture.setVisible(false);
-        hBox_secondTexture.setVisible(false);
-        label_thirdTexture.setVisible(false);
-        hBox_thirdTexture.setVisible(false);
-        choiceBox_sortOrder.setVisible(false);
-        label_sortOrder.setVisible(false);
-        choiceBox_baraccumulation.setVisible(false);
-    }
-
-
-    private void functionPlotEditorHider(){
-
-    }
-
+    /**
+     * handles the delete button onclick and prompts an deleteConfirmationAlert
+     */
     @FXML
     private void deletePreset() {
         Preset tobedeletedPreset = currentPreset;
@@ -1073,10 +1081,6 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     private void hideAllEditors() {
         editorHider();
-        lineChartEditorHider();
-        scatterPlotEditorHider();
-        functionPlotEditorHider();
-        barChartEditorHider();
     }
 
     @FXML
@@ -1086,6 +1090,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         resetSpecifics();
     }
 
+    /**
+     * handle for the save Preset Button. Gets all the options via the flagGetter function and saves it via the presetServer.save function
+     * an empty name will cause an alert to be triggered
+     */
     @FXML
     private void savePreset(){
         if(!isPresetNameEmpty()){
@@ -1098,6 +1106,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
     }
 
+    /**
+     * checks whether the {@link TextField} of the presetName is empty
+     * @return the status
+     */
     public boolean isPresetNameEmpty(){
         if(textField_presetName.getText().isEmpty()){
             return true;
@@ -1106,6 +1118,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
     }
 
+    /**
+     * prompts for confirmation of the user if the {@link Preset} shall really be deleted
+     * @param p the current preset
+     */
     public void deleteConfirmationAlert(Preset p) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(bundle.getString("alert_preset_delete_title"));
@@ -1122,6 +1138,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
     }
 
+    /**
+     * prompts for confirmation of the user if the {@link Preset} shall really be deleted
+     * @param o the name of the preset that is a duplicate as a String
+     */
     public void duplicateAlert(Optional o) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(bundle.getString("alert_preset_duplicate_title"));
@@ -1130,6 +1150,9 @@ public class PresetsController extends SVGWizardController implements Initializa
         alert.showAndWait();
     }
 
+    /**
+     * handles the alert prompt when the name of the preset is empty
+     */
     public void emptyNameAlert() {
         Alert alarm = new Alert(Alert.AlertType.ERROR);
         alarm.setTitle(bundle.getString("alert_preset_empty_title"));
@@ -1138,6 +1161,9 @@ public class PresetsController extends SVGWizardController implements Initializa
         alarm.showAndWait();
     }
 
+    /**
+     * handles the cancel button onclick call and resets the specific options in the editor pane
+     */
     @FXML
     private void quitToMainMenu() {
         GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
