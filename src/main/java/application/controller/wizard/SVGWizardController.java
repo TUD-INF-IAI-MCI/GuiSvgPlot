@@ -848,6 +848,9 @@ public class SVGWizardController implements Initializable {
 
     }
 
+    /**
+     * initiates the preset list and adds an event listener to the load button
+     */
     protected void initloadPreset() {
         if(presets == null){
             presets = FXCollections.observableArrayList(this.presetService.getAll());
@@ -870,7 +873,6 @@ public class SVGWizardController implements Initializable {
                         this.guiSvgOptions = preset.getOptions();
                         System.out.println(preset.getOptions().getOutputDevice());
                         System.out.println(this.guiSvgOptions);
-
                     }
 
                 }

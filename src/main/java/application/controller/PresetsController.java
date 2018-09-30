@@ -324,7 +324,9 @@ public class PresetsController extends SVGWizardController implements Initializa
         button_deletePreset.setGraphic(deleteGlyph);
     }
 
-
+    /**
+     * resets the visibilty of {@link TextField}'s, {@link ChoiceBox}es, {@link HBox}es etc.
+     */
     private void resetSpecifics(){
         toggleVisibility(false, label_secondLineStyle, hBox_secondLineStyle);
         toggleVisibility(false, label_thirdLineStyle, hBox_thirdLineStyle);
@@ -720,6 +722,76 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
     }
+    /**
+     * loads the saved options of the current editor frame and sets the corresponding option into the current preset
+     */
+    private void flagGetter() {
+        //Stage 1: basics
+        currentPreset.getOptions().setOutputDevice(choiceBox_outputDevice.getSelectionModel().getSelectedItem());
+        //TODO: page orientation
+        //currentPreset.getOptions().set
+        //TODO: need help converting :C
+        //currentOptions.setSize(PageSize.A4.getPageSizeWithOrientation(PageSize.A4));
+
+        //Stage 2: data
+        currentPreset.getOptions().setCsvPath(textField_csvpath.getText());
+        currentPreset.getOptions().setCsvType((CsvType) choiceBox_csvType.getSelectionModel().getSelectedItem());
+
+        //Stage 3: specific
+        switch (currentPreset.getDiagramTypeString()){
+            case "FunctionPlot":
+                //TODO
+                //currentPreset.getOptions().setIntegral();
+
+                break;
+            case "BarChart":
+                //TODO
+                currentPreset.getOptions().setBarAccumulationStyle((BarAccumulationStyle)choiceBox_baraccumulation.getSelectionModel().getSelectedItem());
+
+                currentPreset.getOptions().setSortingType((SortingType) choiceBox_sorting.getSelectionModel().getSelectedItem());
+                currentPreset.getOptions().setSortOrder((SortOrder) choiceBox_sortOrder.getSelectionModel().getSelectedItem());
+                break;
+            case "LineChart":
+                //TODO
+
+                //currentPreset.getOptions().setLineStyles();
+                //currentPreset.getOptions().setLinePointsOption();
+                break;
+            case "ScatterPlot":
+                //TODO
+                //currentPreset.getOptions().setTrendLine();
+                break;
+
+        }
+//        currentOptions.setTrendLine(choiceBox_trendline.getSelectionModel().getSelectedItem());
+
+        //Stage 4: axis
+        currentPreset.getOptions().setxUnit(textField_xAxisTitle.getText());
+        currentPreset.getOptions().setyUnit(textField_yAxisTitle.getText());
+        if(radioBtn_scale_to_data.isSelected()){
+            currentPreset.getOptions().setAutoScale(true);
+        }else{
+            currentPreset.getOptions().setAutoScale(false);
+        }
+
+        //Stage 5: special
+        currentPreset.getOptions().setGridStyle((GridStyle) choiceBox_gridStyle.getSelectionModel().getSelectedItem());
+        if(textField_helpLinesX.getText() != null && !textField_helpLinesX.getText().isEmpty()){
+            currentPreset.getOptions().setxLines(textField_helpLinesX.getText());
+        }
+        if(textField_helpLinesY.getText() != null && !textField_helpLinesY.getText().isEmpty()){
+            currentPreset.getOptions().setyLines(textField_helpLinesY.getText());
+        }
+        currentPreset.getOptions().setAxisStyle((GuiAxisStyle) choiceBox_dblaxes.getSelectionModel().getSelectedItem());
+
+        //Stage 6: display
+        if(choiceBox_cssType.getSelectionModel().getSelectedItem().equals("CUSTOM")){
+            currentPreset.getOptions().setCss(textArea_cssCustom.getText());
+        }else if (choiceBox_cssType.getSelectionModel().getSelectedItem().equals("FILE")){
+            currentPreset.getOptions().setCss(textField_cssPath.getText());
+        }
+    }
+
     private void changePointSymbols(ObservableList<PointSymbol> checkedPointSymbols, CheckComboBox<PointSymbol> checkComboBox, ObservableList<PointSymbol> allPointSymbols) {
         checkedPointSymbols.clear();
         ObservableList<PointSymbol> checkedItems = checkComboBox.getCheckModel().getCheckedItems();
@@ -900,77 +972,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         return row;
     }
 
-
-    /**
-     * loads the saved options of the current editor frame and sets the corresponding option into the current preset
-     */
-    private void flagGetter() {
-        //Stage 1: basics
-        currentPreset.getOptions().setOutputDevice(choiceBox_outputDevice.getSelectionModel().getSelectedItem());
-        //TODO: page orientation
-        //currentPreset.getOptions().set
-        //TODO: need help converting :C
-        //currentOptions.setSize(PageSize.A4.getPageSizeWithOrientation(PageSize.A4));
-
-        //Stage 2: data
-        currentPreset.getOptions().setCsvPath(textField_csvpath.getText());
-        currentPreset.getOptions().setCsvType((CsvType) choiceBox_csvType.getSelectionModel().getSelectedItem());
-
-        //Stage 3: specific
-        //TODO
-        switch (currentPreset.getDiagramTypeString()){
-            case "FunctionPlot":
-                //TODO
-                //currentPreset.getOptions().setIntegral();
-
-                break;
-            case "BarChart":
-                //TODO
-                currentPreset.getOptions().setBarAccumulationStyle((BarAccumulationStyle)choiceBox_baraccumulation.getSelectionModel().getSelectedItem());
-
-                currentPreset.getOptions().setSortingType((SortingType) choiceBox_sorting.getSelectionModel().getSelectedItem());
-                currentPreset.getOptions().setSortOrder((SortOrder) choiceBox_sortOrder.getSelectionModel().getSelectedItem());
-                break;
-            case "LineChart":
-                //TODO
-
-                //currentPreset.getOptions().setLineStyles();
-                //currentPreset.getOptions().setLinePointsOption();
-                break;
-            case "ScatterPlot":
-                //TODO
-                //currentPreset.getOptions().setTrendLine();
-                break;
-
-        }
-//        currentOptions.setTrendLine(choiceBox_trendline.getSelectionModel().getSelectedItem());
-
-        //Stage 4: axis
-        currentPreset.getOptions().setxUnit(textField_xAxisTitle.getText());
-        currentPreset.getOptions().setyUnit(textField_yAxisTitle.getText());
-        if(radioBtn_scale_to_data.isSelected()){
-            currentPreset.getOptions().setAutoScale(true);
-        }else{
-            currentPreset.getOptions().setAutoScale(false);
-        }
-
-        //Stage 5: special
-        currentPreset.getOptions().setGridStyle((GridStyle) choiceBox_gridStyle.getSelectionModel().getSelectedItem());
-        if(textField_helpLinesX.getText() != null && !textField_helpLinesX.getText().isEmpty()){
-            currentPreset.getOptions().setxLines(textField_helpLinesX.getText());
-        }
-        if(textField_helpLinesY.getText() != null && !textField_helpLinesY.getText().isEmpty()){
-            currentPreset.getOptions().setyLines(textField_helpLinesY.getText());
-        }
-        currentPreset.getOptions().setAxisStyle((GuiAxisStyle) choiceBox_dblaxes.getSelectionModel().getSelectedItem());
-
-        //Stage 6: display
-        if(choiceBox_cssType.getSelectionModel().getSelectedItem().equals("CUSTOM")){
-            currentPreset.getOptions().setCss(textArea_cssCustom.getText());
-        }else if (choiceBox_cssType.getSelectionModel().getSelectedItem().equals("FILE")){
-            currentPreset.getOptions().setCss(textField_cssPath.getText());
-        }
-    }
 
     /**
      * sets the flags from the {@link Preset} into the corresponding {@link TextField}'s, {@link ChoiceBox}es etc.

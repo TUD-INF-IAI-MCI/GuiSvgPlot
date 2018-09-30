@@ -213,6 +213,10 @@ public class RootFrameController implements Initializable {
         startWizard(GuiSvgPlott.FunctionWizardFrame, false);
     }
 
+
+    /**
+     * handles the open preset editor onclick
+     */
     @FXML
     public void startPresetOverview() {
         // checks whether the PresetOverview window has been opened from within the Function/Chartwizard Frame -> fixes #24
