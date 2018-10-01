@@ -550,32 +550,32 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_trendline.setConverter(svgOptionsUtil.getTrendlineAlgorithmStringConverter());
         choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
         choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-        switch (newValue.toString()){
-            case "MovingAverage":
+        switch ((TrendlineAlgorithm) newValue){
+            case MovingAverage:
                 toggleVisibility(true, label_trendline_n, textField_trendline_n);
                 toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
                 toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
                 toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
                 break;
-            case "ExponentialSmoothing":
+            case ExponentialSmoothing:
                 toggleVisibility(true, label_trendline_alpha, textField_trendline_alpha);
                 toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
                 toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
                 toggleVisibility(false, label_trendline_n, textField_trendline_n);
                 break;
-            case "BrownLES":
+            case BrownLES:
                 toggleVisibility(true, label_trendline_alpha, textField_trendline_alpha);
                 toggleVisibility(true, label_trendline_forecast, textField_trendline_forecast);
                 toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
                 toggleVisibility(false, label_trendline_n, textField_trendline_n);
                 break;
-            case "LinearRegression":
+            case LinearRegression:
                 toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
                 toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
                 toggleVisibility(false, label_trendline_n, textField_trendline_n);
                 toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
                 break;
-            case "None":
+            default:
                 toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
                 toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
                 toggleVisibility(false, label_trendline_n, textField_trendline_n);

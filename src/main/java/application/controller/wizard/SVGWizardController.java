@@ -778,7 +778,7 @@ public class SVGWizardController implements Initializable {
                 this.button_Next.setDisable(false);
             }
             if (newVal.intValue() > stages.size() - 1) {
-                this.currentStage.set(oldVal.intValue());
+                this.currentStage.set(0);
             }
 
             if(newVal.intValue() >= 0) {
@@ -1141,7 +1141,6 @@ public class SVGWizardController implements Initializable {
                 setFocusRenderPeviewProperty(node);
             if (node instanceof RadioButton)
                 setFocusRenderPeviewProperty(node);
-
         });
 
     }
@@ -1163,7 +1162,6 @@ public class SVGWizardController implements Initializable {
 
 
     protected void setFocusRenderPeviewProperty(Node node) {
-
         if (node != null)
             node.focusedProperty().addListener((args, oldVal, newVal) -> {
                 if (!newVal)
