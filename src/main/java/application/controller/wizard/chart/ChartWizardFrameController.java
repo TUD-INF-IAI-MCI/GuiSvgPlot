@@ -17,6 +17,7 @@ import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.rmi.runtime.NewThreadAction;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.plotting.line.LineStyle;
@@ -207,8 +208,8 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.keyMap = new HashMap<>();
     }
 
-
-    private void initiateAllStages() {
+    @Override
+    protected void initiateAllStages() {
         initStage1();
         initStage2();
         initStage3();
@@ -232,10 +233,12 @@ public class ChartWizardFrameController extends SVGWizardController {
         // i18n
         this.choiceBox_diagramType.setConverter(this.svgOptionsUtil.getDiagramTypeStringConverter());
         this.choiceBox_diagramType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            guiSvgOptions.setDiagramType(newValue);
-            toggleBarChartOptions(newValue == DiagramType.BarChart);
-            toggleLineChartOptions(newValue == DiagramType.LineChart);
-            toggleScatterPlotOptions(newValue == DiagramType.ScatterPlot);
+            if(newValue != null){
+                guiSvgOptions.setDiagramType(newValue);
+                toggleBarChartOptions(newValue == DiagramType.BarChart);
+                toggleLineChartOptions(newValue == DiagramType.LineChart);
+                toggleScatterPlotOptions(newValue == DiagramType.ScatterPlot);
+            }
         });
         this.choiceBox_diagramType.getSelectionModel().select(0);
     }
@@ -364,7 +367,9 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choicebox_sortOrder.setConverter(this.svgOptionsUtil.getSortOrderStringConverter());
         this.choicebox_sortOrder.getSelectionModel().select(SortOrder.ASC);
         this.choicebox_sortOrder.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            guiSvgOptions.setSortOrder(newValue);
+            if(newValue != null){
+                guiSvgOptions.setSortOrder(newValue);
+            }
         });
 
         // line points
@@ -373,14 +378,16 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_linepoints.setConverter(svgOptionsUtil.getLinePointsOptionStringConverter());
         this.choiceBox_linepoints.getSelectionModel().select(this.guiSvgOptions.getLinePointsOption());
         this.choiceBox_linepoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            guiSvgOptions.setLinePointsOption(newValue);
-            switch (newValue) {
-                case Hide:
-                    pointSymbolInputs.forEach((label, hBox) -> hide(label, hBox));
-                    break;
-                default:
-                    pointSymbolInputs.forEach((label, hBox) -> show(label, hBox));
-                    break;
+            if(newValue != null){
+                guiSvgOptions.setLinePointsOption(newValue);
+                switch (newValue) {
+                    case Hide:
+                        pointSymbolInputs.forEach((label, hBox) -> hide(label, hBox));
+                        break;
+                    default:
+                        pointSymbolInputs.forEach((label, hBox) -> show(label, hBox));
+                        break;
+                }
             }
         });
         this.selectedPointSymbols = new HashMap<>();
@@ -516,60 +523,67 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_originalPoints.setConverter(this.svgOptionsUtil.getVisibilityOfDataPointsStringConverter());
         this.choiceBox_originalPoints.getSelectionModel().select(VisibilityOfDataPoints.SHOW);
         this.choiceBox_originalPoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setHideOriginalPoints(newValue);
-            pointSymbolInputs.forEach((label, hBox) -> toggleVisibility(newValue.equals(VisibilityOfDataPoints.SHOW), label, hBox));
+            if(newValue != null){
+                this.guiSvgOptions.setHideOriginalPoints(newValue);
+                pointSymbolInputs.forEach((label, hBox) -> toggleVisibility(newValue.equals(VisibilityOfDataPoints.SHOW), label, hBox));
+            }
+
         });
         ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
         this.choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
         this.choiceBox_trendline.setConverter(this.svgOptionsUtil.getTrendlineAlgorithmStringConverter());
         this.choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
         this.choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            trendline.clear();
-            trendline.add(0, newValue.toString());
-            switch (newValue) {
-                case MovingAverage:
-                    show(label_trendline_n, textField_trendline_n);
-                    show(label_originalPoints, choiceBox_originalPoints);
-                    hide(label_trendline_alpha, textField_trendline_alpha);
-                    hide(label_trendline_forecast, textField_trendline_forecast);
-                    // default n
-                    textField_trendline_n.setText("1");
-                    break;
-                case BrownLES:
-                    show(label_trendline_alpha, textField_trendline_alpha);
-                    show(label_trendline_forecast, textField_trendline_forecast);
-                    show(label_originalPoints, choiceBox_originalPoints);
-                    hide(label_trendline_n, textField_trendline_n);
-                    // default alpha
-                    setValueToIndex(trendline, 1, "0.0");
-                    textField_trendline_alpha.setText("0.0");
-                    // default forecast
-                    setValueToIndex(trendline, 2, "1");
-                    textField_trendline_forecast.setText("1");
-                    break;
-                case ExponentialSmoothing:
-                    show(label_trendline_alpha, textField_trendline_alpha);
-                    show(label_originalPoints, choiceBox_originalPoints);
-                    hide(label_trendline_forecast, textField_trendline_forecast);
-                    hide(label_trendline_n, textField_trendline_n);
-                    // default alpha
-                    textField_trendline_alpha.setText("0.0");
-                    break;
-                case LinearRegression:
-                    show(label_originalPoints, choiceBox_originalPoints);
-                    hide(label_trendline_alpha, textField_trendline_alpha);
-                    hide(label_trendline_forecast, textField_trendline_forecast);
-                    hide(label_trendline_n, textField_trendline_n);
-                    break;
-                case None:
-                    hide(label_trendline_alpha, textField_trendline_alpha);
-                    hide(label_trendline_forecast, textField_trendline_forecast);
-                    hide(label_trendline_n, textField_trendline_n);
-                    hide(label_originalPoints, choiceBox_originalPoints);
-                    trendline.clear();
-                    choiceBox_originalPoints.getSelectionModel().select(VisibilityOfDataPoints.SHOW);
-                    break;
+
+            if(newValue != null){
+                trendline.clear();
+                trendline.add(0, newValue.toString());
+                switch (newValue) {
+                    case MovingAverage:
+                        show(label_trendline_n, textField_trendline_n);
+                        show(label_originalPoints, choiceBox_originalPoints);
+                        hide(label_trendline_alpha, textField_trendline_alpha);
+                        hide(label_trendline_forecast, textField_trendline_forecast);
+                        // default n
+                        textField_trendline_n.setText("1");
+                        break;
+                    case BrownLES:
+                        show(label_trendline_alpha, textField_trendline_alpha);
+                        show(label_trendline_forecast, textField_trendline_forecast);
+                        show(label_originalPoints, choiceBox_originalPoints);
+                        hide(label_trendline_n, textField_trendline_n);
+                        // default alpha
+                        setValueToIndex(trendline, 1, "0.0");
+                        textField_trendline_alpha.setText("0.0");
+                        // default forecast
+                        setValueToIndex(trendline, 2, "1");
+                        textField_trendline_forecast.setText("1");
+                        break;
+                    case ExponentialSmoothing:
+                        show(label_trendline_alpha, textField_trendline_alpha);
+                        show(label_originalPoints, choiceBox_originalPoints);
+                        hide(label_trendline_forecast, textField_trendline_forecast);
+                        hide(label_trendline_n, textField_trendline_n);
+                        // default alpha
+                        textField_trendline_alpha.setText("0.0");
+                        break;
+                    case LinearRegression:
+                        show(label_originalPoints, choiceBox_originalPoints);
+                        hide(label_trendline_alpha, textField_trendline_alpha);
+                        hide(label_trendline_forecast, textField_trendline_forecast);
+                        hide(label_trendline_n, textField_trendline_n);
+                        break;
+                    default:
+                        hide(label_trendline_alpha, textField_trendline_alpha);
+                        hide(label_trendline_forecast, textField_trendline_forecast);
+                        hide(label_trendline_n, textField_trendline_n);
+                        hide(label_originalPoints, choiceBox_originalPoints);
+                        trendline.clear();
+                        choiceBox_originalPoints.getSelectionModel().select(VisibilityOfDataPoints.SHOW);
+                        break;
+                }
             }
+
         });
 
         selectedPointSymbols.forEach((label, pointSymbol) -> {
@@ -589,16 +603,10 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.guiSvgOptions.setAutoScale(true);
 
         // x unit
-        this.textField_xunit.setText(this.guiSvgOptions.getxUnit());
-        this.textField_xunit.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setxUnit(newValue);
-        });
+        this.textField_xunit.textProperty().bindBidirectional(this.guiSvgOptions.xUnitProperty());
 
         // y unit
-        this.textField_yunit.setText(this.guiSvgOptions.getyUnit());
-        this.textField_yunit.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setyUnit(newValue);
-        });
+        this.textField_yunit.textProperty().bindBidirectional(this.guiSvgOptions.yLinesProperty());
 
         ObservableList<GuiAxisStyle> axisStyleObservableList = FXCollections.observableArrayList(GuiAxisStyle.values());
         axisStyleObservableList.remove(GuiAxisStyle.Barchart);
@@ -606,7 +614,10 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choicebox_dblaxes.setConverter(this.svgOptionsUtil.getAxisStyleStringConverter());
         this.choicebox_dblaxes.getSelectionModel().select(this.guiSvgOptions.getAxisStyle());
         this.choicebox_dblaxes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setAxisStyle(newValue);
+            if(newValue != null) {
+                this.guiSvgOptions.setAxisStyle(newValue);
+
+            }
         });
 
 
@@ -723,7 +734,6 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.guiSvgOptions.getPointSymbols().addListener(new ListChangeListener<PointSymbol>() {
             @Override
             public void onChanged(final Change<? extends PointSymbol> c) {
-
 
             }
         });
@@ -846,7 +856,9 @@ public class ChartWizardFrameController extends SVGWizardController {
                 }
             });
         }
-        observableList.set(index, newValue);
+        if (index < observableList.size()){
+            observableList.set(index, newValue);
+        }
     }
 
 

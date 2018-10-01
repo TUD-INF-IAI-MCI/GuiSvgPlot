@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
- * @author Robert Schlegel
+ * @author Robert Schlegel, Emma Müller, Constantin Amend
  */
 public class RootFrameController implements Initializable {
 
