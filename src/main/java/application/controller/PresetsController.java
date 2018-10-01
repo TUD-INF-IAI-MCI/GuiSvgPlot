@@ -62,7 +62,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     Glyph abortGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
     Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
-    Glyph backGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.BACKWARD);
+    Glyph backGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CHEVRON_LEFT);
     Glyph saveGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.SAVE);
     Glyph deleteGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.TRASH);
 
@@ -730,8 +730,8 @@ public class PresetsController extends SVGWizardController implements Initializa
         currentPreset.getOptions().setOutputDevice(choiceBox_outputDevice.getSelectionModel().getSelectedItem());
         //TODO: page orientation
         //currentPreset.getOptions().set
-        //TODO: need help converting :C
-        //currentOptions.setSize(PageSize.A4.getPageSizeWithOrientation(PageSize.A4));
+        //TODO:
+        currentOptions.setSize(PageSize.A3.getPageSizeWithOrientation(PageSize.PageOrientation.LANDSCAPE));
 
         //Stage 2: data
         currentPreset.getOptions().setCsvPath(textField_csvpath.getText());

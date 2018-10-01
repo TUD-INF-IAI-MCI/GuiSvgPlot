@@ -82,8 +82,8 @@ public class SvgOptionsService {
         }
 
         GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
-        Path svgPath = Paths.get(System.getProperty("user.home") + "/svgPlot/svg.svg");
-        Path legendPath = Paths.get(System.getProperty("user.home") + "/svgPlot/svg_legend.svg");
+        Path svgPath = Paths.get(System.getProperty("user.home") + "//svgPlot/svg.svg");
+        Path legendPath = Paths.get(System.getProperty("user.home") + "//svgPlot/svg_legend.svg");
 
         File svg = new File(svgPath.toString());
         svgPlotOptions.setOutput(svg);

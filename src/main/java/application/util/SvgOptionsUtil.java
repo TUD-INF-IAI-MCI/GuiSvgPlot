@@ -1,6 +1,7 @@
 package application.util;
 
 import application.model.Options.*;
+import application.model.Preset;
 import javafx.collections.FXCollections;
 import javafx.util.StringConverter;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
@@ -394,4 +395,5 @@ public class SvgOptionsUtil {
             }
         };
     }
+
 }

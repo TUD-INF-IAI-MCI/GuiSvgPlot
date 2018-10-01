@@ -134,8 +134,8 @@ public class FunctionWizardFrameController extends SVGWizardController {
         super.initloadPreset();
     }
 
-
-    private void initiateAllStages() {
+    @Override
+    protected void initiateAllStages() {
         initStage1();
         initStage2();
         initStage3();

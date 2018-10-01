@@ -265,6 +265,7 @@ public class SVGWizardController implements Initializable {
         if (presets == null) {
             presets = FXCollections.observableArrayList();
         }
+
     }
 
     public GuiSvgOptions getGuiSvgOptions() {
@@ -276,13 +277,10 @@ public class SVGWizardController implements Initializable {
     }
 
     protected void initGeneralFieldListeners() {
-        // title
-
         focusInit();
 
-        this.textField_title.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setTitle(newValue);
-        });
+        // title
+        this.textField_title.textProperty().bindBidirectional(this.guiSvgOptions.titleProperty());
 
         // output device
         ObservableList<OutputDevice> outputDevices = FXCollections.observableArrayList(OutputDevice.values());
@@ -323,11 +321,15 @@ public class SVGWizardController implements Initializable {
         this.choiceBox_size.setConverter(this.svgOptionsUtil.getPageSizeStringConverter());
         this.choiceBox_size.getSelectionModel().select(PageSize.A4);
         this.choiceBox_size.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != PageSize.CUSTOM) {
-                this.size = newValue.getPageSizeWithOrientation(this.pageOrientation.get());
-                this.guiSvgOptions.setSize(this.size);
+            if(newValue != null){
+                if (newValue != PageSize.CUSTOM) {
+                    System.out.println(oldValue);
+                    System.out.println(newValue);
+                    this.size = newValue.getPageSizeWithOrientation(this.pageOrientation.get());
+                    this.guiSvgOptions.setSize(this.size);
+                }
+                this.toggleCustomSize(newValue == PageSize.CUSTOM);
             }
-            this.toggleCustomSize(newValue == PageSize.CUSTOM);
         });
 
         // custom size
@@ -447,16 +449,13 @@ public class SVGWizardController implements Initializable {
         });
 
         // css file
-        this.textField_cssPath.setText(this.guiSvgOptions.getCss());
-        this.textField_cssPath.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setCss(newValue);
-        });
+        this.textField_cssPath.textProperty().bindBidirectional(this.guiSvgOptions.cssProperty());
 
-        textField_cssPath.setOnDragOver(dragOverHandler(".css"));
-        textField_cssPath.setOnDragDropped(event -> {
+        this.textField_cssPath.setOnDragOver(dragOverHandler(".css"));
+        this.textField_cssPath.setOnDragDropped(event -> {
 
             String path = event.getDragboard().getFiles().get(0).getAbsolutePath();
-            textField_cssPath.setText(path);
+            this.textField_cssPath.setText(path);
 
         });
 
@@ -545,13 +544,8 @@ public class SVGWizardController implements Initializable {
 
     protected void initCsvFieldListeners() {
 
-
         // csv path
-        this.textField_csvPath.setDisable(false);
-        this.textField_csvPath.textProperty().addListener((observable, oldValue, newValue) -> {
-
-            guiSvgOptions.setCsvPath(generateCSV());
-        });
+        this.textField_csvPath.textProperty().bindBidirectional(this.guiSvgOptions.csvPathProperty());
 
         currentDataSet.addListener(item -> {
             guiSvgOptions.setCsvPath(generateCSV());
@@ -565,8 +559,6 @@ public class SVGWizardController implements Initializable {
         });
 
 
-        this.button_csvPath.setDisable(false);
-
         this.button_csvPath.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setInitialDirectory(this.userDir);
@@ -579,7 +571,6 @@ public class SVGWizardController implements Initializable {
         });
 
         if (this instanceof ChartWizardFrameController) {
-
 
             // csv orientation
             ObservableList<CsvOrientation> csvOrientationObservableList = FXCollections.observableArrayList(CsvOrientation.values());
@@ -610,21 +601,18 @@ public class SVGWizardController implements Initializable {
         this.choicebox_gridStyle.setConverter(this.svgOptionsUtil.getGridStyleStringConverter());
         this.choicebox_gridStyle.getSelectionModel().select(this.guiSvgOptions.getGridStyle());
         this.choicebox_gridStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setGridStyle(newValue);
+            if(newValue != null) {
+
+                this.guiSvgOptions.setGridStyle(newValue);
+            }
         });
 
 
         // xlines
-        this.textField_xlines.setText(this.guiSvgOptions.getxLines());
-        this.textField_xlines.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setxLines(newValue);
-        });
+        this.textField_xlines.textProperty().bindBidirectional(this.guiSvgOptions.xLinesProperty());
 
         // ylines
-        this.textField_ylines.setText(this.guiSvgOptions.getyLines());
-        this.textField_ylines.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.guiSvgOptions.setyLines(newValue);
-        });
+        this.textField_ylines.textProperty().bindBidirectional(this.guiSvgOptions.yLinesProperty());
     }
 
     protected void initiatePagination(final HBox hBox_pagination, final int AMOUNTOFSTAGES, final DiagramType diagramType) {
@@ -848,6 +836,10 @@ public class SVGWizardController implements Initializable {
 
     }
 
+    protected void initiateAllStages() {
+
+    }
+
     /**
      * initiates the preset list and adds an event listener to the load button
      */
@@ -870,9 +862,9 @@ public class SVGWizardController implements Initializable {
                 System.out.println(result.get());
                 for(Preset preset : presets){
                     if (preset.getName().equals(result.get())){
-                        this.guiSvgOptions = preset.getOptions();
-                        System.out.println(preset.getOptions().getOutputDevice());
-                        System.out.println(this.guiSvgOptions);
+                        this.guiSvgOptions.update(preset.getOptions());
+                        System.out.println(this.guiSvgOptions.getSize());
+                        //initiateAllStages();
                     }
 
                 }
