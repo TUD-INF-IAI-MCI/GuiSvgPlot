@@ -1,6 +1,5 @@
 package application.model;
 
-import application.GuiSvgPlott;
 import application.infrastructure.UTF8Control;
 import com.google.gson.*;
 import javafx.beans.property.SimpleObjectProperty;
@@ -14,6 +13,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+/**
+ * Object for program settings like language.
+ *
+ * @author Emma Müller, Robert Schlegel
+ */
 public class Settings {
 
     private static final Settings INSTANCE = new Settings();
@@ -25,6 +29,11 @@ public class Settings {
     private Path path;
     private JsonObject settingsJSON;
 
+    /**
+     * Instantiates a new Settings-Object. This is private because this is an Singleton.
+     *
+     * @author Emma Müller.
+     */
     private Settings() {
         settingsJSON = new JsonObject();
         path = Paths.get(System.getProperty("user.home") + "/svgPlot/settings.json");
@@ -51,7 +60,7 @@ public class Settings {
     public void setGnuPlotPath(final String gnuPlotPath) {
         this.gnuPlotPath = gnuPlotPath;
         try {
-            this.storeGnuPlot(GuiSvgPlott.getInstance().getPrimaryStage());
+            this.storeGnuPlot();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,6 +79,7 @@ public class Settings {
     }
 
     public void loadSettings(Stage stage) throws IOException {
+        /*@author Robert Schlegel */
         Files.createDirectories(path.getParent());
         if (!Files.exists(path))
             Files.createFile(path);
@@ -92,14 +102,15 @@ public class Settings {
             FileChooser fc = new FileChooser();
             File gnuFile = fc.showOpenDialog(stage);
             this.gnuPlotPath = gnuFile != null ? gnuFile.getAbsolutePath() : "";
-            this.storeGnuPlot(stage);
+            this.storeGnuPlot();
         } else {
             this.gnuPlotPath = settingsJSON.get("gnu-path").getAsString();
         }
 
+        /*@author Emma Müller */
         if (settingsJSON.has("lang") && settingsJSON.get("lang") != null && !settingsJSON.get("lang").getAsString().isEmpty()) {
             Locale locale = Locale.forLanguageTag(this.settingsJSON.get("lang").getAsString());
-            if (locale != null && !locale.getLanguage().isEmpty()){
+            if (locale != null && !locale.getLanguage().isEmpty()) {
                 this.currentLocale.set(locale);
             }
         } else if (this.currentLocale.get() != null && !this.currentLocale.get().toString().isEmpty()) {
@@ -109,7 +120,12 @@ public class Settings {
 
     }
 
-    private void storeGnuPlot(final Stage stage) throws IOException {
+    /**
+     * Saves the gnuplot path into the json file.
+     * @throws IOException
+     * @author Emma Müller, Robert Schlegel
+     */
+    private void storeGnuPlot() throws IOException {
         settingsJSON.addProperty("gnu-path", this.gnuPlotPath);
         try (Writer writer = new FileWriter(path.toString())) {
             Gson gson = new GsonBuilder().create();
@@ -117,6 +133,11 @@ public class Settings {
         }
     }
 
+    /**
+     * Saves the languagr into the json file.
+     * @throws IOException
+     * @author Emma Müller, Robert Schlegel
+     */
     private void storeLocale() throws IOException {
         settingsJSON.addProperty("lang", currentLocale.get().toString());
         try (Writer writer = new FileWriter(path.toString())) {

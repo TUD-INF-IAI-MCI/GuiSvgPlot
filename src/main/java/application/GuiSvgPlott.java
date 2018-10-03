@@ -218,8 +218,6 @@ public class GuiSvgPlott extends Application {
 
     private void setSettings() throws IOException {
         settings.loadSettings(primaryStage);
-        locale.set(settings.getCurrentLocale());
-//        Settings.getInstance().setGnuPlotPath(settingsJSON.get("gnu-path").getAsString());
     }
 
 
