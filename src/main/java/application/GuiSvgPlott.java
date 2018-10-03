@@ -1,10 +1,12 @@
 package application;
 
-import application.controller.LanguageDialogController;
+import application.controller.SettingsDialogController;
 import application.controller.RootFrameController;
 import application.infrastructure.UTF8Control;
+import application.model.Settings;
 import com.google.gson.*;
 import javafx.application.Application;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -33,10 +35,9 @@ public class GuiSvgPlott extends Application {
 
     private RootFrameController rootFrameController;
     private Stage primaryStage;
-    private JsonObject settings;
     private ResourceBundle bundle;
-    private Locale locale;
-
+    private SimpleObjectProperty<Locale> locale;
+    private Settings settings = Settings.getInstance();
 
     ///// PATHS ////
 
@@ -47,7 +48,7 @@ public class GuiSvgPlott extends Application {
     public static URL CsvEditorFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/CsvEditor.fxml");
     public static URL FunctionWizardFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/functions/FunctionWizardFrame.fxml");
     public static URL ChartWizardFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/chart/ChartWizardFrame.fxml");
-    public static URL LanguageDialog = GuiSvgPlott.class.getResource("/fxml/wizard/LanguageDialog.fxml");
+    public static URL LanguageDialog = GuiSvgPlott.class.getResource("/fxml/wizard/SettingsDialog.fxml");
     public static URL CsvFormatHelper = GuiSvgPlott.class.getResource("/fxml/wizard/content/CSVFormatHelp.fxml");
 
     ////////////////
@@ -82,16 +83,16 @@ public class GuiSvgPlott extends Application {
             Scene scene = new Scene(anchorPane);
             Stage stage = new Stage();
             stage.setResizable(true);
-            stage.setTitle(bundle.getString("application_language"));
+            stage.setTitle(bundle.getString("application_settings"));
             stage.setScene(scene);
 
-            LanguageDialogController controller = loader.getController();
+            SettingsDialogController controller = loader.getController();
             controller.init(stage);
 
-            String lang = locale.getCountry();
+            Locale lang = locale.get();
             stage.showAndWait();
 
-            if (!locale.getCountry().equals(lang))
+            if (!locale.get().equals(lang))
                 start(primaryStage);
 
         } catch (IOException e) {
@@ -103,24 +104,21 @@ public class GuiSvgPlott extends Application {
 
     }
 
-    public void setLanguage(String lang) {
-        for (Locale l : Locale.getAvailableLocales()) {
-            if (l.getLanguage().equals(lang)) {
-                locale = l;
-            }
-        }
+    public void setLanguage(Locale locale) {
+        this.locale.set(locale);
     }
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        if (locale == null)
-            locale = Locale.getDefault();
-
-        this.bundle = ResourceBundle.getBundle("langBundle", locale, new UTF8Control());
-
+        if (locale == null) {
+            locale = new SimpleObjectProperty<>();
+            locale.bindBidirectional(settings.currentLocaleProperty());
+        }
         setSettings();
+
+        this.bundle = ResourceBundle.getBundle("langBundle", locale.get(), new UTF8Control());
 
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
@@ -219,43 +217,9 @@ public class GuiSvgPlott extends Application {
     }
 
     private void setSettings() throws IOException {
-
-        settings = new JsonObject();
-
-        Path path = Paths.get(System.getProperty("user.home") + "/svgPlot/settings.json");
-        Files.createDirectories(path.getParent());
-        if (!Files.exists(path))
-            Files.createFile(path);
-
-        try {
-            JsonParser parser = new JsonParser();
-            JsonElement jsonElement = parser.parse(new FileReader(path.toAbsolutePath().toString()));
-            settings = jsonElement.getAsJsonObject();
-        } catch (Exception e) {
-            settings = new JsonObject();
-//            logger.debug("empty settings file");
-        }
-
-        if (!settings.has("gnu-path") || settings.get("gnu-path").getAsString().isEmpty()) {
-            Alert a = new Alert(Alert.AlertType.WARNING);
-            a.setTitle(bundle.getString("application_missing_gnuplot_path_title"));
-            a.setHeaderText(bundle.getString("application_missing_gnuplot_path_message"));
-            a.setContentText("");
-
-            a.showAndWait();
-
-            FileChooser fc = new FileChooser();
-            File gnuFile = fc.showOpenDialog(primaryStage);
-            settings.addProperty("gnu-path", gnuFile != null ? gnuFile.getAbsolutePath() : "");
-
-
-            try (Writer writer = new FileWriter(path.toString())) {
-                Gson gson = new GsonBuilder().create();
-                gson.toJson(settings, writer);
-            }
-
-
-        }
+        settings.loadSettings(primaryStage);
+        locale.set(settings.getCurrentLocale());
+//        Settings.getInstance().setGnuPlotPath(settingsJSON.get("gnu-path").getAsString());
     }
 
 
@@ -268,15 +232,9 @@ public class GuiSvgPlott extends Application {
         return primaryStage;
     }
 
-    public String getGnuPlot() {
-        return settings.has("gnu-path") ? settings.get("gnu-path").getAsString() : "";
-    }
 
     public RootFrameController getRootFrameController() {
         return rootFrameController;
     }
 
-    public Locale getLocale() {
-        return locale;
-    }
 }

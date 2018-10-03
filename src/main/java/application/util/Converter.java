@@ -1,7 +1,6 @@
 package application.util;
 
 import application.model.Options.*;
-import application.model.Preset;
 import javafx.collections.FXCollections;
 import javafx.util.StringConverter;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
@@ -15,19 +14,20 @@ import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.GridStyle;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
  * @author Emma Müller
  */
-public class SvgOptionsUtil {
-    private static final SvgOptionsUtil INSTANCE = new SvgOptionsUtil();
+public class Converter {
+    private static final Converter INSTANCE = new Converter();
     private ResourceBundle bundle;
 
-    private SvgOptionsUtil() {
+    private Converter() {
     }
 
-    public static SvgOptionsUtil getInstance() {
+    public static Converter getInstance() {
         return INSTANCE;
     }
 
@@ -392,6 +392,31 @@ public class SvgOptionsUtil {
                     }
                 }
                 return pointSymbol;
+            }
+        };
+    }
+
+    /**
+     * Builds a {@link StringConverter} which converts a {@link java.util.Locale} to a string from language bundle.
+     *
+     * @return the {@link StringConverter}
+     */
+    public StringConverter<Locale> getLocaleStringConverter() {
+        return new StringConverter<Locale>() {
+            @Override
+            public String toString(Locale locale) {
+                return bundle.getString("locale_" + locale.toString().toLowerCase());
+            }
+
+            @Override
+            public Locale fromString(String string) {
+                Locale locale = Locale.getDefault();
+                for (Locale l : FXCollections.observableArrayList(Locale.getAvailableLocales())) {
+                    if (this.toString(l).equals(string)) {
+                        locale = l;
+                    }
+                }
+                return locale;
             }
         };
     }

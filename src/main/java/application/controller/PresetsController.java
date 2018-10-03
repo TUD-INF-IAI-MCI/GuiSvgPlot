@@ -6,8 +6,8 @@ import application.model.GuiSvgOptions;
 import application.model.Options.*;
 import application.model.Preset;
 import application.service.PresetService;
+import application.util.Converter;
 import application.util.DiagramTypeUtil;
-import application.util.SvgOptionsUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -48,7 +48,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     private static PresetsController presetsController;
 
 
-    public SvgOptionsUtil svgOptionsUtil = SvgOptionsUtil.getInstance();
+    public Converter converter = Converter.getInstance();
     private Preset currentPreset;
     private GuiSvgOptions currentOptions = new GuiSvgOptions(new SvgPlotOptions());
     private final ToggleGroup scaleGroup = new ToggleGroup();
@@ -301,8 +301,8 @@ public class PresetsController extends SVGWizardController implements Initializa
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
-        this.svgOptionsUtil = SvgOptionsUtil.getInstance();
-        this.svgOptionsUtil.setBundle(resources);
+        this.converter = Converter.getInstance();
+        this.converter.setBundle(resources);
         this.diagramTypeUtil.setBundle(resources);
         chartTypeObservableList.add(resources.getString("combo_diagram"));
         chartTypeObservableList.add(resources.getString("combo_function"));
@@ -356,13 +356,13 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void initEditor(){
         //outputdevice
         choiceBox_outputDevice.setItems(FXCollections.observableArrayList(OutputDevice.values()));
-        choiceBox_outputDevice.setConverter(svgOptionsUtil.getOutputDeviceStringConverter());
+        choiceBox_outputDevice.setConverter(converter.getOutputDeviceStringConverter());
 
         //pagesize
         ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
         ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
         choiceBox_size.setItems(sortedPageSizes);
-        choiceBox_size.setConverter(svgOptionsUtil.getPageSizeStringConverter());
+        choiceBox_size.setConverter(converter.getPageSizeStringConverter());
         choiceBox_size.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -393,25 +393,25 @@ public class PresetsController extends SVGWizardController implements Initializa
             }
         });
         choiceBox_csvType.setItems(FXCollections.observableArrayList(CsvType.values()));
-        choiceBox_csvType.setConverter(svgOptionsUtil.getCsvTypeStringConverter());
+        choiceBox_csvType.setConverter(converter.getCsvTypeStringConverter());
 
         //trendline
 //        choiceBox_trendline.setItems(FXCollections.observableArrayList(TrendlineAlgorithm.values()));
-//        choiceBox_trendline.setConverter(svgOptionsUtil.getTrendlineAlgorithmStringConverter());
+//        choiceBox_trendline.setConverter(converter.getTrendlineAlgorithmStringConverter());
 //        choiceBox_trendline.getSelectionModel().select(0);
 
         //gridstyle
         choiceBox_gridStyle.setItems(FXCollections.observableArrayList(GridStyle.values()));
-        choiceBox_gridStyle.setConverter(svgOptionsUtil.getGridStyleStringConverter());
+        choiceBox_gridStyle.setConverter(converter.getGridStyleStringConverter());
 
         //doubleaxis
         choiceBox_dblaxes.setItems(FXCollections.observableArrayList(GuiAxisStyle.values()));
-        choiceBox_dblaxes.setConverter(svgOptionsUtil.getAxisStyleStringConverter());
+        choiceBox_dblaxes.setConverter(converter.getAxisStyleStringConverter());
 
         //CSS
         choiceBox_cssType.setItems(FXCollections.observableArrayList(CssType.values()));
         choiceBox_cssType.getSelectionModel().select(0);
-        choiceBox_cssType.setConverter(svgOptionsUtil.getCssTypeStringConverter());
+        choiceBox_cssType.setConverter(converter.getCssTypeStringConverter());
         choiceBox_cssType.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -494,16 +494,16 @@ public class PresetsController extends SVGWizardController implements Initializa
         toggleVisibility(true, label_linepoints, choiceBox_linepoints);
         ObservableList<LineStyle> secondLineStyleObservableList = FXCollections.observableArrayList(LineStyle.getByOutputDeviceOrderedById(currentPreset.getOptions().getOutputDevice()));
         choiceBox_secondLineStyle.setItems(secondLineStyleObservableList);
-        choiceBox_secondLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
+        choiceBox_secondLineStyle.setConverter(this.converter.getLineStyleStringConverter());
         ObservableList<LineStyle> thirdLineStyleObservableList = FXCollections.observableArrayList(LineStyle.getByOutputDeviceOrderedById(currentPreset.getOptions().getOutputDevice()));
         choiceBox_thirdLineStyle.setItems(thirdLineStyleObservableList);
-        choiceBox_thirdLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
+        choiceBox_thirdLineStyle.setConverter(this.converter.getLineStyleStringConverter());
         ObservableList<LineStyle> firstLineStyleObservableList = FXCollections.observableArrayList(LineStyle.getByOutputDeviceOrderedById(currentPreset.getOptions().getOutputDevice()));
         choiceBox_firstLineStyle.setItems(firstLineStyleObservableList);
-        choiceBox_firstLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
+        choiceBox_firstLineStyle.setConverter(this.converter.getLineStyleStringConverter());
         ObservableList<LinePointsOption> linePointsOptionObservableList = FXCollections.observableArrayList(LinePointsOption.values());
         choiceBox_linepoints.setItems(linePointsOptionObservableList);
-        choiceBox_linepoints.setConverter(svgOptionsUtil.getLinePointsOptionStringConverter());
+        choiceBox_linepoints.setConverter(converter.getLinePointsOptionStringConverter());
 
         choiceBox_linepoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             System.out.println(newValue);
@@ -549,7 +549,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         toggleVisibility(true, label_trendline, choiceBox_trendline);
         ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
         choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
-        choiceBox_trendline.setConverter(svgOptionsUtil.getTrendlineAlgorithmStringConverter());
+        choiceBox_trendline.setConverter(converter.getTrendlineAlgorithmStringConverter());
         choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
         choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
         switch ((TrendlineAlgorithm) newValue){
@@ -590,7 +590,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 //        this.customPointSymbols_scatterPlott = guiSvgOptions.getPointSymbols();
 //        choiceBox_pointSymbols_scatterPlot.setVisible(true);
 //        choiceBox_pointSymbols_scatterPlot.getItems().addAll(pointSymbolObservableList);
-//        choiceBox_pointSymbols_scatterPlot.setConverter(this.svgOptionsUtil.getPointSymbolStringConverter());
+//        choiceBox_pointSymbols_scatterPlot.setConverter(this.converter.getPointSymbolStringConverter());
 //        choiceBox_pointSymbols_scatterPlot.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PointSymbol>() {
 //            public void onChanged(ListChangeListener.Change<? extends PointSymbol> ps) {
 //                changePointSymbols(customPointSymbols_scatterPlott, choiceBox_pointSymbols_scatterPlot, pointSymbolObservableList);
@@ -637,7 +637,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
         ObservableList<BarAccumulationStyle> barAccumulationStyleObservableList = FXCollections.observableArrayList(BarAccumulationStyle.values());
         choiceBox_baraccumulation.setItems(barAccumulationStyleObservableList);
-        choiceBox_baraccumulation.setConverter(svgOptionsUtil.getBarAccumulationStyleStringConverter());
+        choiceBox_baraccumulation.setConverter(converter.getBarAccumulationStyleStringConverter());
 
         ObservableList<Texture> textureObservableListFirstTexture = FXCollections.observableArrayList(Texture.values());
         ObservableList<Texture> textureObservableListSecondTexture = FXCollections.observableArrayList(Texture.values());
@@ -645,13 +645,13 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_firstTexture.setItems(textureObservableListFirstTexture);
         choiceBox_secondTexture.setItems(textureObservableListSecondTexture);
         choiceBox_thirdTexture.setItems(textureObservableListThirdTexture);
-        choiceBox_firstTexture.setConverter(svgOptionsUtil.getTextureStringConverter());
-        choiceBox_secondTexture.setConverter(svgOptionsUtil.getTextureStringConverter());
-        choiceBox_thirdTexture.setConverter(svgOptionsUtil.getTextureStringConverter());
+        choiceBox_firstTexture.setConverter(converter.getTextureStringConverter());
+        choiceBox_secondTexture.setConverter(converter.getTextureStringConverter());
+        choiceBox_thirdTexture.setConverter(converter.getTextureStringConverter());
 
         ObservableList<SortingType> sortingTypeObservableList = FXCollections.observableArrayList(SortingType.values());
         choiceBox_sorting.setItems(sortingTypeObservableList);
-        choiceBox_sorting.setConverter(svgOptionsUtil.getSortingTypeStringConverter());
+        choiceBox_sorting.setConverter(converter.getSortingTypeStringConverter());
         choiceBox_sorting.getSelectionModel().select(SortingType.None);
 
         choiceBox_sorting.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
@@ -668,7 +668,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         toggleVisibility(false, label_sortOrder, choiceBox_sortOrder);
         ObservableList<SortOrder> sortOrderObservableList = FXCollections.observableArrayList(SortOrder.values());
         choiceBox_sortOrder.setItems(sortOrderObservableList);
-        choiceBox_sortOrder.setConverter(svgOptionsUtil.getSortOrderStringConverter());
+        choiceBox_sortOrder.setConverter(converter.getSortOrderStringConverter());
         choiceBox_sortOrder.getSelectionModel().select(SortOrder.ASC);
 
     }

@@ -133,7 +133,7 @@ public class GuiSvgOptions {
         initSimpleObjectListeners();
 
 
-        this.gnuplot = new SimpleStringProperty(GuiSvgPlott.getInstance().getGnuPlot());
+        this.gnuplot = new SimpleStringProperty(Settings.getInstance().getGnuPlotPath());
         if (!this.gnuplot.get().isEmpty()) {
             this.options.setGnuplot(this.gnuplot.getValue());
         }

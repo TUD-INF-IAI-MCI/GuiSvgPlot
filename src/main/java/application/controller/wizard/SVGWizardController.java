@@ -2,7 +2,6 @@ package application.controller.wizard;
 
 import application.GuiSvgPlott;
 import application.controller.CsvEditorController;
-import application.controller.PresetsController;
 import application.controller.wizard.chart.ChartWizardFrameController;
 import application.model.GuiSvgOptions;
 import application.model.Options.CssType;
@@ -11,7 +10,7 @@ import application.model.Preset;
 import application.service.PresetService;
 import application.service.SvgOptionsService;
 import application.util.ChoiceBoxUtil;
-import application.util.SvgOptionsUtil;
+import application.util.Converter;
 import application.util.TextFieldUtil;
 import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
 import javafx.beans.property.*;
@@ -225,7 +224,7 @@ public class SVGWizardController implements Initializable {
     protected ArrayList<AnchorPane> stages;
     protected GuiSvgOptions guiSvgOptions;
     protected SvgOptionsService svgOptionsService = SvgOptionsService.getInstance();
-    protected SvgOptionsUtil svgOptionsUtil = SvgOptionsUtil.getInstance();
+    protected Converter converter = Converter.getInstance();
     protected TextFieldUtil textFieldUtil = TextFieldUtil.getInstance();
     protected ChoiceBoxUtil choiceBoxUtil = ChoiceBoxUtil.getInstance();
     protected ObjectProperty<Range> xRange;
@@ -241,7 +240,7 @@ public class SVGWizardController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
         this.svgOptionsService.setBundle(resources);
-        this.svgOptionsUtil.setBundle(resources);
+        this.converter.setBundle(resources);
         this.textFieldUtil.setBundle(resources);
         this.choiceBoxUtil.setBundle(resources);
         this.currentStage = new SimpleIntegerProperty();
@@ -285,7 +284,7 @@ public class SVGWizardController implements Initializable {
         // output device
         ObservableList<OutputDevice> outputDevices = FXCollections.observableArrayList(OutputDevice.values());
         this.choiceBox_outputDevice.setItems(outputDevices);
-        this.choiceBox_outputDevice.setConverter(this.svgOptionsUtil.getOutputDeviceStringConverter());
+        this.choiceBox_outputDevice.setConverter(this.converter.getOutputDeviceStringConverter());
         this.choiceBox_outputDevice.getSelectionModel().select(0);
         this.choiceBox_outputDevice.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.guiSvgOptions.setOutputDevice(newValue);
@@ -318,13 +317,11 @@ public class SVGWizardController implements Initializable {
         ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
         ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
         this.choiceBox_size.setItems(sortedPageSizes);
-        this.choiceBox_size.setConverter(this.svgOptionsUtil.getPageSizeStringConverter());
+        this.choiceBox_size.setConverter(this.converter.getPageSizeStringConverter());
         this.choiceBox_size.getSelectionModel().select(PageSize.A4);
         this.choiceBox_size.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 if (newValue != PageSize.CUSTOM) {
-                    System.out.println(oldValue);
-                    System.out.println(newValue);
                     this.size = newValue.getPageSizeWithOrientation(this.pageOrientation.get());
                     this.guiSvgOptions.setSize(this.size);
                 }
@@ -440,7 +437,7 @@ public class SVGWizardController implements Initializable {
     protected void initStylingFieldListeners() {
         ObservableList<CssType> cssTypeObservableList = FXCollections.observableArrayList(CssType.values());
         this.choiceBox_cssType.setItems(cssTypeObservableList);
-        this.choiceBox_cssType.setConverter(this.svgOptionsUtil.getCssTypeStringConverter());
+        this.choiceBox_cssType.setConverter(this.converter.getCssTypeStringConverter());
         this.choiceBox_cssType.getSelectionModel().select(CssType.NONE);
         this.choiceBox_cssType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.toggleVisibility(newValue == CssType.FILE, this.label_cssPath, this.hBox_cssPath);
@@ -489,7 +486,7 @@ public class SVGWizardController implements Initializable {
         ObservableList<Color> secondColorObservableList = FXCollections.observableArrayList(Color.values());
         ObservableList<Color> thirdColorObservableList = FXCollections.observableArrayList(Color.values());
         this.choiceBox_color1.setItems(firstColorObservableList);
-        // this.choiceBox_color1.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        // this.choiceBox_color1.setConverter(this.converter.getTextureStringConverter());
         this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_color1, this.label_color1);
         this.choiceBox_color1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
@@ -507,7 +504,7 @@ public class SVGWizardController implements Initializable {
             this.colors.set(0, null);
         });
         this.choiceBox_color2.setItems(secondColorObservableList);
-        // this.choiceBox_color2.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        // this.choiceBox_color2.setConverter(this.converter.getTextureStringConverter());
         this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_color2, this.label_color2);
         this.choiceBox_color2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
@@ -524,7 +521,7 @@ public class SVGWizardController implements Initializable {
             this.colors.set(1, null);
         });
         this.choiceBox_color3.setItems(thirdColorObservableList);
-        //   this.choiceBox_color3.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        //   this.choiceBox_color3.setConverter(this.converter.getTextureStringConverter());
         this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_color3, this.label_color3);
         this.choiceBox_color3.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
@@ -575,7 +572,7 @@ public class SVGWizardController implements Initializable {
             // csv orientation
             ObservableList<CsvOrientation> csvOrientationObservableList = FXCollections.observableArrayList(CsvOrientation.values());
             this.choiceBox_csvOrientation.setItems(csvOrientationObservableList);
-            this.choiceBox_csvOrientation.setConverter(this.svgOptionsUtil.getCsvOrientationStringConverter());
+            this.choiceBox_csvOrientation.setConverter(this.converter.getCsvOrientationStringConverter());
             this.choiceBox_csvOrientation.getSelectionModel().select(CsvOrientation.HORIZONTAL);
             this.choiceBox_csvOrientation.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 this.guiSvgOptions.setCsvOrientation(newValue);
@@ -584,7 +581,7 @@ public class SVGWizardController implements Initializable {
             // csv type
             ObservableList<CsvType> csvTypeObservableList = FXCollections.observableArrayList(CsvType.values());
             this.choiceBox_csvType.setItems(csvTypeObservableList);
-            this.choiceBox_csvType.setConverter(this.svgOptionsUtil.getCsvTypeStringConverter());
+            this.choiceBox_csvType.setConverter(this.converter.getCsvTypeStringConverter());
             this.choiceBox_csvType.getSelectionModel().select(CsvType.DOTS);
             this.choiceBox_csvType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 this.guiSvgOptions.setCsvType(newValue);
@@ -598,7 +595,7 @@ public class SVGWizardController implements Initializable {
         // grid
         ObservableList<GridStyle> gridStyleObservableList = FXCollections.observableArrayList(GridStyle.values());
         this.choicebox_gridStyle.setItems(gridStyleObservableList);
-        this.choicebox_gridStyle.setConverter(this.svgOptionsUtil.getGridStyleStringConverter());
+        this.choicebox_gridStyle.setConverter(this.converter.getGridStyleStringConverter());
         this.choicebox_gridStyle.getSelectionModel().select(this.guiSvgOptions.getGridStyle());
         this.choicebox_gridStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {

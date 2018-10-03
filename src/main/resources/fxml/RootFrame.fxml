@@ -21,7 +21,7 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="%menu_file">
                             <items>
-                                <MenuItem fx:id="menuItem_Language" mnemonicParsing="false" text="%menu_file_language" />
+                                <MenuItem fx:id="menuItem_Language" mnemonicParsing="false" text="%menu_file_settings" />
                                 <SeparatorMenuItem />
                                 <MenuItem fx:id="menuItem_ExitProgram" mnemonicParsing="false" onAction="#closeButtonAction" text="%menu_file_close" />
                             </items>

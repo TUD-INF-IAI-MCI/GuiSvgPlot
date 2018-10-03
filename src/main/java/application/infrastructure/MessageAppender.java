@@ -2,6 +2,7 @@ package application.infrastructure;
 
 import application.GuiSvgPlott;
 import application.controller.RootFrameController;
+import application.model.Settings;
 import application.service.SvgOptionsService;
 import ch.qos.logback.classic.PatternLayout;
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -34,7 +35,7 @@ public class MessageAppender extends AppenderBase<ILoggingEvent> {
 
     private PatternLayout patternLayoutWithLevel;
     private PatternLayout patternLayoutOnlyMsg;
-    private Locale locale = GuiSvgPlott.getInstance().getLocale();
+    private Locale locale = Settings.getInstance().getCurrentLocale() == null ? Locale.getDefault() : Settings.getInstance().getCurrentLocale();
     private ResourceBundle bundle = ResourceBundle.getBundle("langBundle", locale, new UTF8Control());
 
     @Override

@@ -17,7 +17,6 @@ import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.rmi.runtime.NewThreadAction;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.plotting.line.LineStyle;
@@ -231,7 +230,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         diagramTypeObservableList.remove(DiagramType.FunctionPlot);
         this.choiceBox_diagramType.setItems(diagramTypeObservableList);
         // i18n
-        this.choiceBox_diagramType.setConverter(this.svgOptionsUtil.getDiagramTypeStringConverter());
+        this.choiceBox_diagramType.setConverter(this.converter.getDiagramTypeStringConverter());
         this.choiceBox_diagramType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
                 guiSvgOptions.setDiagramType(newValue);
@@ -278,7 +277,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         // baraccumulation
         ObservableList<BarAccumulationStyle> csvOrientationObservableList = FXCollections.observableArrayList(BarAccumulationStyle.values());
         this.choiceBox_baraccumulation.setItems(csvOrientationObservableList);
-        this.choiceBox_baraccumulation.setConverter(this.svgOptionsUtil.getBarAccumulationStyleStringConverter());
+        this.choiceBox_baraccumulation.setConverter(this.converter.getBarAccumulationStyleStringConverter());
         this.choiceBox_baraccumulation.setValue(this.guiSvgOptions.getBarAccumulationStyle());
         this.choiceBox_baraccumulation.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             guiSvgOptions.setBarAccumulationStyle(newValue);
@@ -295,7 +294,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         ObservableList<Texture> textureObservableListSecondTexture = FXCollections.observableArrayList(Texture.values());
         ObservableList<Texture> textureObservableListThirdTexture = FXCollections.observableArrayList(Texture.values());
         this.choiceBox_firstTexture.setItems(textureObservableListFirstTexture);
-        this.choiceBox_firstTexture.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        this.choiceBox_firstTexture.setConverter(this.converter.getTextureStringConverter());
         this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_firstTexture, this.label_firstTexture);
         this.choiceBox_firstTexture.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
@@ -313,7 +312,7 @@ public class ChartWizardFrameController extends SVGWizardController {
             this.textures.set(0, null);
         });
         this.choiceBox_secondTexture.setItems(textureObservableListSecondTexture);
-        this.choiceBox_secondTexture.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        this.choiceBox_secondTexture.setConverter(this.converter.getTextureStringConverter());
         this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_secondTexture, this.label_secondTexture);
         this.choiceBox_secondTexture.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
@@ -330,7 +329,7 @@ public class ChartWizardFrameController extends SVGWizardController {
             this.textures.set(1, null);
         });
         this.choiceBox_thirdTexture.setItems(textureObservableListThirdTexture);
-        this.choiceBox_thirdTexture.setConverter(this.svgOptionsUtil.getTextureStringConverter());
+        this.choiceBox_thirdTexture.setConverter(this.converter.getTextureStringConverter());
         this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_thirdTexture, this.label_thirdTexture);
         this.choiceBox_thirdTexture.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != null) {
@@ -350,7 +349,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         // sorting type
         ObservableList<SortingType> sortingTypeObservableList = FXCollections.observableArrayList(SortingType.values());
         this.choiceBox_sorting.setItems(sortingTypeObservableList);
-        this.choiceBox_sorting.setConverter(this.svgOptionsUtil.getSortingTypeStringConverter());
+        this.choiceBox_sorting.setConverter(this.converter.getSortingTypeStringConverter());
         this.choiceBox_sorting.getSelectionModel().select(SortingType.None);
         this.choiceBox_sorting.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             guiSvgOptions.setSortingType(newValue);
@@ -364,7 +363,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         // sort desc
         ObservableList<SortOrder> sortOrderObservableList = FXCollections.observableArrayList(SortOrder.values());
         this.choicebox_sortOrder.setItems(sortOrderObservableList);
-        this.choicebox_sortOrder.setConverter(this.svgOptionsUtil.getSortOrderStringConverter());
+        this.choicebox_sortOrder.setConverter(this.converter.getSortOrderStringConverter());
         this.choicebox_sortOrder.getSelectionModel().select(SortOrder.ASC);
         this.choicebox_sortOrder.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
@@ -375,7 +374,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         // line points
         ObservableList<LinePointsOption> linePointsOptionObservableList = FXCollections.observableArrayList(LinePointsOption.values());
         this.choiceBox_linepoints.setItems(linePointsOptionObservableList);
-        this.choiceBox_linepoints.setConverter(svgOptionsUtil.getLinePointsOptionStringConverter());
+        this.choiceBox_linepoints.setConverter(converter.getLinePointsOptionStringConverter());
         this.choiceBox_linepoints.getSelectionModel().select(this.guiSvgOptions.getLinePointsOption());
         this.choiceBox_linepoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
@@ -415,7 +414,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         });
 
         this.choiceBox_firstLineStyle.setItems(lineStyleFirstObservableList);
-        this.choiceBox_firstLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
+        this.choiceBox_firstLineStyle.setConverter(this.converter.getLineStyleStringConverter());
         this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_firstLineStyle, this.label_firstLineStyle);
         this.choiceBox_firstLineStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             boolean oldValueInPossibleStyles = LineStyle.getListByOutputDevice(guiSvgOptions.getOutputDevice()).contains(oldValue);
@@ -442,7 +441,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         });
 
         this.choiceBox_secondLineStyle.setItems(lineStyleSecondObservableList);
-        this.choiceBox_secondLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
+        this.choiceBox_secondLineStyle.setConverter(this.converter.getLineStyleStringConverter());
         this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_secondLineStyle, this.label_secondLineStyle);
         this.choiceBox_secondLineStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             try {
@@ -470,7 +469,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         });
 
         this.choiceBox_thirdLineStyle.setItems(lineStyleThirdObservableList);
-        this.choiceBox_thirdLineStyle.setConverter(this.svgOptionsUtil.getLineStyleStringConverter());
+        this.choiceBox_thirdLineStyle.setConverter(this.converter.getLineStyleStringConverter());
         this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_thirdLineStyle, this.label_thirdLineStyle);
         this.choiceBox_thirdLineStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             try {
@@ -520,7 +519,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         });
         ObservableList<VisibilityOfDataPoints> visibilityOfDataPointsObservableList = FXCollections.observableArrayList(VisibilityOfDataPoints.values());
         this.choiceBox_originalPoints.setItems(visibilityOfDataPointsObservableList);
-        this.choiceBox_originalPoints.setConverter(this.svgOptionsUtil.getVisibilityOfDataPointsStringConverter());
+        this.choiceBox_originalPoints.setConverter(this.converter.getVisibilityOfDataPointsStringConverter());
         this.choiceBox_originalPoints.getSelectionModel().select(VisibilityOfDataPoints.SHOW);
         this.choiceBox_originalPoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
@@ -531,7 +530,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         });
         ObservableList<TrendlineAlgorithm> trendlineAlgorithmObservableList = FXCollections.observableArrayList(TrendlineAlgorithm.values());
         this.choiceBox_trendline.setItems(trendlineAlgorithmObservableList);
-        this.choiceBox_trendline.setConverter(this.svgOptionsUtil.getTrendlineAlgorithmStringConverter());
+        this.choiceBox_trendline.setConverter(this.converter.getTrendlineAlgorithmStringConverter());
         this.choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
         this.choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
@@ -611,7 +610,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         ObservableList<GuiAxisStyle> axisStyleObservableList = FXCollections.observableArrayList(GuiAxisStyle.values());
         axisStyleObservableList.remove(GuiAxisStyle.Barchart);
         this.choicebox_dblaxes.setItems(axisStyleObservableList);
-        this.choicebox_dblaxes.setConverter(this.svgOptionsUtil.getAxisStyleStringConverter());
+        this.choicebox_dblaxes.setConverter(this.converter.getAxisStyleStringConverter());
         this.choicebox_dblaxes.getSelectionModel().select(this.guiSvgOptions.getAxisStyle());
         this.choicebox_dblaxes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null) {
@@ -814,7 +813,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         pointSymbolChoiceBox.setMaxWidth(1.7976931348623157E308);
         ObservableList<PointSymbol> pointSymbolObservableList = FXCollections.observableArrayList(PointSymbol.getOrdered());
         pointSymbolChoiceBox.setItems(pointSymbolObservableList);
-        pointSymbolChoiceBox.setConverter(this.svgOptionsUtil.getPointSymbolStringConverter());
+        pointSymbolChoiceBox.setConverter(this.converter.getPointSymbolStringConverter());
 
         pointSymbolChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             changePointSymbols(map, observableList, index, label, newValue, oldValue);
