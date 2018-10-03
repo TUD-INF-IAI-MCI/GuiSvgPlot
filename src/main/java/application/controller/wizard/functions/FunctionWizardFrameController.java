@@ -86,7 +86,10 @@ public class FunctionWizardFrameController extends SVGWizardController {
     private TextField textField_IntegralName;
 
     @FXML
-    private CheckBox checkBox_ValueRange;
+    private RadioButton radioButton_ValueRangeCustom;
+
+    @FXML
+    private RadioButton radioButton_ValueRangeDefault;
 
 
     /* stage 4 */
@@ -94,7 +97,10 @@ public class FunctionWizardFrameController extends SVGWizardController {
     private GridPane stage4;
 
     @FXML
-    CheckBox checkBox_pi;
+    private RadioButton radioButton_ScalingDecimal;
+
+    @FXML
+    private RadioButton radioButton_ScalingPi;
 
 
     /* stage 5 */
@@ -129,6 +135,8 @@ public class FunctionWizardFrameController extends SVGWizardController {
         super.initialize(location, resources);
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES, DiagramType.FunctionPlot);
         this.initiateAllStages();
+        textField_rangeTo.setText(-10 + "");
+        textField_rangeFrom.setText(10 + "");
 
 
         this.guiSvgOptions.setDiagramType(DiagramType.FunctionPlot);
@@ -266,8 +274,10 @@ public class FunctionWizardFrameController extends SVGWizardController {
         });
 
 
-        textField_rangeFrom.visibleProperty().bind(checkBox_ValueRange.selectedProperty());
-        textField_rangeTo.visibleProperty().bind(checkBox_ValueRange.selectedProperty());
+        textField_rangeFrom.visibleProperty().bind(radioButton_ValueRangeDefault.selectedProperty());
+        textField_rangeTo.visibleProperty().bind(radioButton_ValueRangeDefault.selectedProperty());
+        label_RangeFrom.visibleProperty().bind(radioButton_ValueRangeDefault.selectedProperty());
+        label_RangeTo.visibleProperty().bind(radioButton_ValueRangeDefault.selectedProperty());
 
 
         textField_rangeFrom.textProperty().addListener(inv -> {
@@ -276,15 +286,19 @@ public class FunctionWizardFrameController extends SVGWizardController {
         textField_rangeTo.textProperty().addListener(inv -> {
             integralOptionBuilder();
         });
-        checkBox_ValueRange.selectedProperty().addListener(args -> {
+        radioButton_ValueRangeCustom.selectedProperty().addListener(args -> {
             integralOptionBuilder();
         });
-        checkBox_pi.selectedProperty().addListener(args -> {
+        radioButton_ValueRangeDefault.selectedProperty().addListener(args -> {
+            integralOptionBuilder();
+        });
+        radioButton_ScalingPi.selectedProperty().addListener(args -> {
+            integralOptionBuilder();
+        });
+        radioButton_ScalingDecimal.selectedProperty().addListener(args -> {
             integralOptionBuilder();
         });
 
-        label_RangeFrom.visibleProperty().bind(checkBox_ValueRange.selectedProperty());
-        label_RangeTo.visibleProperty().bind(checkBox_ValueRange.selectedProperty());
 
         integralName.bind(textField_IntegralName.textProperty());
     }
@@ -301,7 +315,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         super.initAxisFieldListeners();
         super.toggleAxesRanges(true);
 
-        guiSvgOptions.piProperty().bind(checkBox_pi.selectedProperty());
+        guiSvgOptions.piProperty().bind(radioButton_ScalingPi.selectedProperty());
 
 
     }
@@ -328,11 +342,13 @@ public class FunctionWizardFrameController extends SVGWizardController {
         double from = -10;
         double to = 10;
 
-        if (checkBox_ValueRange.isSelected()) {
-
-            from = Double.parseDouble(textField_rangeFrom.getText().replaceAll(",", "."));
-            to = Double.parseDouble(textField_rangeTo.getText().replaceAll(",", "."));
+        if (radioButton_ValueRangeCustom.isSelected()) {
+            if (!textField_rangeFrom.getText().isEmpty())
+                from = Double.parseDouble(textField_rangeFrom.getText().replaceAll(",", "."));
+            if (!textField_rangeTo.getText().isEmpty())
+                to = Double.parseDouble(textField_rangeTo.getText().replaceAll(",", "."));
         }
+
         String name = textField_IntegralName.getText();
 
 
