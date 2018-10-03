@@ -321,7 +321,7 @@ public class SVGWizardController implements Initializable {
         this.choiceBox_size.setConverter(this.svgOptionsUtil.getPageSizeStringConverter());
         this.choiceBox_size.getSelectionModel().select(PageSize.A4);
         this.choiceBox_size.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null){
+            if (newValue != null) {
                 if (newValue != PageSize.CUSTOM) {
                     System.out.println(oldValue);
                     System.out.println(newValue);
@@ -601,7 +601,7 @@ public class SVGWizardController implements Initializable {
         this.choicebox_gridStyle.setConverter(this.svgOptionsUtil.getGridStyleStringConverter());
         this.choicebox_gridStyle.getSelectionModel().select(this.guiSvgOptions.getGridStyle());
         this.choicebox_gridStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
 
                 this.guiSvgOptions.setGridStyle(newValue);
             }
@@ -769,7 +769,7 @@ public class SVGWizardController implements Initializable {
                 this.currentStage.set(0);
             }
 
-            if(newVal.intValue() >= 0) {
+            if (newVal.intValue() >= 0) {
                 if (oldVal.intValue() < this.stageBtns.size()) {
                     this.stageBtns.get(oldVal.intValue()).getStyleClass().remove("active");
                     this.stageBtns.get(oldVal.intValue()).setFocusTraversable(false);
@@ -785,6 +785,10 @@ public class SVGWizardController implements Initializable {
         // increment the currentStage counter. Will trigger its changeListener
         this.button_Next.setOnAction(event -> {
             this.currentStage.set(this.currentStage.get() + 1);
+
+            if (currentStage.get() + 1 == stages.size()) {
+                button_Create.requestFocus();
+            }
         });
 
         // decrement the currentStage counter. Will trigger its changeListener
@@ -844,7 +848,7 @@ public class SVGWizardController implements Initializable {
      * initiates the preset list and adds an event listener to the load button
      */
     protected void initloadPreset() {
-        if(presets == null){
+        if (presets == null) {
             presets = FXCollections.observableArrayList(this.presetService.getAll());
         }
         button_Load.setOnAction(event -> {
@@ -853,15 +857,15 @@ public class SVGWizardController implements Initializable {
             for (Preset p : presets) {
                 choices.add(p.getName());
             }
-            ChoiceDialog<String> dialog = new ChoiceDialog<>(bundle.getString("combo_preset_prompt"),choices);
+            ChoiceDialog<String> dialog = new ChoiceDialog<>(bundle.getString("combo_preset_prompt"), choices);
             dialog.setTitle(bundle.getString("prompt_load_title"));
             dialog.setHeaderText(bundle.getString("prompt_load_header"));
             dialog.setContentText(bundle.getString("prompt_load_content"));
             Optional<String> result = dialog.showAndWait();
-            if(result.isPresent()){
+            if (result.isPresent()) {
                 System.out.println(result.get());
-                for(Preset preset : presets){
-                    if (preset.getName().equals(result.get())){
+                for (Preset preset : presets) {
+                    if (preset.getName().equals(result.get())) {
                         this.guiSvgOptions.update(preset.getOptions());
                         System.out.println(this.guiSvgOptions.getSize());
                         //initiateAllStages();
@@ -1161,10 +1165,11 @@ public class SVGWizardController implements Initializable {
             });
     }
 
-    public void incrementCurrentStage(){
+    public void incrementCurrentStage() {
         this.currentStage.set(this.currentStage.get() + 1);
     }
-    public void decrementCurrentStage(){
+
+    public void decrementCurrentStage() {
         if (this.currentStage.get() >= 0) {
             this.currentStage.set(this.currentStage.get() - 1);
         }
