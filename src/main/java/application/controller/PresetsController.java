@@ -6,6 +6,7 @@ import application.model.GuiSvgOptions;
 import application.model.Options.*;
 import application.model.Preset;
 import application.service.PresetService;
+import application.util.DiagramTypeUtil;
 import application.util.SvgOptionsUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -55,7 +56,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     private final ToggleGroup integralToggle = new ToggleGroup();
     @FXML
     private final ToggleGroup pageOrientationTG = new ToggleGroup();
-    DiagramType.DiagramTypeConverter converter = new DiagramType.DiagramTypeConverter();
+    private final DiagramTypeUtil diagramTypeUtil = DiagramTypeUtil.getInstance();
     private PresetService presetService = PresetService.getInstance();
     private ObservableList<Texture> textures;
     private ObservableList<PointSymbol> customPointSymbols_scatterPlott;
@@ -302,6 +303,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         this.bundle = resources;
         this.svgOptionsUtil = SvgOptionsUtil.getInstance();
         this.svgOptionsUtil.setBundle(resources);
+        this.diagramTypeUtil.setBundle(resources);
         chartTypeObservableList.add(resources.getString("combo_diagram"));
         chartTypeObservableList.add(resources.getString("combo_function"));
         overViewBorderPane.setVisible(true);
@@ -824,24 +826,24 @@ public class PresetsController extends SVGWizardController implements Initializa
     /**
      * starts the prompt in which the user can choose the {@link DiagramType}
      * leads to the presetNamePrompt function with the chosen {@link DiagramType}
+     * @author Constantin Amend, Emma Müller
      */
     private void diagramTypePrompt() {
         // arbitrary default value
         DiagramType dt;
         List<String> choices = new ArrayList<>();
-        //TODO: needs i18n implementation that doesn't suck
-        choices.add(DiagramType.FunctionPlot.toString());
-        choices.add(DiagramType.ScatterPlot.toString());
-        choices.add(DiagramType.LineChart.toString());
-        choices.add(DiagramType.BarChart.toString());
-        ChoiceDialog<String> dialogue = new ChoiceDialog<>(DiagramType.LineChart.toString(), choices);
+        for (DiagramType diagramType: DiagramType.values() ) {
+            choices.add(diagramTypeUtil.toString(diagramType));
+        }
+        ChoiceDialog<String> dialogue = new ChoiceDialog<>(diagramTypeUtil.toString(DiagramType.LineChart), choices);
+
         dialogue.setTitle(bundle.getString("prompt_diagramtype_title"));
         dialogue.setResizable(true);
         dialogue.setHeaderText(bundle.getString("prompt_diagramtype_header"));
         dialogue.setContentText(bundle.getString("prompt_diagramtype_content"));
         Optional<String> result = dialogue.showAndWait();
         if (result.isPresent()) {
-            dt = converter.convert(result.get());
+            dt = diagramTypeUtil.fromString(result.get());
             presetNamePrompt(dt);
         }
     }
