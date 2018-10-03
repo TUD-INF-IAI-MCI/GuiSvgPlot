@@ -139,7 +139,6 @@ public class RootFrameController implements Initializable {
 
     private void showCsvHelper() {
 
-        this.label_Headline.setText(this.bundle.getString("headline_presets"));
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
         loader.setLocation((GuiSvgPlott.CsvFormatHelper));

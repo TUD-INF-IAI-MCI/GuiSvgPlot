@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -396,7 +397,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
         Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
         Button removeButton = new Button();
-        removeButton.setTooltip(new Tooltip("close"));
+        removeButton.setAccessibleText("Reihe löschen");
+        removeButton.setTooltip(new Tooltip("Reihe löschen"));
+
         removeButton.setGraphic(closeGlyph);
         removeButton.getStyleClass().add("data-cell-button");
         removeButton.setOnAction(event -> {
@@ -405,6 +408,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
         });
 
         row.getChildren().addAll(titleField, functionField, removeButton);
+        row.setFocusTraversable(true);
+        row.setAccessibleRole(AccessibleRole.TABLE_ROW);
+        row.setAccessibleText("Reihe " + (vBox_DataTable.getChildren().size() + 1));
 
 
         HBox.setHgrow(functionField, Priority.ALWAYS);
