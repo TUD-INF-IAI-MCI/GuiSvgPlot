@@ -32,67 +32,73 @@ public class TextFieldUtil {
     }
 
     /**
-     *  Logs an error and adds the style class "invalid" to given {@link javafx.scene.control.Label} and {@link TextField} if the value of of the given {@link TextField}s are equal.
+     * Logs an error and adds the style class "invalid" to given {@link javafx.scene.control.Label} and {@link TextField} if the value of of the given {@link TextField}s are equal.
+     *
      * @param textField1 the first {@link TextField}
      * @param textField2 the second {@link TextField}
      */
-    public void addNotEqualValidation(final TextField textField1, final Label label1, final TextField textField2, final Label label2){
+    public void addNotEqualValidation(final TextField textField1, final Label label1, final TextField textField2, final Label label2) {
         textField1.textProperty().addListener((observable, oldValue, newValue) -> {
             validateTextFields(textField1, label1, textField2, label2);
         });
         textField2.textProperty().addListener((observable, oldValue, newValue) -> {
             validateTextFields(textField1, label1, textField2, label2);
         });
+        textField1.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            validateTextFields(textField1, label1, textField2, label2);
+        });
+        textField2.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            validateTextFields(textField1, label1, textField2, label2);
+        });
     }
-    private void validateTextFields(final TextField textField1, final Label label1, final TextField textField2, final Label label2){
+
+    private void validateTextFields(final TextField textField1, final Label label1, final TextField textField2, final Label label2) {
         String errorMessageString = this.bundle.getString("error_fieldsMustNotBeEqual").replace("{0}", label1.getText()).replace("{1}", label2.getText());
-        if (textField1.getText().equals(textField2.getText())){
-            label1.getStyleClass().add("invalid");
-            label2.getStyleClass().add("invalid");
-            textField1.getStyleClass().add("invalid");
-            textField2.getStyleClass().add("invalid");
-            logger.error(errorMessageString);
-        }else{
-            VBox messages = GuiSvgPlott.getInstance().getRootFrameController().vBox_messages;
-            Label errorMessageLabel = new Label();
-            for (Node child : messages.getChildren()) {
-                Label errorMessage = (Label) child;
-                if (errorMessage.getText().contains(errorMessageString)) {
-                    errorMessageLabel = errorMessage;
-                }
-            }
-            messages.getChildren().remove(errorMessageLabel);
-            label1.getStyleClass().remove("invalid");
-            label2.getStyleClass().remove("invalid");
-            textField1.getStyleClass().remove("invalid");
-            textField2.getStyleClass().remove("invalid");
+        if (textField1.getText().equals(textField2.getText())) {
+            setTextFieldInvalid(textField1, label1, errorMessageString);
+            setTextFieldInvalid(textField2, label2, errorMessageString);
+        } else {
+            setTextFieldValid(textField1, label1, errorMessageString);
+            setTextFieldValid(textField2, label2, errorMessageString);
         }
     }
+    private void setTextFieldInvalid(final TextField textField, final Label label, final String errorMsgString){
+        label.getStyleClass().add("invalid");
+        textField.getStyleClass().add("invalid");
+        String textField1AccessibleHelp = textField.getAccessibleHelp() == null ? "" : textField.getAccessibleHelp();
+        if (!textField1AccessibleHelp.contains(errorMsgString)) {
+            textField.setAccessibleHelp(textField1AccessibleHelp + " " + errorMsgString);
+        }
+    }
+    private void setTextFieldValid(final TextField textField, final Label label, final String errorMsgString) {
+        label.getStyleClass().remove("invalid");
+        textField.getStyleClass().remove("invalid");
+        String textField1AccessibleHelp = textField.getAccessibleHelp() == null ? "" : textField.getAccessibleHelp();
+        textField.setAccessibleHelp(textField1AccessibleHelp.split(errorMsgString)[0]);
+    }
+
     /**
      * Logs an error and adds the style class "invalid" to given {@link javafx.scene.control.Label} and {@link TextField} if the value of textField is less then the given minimum.
+     *
      * @param textField the {@link TextField},whose entry is to be validated.
-     * @param label the {@link javafx.scene.control.Label}
-     * @param minimum the minimum value.
+     * @param label     the {@link javafx.scene.control.Label}
+     * @param minimum   the minimum value.
      */
     public void addMinimumIntegerValidation(final TextField textField, final Label label, final int minimum) {
         textField.focusedProperty().addListener((observable, oldValue, newValue) ->
         {
             if (!newValue) {
-                String errorMessageString = label.getText() + ": " + bundle.getString("error_minimal_number_exception").replace("{0}", "" + minimum);
+                String errorMessageString = bundle.getString("error_minimal_number_exception").replace("{0}", "" + minimum);
+                String accessibleHelp = textField.getAccessibleHelp() == null ? "" : textField.getAccessibleHelp();
                 if (Integer.parseInt(textField.getText()) < minimum) {
                     label.getStyleClass().add("invalid");
                     textField.getStyleClass().add("invalid");
-                    logger.error(errorMessageString);
-                } else {
-                    VBox messages = GuiSvgPlott.getInstance().getRootFrameController().vBox_messages;
-                    Label errorMessageLabel = new Label();
-                    for (Node child : messages.getChildren()) {
-                        Label errorMessage = (Label) child;
-                        if (errorMessage.getText().contains(errorMessageString)) {
-                            errorMessageLabel = errorMessage;
-                        }
+                    if (!accessibleHelp.contains(errorMessageString)) {
+                        System.out.println(accessibleHelp + errorMessageString);
+                        textField.setAccessibleHelp(accessibleHelp + errorMessageString);
                     }
-                    messages.getChildren().remove(errorMessageLabel);
+                } else {
+                    textField.setAccessibleHelp(accessibleHelp.split(errorMessageString)[0]);
                     textField.getStyleClass().remove("invalid");
                     label.getStyleClass().remove("invalid");
                 }
@@ -102,8 +108,9 @@ public class TextFieldUtil {
 
     /**
      * Checks if the value of the {@link TextField} is an integer greater then given minimum.
+     *
      * @param textField the {@link TextField},whose entry is to be validated.
-     * @param minimum the minimum value.
+     * @param minimum   the minimum value.
      */
     public void addIntegerValidationWithMinimum(final TextField textField, final int minimum) {
         this.addNotEmptyValidationListener(textField, minimum);
@@ -119,6 +126,7 @@ public class TextFieldUtil {
 
     /**
      * Checks if the value of the {@link TextField} is an integer.
+     *
      * @param textField the {@link TextField},whose entry is to be validated.
      */
     public void addIntegerValidation(final TextField textField) {
@@ -135,8 +143,9 @@ public class TextFieldUtil {
     /**
      * Checks if the value of the {@link TextField} is a double.
      * If it is no double, it logs an error and adds the style class "invalid" to given {@link javafx.scene.control.Label} and {@link TextField}.
+     *
      * @param textField the {@link TextField},whose entry is to be validated.
-     * @param label the label
+     * @param label     the label
      */
     public void addDoubleValidation(final TextField textField, final Label label) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -175,12 +184,13 @@ public class TextFieldUtil {
 
     /**
      * Checks if the value of the {@link TextField} is an double greater or equal then given minimum and less or equal the given maximum.
+     *
      * @param textField the {@link TextField},whose entry is to be validated.
-     * @param label the label
-     * @param minimum the minimum value.
-     * @param maximum the maximum value.
+     * @param label     the label
+     * @param minimum   the minimum value.
+     * @param maximum   the maximum value.
      */
-    public void addDoubleValidationWithMinimumAndMaximum(final TextField textField, final Label label,  final int minimum, final int maximum) {
+    public void addDoubleValidationWithMinimumAndMaximum(final TextField textField, final Label label, final int minimum, final int maximum) {
         this.addNotEmptyValidationListener(textField, minimum);
         this.addDoubleValidation(textField, label);
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -196,12 +206,13 @@ public class TextFieldUtil {
 
     /**
      * Checks if the value of the {@link TextField} is an double greater or equal then given minimum.
+     *
      * @param textField the {@link TextField},whose entry is to be validated.
-     * @param label the label
-     * @param minimum the minimum value.
+     * @param label     the label
+     * @param minimum   the minimum value.
      */
 
-    public void addDoubleValidationWithMinimum(final TextField textField, final Label label,  final int minimum) {
+    public void addDoubleValidationWithMinimum(final TextField textField, final Label label, final int minimum) {
         this.addNotEmptyValidationListener(textField, minimum);
         this.addDoubleValidation(textField, label);
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -217,7 +228,8 @@ public class TextFieldUtil {
 
     /**
      * If {@link TextField} is empty, it sets the given defaultValue to the TextField.
-     * @param textField the {@link TextField},whose entry is to be validated.
+     *
+     * @param textField  the {@link TextField},whose entry is to be validated.
      * @param defaultVal the defaultVal
      */
     public void addNotEmptyValidationListener(final TextField textField, final Object defaultVal) {
@@ -228,17 +240,42 @@ public class TextFieldUtil {
         });
     }
 
+    public void addFirstNotGreaterThenSecondValidationListener(final TextField textField1, final Label label1, final TextField textField2, final Label label2) {
+
+        textField1.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            this.validateGTH(textField1, label1, textField2, label2, "error_field1_must_be_less_then_field2");
+        });
+        textField2.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            this.validateGTH(textField1, label1, textField2, label2, "error_field1_must_be_less_then_field2");
+        });
+    }
+
+    private void validateGTH(final TextField textField1, final Label label1, final TextField textField2, final Label label2, final String message_key) {
+        double textField1Value = Double.parseDouble(textField1.getText());
+        double textField2Value = Double.parseDouble(textField2.getText());
+        System.out.println(bundle.getString(message_key));
+        String errorMessageString = bundle.getString(message_key).replace("{0}", label1.getText()).replace("{1}", label2.getText());
+
+        if (textField1Value > textField2Value) {
+            setTextFieldInvalid(textField1, label1, errorMessageString);
+            setTextFieldInvalid(textField2, label2, errorMessageString);
+        } else {
+            setTextFieldValid(textField1, label1, errorMessageString);
+            setTextFieldValid(textField2, label2, errorMessageString);
+        }
+    }
 
     /**
      * Adds a change listener to each given {@link TextField}'s focusedProperty that updates the preview when user left the field.
-     * @param webView_svg the {@link WebView} for the preview
+     *
+     * @param webView_svg   the {@link WebView} for the preview
      * @param guiSvgOptions the {@link GuiSvgOptions}, needed for the preview rendering
-     * @param textFields all {@link TextField}s
+     * @param textFields    all {@link TextField}s
      */
-    public void addReloadPreviewOnChangeListener(final WebView webView_svg, final GuiSvgOptions guiSvgOptions, final TextField... textFields){
-        for(TextField textField : textFields) {
+    public void addReloadPreviewOnChangeListener(final WebView webView_svg, final GuiSvgOptions guiSvgOptions, final TextField... textFields) {
+        for (TextField textField : textFields) {
             textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-                if (!newValue){
+                if (!newValue) {
                     this.svgOptionsService.buildPreviewSVG(guiSvgOptions, webView_svg);
                 }
             });

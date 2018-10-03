@@ -106,13 +106,13 @@
                                                 <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram" GridPane.rowIndex="4" />
                                                 <ChoiceBox fx:id="choiceBox_size" accessibleText="%label_size_of_diagram" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                 <Label fx:id="label_customSizeWidth" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_width" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                                                <TextField fx:id="textField_customSizeWidth" accessibleText="%size_of_diagram_width" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_width" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                <TextField fx:id="textField_customSizeWidth" accessibleHelp="%size_of_diagram_width" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_width" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                     <tooltip>
                                                         <Tooltip text="%size_of_diagram_width" />
                                                     </tooltip>
                                                 </TextField>
                                                 <Label fx:id="label_customSizeHeight" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_height" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                                                <TextField fx:id="textField_customSizeHeight" accessibleText="%size_of_diagram_height" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_height" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                <TextField fx:id="textField_customSizeHeight" accessibleHelp="%size_of_diagram_height" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_height" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                                     <tooltip>
                                                         <Tooltip text="%size_of_diagram_height" />
                                                     </tooltip>
@@ -441,24 +441,24 @@
                                             </padding>
                                             <children>
                                                 <Label fx:id="label_grid" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_grid_style" />
-                                                <ChoiceBox fx:id="choicebox_gridStyle" accessibleText="%label_grid_style" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                                <ChoiceBox fx:id="choicebox_gridStyle" accessibleHelp="%label_grid_style" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                                                 <Label fx:id="label_xlines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_x" GridPane.rowIndex="1" />
-                                                <TextField fx:id="textField_xlines" accessibleHelp="%help_text_space_seperated" accessibleText="%help_lines_x_helptext" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="x1 x2 x3" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                                <TextField fx:id="textField_xlines" accessibleHelp="%help_lines_y_tooltip_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="x1 x2 x3" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                     <tooltip>
                                                         <Tooltip text="%help_lines_x_tooltip_text" />
                                                     </tooltip>
                                                 </TextField>
 
                                                 <Label fx:id="label_ylines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_y" GridPane.rowIndex="2" />
-                                                <TextField fx:id="textField_ylines" accessibleHelp="%help_text_space_seperated" accessibleText="%help_lines_y_helptext" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="y1 y2 y3" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                <TextField fx:id="textField_ylines" accessibleHelp="%help_lines_y_tooltip_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="y1 y2 y3" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                     <tooltip>
                                                         <Tooltip text="%help_lines_y_tooltip_text" />
                                                     </tooltip>
                                                 </TextField>
 
                                                 <Label fx:id="label_dblaxes" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_axis_style" GridPane.rowIndex="3" />
-                                                <ChoiceBox fx:id="choicebox_dblaxes" accessibleText="%label_axis_style" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <ChoiceBox fx:id="choicebox_dblaxes" accessibleHelp="%label_axis_style" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                             </children>
                                         </GridPane>
                                     </children>
@@ -487,23 +487,23 @@
                                             </padding>
                                             <children>
                                                 <Label fx:id="label_css" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_csstype" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                                <ChoiceBox fx:id="choiceBox_cssType" accessibleText="%label_csstype" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                                <ChoiceBox fx:id="choiceBox_cssType" accessibleHelp="%label_csstype" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                                                 <Label fx:id="label_cssPath" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_file" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                                                 <HBox fx:id="hBox_cssPath" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                    <TextField fx:id="textField_cssPath" accessibleText="%label_css_path_text_field" promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS">
+                                                    <TextField fx:id="textField_cssPath" accessibleHelp="%label_css_path_text_field" promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS">
                                                         <tooltip>
                                                             <Tooltip text="%label_css_path_text_field" />
                                                         </tooltip>
                                                     </TextField>
-                                                    <Button fx:id="button_cssPath" accessibleText="%label_css_path_button" mnemonicParsing="false" styleClass="btn-upload" text="...">
+                                                    <Button fx:id="button_cssPath" accessibleHelp="%label_css_path_button" mnemonicParsing="false" styleClass="btn-upload" text="...">
                                                         <tooltip>
                                                             <Tooltip text="%label_css_path_button" />
                                                         </tooltip>
                                                     </Button>
                                                 </HBox>
                                                 <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                                <TextArea fx:id="textArea_cssCustom" accessibleText="%label_css_custom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <TextArea fx:id="textArea_cssCustom" accessibleHelp="%label_css_custom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                     <tooltip>
                                                         <Tooltip text="%label_css_custom" />
                                                     </tooltip>
@@ -515,12 +515,12 @@
 
                                                 <Label fx:id="label_color1" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_color1" visible="false" GridPane.rowIndex="2" />
                                                 <HBox fx:id="hbox_firstColor" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                                    <ChoiceBox fx:id="choiceBox_color1" accessibleText="%color1_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS">
+                                                    <ChoiceBox fx:id="choiceBox_color1" accessibleHelp="%color1_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS">
                                                         <tooltip>
                                                             <Tooltip text="%color1_select_text" />
                                                         </tooltip>
                                                     </ChoiceBox>
-                                                    <Button fx:id="button_resetFirstColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
+                                                    <Button fx:id="button_resetFirstColor" accessibleHelp="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
                                                         <graphic>
                                                             <Glyph fontFamily="FontAwesome" icon="CLOSE" />
                                                         </graphic>
@@ -531,12 +531,12 @@
                                                 </HBox>
                                                 <Label fx:id="label_color2" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_color2" visible="false" GridPane.rowIndex="3" />
                                                 <HBox fx:id="hbox_secondColor" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                                    <ChoiceBox fx:id="choiceBox_color2" accessibleText="%color2_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS">
+                                                    <ChoiceBox fx:id="choiceBox_color2" accessibleHelp="%color2_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS">
                                                         <tooltip>
                                                             <Tooltip text="%color2_select_text" />
                                                         </tooltip>
                                                     </ChoiceBox>
-                                                    <Button fx:id="button_resetSecondColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
+                                                    <Button fx:id="button_resetSecondColor" accessibleHelp="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
                                                         <graphic>
                                                             <Glyph fontFamily="FontAwesome" icon="CLOSE" />
                                                         </graphic>
@@ -547,12 +547,12 @@
                                                 </HBox>
                                                 <Label fx:id="label_color3" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_color3" visible="false" GridPane.rowIndex="4" />
                                                 <HBox fx:id="hbox_thirdColor" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                                    <ChoiceBox fx:id="choiceBox_color3" accessibleText="%color3_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS">
+                                                    <ChoiceBox fx:id="choiceBox_color3" accessibleHelp="%color3_select_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS">
                                                         <tooltip>
                                                             <Tooltip text="%color3_select_text" />
                                                         </tooltip>
                                                     </ChoiceBox>
-                                                    <Button fx:id="button_resetThirdColor" accessibleText="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
+                                                    <Button fx:id="button_resetThirdColor" accessibleHelp="%button_color_reset" mnemonicParsing="false" styleClass="btn-reset">
                                                         <graphic>
                                                             <Glyph fontFamily="FontAwesome" icon="CLOSE" />
                                                         </graphic>
@@ -584,19 +584,19 @@
                         <children>
                             <ButtonBar HBox.hgrow="NEVER">
                                 <buttons>
-                                    <Button fx:id="button_Cancel" accessibleText="%button_cancel" cancelButton="true" mnemonicParsing="false" text="%button_cancel" ButtonBar.buttonData="LEFT">
+                                    <Button fx:id="button_Cancel" cancelButton="true" mnemonicParsing="false" text="%button_cancel" ButtonBar.buttonData="LEFT">
                                         <graphic>
                                             <Glyph fontFamily="FontAwesome" icon="CLOSE" />
                                         </graphic>
                                         <tooltip>
-                                            <Tooltip text="%button_cancel" />
+                                            <Tooltip text="%button_cancel_wizard" />
                                         </tooltip>
                                     </Button>
                                 </buttons>
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                                    <Button fx:id="button_rerenderPreview" accessibleText="%button_rerender_preview" mnemonicParsing="false" styleClass="btn-preview" text="%button_rerender_preview_text">
+                                    <Button fx:id="button_rerenderPreview" mnemonicParsing="false" styleClass="btn-preview" text="%button_rerender_preview_text">
                                         <tooltip>
                                             <Tooltip text="%button_rerender_preview" />
                                         </tooltip>
@@ -605,7 +605,7 @@
                             </ButtonBar>
                             <ButtonBar HBox.hgrow="ALWAYS">
                                 <buttons>
-                                    <Button fx:id="button_Back" accessibleText="%label_back" mnemonicParsing="false" text="%button_back">
+                                    <Button fx:id="button_Back" mnemonicParsing="false" text="%button_back">
                                         <graphic>
                                             <Glyph fontFamily="FontAwesome" icon="CHEVRON_LEFT" />
                                         </graphic>
@@ -626,7 +626,7 @@
                                             <Tooltip text="%button_load_tooltip" />
                                         </tooltip>
                                     </Button>
-                                    <Button fx:id="button_Create" accessibleText="%button_diagram_create" mnemonicParsing="false" text="%button_create">
+                                    <Button fx:id="button_Create"  mnemonicParsing="false" text="%button_create">
                                         <graphic>
                                             <Glyph fontFamily="FontAwesome" icon="SAVE" />
                                         </graphic>

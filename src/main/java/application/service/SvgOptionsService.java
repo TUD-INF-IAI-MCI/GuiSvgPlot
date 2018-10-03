@@ -243,8 +243,12 @@ public class SvgOptionsService {
     private boolean isSvgPlottOptionsValid(final SvgPlotOptions svgPlotOptions) {
         DiagramType diagramType = svgPlotOptions.getDiagramType();
 
-        boolean hasErrorInXRange = svgPlotOptions.getxRange() != null && svgPlotOptions.getxRange().getFrom() == svgPlotOptions.getxRange().getTo();
-        boolean hasErrorInYRange = svgPlotOptions.getyRange() != null && svgPlotOptions.getyRange().getFrom() == svgPlotOptions.getyRange().getTo();
+        double xFrom = svgPlotOptions.getxRange() != null ? svgPlotOptions.getxRange().getFrom() : null;
+        double xTo = svgPlotOptions.getxRange() != null ? svgPlotOptions.getxRange().getTo() : null;
+        boolean hasErrorInXRange = svgPlotOptions.getxRange() != null && xFrom >= xTo;
+        double yFrom = svgPlotOptions.getyRange() != null ? svgPlotOptions.getyRange().getFrom() : null;
+        double yTo = svgPlotOptions.getyRange() != null ? svgPlotOptions.getyRange().getTo() : null;
+        boolean hasErrorInYRange = svgPlotOptions.getyRange() != null && yFrom >= yTo;
 
         boolean hasErrorInCustomSizeWidth = svgPlotOptions.getSize().getX() < GuiSvgOptions.MINIMUM_PAGE_WIDTH;
         boolean hasErrorInCustomSizeHeight = svgPlotOptions.getSize().getY() < GuiSvgOptions.MINIMUM_PAGE_HEIGHT;
@@ -263,10 +267,21 @@ public class SvgOptionsService {
         if (hasError) {
             GuiSvgPlott.getInstance().getRootFrameController().clearMessageLabel();
             if (hasErrorInXRange) {
-                logger.error(this.bundle.getString("preview_load_xrange_error"));
+                if (xFrom == xTo) {
+                    logger.error(this.bundle.getString("preview_load_xrange_equal_error"));
+                }
+                if (xFrom > xTo) {
+                    logger.error(this.bundle.getString("preview_load_xrange_error"));
+                }
             }
             if (hasErrorInYRange) {
-                logger.error(this.bundle.getString("preview_load_yrange_error"));
+                if (yFrom == yTo) {
+                    logger.error(this.bundle.getString("preview_load_yrange_equal_error"));
+                }
+                if (yFrom > yTo) {
+                    logger.error(this.bundle.getString("preview_load_yrange_error"));
+                }
+
             }
             if (hasErrorInCustomSizeWidth) {
                 logger.error(this.bundle.getString("preview_load_customWidth_error"));

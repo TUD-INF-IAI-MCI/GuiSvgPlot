@@ -19,45 +19,40 @@
             xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="application.controller.SettingsDialogController">
     <children>
-        <!--<VBox layoutX="10.0" layoutY="10.0" spacing="10.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">-->
-        <!--<children>-->
-        <!--<Label text="%label_available_languages" />-->
-        <!--<ListView fx:id="choiceBox_languages" />-->
-        <!--</children>-->
-        <!--</VBox>-->
         <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="264.0"
                   prefWidth="503.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="5.0" />
-                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="5.0"/>
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
             </rowConstraints>
             <padding>
                 <Insets left="10.0" right="10.0"/>
             </padding>
             <children>
                 <Label text="%label_available_languages" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                <ChoiceBox fx:id="choiceBox_languages" accessibleText="%label_available_languages" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <ChoiceBox fx:id="choiceBox_languages" accessibleHelp="%label_available_languages" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1"
+                           GridPane.rowIndex="0"/>
 
-                <Label id="label_gnuPlotFile" fx:id="label_gnuPlotPath" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_gnuplot_file" GridPane.rowIndex="1" />
+                <Label id="label_gnuPlotFile" fx:id="label_gnuPlotPath" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_gnuplot_file" GridPane.rowIndex="1"/>
                 <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <TextField fx:id="textField_gnuplotPath" accessibleText="%gnuplot_file_help_text_field" promptText="%prompt_path_to_gnuplot" HBox.hgrow="ALWAYS">
+                    <TextField fx:id="textField_gnuplotPath" accessibleHelp="%gnuplot_file_help_text_field" promptText="%prompt_path_to_gnuplot" HBox.hgrow="ALWAYS">
                         <tooltip>
-                            <Tooltip text="%gnuplot_file_help_text_field" />
+                            <Tooltip text="%gnuplot_file_help_text_field"/>
                         </tooltip>
                     </TextField>
                     <Button fx:id="button_gnuplotPath" accessibleText="%gnuPlot_file_help_button" mnemonicParsing="false" styleClass="btn-upload" text="...">
                         <tooltip>
-                            <Tooltip text="%gnuPlot_file_help_button" />
+                            <Tooltip text="%gnuPlot_file_help_button"/>
                         </tooltip>
                     </Button>
                 </HBox>
@@ -66,9 +61,8 @@
         <ButtonBar layoutX="249.0" layoutY="366.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
                    AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
             <buttons>
-                <Button fx:id="button_Save" accessibleText="button.save" mnemonicParsing="false" text="%button_save"/>
-                <Button fx:id="button_Cancel" accessibleText="button.cancel" cancelButton="true" mnemonicParsing="false"
-                        text="%button_cancel"/>
+                <Button fx:id="button_Save" mnemonicParsing="false" text="%button_save"/>
+                <Button fx:id="button_Cancel" cancelButton="true" mnemonicParsing="false" text="%button_cancel"/>
             </buttons>
         </ButtonBar>
     </children>
