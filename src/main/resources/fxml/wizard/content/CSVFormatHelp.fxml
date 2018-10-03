@@ -8,31 +8,31 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" stylesheets="/stylesheet/guiSvgPlott.css"  prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="/stylesheet/guiSvgPlott.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ScrollPane fitToWidth="true" layoutX="200.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0">
                <children>
-                  <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Text accessibleText="Funktionsplot" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%function_plot" />
+                        <Text accessibleText="Funktionsplot" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%function_plot" styleClass="headline"/>
                         <Text accessibleText="Die CSV Datei mit den Funktionen sollte folgenes Format haben:" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%csv_helper_line_2" />
                         <Text accessibleText="Name der Funktion, Funktion; Name der Funktion, Funktion; ... " focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%csv_helper_line_3" />
                         <Text accessibleText="Die Funktion sollte folgendes Beispiel-Format haben:" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%csv_helper_line_4" />
                         <Text accessibleText="3x+2y * 2^2 + 12x - sin(4)" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="3x+2y * 2^2 + 12x - sin(4)" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text accessibleText="Scatter-Plot" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%diagramType_scatterplot" />
+                        <Text accessibleText="Scatter-Plot" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%diagramType_scatterplot" styleClass="headline" />
                         <Text accessibleText="Die CSV eines Streudiagramm sollte folgendes Format haben:" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%csv_helper_line_6" />
-                        <Text accessibleText="Name der Datenreihe, &quot;x1&quot;,&quot;x2&quot;,&quot;x3&quot;,&quot;x4&quot;,&quot;x5&quot;,&quot;x6&quot;.. \n ,&quot;y1&quot;,&quot;y2&quot;,&quot;y3&quot;,&quot;y4&quot;,&quot;y5,&quot;y6&quot; \n" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%csv_helper_line_7" />
+                        <Text accessibleText="Name der Datenreihe, &quot;x1&quot;,&quot;x2&quot;,&quot;x3&quot;,&quot;x4&quot;,&quot;x5&quot;,&quot;x6&quot;.. \n ,&quot;y1&quot;,&quot;y2&quot;,&quot;y3&quot;,&quot;y4&quot;,&quot;y5,&quot;y6&quot;" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%csv_helper_line_7" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text accessibleText="Säulendiagramm" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%diagramType_barchart" />
+                        <Text accessibleText="Säulendiagramm" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%diagramType_barchart" styleClass="headline"/>
                         <Text accessibleText="Die erste Zeile zur Beschriftung der x-Achsen Elemente : 1980, 1990, 1991, 1992.." focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%csv_helper_line_9" />
                         <Text accessibleText="Jede weitere Zeile die Datensätze im Format: Name der Reihe, Wert1, Wert2, Wert3, Wert4..." focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%csv_helper_line_10" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text accessibleText="Liniendiagramm" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%diagramType_linechart" />
+                        <Text accessibleText="Liniendiagramm" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%diagramType_linechart" styleClass="headline"/>
                         <Text accessibleText="Die CSV sollte folgendes Format haben:  " focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="%csv_helper_line_12" />
-                        <Text accessibleText="Name der Datenreihe, &quot;x1&quot;,&quot;x2&quot;,&quot;x3&quot;,&quot;x4&quot;,&quot;x5&quot;,&quot;x6&quot;.. \n ,&quot;y1&quot;,&quot;y2&quot;,&quot;y3&quot;,&quot;y4&quot;,&quot;y5,&quot;y6&quot; \n" focusTraversable="true" layoutX="15.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%csv_helper_line_13" />
+                        <Text accessibleText="Name der Datenreihe, &quot;x1&quot;,&quot;x2&quot;,&quot;x3&quot;,&quot;x4&quot;,&quot;x5&quot;,&quot;x6&quot;.. \n ,&quot;y1&quot;,&quot;y2&quot;,&quot;y3&quot;,&quot;y4&quot;,&quot;y5,&quot;y6&quot;" focusTraversable="true" layoutX="15.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%csv_helper_line_13" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -114,5 +114,17 @@ AnchorPane.preview-container {
     -fx-focus-traversable: true;
     -fx-focus-color: $tud-blue;
   }
+}
 
+ListView, ScrollPane:focused{
+  -fx-border-color: $tud-blue;
+}
+Text {
+  &:focused {
+    -fx-fill: $tud-blue;
+    -fx-font-style: italic;
+  }
+  &.headline {
+    -fx-font-weight: bold;
+  }
 }

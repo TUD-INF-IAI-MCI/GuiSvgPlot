@@ -7,15 +7,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="250.0" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.LanguageDialogController">
+<AnchorPane minHeight="250.0" stylesheets="/stylesheet/guiSvgPlott.css" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.LanguageDialogController">
     <children>
-      <VBox layoutX="10.0" layoutY="10.0" spacing="10.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <VBox layoutX="10.0" layoutY="10.0" spacing="10.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
          <children>
             <Label text="%label_available_languages" />
             <ListView fx:id="listView_languages" />
          </children>
       </VBox>
-        <ButtonBar layoutX="249.0" layoutY="366.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <ButtonBar layoutX="249.0" layoutY="366.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
             <buttons>
                 <Button fx:id="button_Save" accessibleText="button.save" mnemonicParsing="false" text="%button_save" />
                 <Button fx:id="button_Cancel" accessibleText="button.cancel" cancelButton="true" mnemonicParsing="false" text="%button_cancel" />
