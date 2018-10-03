@@ -21,7 +21,7 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="%menu_file">
                             <items>
-                                <MenuItem fx:id="menuItem_Language" mnemonicParsing="false" text="%menu_file_settings" />
+                                <MenuItem fx:id="menuItem_settings" mnemonicParsing="false" text="%menu_file_settings" />
                                 <SeparatorMenuItem />
                                 <MenuItem fx:id="menuItem_ExitProgram" mnemonicParsing="false" onAction="#closeButtonAction" text="%menu_file_close" />
                             </items>
@@ -59,8 +59,8 @@
         <center>
             <ButtonBar buttonMinWidth="350.0" maxWidth="-Infinity" prefHeight="543.0" prefWidth="730.0" BorderPane.alignment="CENTER">
                 <buttons>
-                    <Button fx:id="button_StartFunction" accessibleText="Funktion erstellen" mnemonicParsing="false" prefHeight="103.0" text="%button_function_create" ButtonBar.buttonData="LEFT" />
-                    <Button fx:id="button_StartDiagram" accessibleText="Diagramm erstellen" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="103.0" text="%button_diagram_create" ButtonBar.buttonData="RIGHT" />
+                    <Button fx:id="button_StartFunction" accessibleText="%button_function_create" mnemonicParsing="false" prefHeight="103.0" text="%button_function_create" ButtonBar.buttonData="LEFT" />
+                    <Button fx:id="button_StartDiagram" accessibleText="%button_diagram_create" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="103.0" text="%button_diagram_create" ButtonBar.buttonData="RIGHT" />
                 </buttons>
                 <BorderPane.margin>
                     <Insets />

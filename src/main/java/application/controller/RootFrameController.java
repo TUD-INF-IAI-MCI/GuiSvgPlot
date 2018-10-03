@@ -3,6 +3,7 @@ package application.controller;
 import application.GuiSvgPlott;
 import application.controller.wizard.SVGWizardController;
 import application.model.Preset;
+import application.model.Settings;
 import application.service.PresetService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -54,7 +55,7 @@ public class RootFrameController implements Initializable {
     private MenuItem menuItem_csvHelp;
 
     @FXML
-    private MenuItem menuItem_Language;
+    private MenuItem menuItem_settings;
     @FXML
     public Menu menu_Presets = new Menu();
     @FXML
@@ -92,7 +93,7 @@ public class RootFrameController implements Initializable {
         button_StartDiagram.setOnAction(this::startDiagram);
         button_StartFunction.setOnAction(event -> startFunction(true));
 
-        menuItem_Language.setOnAction(event -> GuiSvgPlott.getInstance().setLanguageDialog());
+        menuItem_settings.setOnAction(event -> GuiSvgPlott.getInstance().setSettingsDialog());
         menuItem_Save_Preset.setDisable(true);
         menuItem_Save_Preset.setOnAction(event -> {
             if (wizardPath.contains("Chart") || wizardPath.contains("Function")) {
@@ -145,10 +146,12 @@ public class RootFrameController implements Initializable {
         try {
 
             Stage stage = new Stage();
+            stage.setTitle(this.bundle.getString("menu_help_csv"));
+            stage.getIcons().add(Settings.getInstance().favicon);
             Scene s = new Scene(loader.load());
             stage.setScene(s);
 
-            ((Button) stage.getScene().lookup("#CloseButton")).setOnAction(event -> {
+            ((Button) stage.getScene().lookup("#button_close")).setOnAction(event -> {
                 stage.close();
             });
 

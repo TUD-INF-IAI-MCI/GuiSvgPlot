@@ -4,6 +4,7 @@ import application.infrastructure.UTF8Control;
 import com.google.gson.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -23,6 +24,7 @@ public class Settings {
     private static final Settings INSTANCE = new Settings();
 
     public final List<Locale> supportedLocals = Arrays.asList(Locale.ENGLISH, Locale.GERMAN);
+    public final Image favicon = new Image(getClass().getResource("/images/barchart_circle.png").toExternalForm());
     private String gnuPlotPath;
     private SimpleObjectProperty<Locale> currentLocale = new SimpleObjectProperty<>();
     private ResourceBundle bundle;

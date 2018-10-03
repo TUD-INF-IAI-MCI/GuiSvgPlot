@@ -53,7 +53,6 @@ public class SettingsDialogController implements Initializable {
 
 
     public void init(Stage stage) {
-        System.out.println(this.chosenLocale);
         button_Save.setOnAction(event -> {
             if (chosenLocale != null)
                 settings.setCurrentLocale(chosenLocale);

@@ -94,7 +94,6 @@ public class TextFieldUtil {
                     label.getStyleClass().add("invalid");
                     textField.getStyleClass().add("invalid");
                     if (!accessibleHelp.contains(errorMessageString)) {
-                        System.out.println(accessibleHelp + errorMessageString);
                         textField.setAccessibleHelp(accessibleHelp + errorMessageString);
                     }
                 } else {
@@ -253,7 +252,6 @@ public class TextFieldUtil {
     private void validateGTH(final TextField textField1, final Label label1, final TextField textField2, final Label label2, final String message_key) {
         double textField1Value = Double.parseDouble(textField1.getText());
         double textField2Value = Double.parseDouble(textField2.getText());
-        System.out.println(bundle.getString(message_key));
         String errorMessageString = bundle.getString(message_key).replace("{0}", label1.getText()).replace("{1}", label2.getText());
 
         if (textField1Value > textField2Value) {

@@ -9,19 +9,13 @@ import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -71,7 +65,7 @@ public class GuiSvgPlott extends Application {
         return instance;
     }
 
-    public void setLanguageDialog() {
+    public void setSettingsDialog() {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
@@ -84,6 +78,7 @@ public class GuiSvgPlott extends Application {
             Stage stage = new Stage();
             stage.setResizable(true);
             stage.setTitle(bundle.getString("application_settings"));
+            stage.getIcons().add(Settings.getInstance().favicon);
             stage.setScene(scene);
 
             SettingsDialogController controller = loader.getController();
@@ -137,8 +132,7 @@ public class GuiSvgPlott extends Application {
         primaryStage.setResizable(true);
         primaryStage.setTitle(bundle.getString("application_title"));
         primaryStage.setScene(scene);
-        Image favicon = new Image(getClass().getResource("/images/barchart_circle.png").toExternalForm());
-        primaryStage.getIcons().add(favicon);
+        primaryStage.getIcons().add(settings.favicon);
 
 
         primaryStage.show();
