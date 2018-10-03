@@ -905,7 +905,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         TextField diagramTypeField = new TextField("");
         diagramTypeField.setFocusTraversable(true);
         diagramTypeField.getStyleClass().add("data-cell-z");
-        diagramTypeField.setText(preset.getDiagramTypeString());
+        diagramTypeField.setText(bundle.getString("diagramType_" + preset.getDiagramTypeString().toLowerCase()));
         diagramTypeField.setEditable(false);
         diagramTypeField.setMouseTransparent(true);
 

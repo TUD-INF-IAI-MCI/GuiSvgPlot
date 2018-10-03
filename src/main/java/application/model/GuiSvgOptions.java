@@ -886,8 +886,5 @@ public class GuiSvgOptions {
         this.yLines.set(guiSvgOptions.getyLines());
         this.yRange.set(guiSvgOptions.getyRange());
         this.yUnit.set(guiSvgOptions.getyUnit());
-
-
-
     }
 }
