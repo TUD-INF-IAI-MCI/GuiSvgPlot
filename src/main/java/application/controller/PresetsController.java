@@ -1100,6 +1100,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private void savePreset(){
         if(!isPresetNameEmpty()){
+            currentPreset.setName(textField_presetName.getText());
             flagGetter();
             hideAllEditors();
             presetService.save(currentPreset);
