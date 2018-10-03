@@ -5,6 +5,7 @@ import application.controller.wizard.SVGWizardController;
 import application.model.GuiSvgOptions;
 import application.model.Options.*;
 import application.model.Preset;
+import application.model.Settings;
 import application.service.PresetService;
 import application.util.Converter;
 import application.util.DiagramTypeUtil;
@@ -18,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -841,6 +843,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         dialogue.setResizable(true);
         dialogue.setHeaderText(bundle.getString("prompt_diagramtype_header"));
         dialogue.setContentText(bundle.getString("prompt_diagramtype_content"));
+
+        Stage stage = (Stage) dialogue.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(Settings.getInstance().favicon);
+
         Optional<String> result = dialogue.showAndWait();
         if (result.isPresent()) {
             dt = diagramTypeUtil.fromString(result.get());
@@ -857,6 +863,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         nameDialogue.setTitle(bundle.getString("prompt_preset_name_title"));
         nameDialogue.setHeaderText(bundle.getString("prompt_preset_name_header"));
         nameDialogue.setContentText(bundle.getString("prompt_preset_name_content"));
+
+        Stage stage = (Stage) nameDialogue.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(Settings.getInstance().favicon);
+
         Optional<String> result = nameDialogue.showAndWait();
         if (result.get().equals("")) {
             emptyNameAlert();
@@ -1131,6 +1141,9 @@ public class PresetsController extends SVGWizardController implements Initializa
         alert.setTitle(bundle.getString("alert_preset_delete_title"));
         alert.setHeaderText(bundle.getString("alert_preset_delete_header"));
         alert.setContentText(bundle.getString("alert_preset_delete_content1") + p.getName() + bundle.getString("alert_preset_delete_content2"));
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(Settings.getInstance().favicon);
+
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             this.presetService.delete(p);
@@ -1151,6 +1164,8 @@ public class PresetsController extends SVGWizardController implements Initializa
         alert.setTitle(bundle.getString("alert_preset_duplicate_title"));
         alert.setHeaderText(bundle.getString("alert_preset_duplicate_header1") + o.get() + bundle.getString("alert_preset_duplicate_header2"));
         alert.setContentText(bundle.getString("alert_preset_duplicate_content"));
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(Settings.getInstance().favicon);
         alert.showAndWait();
     }
 
@@ -1162,6 +1177,8 @@ public class PresetsController extends SVGWizardController implements Initializa
         alarm.setTitle(bundle.getString("alert_preset_empty_title"));
         alarm.setHeaderText(bundle.getString("alert_preset_empty_header"));
         alarm.setContentText(bundle.getString("alert_preset_empty_content"));
+        Stage stage = (Stage) alarm.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(Settings.getInstance().favicon);
         alarm.showAndWait();
     }
 

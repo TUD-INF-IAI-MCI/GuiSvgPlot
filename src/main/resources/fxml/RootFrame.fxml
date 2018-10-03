@@ -13,42 +13,40 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" stylesheets="/stylesheet/guiSvgPlott.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.RootFrameController">
-    <BorderPane fx:id="borderPane_Content" layoutX="311.0" layoutY="100.0" prefHeight="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" stylesheets="/stylesheet/guiSvgPlott.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="application.controller.RootFrameController">
+    <BorderPane fx:id="borderPane_Content" layoutX="311.0" layoutY="100.0" prefHeight="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                AnchorPane.topAnchor="0.0">
         <top>
             <VBox maxWidth="1.7976931348623157E308" minHeight="25.0" prefHeight="120.0" styleClass="p-0">
-                <MenuBar BorderPane.alignment="CENTER">
+                <MenuBar BorderPane.alignment="CENTER" accessibleHelp="Menue bar">
                     <menus>
                         <Menu mnemonicParsing="false" text="%menu_file">
                             <items>
-                                <MenuItem fx:id="menuItem_settings" mnemonicParsing="false" text="%menu_file_settings" />
-                                <SeparatorMenuItem />
-                                <MenuItem fx:id="menuItem_ExitProgram" mnemonicParsing="false" onAction="#closeButtonAction" text="%menu_file_close" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="%menu_edit" visible="false">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="%menu_edit_delete" />
+                                <MenuItem fx:id="menuItem_settings" mnemonicParsing="false" text="%menu_file_settings"/>
+                                <SeparatorMenuItem/>
+                                <MenuItem fx:id="menuItem_ExitProgram" mnemonicParsing="false" onAction="#closeButtonAction" text="%menu_file_close"/>
                             </items>
                         </Menu>
                         <Menu fx:id="menu_Presets" mnemonicParsing="false" text="%menu_presets">
                             <items>
-                        <MenuItem fx:id="menuItem_Save_Preset" mnemonicParsing="false" text="%button_save_preset" />
-                                <MenuItem fx:id="menuItem_Preset_Editor" mnemonicParsing="false" onAction="#startPresetOverview" text="%button_preset" />
+                                <MenuItem fx:id="menuItem_Save_Preset" mnemonicParsing="false" text="%button_save_preset"/>
+                                <MenuItem fx:id="menuItem_Preset_Editor" mnemonicParsing="false" onAction="#startPresetOverview" text="%button_preset"/>
                             </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="%menu_help">
+                        <Menu fx:id="menu_help" mnemonicParsing="false" text="%menu_help">
                             <items>
-                                <MenuItem fx:id="menuItem_About" mnemonicParsing="false" text="%menu_help_about" />
-                        <MenuItem fx:id="menuItem_csvHelp" mnemonicParsing="false" text="%menu_help_csv" />
+                                <MenuItem fx:id="menuItem_About" mnemonicParsing="false" text="%menu_help_about"/>
+                                <MenuItem fx:id="menuItem_csvHelp" mnemonicParsing="false" text="%menu_help_csv"/>
                             </items>
                         </Menu>
                     </menus>
                 </MenuBar>
-                <Label fx:id="label_Headline" maxWidth="1.7976931348623157E308" minWidth="200.0" styleClass="headline" text="%application_title" />
+                <Label fx:id="label_Headline" maxWidth="1.7976931348623157E308" minWidth="200.0" styleClass="headline" text="%application_title"/>
                 <ScrollPane fx:id="scrollPane_message" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxWidth="1.7976931348623157E308" prefHeight="200.0" styleClass="messages_conatiner">
                     <content>
-                        <VBox fx:id="vBox_messages" alignment="center" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="984.0" styleClass="p-0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+                        <VBox fx:id="vBox_messages" alignment="center" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="984.0" styleClass="p-0" AnchorPane.leftAnchor="0"
+                              AnchorPane.rightAnchor="0">
                             <children>
                             </children>
                         </VBox>
@@ -59,11 +57,13 @@
         <center>
             <ButtonBar buttonMinWidth="350.0" maxWidth="-Infinity" prefHeight="543.0" prefWidth="730.0" BorderPane.alignment="CENTER">
                 <buttons>
-                    <Button fx:id="button_StartFunction" accessibleText="%button_function_create" mnemonicParsing="false" prefHeight="103.0" text="%button_function_create" ButtonBar.buttonData="LEFT" />
-                    <Button fx:id="button_StartDiagram" accessibleText="%button_diagram_create" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="103.0" text="%button_diagram_create" ButtonBar.buttonData="RIGHT" />
+                    <Button fx:id="button_StartFunction" accessibleText="%button_function_create" mnemonicParsing="false" prefHeight="103.0" text="%button_function_create"
+                            ButtonBar.buttonData="LEFT"/>
+                    <Button fx:id="button_StartDiagram" accessibleText="%button_diagram_create" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="103.0" text="%button_diagram_create"
+                            ButtonBar.buttonData="RIGHT"/>
                 </buttons>
                 <BorderPane.margin>
-                    <Insets />
+                    <Insets/>
                 </BorderPane.margin>
             </ButtonBar>
         </center>

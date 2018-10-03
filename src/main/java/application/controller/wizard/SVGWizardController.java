@@ -7,6 +7,7 @@ import application.model.GuiSvgOptions;
 import application.model.Options.CssType;
 import application.model.Options.PageSize;
 import application.model.Preset;
+import application.model.Settings;
 import application.service.PresetService;
 import application.service.SvgOptionsService;
 import application.util.ChoiceBoxUtil;
@@ -860,6 +861,10 @@ public class SVGWizardController implements Initializable {
             dialog.setTitle(bundle.getString("prompt_load_title"));
             dialog.setHeaderText(bundle.getString("prompt_load_header"));
             dialog.setContentText(bundle.getString("prompt_load_content"));
+
+            Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(Settings.getInstance().favicon);
+
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent()) {
                 System.out.println(result.get());

@@ -197,7 +197,7 @@ public class GuiSvgPlott extends Application {
                     break;
                 }
                 case TAB: {
-                    if (event.isControlDown()) {
+                    if (event.isControlDown() &&  rootFrameController.svgWizardController != null) {
                         if (!event.isShiftDown()) {
                             rootFrameController.svgWizardController.incrementCurrentStage();
                         } else {

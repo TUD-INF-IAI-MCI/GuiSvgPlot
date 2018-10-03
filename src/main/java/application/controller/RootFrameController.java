@@ -12,15 +12,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.controlsfx.glyphfont.Glyph;
 
 import java.io.IOException;
 import java.net.URL;
@@ -102,6 +99,10 @@ public class RootFrameController implements Initializable {
                 nameDialogue.setTitle(bundle.getString("prompt_preset_name_title"));
                 nameDialogue.setHeaderText(bundle.getString("prompt_preset_name_header"));
                 nameDialogue.setContentText(bundle.getString("prompt_preset_name_content"));
+
+                Stage stage = (Stage) nameDialogue.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(Settings.getInstance().favicon);
+
                 Optional<String> result = nameDialogue.showAndWait();
                 if (result.isPresent() && result.get().equals("")) {
                     showErrorAlert(bundle.getString("alert_preset_empty_title"), bundle.getString("alert_preset_empty_header"), bundle.getString("alert_preset_empty_content"));
@@ -113,6 +114,10 @@ public class RootFrameController implements Initializable {
                     alert.setHeaderText(bundle.getString("alert_preset_created_header"));
                     alert.setContentText(bundle.getString("alert_preset_created_content"));
                     alert.getDialogPane().setMinSize(500, 150);
+
+                    Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                    alertStage.getIcons().add(Settings.getInstance().favicon);
+
                     alert.showAndWait();
                 } else if (result.isPresent()) {
                     String header = bundle.getString("alert_preset_duplicate_header1") + result.get() + bundle.getString("alert_preset_duplicate_header2");
@@ -129,6 +134,10 @@ public class RootFrameController implements Initializable {
             alert.setResizable(true);
             alert.getDialogPane().setMinSize(500, 250);
             alert.setContentText(bundle.getString("menu_help_about_content"));
+
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(Settings.getInstance().favicon);
+
             alert.showAndWait();
         });
 
