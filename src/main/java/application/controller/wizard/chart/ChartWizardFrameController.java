@@ -37,7 +37,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
     private static final int AMOUNTOFSTAGES = 6;
 
-    // TODO: replace with readed number of data
+    // TODO: replace with read number of data
     private static final int AMOUNT_OF_POINTSYMBOL_INPUTS = 3;
 
     /*Begin: FXML Nodes*/
@@ -605,7 +605,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.textField_xunit.textProperty().bindBidirectional(this.guiSvgOptions.xUnitProperty());
 
         // y unit
-        this.textField_yunit.textProperty().bindBidirectional(this.guiSvgOptions.yLinesProperty());
+        this.textField_yunit.textProperty().bindBidirectional(this.guiSvgOptions.yUnitProperty());
 
         ObservableList<GuiAxisStyle> axisStyleObservableList = FXCollections.observableArrayList(GuiAxisStyle.values());
         axisStyleObservableList.remove(GuiAxisStyle.Barchart);

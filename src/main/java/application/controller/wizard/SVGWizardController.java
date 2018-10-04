@@ -351,7 +351,7 @@ public class SVGWizardController implements Initializable {
     protected void initAxisFieldListeners() {
         // xRange
         this.textFieldUtil.addNotEqualValidation(this.textField_xfrom, this.label_xfrom, this.textField_xto, this.label_xto);
-        this.textFieldUtil.addFirstNotGreaterThenSecondValidationListener(this.textField_xfrom, this.label_xfrom, this.textField_xto, this.label_xto);
+        this.textFieldUtil.addFirstNotGreaterThanSecondValidationListener(this.textField_xfrom, this.label_xfrom, this.textField_xto, this.label_xto);
         this.xRange.addListener((args, oldVal, newVal) -> {
             if (!this.guiSvgOptions.isAutoScale()) {
                 this.guiSvgOptions.setxRange(xRange.get());
@@ -394,7 +394,7 @@ public class SVGWizardController implements Initializable {
 
         // yRange
         this.textFieldUtil.addNotEqualValidation(this.textField_yfrom, this.label_yfrom, this.textField_yto, this.label_yto);
-        this.textFieldUtil.addFirstNotGreaterThenSecondValidationListener(this.textField_yfrom, this.label_yfrom, this.textField_yto, this.label_yto);
+        this.textFieldUtil.addFirstNotGreaterThanSecondValidationListener(this.textField_yfrom, this.label_yfrom, this.textField_yto, this.label_yto);
         this.yRange.addListener((args, oldVal, newVal) -> {
             if (!this.guiSvgOptions.isAutoScale()) {
                 this.guiSvgOptions.setyRange(this.yRange.get());

@@ -4,7 +4,6 @@ import application.GuiSvgPlott;
 import application.model.GuiSvgOptions;
 import application.service.SvgOptionsService;
 import javafx.scene.Node;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
@@ -12,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javafx.scene.control.Label;
 
-import javax.xml.soap.Text;
 import java.util.ResourceBundle;
 
 /**
@@ -239,13 +237,13 @@ public class TextFieldUtil {
         });
     }
 
-    public void addFirstNotGreaterThenSecondValidationListener(final TextField textField1, final Label label1, final TextField textField2, final Label label2) {
+    public void addFirstNotGreaterThanSecondValidationListener(final TextField textField1, final Label label1, final TextField textField2, final Label label2) {
 
         textField1.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            this.validateGTH(textField1, label1, textField2, label2, "error_field1_must_be_less_then_field2");
+            this.validateGTH(textField1, label1, textField2, label2, "error_field1_must_be_less_than_field2");
         });
         textField2.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            this.validateGTH(textField1, label1, textField2, label2, "error_field1_must_be_less_then_field2");
+            this.validateGTH(textField1, label1, textField2, label2, "error_field1_must_be_less_than_field2");
         });
     }
 
