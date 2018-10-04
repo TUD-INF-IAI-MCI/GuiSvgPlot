@@ -306,6 +306,7 @@ public class SVGWizardController implements Initializable {
             this.textField_customSizeHeight.setText(this.size.y());
         });
 
+        //this.radioBtn_landscape.selectedProperty().bindBidirectional();
         this.radioBtn_landscape.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 pageOrientation.set(PageSize.PageOrientation.LANDSCAPE);
@@ -450,7 +451,6 @@ public class SVGWizardController implements Initializable {
 
         // css file
         this.textField_cssPath.textProperty().bindBidirectional(this.guiSvgOptions.cssProperty());
-
         this.textField_cssPath.setOnDragOver(dragOverHandler(".css"));
         this.textField_cssPath.setOnDragDropped(event -> {
 
@@ -853,7 +853,6 @@ public class SVGWizardController implements Initializable {
         }
         button_Load.setOnAction(event -> {
             List<String> choices = new ArrayList<>();
-            System.out.println(presets);
             for (Preset p : presets) {
                 choices.add(p.getName());
             }
@@ -867,11 +866,9 @@ public class SVGWizardController implements Initializable {
 
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent()) {
-                System.out.println(result.get());
                 for (Preset preset : presets) {
                     if (preset.getName().equals(result.get())) {
                         this.guiSvgOptions.update(preset.getOptions());
-                        System.out.println(this.guiSvgOptions.getSize());
                         //initiateAllStages();
                     }
 
