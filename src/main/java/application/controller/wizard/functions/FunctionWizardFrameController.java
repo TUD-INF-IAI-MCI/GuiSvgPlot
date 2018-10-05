@@ -30,13 +30,11 @@ import java.nio.file.Files;
 import java.util.ResourceBundle;
 
 /**
- * @author Robert Schlegel
+ * @author Robert Schlegel, Emma Müller
  */
 public class FunctionWizardFrameController extends SVGWizardController {
 
     private static final int AMOUNTOFSTAGES = 6;
-
-
 
 
     /*Begin: FXML Nodes*/
