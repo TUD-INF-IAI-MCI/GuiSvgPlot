@@ -16,6 +16,14 @@ VBox {
   &.info {
     -fx-background-color: $info-bg-color;
   }
+
+  &.dynamic-fields {
+    -fx-padding: 0;
+    > HBox {
+       > Label {
+       }
+    }
+  }
 }
 
 WebView {
@@ -115,8 +123,11 @@ AnchorPane.preview-container {
     -fx-focus-color: $tud-blue;
   }
 }
-
-ListView, ScrollPane:focused{
+ScrollPane {
+  -fx-border-color: none;
+  -fx-background-color: none;
+}
+ListView {
   -fx-border-color: $tud-blue;
 }
 Text {

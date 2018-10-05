@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 /**
  * @author Robert Schlegel
@@ -51,8 +50,8 @@ public class FunctionWizardFrameController extends SVGWizardController {
     @FXML
     private Button button_EditDataSet;
 
-    @FXML
-    private ScrollPane scrollPane_dataTable;
+//    @FXML
+//    private ScrollPane scrollPane_dataTable;
     @FXML
     private VBox vBox_DataTable;
 
@@ -170,7 +169,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         vBox_DataTable.getStyleClass().add("data-table");
         vBox_DataTable.setFillWidth(true);
 
-        scrollPane_dataTable.setFitToWidth(true);
+//        scrollPane_dataTable.setFitToWidth(true);
 
         this.functionList = FXCollections.observableArrayList();
 

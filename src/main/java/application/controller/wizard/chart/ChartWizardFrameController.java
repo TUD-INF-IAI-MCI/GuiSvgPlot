@@ -3,6 +3,8 @@ package application.controller.wizard.chart;
 import application.controller.wizard.SVGWizardController;
 import application.model.Options.*;
 import application.util.KeyValuePair;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -12,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -19,10 +22,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
+import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.plotting.line.LineStyle;
 import tud.tangram.svgplot.plotting.point.PointSymbol;
 import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
+import tud.tangram.svgplot.styles.Color;
 
 import java.net.URL;
 import java.util.*;
@@ -37,8 +42,15 @@ public class ChartWizardFrameController extends SVGWizardController {
 
     private static final int AMOUNTOFSTAGES = 6;
 
-    // TODO: replace with read number of data
-    private static final int AMOUNT_OF_POINTSYMBOL_INPUTS = 3;
+    // TODO: Implement like pointSymbols and colors + replace with readed number of data and set initialValue to 0
+    private ObjectProperty<Integer> amountOfLineTypeInput = new SimpleObjectProperty<>(3);
+
+    // TODO: replace with readed number of data and set initialValue to 0
+    private ObjectProperty<Integer> amountOfPointSymbolInputs = new SimpleObjectProperty<>(3);
+
+    // TODO: replace with readed number of data and set initialValue to 0
+    private ObjectProperty<Integer> amountOfColorInput = new SimpleObjectProperty<>(3);
+
 
     /*Begin: FXML Nodes*/
 
@@ -171,10 +183,13 @@ public class ChartWizardFrameController extends SVGWizardController {
     /* stage 6 */
     @FXML
     private GridPane stage6;
+    @FXML
+    private VBox vBox_colors;
     /*End: FXML Nodes*/
 
     private ObservableList<Texture> textures;
     private ObservableList<LineStyle> lineStyles;
+
     private ObservableList<PointSymbol> customPointSymbols;
     private Map<Label, HBox> pointSymbolInputs;
     private Map<Label, PointSymbol> selectedPointSymbols;
@@ -183,6 +198,9 @@ public class ChartWizardFrameController extends SVGWizardController {
     private ObservableList<LineStyle> lineStyleSecondObservableList;
     private ObservableList<LineStyle> lineStyleThirdObservableList;
 
+    private ObservableList<Color> customColors;
+    private Map<Label, HBox> colorInputs;
+    private Map<Label, Color> selectedColors;
 
     private ObservableList<String> setNames;
     private HashMap<String, ArrayList<KeyValuePair>> keyMap;
@@ -232,7 +250,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         // i18n
         this.choiceBox_diagramType.setConverter(this.converter.getDiagramTypeStringConverter());
         this.choiceBox_diagramType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null){
+            if (newValue != null) {
                 guiSvgOptions.setDiagramType(newValue);
                 toggleBarChartOptions(newValue == DiagramType.BarChart);
                 toggleLineChartOptions(newValue == DiagramType.LineChart);
@@ -260,7 +278,6 @@ public class ChartWizardFrameController extends SVGWizardController {
                 String result = ((TextInputDialog) d).getResult();
                 if (!result.isEmpty()) {
                     setNames.add(result);
-                    System.out.println(result);
                 }
             }
         });
@@ -366,7 +383,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choicebox_sortOrder.setConverter(this.converter.getSortOrderStringConverter());
         this.choicebox_sortOrder.getSelectionModel().select(SortOrder.ASC);
         this.choicebox_sortOrder.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null){
+            if (newValue != null) {
                 guiSvgOptions.setSortOrder(newValue);
             }
         });
@@ -377,7 +394,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_linepoints.setConverter(converter.getLinePointsOptionStringConverter());
         this.choiceBox_linepoints.getSelectionModel().select(this.guiSvgOptions.getLinePointsOption());
         this.choiceBox_linepoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null){
+            if (newValue != null) {
                 guiSvgOptions.setLinePointsOption(newValue);
                 switch (newValue) {
                     case Hide:
@@ -393,7 +410,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.customPointSymbols = guiSvgOptions.getPointSymbols();
 
         this.pointSymbolInputs = new HashMap<>();
-        for (int i = 0; i < AMOUNT_OF_POINTSYMBOL_INPUTS; i++) {
+        for (int i = 0; i < amountOfPointSymbolInputs.get(); i++) {
             this.drawPointSymbolField(pointSymbolInputs, this.customPointSymbols, 4 + i, i, "pointSymbol", true);
         }
 
@@ -522,7 +539,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_originalPoints.setConverter(this.converter.getVisibilityOfDataPointsStringConverter());
         this.choiceBox_originalPoints.getSelectionModel().select(VisibilityOfDataPoints.SHOW);
         this.choiceBox_originalPoints.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null){
+            if (newValue != null) {
                 this.guiSvgOptions.setHideOriginalPoints(newValue);
                 pointSymbolInputs.forEach((label, hBox) -> toggleVisibility(newValue.equals(VisibilityOfDataPoints.SHOW), label, hBox));
             }
@@ -534,7 +551,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
         this.choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
-            if(newValue != null){
+            if (newValue != null) {
                 trendline.clear();
                 trendline.add(0, newValue.toString());
                 switch (newValue) {
@@ -613,7 +630,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choicebox_dblaxes.setConverter(this.converter.getAxisStyleStringConverter());
         this.choicebox_dblaxes.getSelectionModel().select(this.guiSvgOptions.getAxisStyle());
         this.choicebox_dblaxes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
                 this.guiSvgOptions.setAxisStyle(newValue);
 
             }
@@ -643,6 +660,32 @@ public class ChartWizardFrameController extends SVGWizardController {
      */
     private void initStage6() {
         super.initStylingFieldListeners();
+        this.amountOfColorInput.addListener((observable, oldValue, newValue) -> {
+            if (newValue > oldValue) {
+                for (int i = oldValue; i < newValue; i++) {
+                    this.drawColorField(colorInputs, this.customColors, i, "color", this.guiSvgOptions.getOutputDevice().equals(OutputDevice.ScreenColor));
+                }
+            } else {
+                this.vBox_colors.getChildren().remove(newValue * 2, oldValue * 2);
+            }
+        });
+
+        // customColors
+        this.selectedColors = new HashMap<>();
+        this.customColors = guiSvgOptions.getColors();
+        this.colorInputs = new HashMap<>();
+        for (int i = 0; i < amountOfColorInput.get(); i++) {
+            this.drawColorField(colorInputs, this.customColors, i, "color", this.guiSvgOptions.getOutputDevice().equals(OutputDevice.ScreenColor));
+        }
+
+        selectedColors.forEach((label, color) -> {
+            HBox hBox_scatter = colorInputs.get(label);
+            if (hBox_scatter != null) {
+                ChoiceBox<Color> colorChoiceBox = (ChoiceBox<Color>) hBox_scatter.getChildren().get(0);
+                colorChoiceBox.getSelectionModel().select(color);
+            }
+        });
+
     }
 
     /**
@@ -765,6 +808,18 @@ public class ChartWizardFrameController extends SVGWizardController {
             }
         });
 
+        this.guiSvgOptions.getColors().addListener(new ListChangeListener<Color>() {
+            @Override
+            public void onChanged(Change<? extends Color> c) {
+
+            }
+        });
+
+        this.guiSvgOptions.outputDeviceProperty().addListener((observable, oldValue, newValue) -> {
+            if (colorInputs != null) {
+                vBox_colors.getChildren().forEach(row -> row.setVisible(newValue.equals(OutputDevice.ScreenColor)));
+            }
+        });
     }
 
     private void setValueToIndex(ObservableList<String> trendline, int index, String newValue) {
@@ -793,6 +848,10 @@ public class ChartWizardFrameController extends SVGWizardController {
             ChoiceBox<PointSymbol> pointSymbolChoiceBox = (ChoiceBox<PointSymbol>) hBox.getChildren().get(0);
             this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions, pointSymbolChoiceBox);
         });
+        this.colorInputs.forEach((label, hBox) -> {
+            ChoiceBox<Color> colorChoiceBox = (ChoiceBox<Color>) hBox.getChildren().get(0);
+            this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions, colorChoiceBox);
+        });
         this.radioBtn_autoscale.selectedProperty().addListener((observable, oldValue, newValue) -> {
             this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
         });
@@ -812,7 +871,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
         ChoiceBox<PointSymbol> pointSymbolChoiceBox = new ChoiceBox<>();
         pointSymbolChoiceBox.setId("choiceBox_" + id + "_" + (index + 1));
-        pointSymbolChoiceBox.setAccessibleText(labelStr);
+        pointSymbolChoiceBox.setAccessibleHelp(labelStr);
         pointSymbolChoiceBox.setMinWidth(50.0);
         pointSymbolChoiceBox.setPrefHeight(25.0);
         pointSymbolChoiceBox.setMaxWidth(1.7976931348623157E308);
@@ -824,6 +883,7 @@ public class ChartWizardFrameController extends SVGWizardController {
             changePointSymbols(map, observableList, index, label, newValue, oldValue);
         });
         choiceBoxUtil.addNotEmptyValidationListener(pointSymbolChoiceBox, label);
+
         Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
         Button resetBtn = new Button();
         resetBtn.setTooltip(new Tooltip(bundle.getString("button_point_symbol_reset")));
@@ -843,6 +903,83 @@ public class ChartWizardFrameController extends SVGWizardController {
         selectedPointSymbols.put(label, PointSymbol.getOrdered().get(index));
     }
 
+
+    private void drawColorField(final Map<Label, HBox> map, ObservableList<Color> observableList, final int index, final String id, final boolean visible) {
+
+        String idStr = "label_" + id + "_" + (index + 1);
+
+        String labelStr = (index + 1) + ". " + this.bundle.getString("color_select_text");
+
+        Label label = new Label(labelStr);
+        label.setPrefWidth(190);
+        label.setId(idStr);
+
+        HBox inputGoup = new HBox();
+        inputGoup.setAlignment(Pos.CENTER_RIGHT);
+        inputGoup.setSpacing(10.0);
+
+        ChoiceBox<Color> colorChoiceBox = new ChoiceBox<>();
+        colorChoiceBox.setId("choiceBox_" + id + "_" + (index + 1));
+        colorChoiceBox.setAccessibleHelp(labelStr);
+        colorChoiceBox.setMinWidth(50.0);
+        colorChoiceBox.setPrefHeight(25.0);
+        colorChoiceBox.setMaxWidth(1.7976931348623157E308);
+        ObservableList<Color> colorObservableList = FXCollections.observableArrayList(Color.values());
+        selectedColors.forEach((colorLabel, color) -> colorObservableList.remove(color));
+
+        colorChoiceBox.setItems(colorObservableList);
+        colorChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            changeColors(map, observableList, index, label, newValue, oldValue);
+        });
+        choiceBoxUtil.addNotEmptyValidationListener(colorChoiceBox, label);
+
+        Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
+        Button resetBtn = new Button();
+        resetBtn.setTooltip(new Tooltip(bundle.getString("button_point_symbol_reset")));
+        resetBtn.setGraphic(closeGlyph);
+        resetBtn.getStyleClass().add("btn-reset");
+        resetBtn.setOnAction(event -> {
+            colorChoiceBox.getSelectionModel().select(null);
+        });
+
+        inputGoup.getChildren().addAll(colorChoiceBox, resetBtn);
+        HBox.setHgrow(colorChoiceBox, Priority.ALWAYS);
+        HBox.setHgrow(resetBtn, Priority.NEVER);
+
+        HBox row = new HBox();
+        row.getChildren().addAll(label, inputGoup);
+        HBox.setHgrow(label, Priority.NEVER);
+        HBox.setHgrow(inputGoup, Priority.ALWAYS);
+        row.setVisible(visible);
+
+        vBox_colors.getChildren().add(row);
+        map.put(label, inputGoup);
+
+        selectedColors.put(label, Color.values()[index]);
+    }
+
+    private void changeColors(final Map<Label, HBox> map, ObservableList<Color> observableList, final int index, Label label, final Color newValue, final Color oldValue) {
+        if (oldValue != null) {
+            map.forEach((label1, hBox) -> {
+                if (!label1.equals(label)) {
+                    ChoiceBox<Color> pointSymbolChoiceBox = (ChoiceBox<Color>) hBox.getChildren().get(0);
+                    pointSymbolChoiceBox.getItems().add(oldValue);
+                }
+            });
+        }
+        if (newValue != null) {
+            map.forEach((label1, hBox) -> {
+                if (!label1.equals(label)) {
+                    ChoiceBox<Color> pointSymbolChoiceBox = (ChoiceBox<Color>) hBox.getChildren().get(0);
+                    pointSymbolChoiceBox.getItems().remove(newValue);
+                }
+            });
+        }
+        if (index < observableList.size()) {
+            observableList.set(index, newValue);
+        }
+    }
+
     private void changePointSymbols(final Map<Label, HBox> map, ObservableList<PointSymbol> observableList, final int index, Label label, final PointSymbol newValue, final PointSymbol oldValue) {
         if (oldValue != null) {
             map.forEach((label1, hBox) -> {
@@ -860,7 +997,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                 }
             });
         }
-        if (index < observableList.size()){
+        if (index < observableList.size()) {
             observableList.set(index, newValue);
         }
     }

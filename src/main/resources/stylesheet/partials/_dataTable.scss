@@ -20,9 +20,11 @@
       }
 
       &-button {
+        //@extend .btn-reset;
         -fx-background-color: none;
 
         &:focused {
+          -fx-padding: 3 7;
           //-fx-border-color: none;
         }
       }

@@ -15,6 +15,7 @@ import application.util.Converter;
 import application.util.TextFieldUtil;
 import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
 import javafx.beans.property.*;
+import javafx.beans.value.ObservableObjectValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -23,6 +24,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -73,6 +75,7 @@ import static application.controller.RootFrameController.wizardPath;
 public class SVGWizardController implements Initializable {
     // start logger
     private static final Logger logger = LoggerFactory.getLogger(SVGWizardController.class);
+
 
     @FXML
     protected Button button_Back;
@@ -166,30 +169,31 @@ public class SVGWizardController implements Initializable {
     public Label label_cssCustom;
     @FXML
     public TextArea textArea_cssCustom;
-    @FXML
-    private HBox hbox_firstColor;
-    @FXML
-    private HBox hbox_secondColor;
-    @FXML
-    private HBox hbox_thirdColor;
-    @FXML
-    private Label label_color1;
-    @FXML
-    private Label label_color2;
-    @FXML
-    private Label label_color3;
-    @FXML
-    private ChoiceBox<Color> choiceBox_color1;
-    @FXML
-    private ChoiceBox<Color> choiceBox_color2;
-    @FXML
-    private ChoiceBox<Color> choiceBox_color3;
-    @FXML
-    private Button button_resetFirstColor;
-    @FXML
-    private Button button_resetSecondColor;
-    @FXML
-    private Button button_resetThirdColor;
+    //    @FXML
+//    private HBox hbox_firstColor;
+//    @FXML
+//    private HBox hbox_secondColor;
+//    @FXML
+//    private HBox hbox_thirdColor;
+//    @FXML
+//    private Label label_color1;
+//    @FXML
+//    private Label label_color2;
+//    @FXML
+//    private Label label_color3;
+//    @FXML
+//    private ChoiceBox<Color> choiceBox_color1;
+//    @FXML
+//    private ChoiceBox<Color> choiceBox_color2;
+//    @FXML
+//    private ChoiceBox<Color> choiceBox_color3;
+//    @FXML
+//    private Button button_resetFirstColor;
+//    @FXML
+//    private Button button_resetSecondColor;
+//    @FXML
+//    private Button button_resetThirdColor;
+
     // csv fields
     @FXML
     public TextField textField_csvPath;
@@ -204,8 +208,6 @@ public class SVGWizardController implements Initializable {
 
     public ObservableList<Preset> presets;
     private PresetService presetService = PresetService.getInstance();
-
-    private ObservableList<Color> colors;
 
     public VBox vBox_warnings;
     private PopOver popOver_warnings;
@@ -290,9 +292,9 @@ public class SVGWizardController implements Initializable {
         this.choiceBox_outputDevice.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.guiSvgOptions.setOutputDevice(newValue);
             boolean isColorDevice = newValue == OutputDevice.ScreenColor;
-            this.toggleVisibility(isColorDevice, this.label_color1, this.hbox_firstColor);
-            this.toggleVisibility(isColorDevice, this.label_color2, this.hbox_secondColor);
-            this.toggleVisibility(isColorDevice, this.label_color3, this.hbox_thirdColor);
+//            this.toggleVisibility(isColorDevice, this.label_color1, this.hbox_firstColor);
+//            this.toggleVisibility(isColorDevice, this.label_color2, this.hbox_secondColor);
+//            this.toggleVisibility(isColorDevice, this.label_color3, this.hbox_thirdColor);
         });
 
         // size
@@ -476,70 +478,6 @@ public class SVGWizardController implements Initializable {
             this.guiSvgOptions.setCss(newValue.replace("\n", ""));
         });
 
-
-        // colors
-        this.colors = guiSvgOptions.getColors();
-        this.colors.addListener(new ListChangeListener<Color>() {
-            @Override
-            public void onChanged(final Change<? extends Color> c) {
-                guiSvgOptions.setColors(colors);
-            }
-        });
-        ObservableList<Color> firstColorObservableList = FXCollections.observableArrayList(Color.values());
-        ObservableList<Color> secondColorObservableList = FXCollections.observableArrayList(Color.values());
-        ObservableList<Color> thirdColorObservableList = FXCollections.observableArrayList(Color.values());
-        this.choiceBox_color1.setItems(firstColorObservableList);
-        // this.choiceBox_color1.setConverter(this.converter.getTextureStringConverter());
-        this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_color1, this.label_color1);
-        this.choiceBox_color1.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue != null) {
-                secondColorObservableList.add(oldValue);
-                thirdColorObservableList.add(oldValue);
-            }
-            if (newValue != null) {
-                secondColorObservableList.remove(newValue);
-                thirdColorObservableList.remove(newValue);
-            }
-
-            this.colors.set(0, newValue);
-        });
-        this.button_resetFirstColor.setOnAction(event -> {
-            this.colors.set(0, null);
-        });
-        this.choiceBox_color2.setItems(secondColorObservableList);
-        // this.choiceBox_color2.setConverter(this.converter.getTextureStringConverter());
-        this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_color2, this.label_color2);
-        this.choiceBox_color2.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue != null) {
-                firstColorObservableList.add(oldValue);
-                thirdColorObservableList.add(oldValue);
-            }
-            if (newValue != null) {
-                firstColorObservableList.remove(newValue);
-                thirdColorObservableList.remove(newValue);
-            }
-            this.colors.set(1, newValue);
-        });
-        this.button_resetSecondColor.setOnAction(event -> {
-            this.colors.set(1, null);
-        });
-        this.choiceBox_color3.setItems(thirdColorObservableList);
-        //   this.choiceBox_color3.setConverter(this.converter.getTextureStringConverter());
-        this.choiceBoxUtil.addNotEmptyValidationListener(this.choiceBox_color3, this.label_color3);
-        this.choiceBox_color3.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue != null) {
-                firstColorObservableList.add(oldValue);
-                secondColorObservableList.add(oldValue);
-            }
-            if (newValue != null) {
-                firstColorObservableList.remove(newValue);
-                secondColorObservableList.remove(newValue);
-            }
-            this.colors.set(2, newValue);
-        });
-        this.button_resetThirdColor.setOnAction(event -> {
-            this.colors.set(2, null);
-        });
     }
 
     protected void initCsvFieldListeners() {
@@ -999,19 +937,12 @@ public class SVGWizardController implements Initializable {
         });
         this.guiSvgOptions.sizeProperty().addListener((observable, oldValue, newValue) -> {
             PageSize pageSize = PageSize.getByPoint(newValue);
-            if (pageSize.equals(PageSize.CUSTOM)){
+            if (pageSize.equals(PageSize.CUSTOM)) {
                 textField_customSizeWidth.setText("" + newValue.getX());
                 textField_customSizeHeight.setText("" + newValue.getY());
-            }{
-                choiceBox_size.getSelectionModel().select(pageSize);
             }
-        });
-        this.guiSvgOptions.getColors().addListener(new ListChangeListener<Color>() {
-            @Override
-            public void onChanged(Change<? extends Color> c) {
-                choiceBox_color1.getSelectionModel().select(guiSvgOptions.getColors().get(0));
-                choiceBox_color2.getSelectionModel().select(guiSvgOptions.getColors().get(1));
-                choiceBox_color3.getSelectionModel().select(guiSvgOptions.getColors().get(2));
+            {
+                choiceBox_size.getSelectionModel().select(pageSize);
             }
         });
     }
@@ -1129,8 +1060,7 @@ public class SVGWizardController implements Initializable {
     protected void initFieldListenersForPreview() {
         this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
                 this.choiceBox_outputDevice, this.choiceBox_size, this.choicebox_gridStyle,
-                this.choiceBox_csvOrientation, this.choiceBox_csvType, this.choiceBox_cssType,
-                this.choiceBox_color1, this.choiceBox_color2, this.choiceBox_color3);
+                this.choiceBox_csvOrientation, this.choiceBox_csvType, this.choiceBox_cssType);
         this.textFieldUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
                 this.textField_title, this.textField_customSizeWidth, this.textField_customSizeHeight,
                 this.textField_xfrom, this.textField_xto, this.textField_yfrom, this.textField_yto,
@@ -1186,4 +1116,5 @@ public class SVGWizardController implements Initializable {
             this.currentStage.set(this.currentStage.get() - 1);
         }
     }
+
 }
