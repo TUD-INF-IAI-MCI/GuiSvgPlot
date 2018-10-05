@@ -1,5 +1,8 @@
 package application.util;
 
+/**
+ * @author Robert Schlegel
+ */
 public class KeyValuePair {
 
 

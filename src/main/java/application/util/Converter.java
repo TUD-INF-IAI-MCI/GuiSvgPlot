@@ -421,4 +421,24 @@ public class Converter {
         };
     }
 
+    public StringConverter<IntegralOption> getIntegralOptionStringConverter() {
+        return new StringConverter<IntegralOption>() {
+            @Override
+            public String toString(IntegralOption integralOption) {
+                return bundle.getString("integralOption_" + integralOption.toString().toLowerCase());
+            }
+
+            @Override
+            public IntegralOption fromString(String string) {
+                IntegralOption integralOption = IntegralOption.NONE;
+                for (IntegralOption io : FXCollections.observableArrayList(IntegralOption.values())) {
+                    if (this.toString(io).equals(string)) {
+                        integralOption = io;
+                    }
+                }
+                return integralOption;
+            }
+        };
+    }
+
 }

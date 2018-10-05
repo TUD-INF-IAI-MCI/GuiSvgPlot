@@ -169,30 +169,6 @@ public class SVGWizardController implements Initializable {
     public Label label_cssCustom;
     @FXML
     public TextArea textArea_cssCustom;
-    //    @FXML
-//    private HBox hbox_firstColor;
-//    @FXML
-//    private HBox hbox_secondColor;
-//    @FXML
-//    private HBox hbox_thirdColor;
-//    @FXML
-//    private Label label_color1;
-//    @FXML
-//    private Label label_color2;
-//    @FXML
-//    private Label label_color3;
-//    @FXML
-//    private ChoiceBox<Color> choiceBox_color1;
-//    @FXML
-//    private ChoiceBox<Color> choiceBox_color2;
-//    @FXML
-//    private ChoiceBox<Color> choiceBox_color3;
-//    @FXML
-//    private Button button_resetFirstColor;
-//    @FXML
-//    private Button button_resetSecondColor;
-//    @FXML
-//    private Button button_resetThirdColor;
 
     // csv fields
     @FXML
@@ -1059,12 +1035,11 @@ public class SVGWizardController implements Initializable {
 
     protected void initFieldListenersForPreview() {
         this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
-                this.choiceBox_outputDevice, this.choiceBox_size, this.choicebox_gridStyle,
-                this.choiceBox_csvOrientation, this.choiceBox_csvType, this.choiceBox_cssType);
+                this.choiceBox_outputDevice, this.choiceBox_size, this.choicebox_gridStyle,this.choiceBox_cssType);
         this.textFieldUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
                 this.textField_title, this.textField_customSizeWidth, this.textField_customSizeHeight,
                 this.textField_xfrom, this.textField_xto, this.textField_yfrom, this.textField_yto,
-                this.textField_xlines, this.textField_ylines);
+                this.textField_xlines, this.textField_ylines, this.textField_customSizeWidth, this.textField_customSizeHeight);
     }
 
     private void focusInit() {

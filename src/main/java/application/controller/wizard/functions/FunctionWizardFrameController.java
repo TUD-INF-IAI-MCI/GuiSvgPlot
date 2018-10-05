@@ -1,6 +1,7 @@
 package application.controller.wizard.functions;
 
 import application.controller.wizard.SVGWizardController;
+import application.model.Options.IntegralOption;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -60,13 +61,16 @@ public class FunctionWizardFrameController extends SVGWizardController {
     @FXML
     private GridPane stage3;
 
-    public ChoiceBox<Function> comboBox_function2;
-
-    public ChoiceBox<Function> comboBox_function1;
-
+    @FXML
+    private ChoiceBox<IntegralOption> choiceBox_integralOption;
 
     @FXML
-    private RadioButton radioButton_Function2;
+    private Label label_function1;
+    public ChoiceBox<Function> choiceBox_function1;
+
+    @FXML
+    private Label label_function2;
+    public ChoiceBox<Function> choiceBox_function2;
 
     @FXML
     private TextField textField_rangeFrom;
@@ -82,10 +86,12 @@ public class FunctionWizardFrameController extends SVGWizardController {
     private Label label_RangeTo;
 
     @FXML
-    private TextField textField_IntegralName;
+    private Label label_integralName;
+    @FXML
+    private TextField textField_integralName;
 
     @FXML
-    private RadioButton radioButton_ValueRangeCustom;
+    private RadioButton radioButton_valueRangeCustom;
 
     @FXML
     private RadioButton radioButton_ValueRangeDefault;
@@ -124,8 +130,8 @@ public class FunctionWizardFrameController extends SVGWizardController {
     public FunctionWizardFrameController() {
         integral1 = new SimpleStringProperty("");
         integral2 = new SimpleStringProperty("");
-        rangeFrom = new SimpleDoubleProperty(-100);
-        rangeTo = new SimpleDoubleProperty(100);
+        rangeFrom = new SimpleDoubleProperty(100);
+        rangeTo = new SimpleDoubleProperty(-100);
         integralName = new SimpleStringProperty("");
     }
 
@@ -134,12 +140,12 @@ public class FunctionWizardFrameController extends SVGWizardController {
         super.initialize(location, resources);
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES, DiagramType.FunctionPlot);
         this.initiateAllStages();
-        textField_rangeTo.setText(-10 + "");
-        textField_rangeFrom.setText(10 + "");
-
+        textField_rangeTo.setText(10 + "");
+        textField_rangeFrom.setText(-10 + "");
 
         this.guiSvgOptions.setDiagramType(DiagramType.FunctionPlot);
         super.initloadPreset();
+        this.initFieldListenersForFunctionPreview();
     }
 
     @Override
@@ -221,8 +227,33 @@ public class FunctionWizardFrameController extends SVGWizardController {
      */
     private void initStage3() {
 
-        comboBox_function1.setItems(functionList);
-        comboBox_function2.setItems(functionList);
+        ObservableList<IntegralOption> integralOptionObservableList = FXCollections.observableArrayList(IntegralOption.values());
+        this.choiceBox_integralOption.setItems(integralOptionObservableList);
+        this.choiceBox_integralOption.getSelectionModel().select(IntegralOption.NONE);
+        this.choiceBox_integralOption.setConverter(super.converter.getIntegralOptionStringConverter());
+        this.choiceBox_integralOption.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+
+            toggleVisibility(newValue.isShowIntegral(), label_integralName, textField_integralName);
+            toggleVisibility(newValue.isShowIntegral(), label_function1, choiceBox_function1);
+            toggleVisibility(newValue.isShowIntegral(), label_RangeFrom, textField_rangeFrom);
+            toggleVisibility(newValue.isShowIntegral(), label_RangeTo, textField_rangeTo);
+            toggleVisibility(newValue.equals(IntegralOption.FUNCTION), label_function2, choiceBox_function2);
+
+            if (newValue.equals(IntegralOption.XAXIS)) integral2.set("y=0");
+            if (newValue.equals(IntegralOption.FUNCTION)) integral2.set("");
+
+            integralOptionBuilder();
+        });
+
+        this.rangeFrom.addListener((observable, oldValue, newValue) -> {
+            this.textField_rangeFrom.setText(newValue + "");
+        });
+        this.rangeTo.addListener((observable, oldValue, newValue) -> {
+            this.textField_rangeTo.setText(newValue + "");
+        });
+
+        choiceBox_function1.setItems(functionList);
+        choiceBox_function2.setItems(functionList);
 
 
         StringConverter<Function> converter = new StringConverter<Function>() {
@@ -232,7 +263,6 @@ public class FunctionWizardFrameController extends SVGWizardController {
             public String toString(Function function) {
                 f = function;
                 return function.toString();
-//                return "";
             }
 
             @Override
@@ -241,16 +271,12 @@ public class FunctionWizardFrameController extends SVGWizardController {
             }
         };
 
-        comboBox_function1.setConverter(converter);
-        comboBox_function2.setConverter(converter);
+        choiceBox_function1.setConverter(converter);
+        choiceBox_function2.setConverter(converter);
 
-
-        comboBox_function2.visibleProperty().bind(radioButton_Function2.selectedProperty());
-
-
-        comboBox_function1.setOnAction(event -> {
+        choiceBox_function1.setOnAction(event -> {
             try {
-                integral1.set(comboBox_function1.getSelectionModel().getSelectedItem().getFunction());
+                integral1.set(choiceBox_function1.getSelectionModel().getSelectedItem().getFunction());
             } catch (NullPointerException e) {
 
             }
@@ -259,57 +285,33 @@ public class FunctionWizardFrameController extends SVGWizardController {
         });
 
 
-        comboBox_function2.setOnAction(event -> {
-            integral1.set(comboBox_function2.getSelectionModel().getSelectedItem().getFunction());
-            integralOptionBuilder();
-
-        });
-
-        radioButton_Function2.selectedProperty().addListener((args, oldVal, newVal) -> {
-            if (!newVal)
-                integral2.set("y=0");
-            integralOptionBuilder();
-            this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
-        });
-
-
-        textField_rangeFrom.visibleProperty().bind(radioButton_ValueRangeDefault.selectedProperty());
-        textField_rangeTo.visibleProperty().bind(radioButton_ValueRangeDefault.selectedProperty());
-        label_RangeFrom.visibleProperty().bind(radioButton_ValueRangeDefault.selectedProperty());
-        label_RangeTo.visibleProperty().bind(radioButton_ValueRangeDefault.selectedProperty());
-
-
-        textField_rangeFrom.textProperty().addListener(inv -> {
-            integralOptionBuilder();
-        });
-        textField_rangeTo.textProperty().addListener(inv -> {
-            integralOptionBuilder();
-        });
-        radioButton_ValueRangeCustom.selectedProperty().addListener(args -> {
-            integralOptionBuilder();
-        });
-        radioButton_ValueRangeDefault.selectedProperty().addListener(args -> {
-            integralOptionBuilder();
-        });
-        radioButton_ScalingPi.selectedProperty().addListener(args -> {
-            integralOptionBuilder();
-        });
-        radioButton_ScalingDecimal.selectedProperty().addListener(args -> {
+        choiceBox_function2.setOnAction(event -> {
+            integral2.set(choiceBox_function2.getSelectionModel().getSelectedItem().getFunction());
             integralOptionBuilder();
         });
 
 
-        integralName.bind(textField_IntegralName.textProperty());
+        textField_rangeFrom.focusedProperty().addListener(inv -> {
+            integralOptionBuilder();
+        });
+        textField_rangeTo.focusedProperty().addListener(inv -> {
+            integralOptionBuilder();
+        });
+
+
+        integralName.bind(textField_integralName.textProperty());
     }
 
     /**
      * Will initiate the forth stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage4() {
-
-
-        textField_rangeFrom.setText("-10");
-        textField_rangeTo.setText("10");
+        radioButton_ScalingPi.selectedProperty().addListener(args -> {
+            integralOptionBuilder();
+        });
+        radioButton_ScalingDecimal.selectedProperty().addListener(args -> {
+            integralOptionBuilder();
+        });
 
         super.initAxisFieldListeners();
         super.toggleAxesRanges(true);
@@ -333,33 +335,42 @@ public class FunctionWizardFrameController extends SVGWizardController {
         super.initStylingFieldListeners();
     }
 
+    /**
+     * TODO: DEFAULT WERTE!
+     */
+    private void initFieldListenersForFunctionPreview() {
+        super.initFieldListenersForPreview();
+        this.textFieldUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
+                this.textField_integralName, this.textField_rangeFrom, this.textField_rangeTo);
+        this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
+                this.choiceBox_function2, this.choiceBox_function1);
+    }
+
     private void integralOptionBuilder() {
+        int f1 = choiceBox_function1.getSelectionModel().getSelectedIndex();
+        int f2 = choiceBox_integralOption.getSelectionModel().getSelectedItem().equals(IntegralOption.FUNCTION) ? choiceBox_function2.getSelectionModel().getSelectedIndex() : -1;
+        IntegralOption integralOption = choiceBox_integralOption.getSelectionModel().getSelectedItem();
+        double from = integralOption.getDefaultXRange().getFrom();
+        double to = integralOption.getDefaultXRange().getTo();
 
-
-        int f1 = comboBox_function1.getSelectionModel().getSelectedIndex();
-        int f2 = radioButton_Function2.isSelected() ? comboBox_function2.getSelectionModel().getSelectedIndex() : -1;
-        double from = -10;
-        double to = 10;
-
-        if (radioButton_ValueRangeCustom.isSelected()) {
+        if (integralOption.isShowIntegral()) {
             if (!textField_rangeFrom.getText().isEmpty())
                 from = Double.parseDouble(textField_rangeFrom.getText().replaceAll(",", "."));
             if (!textField_rangeTo.getText().isEmpty())
                 to = Double.parseDouble(textField_rangeTo.getText().replaceAll(",", "."));
         }
 
-        String name = textField_IntegralName.getText();
+        String name = textField_integralName.getText();
 
 
-        ObservableList<Function> f = FXCollections.observableArrayList();
+        ObservableList<Function> functions = FXCollections.observableArrayList();
 
-        functionList.forEach(func -> f.add(func));
+        functionList.forEach(func -> functions.add(func));
         guiSvgOptions.getFunctions().clear();
 
+        guiSvgOptions.getFunctions().addAll(functions);
 
-        guiSvgOptions.getFunctions().addAll(f);
-
-        if (!f.isEmpty()) {
+        if (!functions.isEmpty()) {
             IntegralPlotSettings integalSettings = new IntegralPlotSettings(f1, f2, name, new Range(from, to));
             guiSvgOptions.setIntegral(integalSettings);
             this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
@@ -374,10 +385,8 @@ public class FunctionWizardFrameController extends SVGWizardController {
     private HBox generateTableEntry(Function function) {
 
         Function f = new Function(function.getTitle(), function.getFunction());
-        System.out.println(f);
 
         HBox row = new HBox();
-
 
         row.getStyleClass().add("data-row");
         row.setSpacing(5);
@@ -390,30 +399,30 @@ public class FunctionWizardFrameController extends SVGWizardController {
         titleField.getStyleClass().add("data-cell-x");
 
 
-        titleField.setPromptText("Funktionsname");
+        titleField.setPromptText(this.bundle.getString("function_add_function_title"));
 
         TextField functionField = new TextField(function.getFunction());
         functionField.getStyleClass().add("data-cell-y");
-        functionField.setPromptText("Funktion");
+        functionField.setPromptText(this.bundle.getString("function_add_function_prompt_text"));
 
         InvalidationListener invalidationListener = args -> {
             functionList.remove(row.getUserData());
 
-            if (!(titleField.getText().trim().isEmpty() && functionField.getText().trim().isEmpty())) {
+            if (!functionField.getText().trim().isEmpty()) {
                 Function func = new Function(titleField.getText(), functionField.getText());
                 row.setUserData(func);
                 functionList.add(func);
                 renderFunctions();
+                integralOptionBuilder();
             }
         };
 
-        titleField.textProperty().addListener(invalidationListener);
-        functionField.textProperty().addListener(invalidationListener);
+        titleField.focusedProperty().addListener(invalidationListener);
+        functionField.focusedProperty().addListener(invalidationListener);
 
         Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
         Button removeButton = new Button();
-        removeButton.setAccessibleText("Reihe löschen");
-        removeButton.setTooltip(new Tooltip("Reihe löschen"));
+        removeButton.setTooltip(new Tooltip(this.bundle.getString("function_remove_function")));
 
         removeButton.setGraphic(closeGlyph);
         removeButton.getStyleClass().add("data-cell-button");
@@ -425,7 +434,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         row.getChildren().addAll(titleField, functionField, removeButton);
         row.setFocusTraversable(true);
         row.setAccessibleRole(AccessibleRole.TABLE_ROW);
-        row.setAccessibleText("Reihe " + (vBox_DataTable.getChildren().size() + 1));
+        row.setAccessibleText(this.bundle.getString("function_row") + (vBox_DataTable.getChildren().size() + 1));
 
 
         HBox.setHgrow(functionField, Priority.ALWAYS);
@@ -436,8 +445,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
     }
 
     private void renderFunctions() {
-        comboBox_function1.setItems(functionList);
-        comboBox_function2.setItems(functionList);
+        choiceBox_function1.setItems(functionList);
+        choiceBox_function1.getSelectionModel().select(functionList.get(0));
+        choiceBox_function2.setItems(functionList);
     }
 
 

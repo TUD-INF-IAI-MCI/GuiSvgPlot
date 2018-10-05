@@ -839,7 +839,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                 this.choiceBox_diagramType, this.choiceBox_baraccumulation, this.choiceBox_firstTexture,
                 this.choiceBox_secondTexture, this.choiceBox_thirdTexture, this.choicebox_dblaxes, this.choiceBox_firstLineStyle,
                 this.choiceBox_secondLineStyle, this.choiceBox_thirdLineStyle, this.choiceBox_linepoints, this.choiceBox_originalPoints,
-                this.choiceBox_sorting, this.choicebox_sortOrder, this.choiceBox_trendline);
+                this.choiceBox_sorting, this.choicebox_sortOrder, this.choiceBox_trendline, this.choiceBox_csvType);
         this.textFieldUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
                 this.textField_xunit, this.textField_yunit, this.textField_trendline_n,
                 this.textField_trendline_forecast, this.textField_trendline_alpha);
