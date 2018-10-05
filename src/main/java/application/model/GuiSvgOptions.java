@@ -1,6 +1,5 @@
 package application.model;
 
-import application.GuiSvgPlott;
 import application.model.Options.GuiAxisStyle;
 import application.model.Options.LinePointsOption;
 import application.model.Options.SortOrder;
@@ -12,7 +11,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
-import com.google.gson.annotations.SerializedName;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -86,8 +84,7 @@ public class GuiSvgOptions {
     @JsonDeserialize(using = StringDeserializer.class)
     @JsonSerialize(using = StringSerializer.class)
     private final StringProperty yLines;
-    @JsonDeserialize(using = StringDeserializer.class)
-    @JsonSerialize(using = StringSerializer.class)
+    @JsonIgnore
     private final StringProperty title;
     @JsonIgnore
     private final StringProperty gnuplot;
@@ -165,20 +162,22 @@ public class GuiSvgOptions {
 
     private void initSimpleObjectListeners() {
         this.diagramType.addListener((observable, oldValue, newValue) -> {
-            this.options.setDiagramType(newValue);
-            switch (newValue) {
-                case FunctionPlot:
-                    this.setFunctionPlotDefaultOptions();
-                    break;
-                case LineChart:
-                    this.setLineChartDefaultOptions();
-                    break;
-                case BarChart:
-                    this.setBarChartDefaultOptions();
-                    break;
-                case ScatterPlot:
-                    this.setScatterPlotDefaultOptions();
-                    break;
+            if (newValue != null) {
+                this.options.setDiagramType(newValue);
+                switch (newValue) {
+                    case FunctionPlot:
+                        this.setFunctionPlotDefaultOptions();
+                        break;
+                    case LineChart:
+                        this.setLineChartDefaultOptions();
+                        break;
+                    case BarChart:
+                        this.setBarChartDefaultOptions();
+                        break;
+                    case ScatterPlot:
+                        this.setScatterPlotDefaultOptions();
+                        break;
+                }
             }
         });
         this.outputDevice.addListener((observable, oldValue, newValue) -> {
@@ -211,21 +210,21 @@ public class GuiSvgOptions {
             this.options.setSortingType(newValue);
         });
         this.sortOrder.addListener((observable, oldValue, newValue) -> {
-            this.options.setSortDescending(newValue.equals(SortOrder.DESC));
+            this.options.setSortDescending(newValue != null && newValue.equals(SortOrder.DESC));
         });
         this.hideOriginalPoints.addListener((observable, oldValue, newValue) -> {
-            this.options.setHideOriginalPoints(newValue.equals(VisibilityOfDataPoints.HIDE));
+            this.options.setHideOriginalPoints(newValue != null && newValue.equals(VisibilityOfDataPoints.HIDE));
         });
         this.linePointsOption.addListener((observable, oldValue, newValue) -> {
-            this.options.setPointsBorderless(newValue.isPointsborderless());
-            this.options.setShowLinePoints(newValue.getShowLinePoints());
+            this.options.setPointsBorderless(newValue != null && newValue.isPointsborderless());
+            this.options.setShowLinePoints(newValue != null ? null : newValue.getShowLinePoints());
         });
         this.gridStyle.addListener((observable, oldValue, newValue) -> {
-            this.options.setShowHorizontalGrid(newValue.showHorizontal() ? "on" : "off");
-            this.options.setShowVerticalGrid(newValue.showVertical() ? "on" : "off");
+            this.options.setShowHorizontalGrid(newValue != null && newValue.showHorizontal() ? "on" : "off");
+            this.options.setShowVerticalGrid(newValue != null && newValue.showVertical() ? "on" : "off");
         });
         this.axisStyle.addListener((observable, oldValue, newValue) -> {
-            if (newValue.getAxisStyle() != null) {
+            if (newValue != null && newValue.getAxisStyle() != null) {
                 this.options.setShowDoubleAxes(newValue.getAxisStyle().equals(AxisStyle.BOX) ? "on" : "off");
             } else {
                 this.options.setShowDoubleAxes(null);
@@ -851,12 +850,12 @@ public class GuiSvgOptions {
                 '}';
     }
 
-    public void update(GuiSvgOptions guiSvgOptions){
+    public void update(GuiSvgOptions guiSvgOptions) {
         //TODO: refactoring
         this.autoScale.set(guiSvgOptions.autoScale.get());
         this.axisStyle.set(guiSvgOptions.axisStyle.get());
         this.barAccumulationStyle.set(guiSvgOptions.barAccumulationStyle.get());
-        if(guiSvgOptions.getColors() != null){
+        if (guiSvgOptions.getColors() != null) {
             this.colors.setAll(guiSvgOptions.colors);
         }
         this.css.set(guiSvgOptions.css.get());

@@ -872,32 +872,23 @@ public class PresetsController extends SVGWizardController implements Initializa
         editButton.setOnAction(event -> {
             currentPreset = preset;
             overViewHider();
+            initEditor();
             switch (currentPreset.getDiagramType()) {
                 case FunctionPlot:
-                    initEditor();
                     initFunction();
-                    editorDisplayer();
-                    flagSetter(DiagramType.FunctionPlot, currentPreset);
                     break;
                 case LineChart:
-                    initEditor();
                     initLineChart();
-                    editorDisplayer();
-                    flagSetter(DiagramType.LineChart, currentPreset);
                     break;
                 case ScatterPlot:
-                    initEditor();
                     initScatterPlot();
-                    editorDisplayer();
-                    flagSetter(DiagramType.ScatterPlot, currentPreset);
                     break;
                 case BarChart:
-                    initEditor();
                     initBarChart();
-                    editorDisplayer();
-                    flagSetter(DiagramType.BarChart, currentPreset);
                     break;
             }
+            editorDisplayer();
+            flagSetter(currentPreset);
         });
 
         copyButton.setOnAction(event -> {
@@ -932,33 +923,33 @@ public class PresetsController extends SVGWizardController implements Initializa
         //TODO: page orientation
         //currentPreset.getOptions().set
         //TODO:
-        currentOptions.setSize(PageSize.A3.getPageSizeWithOrientation(PageSize.PageOrientation.LANDSCAPE));
+        currentOptions.setSize(currentPreset.getOptions().getSize());
 
         //Stage 2: data
         currentPreset.getOptions().setCsvPath(textField_csvpath.getText());
         currentPreset.getOptions().setCsvType((CsvType) choiceBox_csvType.getSelectionModel().getSelectedItem());
 
         //Stage 3: specific
-        switch (currentPreset.getDiagramTypeString()){
-            case "FunctionPlot":
+        switch (currentPreset.getDiagramType()){
+            case FunctionPlot:
                 //TODO
                 //currentPreset.getOptions().setIntegral();
 
                 break;
-            case "BarChart":
+            case BarChart:
                 //TODO
                 currentPreset.getOptions().setBarAccumulationStyle((BarAccumulationStyle)choiceBox_baraccumulation.getSelectionModel().getSelectedItem());
 
                 currentPreset.getOptions().setSortingType((SortingType) choiceBox_sorting.getSelectionModel().getSelectedItem());
                 currentPreset.getOptions().setSortOrder((SortOrder) choiceBox_sortOrder.getSelectionModel().getSelectedItem());
                 break;
-            case "LineChart":
+            case LineChart:
                 //TODO
 
                 //currentPreset.getOptions().setLineStyles();
                 //currentPreset.getOptions().setLinePointsOption();
                 break;
-            case "ScatterPlot":
+            case ScatterPlot:
                 //TODO
                 //currentPreset.getOptions().setTrendLine();
                 break;
@@ -977,17 +968,20 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
 
-        if(textField_x_from.getText() != null && textField_x_to.getText() != null){
-            double xFromToDouble = Double.parseDouble(textField_x_from.getText());
-            double xToToDouble = Double.parseDouble(textField_x_to.getText());
-            currentPreset.getOptions().setxRange(new Range(xFromToDouble, xToToDouble));
-        }
-        if(textField_y_from.getText() !=null && textField_y_to.getText() != null){
-            double yFromToDouble = Double.parseDouble(textField_y_from.getText());
-            double yToToDouble = Double.parseDouble(textField_y_to.getText());
-            currentPreset.getOptions().setyRange(new Range(yFromToDouble, yToToDouble));
-        }
+        try {
+            if (textField_x_from.getText() != null && textField_x_to.getText() != null) {
+                double xFromToDouble = Double.parseDouble(textField_x_from.getText());
+                double xToToDouble = Double.parseDouble(textField_x_to.getText());
+                currentPreset.getOptions().setxRange(new Range(xFromToDouble, xToToDouble));
+            }
+            if (textField_y_from.getText() != null && textField_y_to.getText() != null) {
+                double yFromToDouble = Double.parseDouble(textField_y_from.getText());
+                double yToToDouble = Double.parseDouble(textField_y_to.getText());
+                currentPreset.getOptions().setyRange(new Range(yFromToDouble, yToToDouble));
+            }
+        } catch (NumberFormatException e) {
 
+        }
 
         //Stage 5: special
         currentPreset.getOptions().setGridStyle((GridStyle) choiceBox_gridStyle.getSelectionModel().getSelectedItem());
@@ -1010,12 +1004,10 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     /**
      * sets the flags from the {@link Preset} into the corresponding {@link TextField}'s, {@link ChoiceBox}es etc.
-     * @param dt the {@link DiagramType} of {@link Preset}
      * @param p the {@link Preset}, that the flags are being taken out of
      */
-    private void flagSetter(DiagramType dt, Preset p){
+    private void flagSetter(Preset p){
         GuiSvgOptions options = p.getOptions();
-        options.setDiagramType(dt);
 
         //Stage 1: basics
         choiceBox_outputDevice.getSelectionModel().select(options.getOutputDevice());
@@ -1023,20 +1015,25 @@ public class PresetsController extends SVGWizardController implements Initializa
         //if(currentPreset.getOptions().)
         pageOrientationTG.selectToggle(radioBtn_portrait);
         //TODO how to get size of diagram from presets/options?
-        choiceBox_size.getSelectionModel().select(PageSize.A4);
+        PageSize pageSize = PageSize.getByPoint(options.getSize());
+        choiceBox_size.getSelectionModel().select(pageSize);
+        if (pageSize.equals(PageSize.CUSTOM)){
+            textField_customSizeWidth.setText("" + pageSize.getWidth());
+            textField_customSizeHeight.setText("" + pageSize.getHeight());
+        }
 
         //Stage 2: data
         textField_csvpath.setText(options.getCsvPath());
         choiceBox_csvType.getSelectionModel().select(options.getCsvType());
 
         //Stage 3: specific
-        switch (currentPreset.getDiagramTypeString()){
-            case "FunctionPlot":
+        switch (currentPreset.getDiagramType()){
+            case FunctionPlot:
                 //TODO: Robert code goes here -> fill choiceBox_function1 + choiceBox_function2 with saved functions
 
                 break;
-            case "BarChart":
-                //TODO
+            case BarChart:
+                //TODO exception handling
                 choiceBox_baraccumulation.getSelectionModel().select(currentPreset.getOptions().getBarAccumulationStyle());
                 //this is not how it supposed to work but in the current implementation it works like this
                 choiceBox_firstTexture.getSelectionModel().select(currentPreset.getOptions().getTextures().get(0));
@@ -1045,13 +1042,13 @@ public class PresetsController extends SVGWizardController implements Initializa
                 choiceBox_sorting.getSelectionModel().select(currentPreset.getOptions().getSortingType());
                 choiceBox_sortOrder.getSelectionModel().select(currentPreset.getOptions().getSortOrder());
                 break;
-            case "LineChart":
+            case LineChart:
                 //TODO
                 //choiceBox_firstLineStyle.getSelectionModel().select(currentPreset.getOptions().getLineStyles());
 //                choiceBox_secondLineStyle.getSelectionModel().select(currentPreset.getOptions().getLineStyles());
 //                choiceBox_thirdLineStyle.getSelectionModel().select(currentPreset.getOptions().getLineStyles());
                 break;
-            case "ScatterPlot":
+            case ScatterPlot:
                 //TODO
 
                 break;

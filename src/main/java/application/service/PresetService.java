@@ -93,7 +93,7 @@ public class PresetService {
         List<Preset> presetList = new ArrayList<>();
         try {
             presetList = mapper.readValue(path.toFile(), new TypeReference<List<Preset>>() {});
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error(bundle.getString("load_presets_error") + " " + e.getMessage());
             e.printStackTrace();
         }
@@ -130,6 +130,7 @@ public class PresetService {
     public void save(final Preset preset) {
         try {
             Preset listElement = new Preset(preset);
+            System.out.println(preset.getOptions().getLineStyles().size());
             List<Preset> presetList = getAll();
             for(Preset savedPreset: presetList){
                 if (savedPreset.equals(preset)){

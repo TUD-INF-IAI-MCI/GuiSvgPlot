@@ -724,9 +724,11 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.guiSvgOptions.textureProperty().addListener(new ListChangeListener<Texture>() {
             @Override
             public void onChanged(final Change<? extends Texture> c) {
-                choiceBox_firstTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(0));
-                choiceBox_secondTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(1));
-                choiceBox_thirdTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(2));
+                if (guiSvgOptions.getTextures().size() == 3) {
+                    choiceBox_firstTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(0));
+                    choiceBox_secondTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(1));
+                    choiceBox_thirdTexture.getSelectionModel().select(guiSvgOptions.getTextures().get(2));
+                }
             }
         });
 
@@ -775,6 +777,9 @@ public class ChartWizardFrameController extends SVGWizardController {
 
     private void initFieldListenersForChartPreview() {
         super.initFieldListenersForPreview();
+        this.guiSvgOptions.diagramTypeProperty().addListener((observable, oldValue, newValue) -> {
+            this.choiceBox_diagramType.getSelectionModel().select(newValue);
+        });
         this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
                 this.choiceBox_diagramType, this.choiceBox_baraccumulation, this.choiceBox_firstTexture,
                 this.choiceBox_secondTexture, this.choiceBox_thirdTexture, this.choicebox_dblaxes, this.choiceBox_firstLineStyle,
@@ -784,7 +789,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                 this.textField_xunit, this.textField_yunit, this.textField_trendline_n,
                 this.textField_trendline_forecast, this.textField_trendline_alpha);
 
-        pointSymbolInputs.forEach((label, hBox) -> {
+        this.pointSymbolInputs.forEach((label, hBox) -> {
             ChoiceBox<PointSymbol> pointSymbolChoiceBox = (ChoiceBox<PointSymbol>) hBox.getChildren().get(0);
             this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions, pointSymbolChoiceBox);
         });

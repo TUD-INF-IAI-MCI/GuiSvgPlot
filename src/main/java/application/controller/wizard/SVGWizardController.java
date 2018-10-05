@@ -869,7 +869,6 @@ public class SVGWizardController implements Initializable {
                 for (Preset preset : presets) {
                     if (preset.getName().equals(result.get())) {
                         this.guiSvgOptions.update(preset.getOptions());
-                        //initiateAllStages();
                     }
 
                 }
@@ -989,11 +988,23 @@ public class SVGWizardController implements Initializable {
      * Initializes Listeners on {@link GuiSvgOptions}.
      */
     protected void initOptionListeners() {
+        this.guiSvgOptions.outputDeviceProperty().addListener((observable, oldValue, newValue) -> {
+            this.choiceBox_outputDevice.getSelectionModel().select(newValue);
+        });
         this.guiSvgOptions.gridStyleProperty().addListener((observable, oldValue, newValue) -> {
             this.choicebox_gridStyle.getSelectionModel().select(newValue);
         });
         this.guiSvgOptions.csvTypeProperty().addListener((observable, oldValue, newValue) -> {
             this.choiceBox_csvType.getSelectionModel().select(newValue);
+        });
+        this.guiSvgOptions.sizeProperty().addListener((observable, oldValue, newValue) -> {
+            PageSize pageSize = PageSize.getByPoint(newValue);
+            if (pageSize.equals(PageSize.CUSTOM)){
+                textField_customSizeWidth.setText("" + newValue.getX());
+                textField_customSizeHeight.setText("" + newValue.getY());
+            }{
+                choiceBox_size.getSelectionModel().select(pageSize);
+            }
         });
         this.guiSvgOptions.getColors().addListener(new ListChangeListener<Color>() {
             @Override

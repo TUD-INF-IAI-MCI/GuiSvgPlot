@@ -6,7 +6,7 @@ import tud.tangram.svgplot.data.Point;
  * @author Emma Müller
  */
 public enum PageSize {
-    CUSTOM("custom", 210, 297),
+    CUSTOM("custom", 210, 297), // A4
     A0("A0", 841, 1189),
     A1("A1", 594, 841),
     A2("A2", 420, 594),
@@ -48,6 +48,19 @@ public enum PageSize {
             size = new Point(height, width);
         }
         return size;
+    }
+
+
+    public static PageSize getByPoint(final Point size){
+        double width = size.getX() > size.getY() ? size.getY() : size.getX();
+        double height = size.getX() <= size.getY() ? size.getY() : size.getX();
+        PageSize pageSize = PageSize.CUSTOM;
+        for (PageSize ps: PageSize.values()) {
+            if (ps != PageSize.CUSTOM && ps.width == width && ps.height == height){
+                pageSize = ps;
+            }
+        }
+        return pageSize;
     }
 
     public enum PageOrientation {
