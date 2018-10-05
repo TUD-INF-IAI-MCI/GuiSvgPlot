@@ -349,6 +349,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         toggleVisibility(false, label_integral_function1, anchorPane_function1);
         toggleVisibility(false, label_integral_measuring, hBox_integral_integral);
         toggleVisibility(false, label_valueRange, hBox_valueRange);
+        toggleVisibility(false, label_trendline, choiceBox_trendline);
         toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
         toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
         toggleVisibility(false, label_trendline_n, textField_trendline_n);
