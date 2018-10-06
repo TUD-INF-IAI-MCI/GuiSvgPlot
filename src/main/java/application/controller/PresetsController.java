@@ -861,7 +861,6 @@ public class PresetsController extends SVGWizardController implements Initializa
 
         Button editButton = new Button();
         Button copyButton = new Button();
-        copyButton.setDisable(true);
         Button removeButton = new Button();
         Glyph editGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.EDIT);
         Glyph copyGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.COPY);
@@ -892,10 +891,19 @@ public class PresetsController extends SVGWizardController implements Initializa
         });
 
         copyButton.setOnAction(event -> {
-            vBox_Preset_DataTable.getChildren().add(row);
+            //TODO handle incrementing numbers more efficiently
             Preset copiedPreset = new Preset(preset);
-            //TODO: fix double id entry exception
-            copiedPreset.setName(copiedPreset.getName() + " Kopie");
+            // presetname is a copy of another preset and ends with a digit
+            if (copiedPreset.getName().contains(bundle.getString("preset_copy")) && Character.isDigit(copiedPreset.getName().charAt(copiedPreset.getName().length() - 1))) {
+                String lastDigit = copiedPreset.getName().substring(copiedPreset.getName().length() - 1);
+                int amountOfCopies = Integer.valueOf(lastDigit);
+                amountOfCopies++;
+                String newName = copiedPreset.getName().substring(0, copiedPreset.getName().length() - 1) + amountOfCopies;
+                copiedPreset.setName(newName);
+            }else{
+                copiedPreset.setName(copiedPreset.getName() + " " + bundle.getString("preset_copy") + " 1");
+            }
+            vBox_Preset_DataTable.getChildren().add(generateTableEntry(copiedPreset));
             this.presetService.create(preset);
         });
 
@@ -993,7 +1001,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
         currentPreset.getOptions().setAxisStyle((GuiAxisStyle) choiceBox_dblaxes.getSelectionModel().getSelectedItem());
 
-        System.out.println(choiceBox_cssType.getSelectionModel().getSelectedItem());
+        //System.out.println(choiceBox_cssType.getSelectionModel().getSelectedItem());
         //Stage 6: display
         if(choiceBox_cssType.getSelectionModel().getSelectedItem().equals(CssType.CUSTOM)){
             currentPreset.getOptions().setCss(textArea_cssCustom.getText());
@@ -1059,11 +1067,11 @@ public class PresetsController extends SVGWizardController implements Initializa
         textField_xAxisTitle.setText(options.getxUnit());
         textField_yAxisTitle.setText(options.getyUnit());
         if(options.isAutoScale()){
-            System.out.println(options.isAutoScale());
+            //System.out.println(options.isAutoScale());
             scaleGroup.selectToggle(radioBtn_scale_to_data);
         }else{
             scaleGroup.selectToggle(radioBtn_customScale);
-            if( options.getxRange() != null || options.getyRange() != null) {
+            if( options.getxRange() != null && options.getyRange() != null) {
                 textField_x_from.setText(String.valueOf(options.getxRange().getFrom()));
                 textField_x_to.setText(String.valueOf(options.getxRange().getTo()));
                 textField_y_from.setText(String.valueOf(options.getyRange().getFrom()));
@@ -1079,7 +1087,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_dblaxes.getSelectionModel().select(options.getAxisStyle());
         //Stage 6: display
         //TODO: remove following line before release
-        System.out.println("Der gespeicherte CSS Path lautet: " + options.getCss());
+        //System.out.println("Der gespeicherte CSS Path lautet: " + options.getCss());
 
         if(options.getCss() != null && !options.getCss().isEmpty()){
             //checks (rather foolishly) whether the saved css type is a path or rather a custom string
