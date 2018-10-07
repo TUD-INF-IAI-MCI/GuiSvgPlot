@@ -15,6 +15,7 @@ import application.util.Converter;
 import application.util.TextFieldUtil;
 import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
 import javafx.beans.property.*;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -192,7 +193,7 @@ public class SVGWizardController implements Initializable {
     private Glyph warnIcon;
     private Glyph infoIcon;
 
-    private Point size;
+    private SimpleObjectProperty<Point> size;
     private SimpleObjectProperty<PageSize.PageOrientation> pageOrientation;
     protected BooleanProperty isExtended;
     protected List<Button> stageBtns;
@@ -224,7 +225,7 @@ public class SVGWizardController implements Initializable {
         this.choiceBoxUtil.setBundle(resources);
         this.currentStage = new SimpleIntegerProperty();
         this.isExtended = new SimpleBooleanProperty(false);
-        this.size = new Point(PageSize.A4.getWidth(), PageSize.A4.getHeight());
+        this.size = new SimpleObjectProperty<>(new Point(PageSize.A4.getWidth(), PageSize.A4.getHeight()));
         this.pageOrientation = new SimpleObjectProperty<>(PageSize.PageOrientation.PORTRAIT);
         this.xRange = new SimpleObjectProperty<>();
         this.yRange = new SimpleObjectProperty<>();
@@ -274,17 +275,13 @@ public class SVGWizardController implements Initializable {
         });
 
         // size
-        this.pageOrientation.addListener((observable, oldValue, newValue) -> {
-            this.size = new Point(this.size.getY(), this.size.getX());
-            this.guiSvgOptions.setSize(this.size);
+        this.guiSvgOptions.sizeProperty().bindBidirectional(this.size);
+        SimpleObjectProperty<Boolean> isPageOrientationPortrait = new SimpleObjectProperty<>();
+        SimpleObjectProperty<Boolean> isPageOrientationLandscape = new SimpleObjectProperty<>();
+        this.radioBtn_portrait.selectedProperty().bindBidirectional(isPageOrientationPortrait);
+        this.radioBtn_portrait.selectedProperty().set(true);
+        this.radioBtn_landscape.selectedProperty().bindBidirectional(isPageOrientationLandscape);
 
-            this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
-
-            this.textField_customSizeWidth.setText(this.size.x());
-            this.textField_customSizeHeight.setText(this.size.y());
-        });
-
-        //this.radioBtn_landscape.selectedProperty().bindBidirectional();
         this.radioBtn_landscape.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 pageOrientation.set(PageSize.PageOrientation.LANDSCAPE);
@@ -292,7 +289,20 @@ public class SVGWizardController implements Initializable {
                 pageOrientation.set(PageSize.PageOrientation.PORTRAIT);
             }
         });
-        this.radioBtn_portrait.setSelected(true);
+
+
+        this.pageOrientation.addListener((observable, oldValue, newValue) -> {
+            if (!choiceBox_size.getSelectionModel().getSelectedItem().equals(PageSize.CUSTOM)) {
+                isPageOrientationPortrait.set(newValue.equals(PageSize.PageOrientation.PORTRAIT));
+                isPageOrientationLandscape.set(newValue.equals(PageSize.PageOrientation.LANDSCAPE));
+                this.size.set(new Point(this.size.get().getY(), this.size.get().getX()));
+
+                this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
+
+                this.textField_customSizeWidth.setText(this.size.get().x());
+                this.textField_customSizeHeight.setText(this.size.get().y());
+            }
+        });
 
         ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
         ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
@@ -302,33 +312,31 @@ public class SVGWizardController implements Initializable {
         this.choiceBox_size.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 if (newValue != PageSize.CUSTOM) {
-                    this.size = newValue.getPageSizeWithOrientation(this.pageOrientation.get());
-                    this.guiSvgOptions.setSize(this.size);
+                    this.size.set(newValue.getPageSizeWithOrientation(this.pageOrientation.get()));
                 }
                 this.toggleCustomSize(newValue == PageSize.CUSTOM);
             }
         });
 
         // custom size
-        this.textField_customSizeWidth.setText(this.size.x());
+        this.textField_customSizeWidth.setText(this.size.get().x());
         this.textFieldUtil.addIntegerValidationWithMinimum(this.textField_customSizeWidth, 1);
         this.textFieldUtil.addMinimumIntegerValidation(this.textField_customSizeWidth, this.label_customSizeWidth, GuiSvgOptions.MINIMUM_PAGE_WIDTH);
         this.textField_customSizeWidth.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.size.setX(Integer.parseInt(newValue));
-            this.guiSvgOptions.setSize(this.size);
+            this.size.get().setX(Integer.parseInt(newValue));
         });
-        this.textField_customSizeHeight.setText(this.size.y());
+        this.textField_customSizeHeight.setText(this.size.get().y());
         this.textFieldUtil.addIntegerValidationWithMinimum(this.textField_customSizeHeight, 1);
         this.textFieldUtil.addMinimumIntegerValidation(this.textField_customSizeHeight, this.label_customSizeHeight, GuiSvgOptions.MINIMUM_PAGE_HEIGHT);
         this.textField_customSizeHeight.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.size.setY(Integer.parseInt(newValue));
-            this.guiSvgOptions.setSize(this.size);
+            this.size.get().setY(Integer.parseInt(newValue));
         });
 
     }
 
     protected void initAxisFieldListeners() {
         // xRange
+        this.guiSvgOptions.xRangeProperty().bindBidirectional(this.xRange);
         this.textFieldUtil.addNotEqualValidation(this.textField_xfrom, this.label_xfrom, this.textField_xto, this.label_xto);
         this.textFieldUtil.addFirstNotGreaterThanSecondValidationListener(this.textField_xfrom, this.label_xfrom, this.textField_xto, this.label_xto);
         this.xRange.addListener((args, oldVal, newVal) -> {
@@ -372,6 +380,7 @@ public class SVGWizardController implements Initializable {
 
 
         // yRange
+        this.guiSvgOptions.yRangeProperty().bindBidirectional(this.yRange);
         this.textFieldUtil.addNotEqualValidation(this.textField_yfrom, this.label_yfrom, this.textField_yto, this.label_yto);
         this.textFieldUtil.addFirstNotGreaterThanSecondValidationListener(this.textField_yfrom, this.label_yfrom, this.textField_yto, this.label_yto);
         this.yRange.addListener((args, oldVal, newVal) -> {
@@ -783,6 +792,7 @@ public class SVGWizardController implements Initializable {
                 for (Preset preset : presets) {
                     if (preset.getName().equals(result.get())) {
                         this.guiSvgOptions.update(preset.getOptions());
+                        svgOptionsService.buildPreviewSVG(guiSvgOptions, webView_svg);
                     }
 
                 }
@@ -867,9 +877,9 @@ public class SVGWizardController implements Initializable {
         this.toggleVisibility(show, this.label_customSizeHeight, this.textField_customSizeHeight);
 
         if (show) {
-            this.textField_customSizeWidth.setText(this.size.x());
+            this.textField_customSizeWidth.setText(this.size.get().x());
             this.textField_customSizeWidth.requestFocus();
-            this.textField_customSizeHeight.setText(this.size.y());
+            this.textField_customSizeHeight.setText(this.size.get().y());
         }
     }
 
@@ -913,13 +923,18 @@ public class SVGWizardController implements Initializable {
         });
         this.guiSvgOptions.sizeProperty().addListener((observable, oldValue, newValue) -> {
             PageSize pageSize = PageSize.getByPoint(newValue);
+            PageSize.PageOrientation pageOrientation = PageSize.PageOrientation.getByPoint(newValue);
             if (pageSize.equals(PageSize.CUSTOM)) {
-                textField_customSizeWidth.setText("" + newValue.getX());
-                textField_customSizeHeight.setText("" + newValue.getY());
+                if (pageOrientation.equals(PageSize.PageOrientation.PORTRAIT)) {
+                    textField_customSizeWidth.setText("" + newValue.getX());
+                    textField_customSizeHeight.setText("" + newValue.getY());
+                }else {
+                    textField_customSizeWidth.setText("" + newValue.getY());
+                    textField_customSizeHeight.setText("" + newValue.getX());
+                }
             }
-            {
-                choiceBox_size.getSelectionModel().select(pageSize);
-            }
+            this.choiceBox_size.getSelectionModel().select(pageSize);
+            this.pageOrientation.set(pageOrientation);
         });
     }
 
@@ -1035,7 +1050,7 @@ public class SVGWizardController implements Initializable {
 
     protected void initFieldListenersForPreview() {
         this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
-                this.choiceBox_outputDevice, this.choiceBox_size, this.choicebox_gridStyle,this.choiceBox_cssType);
+                this.choiceBox_outputDevice, this.choiceBox_size, this.choicebox_gridStyle, this.choiceBox_cssType);
         this.textFieldUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
                 this.textField_title, this.textField_customSizeWidth, this.textField_customSizeHeight,
                 this.textField_xfrom, this.textField_xto, this.textField_yfrom, this.textField_yto,

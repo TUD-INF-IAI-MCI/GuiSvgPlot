@@ -3,7 +3,9 @@ package application.controller.wizard.chart;
 import application.controller.wizard.SVGWizardController;
 import application.model.Options.*;
 import application.util.KeyValuePair;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -515,7 +517,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         });
 
         // trendline and hide original points
-        ObservableList<String> trendline = FXCollections.observableArrayList();
+        ObservableList<String> trendline = FXCollections.observableArrayList(guiSvgOptions.getTrendLine());
         trendline.addListener(new ListChangeListener<String>() {
             @Override
             public void onChanged(final Change<? extends String> c) {
@@ -552,36 +554,46 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
             if (newValue != null) {
-                trendline.clear();
-                trendline.add(0, newValue.toString());
+                String alpha =  "0.0";
+                String n = "1";
+                String forecast = "1";
+                if (guiSvgOptions.getTrendLine().size() > 1) {
+                    alpha = guiSvgOptions.getTrendLine().get(1);
+                    n = guiSvgOptions.getTrendLine().get(1);
+                }
+                if (guiSvgOptions.getTrendLine().size() > 2) {
+                    forecast = guiSvgOptions.getTrendLine().get(2);
+                }
+
                 switch (newValue) {
                     case MovingAverage:
                         show(label_trendline_n, textField_trendline_n);
                         show(label_originalPoints, choiceBox_originalPoints);
                         hide(label_trendline_alpha, textField_trendline_alpha);
                         hide(label_trendline_forecast, textField_trendline_forecast);
-                        // default n
-                        textField_trendline_n.setText("1");
+
+                        trendline.setAll(newValue.toString(), n);
+                        textField_trendline_n.setText(n);
                         break;
                     case BrownLES:
                         show(label_trendline_alpha, textField_trendline_alpha);
                         show(label_trendline_forecast, textField_trendline_forecast);
                         show(label_originalPoints, choiceBox_originalPoints);
                         hide(label_trendline_n, textField_trendline_n);
-                        // default alpha
-                        setValueToIndex(trendline, 1, "0.0");
-                        textField_trendline_alpha.setText("0.0");
-                        // default forecast
-                        setValueToIndex(trendline, 2, "1");
-                        textField_trendline_forecast.setText("1");
+
+                        trendline.setAll(newValue.toString(), alpha, forecast);
+
+                        textField_trendline_alpha.setText(alpha);
+                        textField_trendline_forecast.setText(forecast);
                         break;
                     case ExponentialSmoothing:
                         show(label_trendline_alpha, textField_trendline_alpha);
                         show(label_originalPoints, choiceBox_originalPoints);
                         hide(label_trendline_forecast, textField_trendline_forecast);
                         hide(label_trendline_n, textField_trendline_n);
-                        // default alpha
-                        textField_trendline_alpha.setText("0.0");
+
+                        trendline.setAll(newValue.toString(), alpha);
+                        textField_trendline_alpha.setText(alpha);
                         break;
                     case LinearRegression:
                         show(label_originalPoints, choiceBox_originalPoints);
@@ -599,6 +611,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                         break;
                 }
             }
+            System.out.println(trendline);
 
         });
 
@@ -638,13 +651,15 @@ public class ChartWizardFrameController extends SVGWizardController {
 
 
         // autoscale
+        SimpleObjectProperty<Boolean> isCustomScale = new SimpleObjectProperty<>();
         this.radioBtn_autoscale.selectedProperty().addListener((observable, oldValue, newValue) -> {
             this.guiSvgOptions.setAutoScale(newValue);
+            isCustomScale.set(!newValue);
             super.toggleAxesRanges(!newValue);
         });
 
-        this.radioBtn_autoscale.setSelected(this.guiSvgOptions.isAutoScale());
-        this.radioBtn_customScale.setSelected(!this.guiSvgOptions.isAutoScale());
+        this.radioBtn_autoscale.selectedProperty().bindBidirectional(this.guiSvgOptions.autoScaleProperty());
+        this.radioBtn_customScale.selectedProperty().bindBidirectional(isCustomScale);
 
     }
 
@@ -778,7 +793,9 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.guiSvgOptions.getPointSymbols().addListener(new ListChangeListener<PointSymbol>() {
             @Override
             public void onChanged(final Change<? extends PointSymbol> c) {
+                for (int i = 0; i < guiSvgOptions.getPointSymbols().size(); i++) {
 
+                }
             }
         });
 
@@ -818,6 +835,32 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.guiSvgOptions.outputDeviceProperty().addListener((observable, oldValue, newValue) -> {
             if (colorInputs != null) {
                 vBox_colors.getChildren().forEach(row -> row.setVisible(newValue.equals(OutputDevice.ScreenColor)));
+            }
+        });
+
+        this.guiSvgOptions.getTrendLine().addListener(new ListChangeListener<String>() {
+            @Override
+            public void onChanged(final Change<? extends String> c) {
+                if(guiSvgOptions.getTrendLine().size() > 0) {
+                    TrendlineAlgorithm trendlineAlgorithm = TrendlineAlgorithm.fromString(guiSvgOptions.getTrendLine().get(0));
+                    choiceBox_trendline.getSelectionModel().select(trendlineAlgorithm);
+                }
+//                switch (trendlineAlgorithm) {
+//                    case MovingAverage:
+//                        textField_trendline_n.setText(guiSvgOptions.getTrendLine().get(1));
+//                        break;
+//                    case BrownLES:
+//                        textField_trendline_alpha.setText(guiSvgOptions.getTrendLine().get(1));
+//                        textField_trendline_forecast.setText(guiSvgOptions.getTrendLine().get(2));
+//                        break;
+//                    case ExponentialSmoothing:
+//                        break;
+//                    case LinearRegression:
+//                        break;
+//                    default:
+//                        break;
+//                }
+
             }
         });
     }

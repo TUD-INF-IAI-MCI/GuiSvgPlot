@@ -75,5 +75,11 @@ public enum PageSize {
         public int getIndex() {
             return index;
         }
+
+        public static PageOrientation getByPoint(final Point size){
+            if (size.getY() >= size.getX()) return PageOrientation.PORTRAIT;
+            else return PageOrientation.LANDSCAPE;
+        }
+
     }
 }

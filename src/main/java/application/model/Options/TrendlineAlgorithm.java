@@ -14,5 +14,12 @@ public enum TrendlineAlgorithm {
     private TrendlineAlgorithm(){}
 
 
+    public static TrendlineAlgorithm fromString(final String name){
+        TrendlineAlgorithm searchedTrendlineAlgorithmn = TrendlineAlgorithm.None;
+        for (TrendlineAlgorithm trendlineAlgorithm: TrendlineAlgorithm.values()) {
+            if (trendlineAlgorithm.name().equals(name)) searchedTrendlineAlgorithmn = trendlineAlgorithm;
+        }
+        return searchedTrendlineAlgorithmn;
+    }
 
 }
