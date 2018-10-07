@@ -554,6 +554,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
             if (newValue != null) {
+                // default values
                 String alpha =  "0.0";
                 String n = "1";
                 String forecast = "1";

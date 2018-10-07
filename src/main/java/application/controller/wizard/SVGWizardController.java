@@ -336,7 +336,6 @@ public class SVGWizardController implements Initializable {
 
     protected void initAxisFieldListeners() {
         // xRange
-        this.guiSvgOptions.xRangeProperty().bindBidirectional(this.xRange);
         this.textFieldUtil.addNotEqualValidation(this.textField_xfrom, this.label_xfrom, this.textField_xto, this.label_xto);
         this.textFieldUtil.addFirstNotGreaterThanSecondValidationListener(this.textField_xfrom, this.label_xfrom, this.textField_xto, this.label_xto);
         this.xRange.addListener((args, oldVal, newVal) -> {
@@ -380,7 +379,6 @@ public class SVGWizardController implements Initializable {
 
 
         // yRange
-        this.guiSvgOptions.yRangeProperty().bindBidirectional(this.yRange);
         this.textFieldUtil.addNotEqualValidation(this.textField_yfrom, this.label_yfrom, this.textField_yto, this.label_yto);
         this.textFieldUtil.addFirstNotGreaterThanSecondValidationListener(this.textField_yfrom, this.label_yfrom, this.textField_yto, this.label_yto);
         this.yRange.addListener((args, oldVal, newVal) -> {
@@ -935,6 +933,12 @@ public class SVGWizardController implements Initializable {
             }
             this.choiceBox_size.getSelectionModel().select(pageSize);
             this.pageOrientation.set(pageOrientation);
+        });
+        this.guiSvgOptions.xRangeProperty().addListener((observable, oldValue, newValue) -> {
+            this.xRange.set(newValue);
+        });
+        this.guiSvgOptions.yRangeProperty().addListener((observable, oldValue, newValue) -> {
+            this.yRange.set(newValue);
         });
     }
 
