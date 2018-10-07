@@ -184,8 +184,7 @@ public class GuiSvgOptions {
             this.options.setOutputDevice(newValue);
             this.lineStyles.setAll(LineStyle.getByOutputDeviceOrderedById(newValue));
             if (newValue == OutputDevice.ScreenColor) {
-                // this.colors.setAll(Color.values());
-                this.colors.setAll(Color.values()[0], Color.values()[1], Color.values()[2]);
+                 this.colors.setAll(Color.values());
             }
         });
         this.csvType.addListener((observable, oldValue, newValue) -> {
@@ -628,7 +627,7 @@ public class GuiSvgOptions {
 
     @JsonSetter("colors")
     public void setColorsList(final List<Color> colors) {
-        this.colors.addAll(colors);
+        this.colors.setAll(colors);
     }
 
     public ObservableList<String> getTrendLine() {
@@ -646,7 +645,7 @@ public class GuiSvgOptions {
 
     @JsonSetter("trendLine")
     public void setTrendlineList(final List<String> trendline) {
-        this.trendLine.addAll(trendline);
+        this.trendLine.setAll(trendline);
     }
 
     public String getxLines() {
@@ -730,7 +729,6 @@ public class GuiSvgOptions {
     }
 
     public void setCsvPath(final String csvPath) {
-        //System.out.println("times");
         this.csvPath.set(csvPath);
     }
 
@@ -857,9 +855,7 @@ public class GuiSvgOptions {
         this.autoScale.set(guiSvgOptions.autoScale.get());
         this.axisStyle.set(guiSvgOptions.axisStyle.get());
         this.barAccumulationStyle.set(guiSvgOptions.barAccumulationStyle.get());
-        if (guiSvgOptions.getColors() != null) {
-            this.colors.setAll(guiSvgOptions.colors);
-        }
+
         this.css.set(guiSvgOptions.css.get());
         this.csvOrientation.set(guiSvgOptions.getCsvOrientation());
         this.csvPath.set(guiSvgOptions.csvPath.get());
@@ -887,5 +883,8 @@ public class GuiSvgOptions {
 
         this.lineStyles.setAll(guiSvgOptions.getLineStyles());
         this.pointSymbols.setAll(guiSvgOptions.getPointSymbols());
+        if (guiSvgOptions.getColors() != null) {
+            this.colors.setAll(guiSvgOptions.colors);
+        }
     }
 }
