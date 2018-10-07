@@ -15,17 +15,13 @@ import application.util.Converter;
 import application.util.TextFieldUtil;
 import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
 import javafx.beans.property.*;
-import javafx.beans.value.ObservableBooleanValue;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -51,7 +47,6 @@ import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
-import tud.tangram.svgplot.styles.Color;
 import tud.tangram.svgplot.styles.GridStyle;
 
 import javax.xml.bind.ValidationException;
@@ -292,9 +287,9 @@ public class SVGWizardController implements Initializable {
 
 
         this.pageOrientation.addListener((observable, oldValue, newValue) -> {
+            isPageOrientationPortrait.set(newValue.equals(PageSize.PageOrientation.PORTRAIT));
+            isPageOrientationLandscape.set(newValue.equals(PageSize.PageOrientation.LANDSCAPE));
             if (!choiceBox_size.getSelectionModel().getSelectedItem().equals(PageSize.CUSTOM)) {
-                isPageOrientationPortrait.set(newValue.equals(PageSize.PageOrientation.PORTRAIT));
-                isPageOrientationLandscape.set(newValue.equals(PageSize.PageOrientation.LANDSCAPE));
                 this.size.set(new Point(this.size.get().getY(), this.size.get().getX()));
 
                 this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
@@ -438,7 +433,6 @@ public class SVGWizardController implements Initializable {
         this.textField_cssPath.textProperty().bindBidirectional(this.guiSvgOptions.cssProperty());
         this.textField_cssPath.setOnDragOver(dragOverHandler(".css"));
         this.textField_cssPath.setOnDragDropped(event -> {
-
             String path = event.getDragboard().getFiles().get(0).getAbsolutePath();
             this.textField_cssPath.setText(path);
 
@@ -523,7 +517,6 @@ public class SVGWizardController implements Initializable {
         this.choicebox_gridStyle.getSelectionModel().select(this.guiSvgOptions.getGridStyle());
         this.choicebox_gridStyle.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-
                 this.guiSvgOptions.setGridStyle(newValue);
             }
         });
@@ -774,7 +767,7 @@ public class SVGWizardController implements Initializable {
         }
         button_Load.setOnAction(event -> {
             List<String> choices = new ArrayList<>();
-            for (Preset p : presets) {
+            for (Preset p : presets.sorted()) {
                 choices.add(p.getName());
             }
             ChoiceDialog<String> dialog = new ChoiceDialog<>(bundle.getString("combo_preset_prompt"), choices);
@@ -922,16 +915,16 @@ public class SVGWizardController implements Initializable {
         this.guiSvgOptions.sizeProperty().addListener((observable, oldValue, newValue) -> {
             PageSize pageSize = PageSize.getByPoint(newValue);
             PageSize.PageOrientation pageOrientation = PageSize.PageOrientation.getByPoint(newValue);
+            this.choiceBox_size.getSelectionModel().select(pageSize);
             if (pageSize.equals(PageSize.CUSTOM)) {
                 if (pageOrientation.equals(PageSize.PageOrientation.PORTRAIT)) {
                     textField_customSizeWidth.setText("" + newValue.getX());
                     textField_customSizeHeight.setText("" + newValue.getY());
-                }else {
+                } else {
                     textField_customSizeWidth.setText("" + newValue.getY());
                     textField_customSizeHeight.setText("" + newValue.getX());
                 }
             }
-            this.choiceBox_size.getSelectionModel().select(pageSize);
             this.pageOrientation.set(pageOrientation);
         });
         this.guiSvgOptions.xRangeProperty().addListener((observable, oldValue, newValue) -> {
@@ -939,6 +932,17 @@ public class SVGWizardController implements Initializable {
         });
         this.guiSvgOptions.yRangeProperty().addListener((observable, oldValue, newValue) -> {
             this.yRange.set(newValue);
+        });
+        this.guiSvgOptions.cssProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()){
+                if (newValue.contains("{")) {
+                    this.choiceBox_cssType.getSelectionModel().select(CssType.CUSTOM);
+                    this.textArea_cssCustom.setText(newValue);
+                }
+                else choiceBox_cssType.getSelectionModel().select(CssType.FILE);
+            } else {
+                choiceBox_cssType.getSelectionModel().select(CssType.NONE);
+            }
         });
     }
 

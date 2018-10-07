@@ -852,6 +852,8 @@ public class GuiSvgOptions {
 
     public void update(GuiSvgOptions guiSvgOptions) {
         //TODO: refactoring
+        this.diagramType.set(guiSvgOptions.diagramType.get());
+
         this.autoScale.set(guiSvgOptions.autoScale.get());
         this.axisStyle.set(guiSvgOptions.axisStyle.get());
         this.barAccumulationStyle.set(guiSvgOptions.barAccumulationStyle.get());
@@ -862,17 +864,14 @@ public class GuiSvgOptions {
         this.csvOrientation.set(guiSvgOptions.getCsvOrientation());
         this.csvPath.set(guiSvgOptions.csvPath.get());
         this.csvType.set(guiSvgOptions.csvType.get());
-        this.diagramType.set(guiSvgOptions.diagramType.get());
         this.functions.setAll(guiSvgOptions.functions);
         this.gridStyle.set(guiSvgOptions.gridStyle.get());
         this.hideOriginalPoints.set(guiSvgOptions.hideOriginalPoints.get());
         this.integral.set(guiSvgOptions.integral.get());
         this.linePointsOption.set(guiSvgOptions.getLinePointsOption());
-        this.lineStyles.setAll(guiSvgOptions.getLineStyles());
         this.outputDevice.set(guiSvgOptions.getOutputDevice());
         this.pi.set(guiSvgOptions.isPi());
         this.points.set(guiSvgOptions.getPoints());
-        this.pointSymbols.setAll(guiSvgOptions.getPointSymbols());
         this.size.set(guiSvgOptions.getSize());
         this.sortingType.set(guiSvgOptions.getSortingType());
         this.sortOrder.set(guiSvgOptions.getSortOrder());
@@ -885,5 +884,8 @@ public class GuiSvgOptions {
         this.yLines.set(guiSvgOptions.getyLines());
         this.yRange.set(guiSvgOptions.getyRange());
         this.yUnit.set(guiSvgOptions.getyUnit());
+
+        this.lineStyles.setAll(guiSvgOptions.getLineStyles());
+        this.pointSymbols.setAll(guiSvgOptions.getPointSymbols());
     }
 }

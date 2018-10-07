@@ -612,8 +612,6 @@ public class ChartWizardFrameController extends SVGWizardController {
                         break;
                 }
             }
-            System.out.println(trendline);
-
         });
 
         selectedPointSymbols.forEach((label, pointSymbol) -> {
@@ -795,7 +793,7 @@ public class ChartWizardFrameController extends SVGWizardController {
             @Override
             public void onChanged(final Change<? extends PointSymbol> c) {
                 for (int i = 0; i < guiSvgOptions.getPointSymbols().size(); i++) {
-
+                    //TODO
                 }
             }
         });
@@ -829,7 +827,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.guiSvgOptions.getColors().addListener(new ListChangeListener<Color>() {
             @Override
             public void onChanged(Change<? extends Color> c) {
-
+                // TODO
             }
         });
 
@@ -846,23 +844,11 @@ public class ChartWizardFrameController extends SVGWizardController {
                     TrendlineAlgorithm trendlineAlgorithm = TrendlineAlgorithm.fromString(guiSvgOptions.getTrendLine().get(0));
                     choiceBox_trendline.getSelectionModel().select(trendlineAlgorithm);
                 }
-//                switch (trendlineAlgorithm) {
-//                    case MovingAverage:
-//                        textField_trendline_n.setText(guiSvgOptions.getTrendLine().get(1));
-//                        break;
-//                    case BrownLES:
-//                        textField_trendline_alpha.setText(guiSvgOptions.getTrendLine().get(1));
-//                        textField_trendline_forecast.setText(guiSvgOptions.getTrendLine().get(2));
-//                        break;
-//                    case ExponentialSmoothing:
-//                        break;
-//                    case LinearRegression:
-//                        break;
-//                    default:
-//                        break;
-//                }
-
             }
+        });
+
+        this.guiSvgOptions.linePointsOptionProperty().addListener((observable, oldValue, newValue) -> {
+            this.choiceBox_linepoints.getSelectionModel().select(newValue);
         });
     }
 
