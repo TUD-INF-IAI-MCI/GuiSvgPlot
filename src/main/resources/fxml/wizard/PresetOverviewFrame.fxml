@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.glyphfont.Glyph?>
 
-<AnchorPane fx:id="overViewAnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.PresetsController">
+<AnchorPane fx:id="overViewAnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.PresetsController">
    <children>
       <BorderPane fx:id="overViewBorderPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -63,20 +63,41 @@
             </AnchorPane>
          </bottom>
          <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="200.0" prefWidth="100.0" styleClass="data-table" BorderPane.alignment="CENTER">
                <children>
                   <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="305.0" prefWidth="600.0" styleClass="data-table-container" VBox.vgrow="ALWAYS">
                      <content>
-                        <VBox fx:id="vBox_Preset_DataTable" styleClass="data-table" />
+                        <VBox fx:id="vBox_Preset_DataTable" styleClass="data-table">
+                           <HBox styleClass="header-row">
+                              <Button fx:id="button_sortByName" styleClass="header-cell" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" contentDisplay="RIGHT" text="%preset_name">
+                                 <tooltip>
+                                    <Tooltip text="%button_sortTable_name" />
+                                 </tooltip>
+                              </Button>
+                              <Button fx:id="button_sortByDate" styleClass="header-cell" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" contentDisplay="RIGHT" text="%preset_creationDate">
+                                 <tooltip>
+                                    <Tooltip text="%button_sortTable_date" />
+                                 </tooltip>
+                              </Button>
+                              <Button fx:id="button_sortByType" styleClass="header-cell" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" contentDisplay="RIGHT" text="%preset_diagramType">
+                                 <tooltip>
+                                    <Tooltip text="%button_sortTable_type" />
+                                 </tooltip>
+                              </Button>
+                              <Label prefWidth="30.0" HBox.hgrow="NEVER" />
+                              <Label prefWidth="30.0" HBox.hgrow="NEVER" />
+                              <Label prefWidth="30.0" HBox.hgrow="NEVER" />
+                           </HBox>
+                        </VBox>
                      </content>
                   </ScrollPane>
                </children>
             </VBox>
          </center>
       </BorderPane>
-      <BorderPane fx:id="editorBorderPane" prefHeight="400.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane fx:id="borderPane_editor" prefHeight="400.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
-            <AnchorPane fx:id="settingsBottomAnchorPane">
+            <AnchorPane fx:id="anchorPane_settingsBottom">
                <children>
                   <ButtonBar AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <buttons>

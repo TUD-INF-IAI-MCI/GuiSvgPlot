@@ -1,38 +1,59 @@
 .data-table {
 
-  &-container{
+  &-container {
     -fx-border-color: none;
     -fx-background-color: none;
   }
 
+  > .header-row {
+    -fx-background-color: $tud-blue;
+    > .header-cell {
+      -fx-text-fill: $menu-font-color;
+      -fx-padding: 5 0 5 10;
+      -fx-pref-width: 200;
+      -fx-text-alignment: left;
+      -fx-alignment: center-left;
+      -fx-background-color: none;
+      -fx-border-color: none;
+      -fx-font-weight: bold;
+    }
+
+
+  }
   > .data-row {
-    -fx-padding: 0 0 10 0;
+    -fx-padding: 5 0 5 0;
+    &.even {
+      -fx-background-color: white;
+    }
+    &.odd {
+      -fx-background-color: lighten($tud-blue, 80%);
+    }
+
     > .data-cell {
-
-      &-x {
-        .read-only {
-         // -fx-background-color: none;
-        }
+      -fx-pref-width: 200;
+      -fx-alignment: center-left;
+      &.read-only {
+        // -fx-background-color: none;
+        -fx-background-color: none;
+        -fx-border: none;
       }
-
-      &-y {
-
+      &:focused {
+        -fx-background-color: none;
+        -fx-text-fill: $tud-blue;
+        -fx-font-weight: bold;
       }
 
       &-button {
-        //@extend .btn-reset;
         -fx-background-color: none;
 
         &:focused {
           -fx-padding: 3 7;
-          //-fx-border-color: none;
         }
       }
     }
-    > Button {
-       @extend .data-cell-button;
+    > Button, > .header-cell-action {
+      @extend .data-cell-button;
     }
 
   }
 }
-

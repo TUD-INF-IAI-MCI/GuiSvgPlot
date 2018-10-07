@@ -397,12 +397,13 @@ public class FunctionWizardFrameController extends SVGWizardController {
             functionList.remove(row.getUserData());
 
         TextField titleField = new TextField(function.getTitle());
+        titleField.getStyleClass().add("data-cell");
         titleField.getStyleClass().add("data-cell-x");
-
 
         titleField.setPromptText(this.bundle.getString("function_add_function_title"));
 
         TextField functionField = new TextField(function.getFunction());
+        functionField.getStyleClass().add("data-cell");
         functionField.getStyleClass().add("data-cell-y");
         functionField.setPromptText(this.bundle.getString("function_add_function_prompt_text"));
 
