@@ -243,11 +243,12 @@ public class SvgOptionsService {
     private boolean isSvgPlottOptionsValid(final SvgPlotOptions svgPlotOptions) {
         DiagramType diagramType = svgPlotOptions.getDiagramType();
 
-        double xFrom = svgPlotOptions.getxRange() != null ? svgPlotOptions.getxRange().getFrom() : null;
-        double xTo = svgPlotOptions.getxRange() != null ? svgPlotOptions.getxRange().getTo() : null;
+        double xFrom = svgPlotOptions.getxRange() != null ? svgPlotOptions.getxRange().getFrom() : -8;
+        double xTo = svgPlotOptions.getxRange() != null ? svgPlotOptions.getxRange().getTo() : 8;
         boolean hasErrorInXRange = svgPlotOptions.getxRange() != null && xFrom >= xTo;
-        double yFrom = svgPlotOptions.getyRange() != null ? svgPlotOptions.getyRange().getFrom() : null;
-        double yTo = svgPlotOptions.getyRange() != null ? svgPlotOptions.getyRange().getTo() : null;
+
+        double yFrom = svgPlotOptions.getyRange() != null ? svgPlotOptions.getyRange().getFrom() : -8;
+        double yTo = svgPlotOptions.getyRange() != null ? svgPlotOptions.getyRange().getTo() : 8;
         boolean hasErrorInYRange = svgPlotOptions.getyRange() != null && yFrom >= yTo;
 
         boolean hasErrorInCustomSizeWidth = svgPlotOptions.getSize().getX() < GuiSvgOptions.MINIMUM_PAGE_WIDTH;

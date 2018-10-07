@@ -332,7 +332,7 @@ public class SVGWizardController implements Initializable {
         this.textFieldUtil.addNotEqualValidation(this.textField_xfrom, this.label_xfrom, this.textField_xto, this.label_xto);
         this.textFieldUtil.addFirstNotGreaterThanSecondValidationListener(this.textField_xfrom, this.label_xfrom, this.textField_xto, this.label_xto);
         this.xRange.addListener((args, oldVal, newVal) -> {
-            if (!this.guiSvgOptions.isAutoScale()) {
+            if (!this.guiSvgOptions.isAutoScale() && newVal != null) {
                 this.guiSvgOptions.setxRange(xRange.get());
                 if (!this.textField_xfrom.getText().equals("" + newVal.getFrom())) {
                     this.textField_xfrom.setText("" + newVal.getFrom());
@@ -375,7 +375,7 @@ public class SVGWizardController implements Initializable {
         this.textFieldUtil.addNotEqualValidation(this.textField_yfrom, this.label_yfrom, this.textField_yto, this.label_yto);
         this.textFieldUtil.addFirstNotGreaterThanSecondValidationListener(this.textField_yfrom, this.label_yfrom, this.textField_yto, this.label_yto);
         this.yRange.addListener((args, oldVal, newVal) -> {
-            if (!this.guiSvgOptions.isAutoScale()) {
+            if (!this.guiSvgOptions.isAutoScale() && newVal != null) {
                 this.guiSvgOptions.setyRange(this.yRange.get());
                 if (!this.textField_yfrom.getText().equals("" + newVal.getFrom())) {
                     this.textField_yfrom.setText("" + newVal.getFrom());
