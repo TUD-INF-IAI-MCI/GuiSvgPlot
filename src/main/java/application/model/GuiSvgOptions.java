@@ -232,6 +232,9 @@ public class GuiSvgOptions {
         this.points.addListener((observable, oldValue, newValue) -> {
             this.options.setPoints(newValue);
         });
+        this.integral.addListener((args, oldVal, newVal) -> {
+            options.setIntegral(newVal);
+        });
     }
 
     private void initSimpleStringListerners() {
@@ -319,9 +322,9 @@ public class GuiSvgOptions {
     }
 
     private void setFunctionPlotDefaultOptions() {
-        integral.addListener((args, oldVal, newVal) -> {
-            options.setIntegral(newVal);
-        });
+        if (this.options.getShowHorizontalGrid() == null && this.options.getShowVerticalGrid() == null) {
+            this.gridStyle.set(GridStyle.FULL);
+        }
     }
 
     private void setLineChartDefaultOptions() {
@@ -786,6 +789,10 @@ public class GuiSvgOptions {
         return this.integral.get();
     }
 
+    public ObjectProperty<IntegralPlotSettings> integralProperty() {
+        return integral;
+    }
+
     public ObjectProperty<PointListList> pointsProperty() {
         return points;
     }
@@ -866,7 +873,7 @@ public class GuiSvgOptions {
         this.integral.set(guiSvgOptions.integral.get());
         this.linePointsOption.set(guiSvgOptions.getLinePointsOption());
         this.outputDevice.set(guiSvgOptions.getOutputDevice());
-        this.pi.set(guiSvgOptions.isPi());
+        this.pi.set(guiSvgOptions.pi.get());
         this.points.set(guiSvgOptions.getPoints());
         this.size.set(guiSvgOptions.getSize());
         this.sortingType.set(guiSvgOptions.getSortingType());

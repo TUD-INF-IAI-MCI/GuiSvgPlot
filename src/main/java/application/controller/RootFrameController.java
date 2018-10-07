@@ -5,6 +5,7 @@ import application.controller.wizard.SVGWizardController;
 import application.model.Preset;
 import application.model.Settings;
 import application.service.PresetService;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,12 +13,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.controlsfx.glyphfont.Glyph;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,6 +27,9 @@ import java.util.ResourceBundle;
  * @author Robert Schlegel, Emma Müller, Constantin Amend
  */
 public class RootFrameController implements Initializable {
+
+    @FXML
+    public AnchorPane anchorPane_loading;
 
     @FXML
     public BorderPane borderPane_Content;
@@ -79,6 +81,9 @@ public class RootFrameController implements Initializable {
     public static String wizardPath = "none";
 
 
+    public SimpleBooleanProperty loading;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
@@ -86,13 +91,21 @@ public class RootFrameController implements Initializable {
 
 
     public void init() {
-        presetService.setBundle(bundle);
-        button_StartDiagram.setOnAction(this::startDiagram);
-        button_StartFunction.setOnAction(event -> startFunction(true));
+        this.presetService.setBundle(bundle);
+        loading = new SimpleBooleanProperty(false);
+        anchorPane_loading.visibleProperty().bindBidirectional(loading);
+        /*loading.addListener((observable, oldValue, newValue) -> {
+            System.out.println(newValue);
+            anchorPane_loading.setVisible(newValue);
+        });
+//        loading.set(false);*/
 
-        menuItem_settings.setOnAction(event -> GuiSvgPlott.getInstance().setSettingsDialog());
-        menuItem_Save_Preset.setDisable(true);
-        menuItem_Save_Preset.setOnAction(event -> {
+        this.button_StartDiagram.setOnAction(this::startDiagram);
+        this.button_StartFunction.setOnAction(event -> startFunction(true));
+
+        this.menuItem_settings.setOnAction(event -> GuiSvgPlott.getInstance().setSettingsDialog());
+        this.menuItem_Save_Preset.setDisable(true);
+        this.menuItem_Save_Preset.setOnAction(event -> {
             if (wizardPath.contains("Chart") || wizardPath.contains("Function")) {
                 Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName", svgWizardController.getGuiSvgOptions().getDiagramType());
                 TextInputDialog nameDialogue = new TextInputDialog();
@@ -127,7 +140,7 @@ public class RootFrameController implements Initializable {
             }
         });
 
-        menuItem_About.setOnAction(event -> {
+        this.menuItem_About.setOnAction(event -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(bundle.getString("menu_help_about_title"));
             alert.setHeaderText(null);
@@ -141,7 +154,7 @@ public class RootFrameController implements Initializable {
             alert.showAndWait();
         });
 
-        menuItem_csvHelp.setOnAction(event -> {
+        this.menuItem_csvHelp.setOnAction(event -> {
             showCsvHelper();
         });
 

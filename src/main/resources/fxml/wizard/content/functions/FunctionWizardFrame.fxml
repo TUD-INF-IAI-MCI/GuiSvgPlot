@@ -168,7 +168,7 @@
                                                                     </Button>
                                                                 </children>
                                                             </GridPane>
-                                                            <VBox fx:id="vBox_DataTable" minWidth="10.0" spacing="10.0" />
+                                                            <VBox fx:id="vBox_dataTable" minWidth="10.0" spacing="10.0" />
                                                         </children>
                                                     </VBox>
                                                 </children>
@@ -195,16 +195,17 @@
                                                                 <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS" />
                                                                 <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS" />
                                                                 <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS" />
+                                                <RowConstraints />
                                                             </rowConstraints>
                                                             <padding>
                                                                 <Insets left="10.0" right="10.0" top="10.0" />
                                                             </padding>
                                                             <children>
-                                                                <Label prefHeight="17.0" prefWidth="200.0" text="%label_integral" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                                                <Label prefHeight="17.0" prefWidth="200.0" text="%label_integral" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                                                 <ChoiceBox fx:id="choiceBox_integralOption" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                                                                <Label fx:id="label_integralName" prefHeight="17.0" prefWidth="200.0" text="%label_integral_name" visible="false" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                                                                <TextField fx:id="textField_integralName" accessibleText="%label_integral_name" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" visible="false" GridPane.rowIndex="1">
+                                                                <Label fx:id="label_integralName" prefHeight="17.0" prefWidth="200.0" text="%label_integral_name" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                                                <TextField fx:id="textField_integralName" accessibleText="%label_integral_name" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                                     <tooltip>
                                                                         <Tooltip text="%label_integral_name" />
                                                                     </tooltip>
@@ -212,21 +213,21 @@
                                                                         <Insets right="5.0" />
                                                                     </GridPane.margin>
                                                                 </TextField>
-                                                                <Label fx:id="label_function1" prefHeight="17.0" prefWidth="200.0" text="%label_integral_func1" GridPane.rowIndex="2" visible="false"/>
-                                                                <ChoiceBox fx:id="choiceBox_function1" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="2" visible="false"/>
+                                                                <Label fx:id="label_function1" prefHeight="17.0" prefWidth="200.0" text="%label_integral_func1" visible="false" GridPane.rowIndex="2" />
+                                                                <ChoiceBox fx:id="choiceBox_function1" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                                                                <Label fx:id="label_function2" prefHeight="17.0" prefWidth="200.0" text="%label_integral_func2" GridPane.rowIndex="3" visible="false"/>
-                                                                <ChoiceBox fx:id="choiceBox_function2" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3" visible="false"/>
+                                                                <Label fx:id="label_function2" prefHeight="17.0" prefWidth="200.0" text="%label_integral_func2" visible="false" GridPane.rowIndex="3" />
+                                                                <ChoiceBox fx:id="choiceBox_function2" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
 
-                                                                <Label fx:id="label_RangeFrom" prefHeight="17.0" prefWidth="200.0" text="%label_integral_from" GridPane.rowIndex="4" visible="false" />
-                                                                <TextField fx:id="textField_rangeFrom" accessibleText="%text_integral_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="4" visible="false">
+                                                                <Label fx:id="label_RangeFrom" prefHeight="17.0" prefWidth="200.0" text="%label_integral_from" visible="false" GridPane.rowIndex="4" />
+                                                                <TextField fx:id="textField_rangeFrom" accessibleText="%text_integral_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                                                     <tooltip>
                                                                         <Tooltip text="%text_integral_from" />
                                                                     </tooltip>
                                                                 </TextField>
-                                                                <Label fx:id="label_RangeTo" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_integral_to" GridPane.rowIndex="5" visible="false" />
-                                                                <TextField fx:id="textField_rangeTo" accessibleText="%text_integral_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="5" visible="false">
+                                                                <Label fx:id="label_RangeTo" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_integral_to" visible="false" GridPane.rowIndex="5" />
+                                                                <TextField fx:id="textField_rangeTo" accessibleText="%text_integral_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                                     <tooltip>
                                                                         <Tooltip text="%text_integral_to" />
                                                                     </tooltip>
@@ -266,12 +267,12 @@
                                                                 <Label fx:id="label_pi" accessibleText="%label_display_pi" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_axis_scaling" textAlignment="RIGHT" />
                                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                                                     <children>
-                                                                        <RadioButton fx:id="radioButton_ScalingDecimal" mnemonicParsing="false" selected="true" text="%radiobutton_scaling_decimal">
+                                                                        <RadioButton fx:id="radioButton_scalingDecimal" mnemonicParsing="false" selected="true" text="%radiobutton_scaling_decimal">
                                                                             <toggleGroup>
                                                                                 <ToggleGroup fx:id="togglePi" />
                                                                             </toggleGroup>
                                                                         </RadioButton>
-                                                                        <RadioButton fx:id="radioButton_ScalingPi" mnemonicParsing="false" text="%radiobutton_scaling_pi" toggleGroup="$togglePi" />
+                                                                        <RadioButton fx:id="radioButton_scalingPi" mnemonicParsing="false" text="%radiobutton_scaling_pi" toggleGroup="$togglePi" />
                                                                     </children>
                                                                 </HBox>
 
@@ -288,8 +289,8 @@
                                                                     </tooltip>
                                                                 </TextField>
 
-                                                                <Label fx:id="label_xfrom" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_from" textAlignment="RIGHT" GridPane.halignment="LEFT" GridPane.rowIndex="3" visible="false"/>
-                                                                <TextField fx:id="textField_xfrom" accessibleText="%display_area_x_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3" visible="false">
+                                                                <Label fx:id="label_xfrom" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_from" textAlignment="RIGHT" visible="false" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
+                                                                <TextField fx:id="textField_xfrom" accessibleText="%display_area_x_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                                     <tooltip>
                                                                         <Tooltip text="%display_area_x_from" />
                                                                     </tooltip>
@@ -487,7 +488,7 @@
                                             <Tooltip text="%button_next_tooltip" />
                                         </tooltip>
                                     </Button>
-                                    <Button fx:id="button_Load" disable="true" mnemonicParsing="false" text="%button_load">
+                                    <Button fx:id="button_Load" disable="false" mnemonicParsing="false" text="%button_load">
                                         <tooltip>
                                             <Tooltip text="%button_load_tooltip" />
                                         </tooltip>

@@ -52,7 +52,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
 //    @FXML
 //    private ScrollPane scrollPane_dataTable;
     @FXML
-    private VBox vBox_DataTable;
+    private VBox vBox_dataTable;
 
 
     /* stage 3 */
@@ -100,10 +100,10 @@ public class FunctionWizardFrameController extends SVGWizardController {
     private GridPane stage4;
 
     @FXML
-    private RadioButton radioButton_ScalingDecimal;
+    private RadioButton radioButton_scalingDecimal;
 
     @FXML
-    private RadioButton radioButton_ScalingPi;
+    private RadioButton radioButton_scalingPi;
 
 
     /* stage 5 */
@@ -121,6 +121,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
     private SimpleDoubleProperty rangeFrom;
     private SimpleDoubleProperty rangeTo;
     private SimpleStringProperty integralName;
+    private IntegralPlotSettings integralPlotSettings;
 
     private ObservableList<Function> functionList;
 
@@ -138,6 +139,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         super.initialize(location, resources);
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES, DiagramType.FunctionPlot);
         this.initiateAllStages();
+        this.initFunctionOptionListeners();
         textField_rangeTo.setText(10 + "");
         textField_rangeFrom.setText(-10 + "");
 
@@ -154,7 +156,6 @@ public class FunctionWizardFrameController extends SVGWizardController {
         initStage4();
         initStage5();
         initStage6();
-        super.initOptionListeners();
     }
 
 
@@ -170,8 +171,8 @@ public class FunctionWizardFrameController extends SVGWizardController {
      * Will initiate the second stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage2() {
-        vBox_DataTable.getStyleClass().add("data-table");
-        vBox_DataTable.setFillWidth(true);
+        vBox_dataTable.getStyleClass().add("data-table");
+        vBox_dataTable.setFillWidth(true);
 
 //        scrollPane_dataTable.setFitToWidth(true);
 
@@ -182,14 +183,14 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
         button_EditDataSet.setOnAction(event -> {
             HBox row = generateTableEntry(new Function("", ""));
-            vBox_DataTable.getChildren().add(row);
+            vBox_dataTable.getChildren().add(row);
         });
 
         getResultFileProp().addListener(inval -> {
             try {
                 Files.readAllLines(getResultFileProp().get()).forEach(item -> {
                     HBox row = generateTableEntry(new Function(item.substring(0, item.indexOf(",")).trim(), item.substring(item.indexOf(",") + 1).trim()));
-                    vBox_DataTable.getChildren().add(row);
+                    vBox_dataTable.getChildren().add(row);
                 });
             } catch (IOException e) {
             }
@@ -198,7 +199,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         });
 
 
-        vBox_DataTable.getChildren().addListener((ListChangeListener.Change<? extends Node> nodes) -> {
+        vBox_dataTable.getChildren().addListener((ListChangeListener.Change<? extends Node> nodes) -> {
             while (nodes.next()) {
 
                 nodes.getAddedSubList().forEach(row -> {
@@ -304,18 +305,20 @@ public class FunctionWizardFrameController extends SVGWizardController {
      * Will initiate the fourth stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage4() {
-        radioButton_ScalingPi.selectedProperty().addListener(args -> {
+        radioButton_scalingPi.selectedProperty().addListener(args -> {
             integralOptionBuilder();
         });
-        radioButton_ScalingDecimal.selectedProperty().addListener(args -> {
+        radioButton_scalingDecimal.selectedProperty().addListener(args -> {
             integralOptionBuilder();
         });
 
         super.initAxisFieldListeners();
         super.toggleAxesRanges(true);
 
-        guiSvgOptions.piProperty().bind(radioButton_ScalingPi.selectedProperty());
-
+//        guiSvgOptions.piProperty().bindBidirectional(radioButton_scalingPi.selectedProperty());
+        radioButton_scalingPi.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            guiSvgOptions.setPi(newValue);
+        });
 
     }
 
@@ -333,9 +336,6 @@ public class FunctionWizardFrameController extends SVGWizardController {
         super.initStylingFieldListeners();
     }
 
-    /**
-     * TODO: DEFAULT WERTE!
-     */
     private void initFieldListenersForFunctionPreview() {
         super.initFieldListenersForPreview();
         this.textFieldUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
@@ -369,8 +369,8 @@ public class FunctionWizardFrameController extends SVGWizardController {
         guiSvgOptions.getFunctions().addAll(functions);
 
         if (!functions.isEmpty()) {
-            IntegralPlotSettings integalSettings = new IntegralPlotSettings(f1, f2, name, new Range(from, to));
-            guiSvgOptions.setIntegral(integalSettings);
+            this.integralPlotSettings = new IntegralPlotSettings(f1, f2, name, new Range(from, to));
+            guiSvgOptions.setIntegral(this.integralPlotSettings);
             this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg);
         }
     }
@@ -425,14 +425,14 @@ public class FunctionWizardFrameController extends SVGWizardController {
         removeButton.setGraphic(closeGlyph);
         removeButton.getStyleClass().add("data-cell-button");
         removeButton.setOnAction(event -> {
-            vBox_DataTable.getChildren().remove(row);
+            vBox_dataTable.getChildren().remove(row);
             renderFunctions();
         });
 
         row.getChildren().addAll(titleField, functionField, removeButton);
         row.setFocusTraversable(true);
         row.setAccessibleRole(AccessibleRole.TABLE_ROW);
-        row.setAccessibleText(this.bundle.getString("function_row") + (vBox_DataTable.getChildren().size() + 1));
+        row.setAccessibleText(this.bundle.getString("function_row") + (vBox_dataTable.getChildren().size() + 1));
 
 
         HBox.setHgrow(functionField, Priority.ALWAYS);
@@ -449,4 +449,45 @@ public class FunctionWizardFrameController extends SVGWizardController {
     }
 
 
+    /**
+     * @author Emma Müller
+     */
+    private void initFunctionOptionListeners(){
+        super.initOptionListeners();
+        this.guiSvgOptions.piProperty().addListener((observable, oldValue, newValue) -> {
+            this.radioButton_scalingPi.selectedProperty().set(newValue);
+        });
+        this.guiSvgOptions.getFunctions().addListener(new ListChangeListener<Function>() {
+            @Override
+            public void onChanged(final Change<? extends Function> c) {
+                if (!functionList.containsAll(guiSvgOptions.getFunctions())) {
+                    vBox_dataTable.getChildren().clear();
+                    guiSvgOptions.getFunctions().forEach(function -> {
+                        HBox row = generateTableEntry(function);
+                        vBox_dataTable.getChildren().add(row);
+                    });
+                }
+            }
+        });
+        this.guiSvgOptions.integralProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.equals(integralPlotSettings)) {
+                IntegralOption integralOption = IntegralOption.NONE;
+                if (!newValue.xRange.equals(IntegralOption.NONE.getDefaultXRange())) {
+                    choiceBox_function1.getSelectionModel().select(functionList.get(newValue.function1));
+                    if (newValue.function2 == -1) {
+                        integralOption = IntegralOption.XAXIS;
+                    } else {
+                        integralOption = IntegralOption.FUNCTION;
+                    }
+                }
+                choiceBox_integralOption.getSelectionModel().select(integralOption);
+                if (integralOption.equals(IntegralOption.FUNCTION)) {
+                    choiceBox_function2.getSelectionModel().select(functionList.get(newValue.function2));
+                }
+
+                rangeFrom.set(newValue.xRange.getFrom());
+                rangeTo.set(newValue.xRange.getTo());
+            }
+        });
+    }
 }

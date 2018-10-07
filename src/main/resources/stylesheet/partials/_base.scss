@@ -6,7 +6,7 @@ VBox {
   -fx-padding: 10;
 
   &.stage3_container {
-   -fx-padding: 0;
+    -fx-padding: 0;
   }
 
   &.warn {
@@ -20,9 +20,17 @@ VBox {
   &.dynamic-fields {
     -fx-padding: 0;
     > HBox {
-       > Label {
-       }
+      > Label {
+      }
     }
+  }
+}
+
+AnchorPane {
+  &.loading {
+    -fx-background-color: rgba(250, 250, 250, 0.5);
+    -fx-font-scale: 21px;
+    -fx-font-weight: bold;
   }
 }
 
@@ -91,6 +99,7 @@ TextField, TextArea {
     -fx-border-radius: 3;
   }
 }
+
 TextArea {
   -fx-padding: 0;
 }
@@ -98,7 +107,7 @@ TextArea {
 RadioButton, CheckBox {
   -fx-cursor: hand;
   -fx-mark-color: $tud-blue;
-  .radio{
+  .radio {
     -fx-background-color: white;
     //-fx-background-image: null;
     -fx-border-width: 1px;
@@ -123,13 +132,16 @@ AnchorPane.preview-container {
     -fx-focus-color: $tud-blue;
   }
 }
+
 ScrollPane {
   -fx-border-color: none;
   -fx-background-color: none;
 }
+
 ListView {
   -fx-border-color: $tud-blue;
 }
+
 Text {
   &:focused {
     -fx-fill: $tud-blue;

@@ -1,5 +1,7 @@
 package application.service;
 
+import application.infrastructure.JacksonDeserializer.FunctionDeserializer;
+import application.infrastructure.JacksonDeserializer.IntegralPlotSettingsDeserializer;
 import application.model.Preset;
 import application.infrastructure.JacksonDeserializer.PointDeserializer;
 import application.infrastructure.JacksonDeserializer.RangeDeserializer;
@@ -10,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.data.Point;
+import tud.tangram.svgplot.plotting.Function;
+import tud.tangram.svgplot.plotting.IntegralPlotSettings;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -42,6 +46,8 @@ public class PresetService {
         SimpleModule module = new SimpleModule();
         module.addDeserializer(Point.class, new PointDeserializer());
         module.addDeserializer(Range.class, new RangeDeserializer());
+        module.addDeserializer(IntegralPlotSettings.class, new IntegralPlotSettingsDeserializer());
+        module.addDeserializer(Function.class, new FunctionDeserializer());
         mapper.registerModule(module);
     }
 

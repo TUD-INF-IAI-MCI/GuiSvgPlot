@@ -68,4 +68,9 @@
             </ButtonBar>
         </center>
     </BorderPane>
+    <AnchorPane fx:id="anchorPane_loading" visible="false" styleClass="loading" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <children>
+            <Label accessibleHelp="%loading" alignment="CENTER" contentDisplay="CENTER" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%loading" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+        </children>
+    </AnchorPane>
 </AnchorPane>

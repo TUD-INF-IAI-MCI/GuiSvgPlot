@@ -2,6 +2,7 @@ package application.controller.wizard;
 
 import application.GuiSvgPlott;
 import application.controller.CsvEditorController;
+import application.controller.RootFrameController;
 import application.controller.wizard.chart.ChartWizardFrameController;
 import application.model.GuiSvgOptions;
 import application.model.Options.CssType;
@@ -71,7 +72,6 @@ import static application.controller.RootFrameController.wizardPath;
 public class SVGWizardController implements Initializable {
     // start logger
     private static final Logger logger = LoggerFactory.getLogger(SVGWizardController.class);
-
 
     @FXML
     protected Button button_Back;
@@ -668,6 +668,7 @@ public class SVGWizardController implements Initializable {
      * initiates all listeners for properties and elements
      */
     protected void initListener() {
+
         // indicator for current stage. changes will automatically render the chosen stage
         this.currentStage.addListener((args, oldVal, newVal) -> {
 
@@ -767,7 +768,8 @@ public class SVGWizardController implements Initializable {
         }
         button_Load.setOnAction(event -> {
             List<String> choices = new ArrayList<>();
-            for (Preset p : presets.sorted()) {
+            presets.sort((o1, o2) -> (o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase())));
+            for (Preset p : presets) {
                 choices.add(p.getName());
             }
             ChoiceDialog<String> dialog = new ChoiceDialog<>(bundle.getString("combo_preset_prompt"), choices);
@@ -778,6 +780,7 @@ public class SVGWizardController implements Initializable {
             Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
             stage.getIcons().add(Settings.getInstance().favicon);
 
+            GuiSvgPlott.getInstance().getRootFrameController().loading.set(true);
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent()) {
                 for (Preset preset : presets) {
@@ -788,6 +791,7 @@ public class SVGWizardController implements Initializable {
 
                 }
             }
+            GuiSvgPlott.getInstance().getRootFrameController().loading.set(false);
         });
     }
 
