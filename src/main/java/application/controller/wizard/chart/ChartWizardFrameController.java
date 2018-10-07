@@ -620,7 +620,7 @@ public class ChartWizardFrameController extends SVGWizardController {
     }
 
     /**
-     * Will initiate the forth stage. Depending on {@code extended}, some parts will be dis- or enabled.
+     * Will initiate the fourth stage. Depending on {@code extended}, some parts will be dis- or enabled.
      */
     private void initStage4() {
         super.initAxisFieldListeners();

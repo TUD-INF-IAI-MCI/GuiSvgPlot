@@ -14,6 +14,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -373,7 +374,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_size.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                if(newValue.equals(0)){
+                if(newValue.equals(sortedPageSizes.size()-1)){
                     label_customSizeHeight.setVisible(true);
                     label_customSizeWidth.setVisible(true);
                     textField_customSizeHeight.setVisible(true);
@@ -407,12 +408,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         //textFieldUtil.addDoubleValidation(textField_x_to, label_x_to);
         //textFieldUtil.addNotEqualValidation(textField_x_from, label_x_from, textField_x_to, label_x_to);
         //textFieldUtil.addFirstNotGreaterThanSecondValidationListener(textField_x_from, label_xfrom, textField_x_to, label_x_to);
-
-
-        //trendline
-//        choiceBox_trendline.setItems(FXCollections.observableArrayList(TrendlineAlgorithm.values()));
-//        choiceBox_trendline.setConverter(converter.getTrendlineAlgorithmStringConverter());
-//        choiceBox_trendline.getSelectionModel().select(0);
 
         //gridstyle
         choiceBox_gridStyle.setItems(FXCollections.observableArrayList(GridStyle.values()));
@@ -471,6 +466,12 @@ public class PresetsController extends SVGWizardController implements Initializa
                     textField_y_from.setVisible(true);
                     label_y_to.setVisible(true);
                     textField_y_to.setVisible(true);
+                }
+                if(currentPreset.getOptions().getxRange() == null || currentPreset.getOptions().getyRange() == null){
+                    textField_x_from.setText("-8.0");
+                    textField_x_to.setText("8.0");
+                    textField_y_from.setText("-8.0");
+                    textField_y_to.setText("8.0");
                 }
             }
         });
@@ -565,50 +566,58 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_trendline.setConverter(converter.getTrendlineAlgorithmStringConverter());
         choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
         choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-        switch ((TrendlineAlgorithm) newValue){
-            case MovingAverage:
-                toggleVisibility(true, label_trendline_n, textField_trendline_n);
-                toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
-                toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
-                toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
-                break;
-            case ExponentialSmoothing:
-                toggleVisibility(true, label_trendline_alpha, textField_trendline_alpha);
-                toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
-                toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
-                toggleVisibility(false, label_trendline_n, textField_trendline_n);
-                break;
-            case BrownLES:
-                toggleVisibility(true, label_trendline_alpha, textField_trendline_alpha);
-                toggleVisibility(true, label_trendline_forecast, textField_trendline_forecast);
-                toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
-                toggleVisibility(false, label_trendline_n, textField_trendline_n);
-                break;
-            case LinearRegression:
-                toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
-                toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
-                toggleVisibility(false, label_trendline_n, textField_trendline_n);
-                toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
-                break;
-            default:
-                toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
-                toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
-                toggleVisibility(false, label_trendline_n, textField_trendline_n);
-                toggleVisibility(false, label_hide_original_points, choiceBox_hide_original_points);
-
-        }
+            if(newValue != null){
+                switch ((TrendlineAlgorithm) newValue){
+                    case MovingAverage:
+                        toggleVisibility(true, label_trendline_n, textField_trendline_n);
+                        toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
+                        toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
+                        toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
+                        break;
+                    case ExponentialSmoothing:
+                        toggleVisibility(true, label_trendline_alpha, textField_trendline_alpha);
+                        toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
+                        toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
+                        toggleVisibility(false, label_trendline_n, textField_trendline_n);
+                        break;
+                    case BrownLES:
+                        toggleVisibility(true, label_trendline_alpha, textField_trendline_alpha);
+                        toggleVisibility(true, label_trendline_forecast, textField_trendline_forecast);
+                        toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
+                        toggleVisibility(false, label_trendline_n, textField_trendline_n);
+                        break;
+                    case LinearRegression:
+                        toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
+                        toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
+                        toggleVisibility(false, label_trendline_n, textField_trendline_n);
+                        toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
+                        break;
+                    default:
+                        toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
+                        toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
+                        toggleVisibility(false, label_trendline_n, textField_trendline_n);
+                        toggleVisibility(false, label_hide_original_points, choiceBox_hide_original_points);
+                }
+            }
         });
+
+
+        ObservableList<VisibilityOfDataPoints> dataPoints = FXCollections.observableArrayList(VisibilityOfDataPoints.values());
+        choiceBox_hide_original_points.setItems(dataPoints);
+        choiceBox_hide_original_points.setConverter(converter.getVisibilityOfDataPointsStringConverter());
+        choiceBox_hide_original_points.getSelectionModel().select(VisibilityOfDataPoints.HIDE);
         //TODO Pointsymbols
-//        ObservableList<PointSymbol> pointSymbolObservableList = FXCollections.observableArrayList(PointSymbol.getOrdered());
-//        this.customPointSymbols_scatterPlott = guiSvgOptions.getPointSymbols();
-//        choiceBox_pointSymbols_scatterPlot.setVisible(true);
-//        choiceBox_pointSymbols_scatterPlot.getItems().addAll(pointSymbolObservableList);
-//        choiceBox_pointSymbols_scatterPlot.setConverter(this.converter.getPointSymbolStringConverter());
-//        choiceBox_pointSymbols_scatterPlot.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PointSymbol>() {
-//            public void onChanged(ListChangeListener.Change<? extends PointSymbol> ps) {
-//                changePointSymbols(customPointSymbols_scatterPlott, choiceBox_pointSymbols_scatterPlot, pointSymbolObservableList);
-//            }
-//        });
+        /*ObservableList<PointSymbol> pointSymbolObservableList = FXCollections.observableArrayList(PointSymbol.getOrdered());
+        this.customPointSymbols_scatterPlott = guiSvgOptions.getPointSymbols();
+        choiceBox_pointSymbols_scatterPlot.setVisible(true);
+        choiceBox_pointSymbols_scatterPlot.getItems().addAll(pointSymbolObservableList);
+        choiceBox_pointSymbols_scatterPlot.setConverter(this.converter.getPointSymbolStringConverter());
+        choiceBox_pointSymbols_scatterPlot.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PointSymbol>() {
+
+            public void onChanged(ListChangeListener.Change<? extends PointSymbol> ps) {
+                changePointSymbols(customPointSymbols_scatterPlott, choiceBox_pointSymbols_scatterPlot, pointSymbolObservableList);
+            }
+        });*/
     }
 
 
@@ -734,6 +743,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
     }
+
     private void changePointSymbols(ObservableList<PointSymbol> checkedPointSymbols, CheckComboBox<PointSymbol> checkComboBox, ObservableList<PointSymbol> allPointSymbols) {
         checkedPointSymbols.clear();
         ObservableList<PointSymbol> checkedItems = checkComboBox.getCheckModel().getCheckedItems();
@@ -769,7 +779,6 @@ public class PresetsController extends SVGWizardController implements Initializa
      * @author Constantin Amend, Emma Müller
      */
     private void diagramTypePrompt() {
-        // arbitrary default value
         DiagramType dt;
         List<String> choices = new ArrayList<>();
         for (DiagramType diagramType: DiagramType.values() ) {
@@ -810,6 +819,7 @@ public class PresetsController extends SVGWizardController implements Initializa
             emptyNameAlert();
         } else if (result.isPresent() && !super.presets.stream().map(p -> p.getName()).anyMatch(n -> n.equals(result.get()))) {
             currentPreset = new Preset(currentOptions, result.get(), dt);
+            currentPreset.getOptions().setAutoScale(true);
             presetService.create(currentPreset);
             super.presets.add(currentPreset);
 
@@ -1020,9 +1030,8 @@ public class PresetsController extends SVGWizardController implements Initializa
         //Stage 1: basics
         choiceBox_outputDevice.getSelectionModel().select(options.getOutputDevice());
         //TODO how to get page orientation from presets?
-        //if(currentPreset.getOptions().)
         pageOrientationTG.selectToggle(radioBtn_portrait);
-        //TODO how to get size of diagram from presets/options?
+        //TODO Pagesize is not propagated properly
         PageSize pageSize = PageSize.getByPoint(options.getSize());
         choiceBox_size.getSelectionModel().select(pageSize);
         if (pageSize.equals(PageSize.CUSTOM)){
@@ -1037,28 +1046,63 @@ public class PresetsController extends SVGWizardController implements Initializa
         //Stage 3: specific
         switch (currentPreset.getDiagramType()){
             case FunctionPlot:
-                //TODO: Robert code goes here -> fill choiceBox_function1 + choiceBox_function2 with saved functions
+                //TODO: Robert code goes here after usability overhaul #51
 
                 break;
             case BarChart:
-                //TODO exception handling
-                choiceBox_baraccumulation.getSelectionModel().select(currentPreset.getOptions().getBarAccumulationStyle());
-                //this is not how it supposed to work but in the current implementation it works like this
-                choiceBox_firstTexture.getSelectionModel().select(currentPreset.getOptions().getTextures().get(0));
-                choiceBox_secondTexture.getSelectionModel().select(currentPreset.getOptions().getTextures().get(1));
-                choiceBox_thirdTexture.getSelectionModel().select(currentPreset.getOptions().getTextures().get(2));
-                choiceBox_sorting.getSelectionModel().select(currentPreset.getOptions().getSortingType());
-                choiceBox_sortOrder.getSelectionModel().select(currentPreset.getOptions().getSortOrder());
+                if(options.getTexturesAsList().size() != 0){
+                    choiceBox_firstTexture.getSelectionModel().select(options.getTextures().get(0));
+                    choiceBox_secondTexture.getSelectionModel().select(options.getTextures().get(1));
+                    choiceBox_thirdTexture.getSelectionModel().select(options.getTextures().get(2));
+                }else{
+                    choiceBox_firstTexture.getSelectionModel().select(0);
+                    choiceBox_secondTexture.getSelectionModel().select(1);
+                    choiceBox_thirdTexture.getSelectionModel().select(2);
+                }
+                choiceBox_baraccumulation.getSelectionModel().select(options.getBarAccumulationStyle());
+                choiceBox_sorting.getSelectionModel().select(options.getSortingType());
+                choiceBox_sortOrder.getSelectionModel().select(options.getSortOrder());
                 break;
             case LineChart:
-                //TODO
-                //choiceBox_firstLineStyle.getSelectionModel().select(currentPreset.getOptions().getLineStyles());
-//                choiceBox_secondLineStyle.getSelectionModel().select(currentPreset.getOptions().getLineStyles());
-//                choiceBox_thirdLineStyle.getSelectionModel().select(currentPreset.getOptions().getLineStyles());
+                if(options.getLineStylesAsList().size() != 0){
+                    choiceBox_firstLineStyle.getSelectionModel().select(options.getLineStyles());
+                    choiceBox_secondLineStyle.getSelectionModel().select(options.getLineStyles());
+                    choiceBox_thirdLineStyle.getSelectionModel().select(options.getLineStyles());
+                }else{
+                    choiceBox_firstLineStyle.getSelectionModel().select(1);
+                    choiceBox_secondLineStyle.getSelectionModel().select(2);
+                    choiceBox_thirdLineStyle.getSelectionModel().select(0);
+                }
+                if(options.getHideOriginalPoints() == VisibilityOfDataPoints.HIDE){
+                    choiceBox_hide_original_points.getSelectionModel().select(0);
+                }else{
+                    //TODO
+                }
                 break;
             case ScatterPlot:
-                //TODO
-
+                if(!options.getTrendLine().isEmpty()){
+                    switch (options.getTrendLine().get(0)){
+                        case "MovingAverage":
+                            choiceBox_trendline.getSelectionModel().select(1);
+                            textField_trendline_n.setText(options.getTrendLine().get(1));
+                            break;
+                        case "ExponentialSmoothing":
+                            choiceBox_trendline.getSelectionModel().select(2);
+                            textField_trendline_alpha.setText(options.getTrendLine().get(1));
+                            break;
+                        case "BrownLES":
+                            choiceBox_trendline.getSelectionModel().select(3);
+                            textField_trendline_alpha.setText(options.getTrendLine().get(1));
+                            textField_trendline_forecast.setText(options.getTrendLine().get(2));
+                            break;
+                        case "LinearRegression":
+                            choiceBox_trendline.getSelectionModel().select(4);
+                            break;
+                    }
+                }else{
+                    choiceBox_trendline.getSelectionModel().select(0);
+                }
+                choiceBox_hide_original_points.getSelectionModel().select(options.getHideOriginalPoints());
                 break;
 
         }
@@ -1067,7 +1111,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         textField_xAxisTitle.setText(options.getxUnit());
         textField_yAxisTitle.setText(options.getyUnit());
         if(options.isAutoScale()){
-            //System.out.println(options.isAutoScale());
             scaleGroup.selectToggle(radioBtn_scale_to_data);
         }else{
             scaleGroup.selectToggle(radioBtn_customScale);
@@ -1076,12 +1119,20 @@ public class PresetsController extends SVGWizardController implements Initializa
                 textField_x_to.setText(String.valueOf(options.getxRange().getTo()));
                 textField_y_from.setText(String.valueOf(options.getyRange().getFrom()));
                 textField_y_to.setText(String.valueOf(options.getyRange().getTo()));
+            }else{
+                textField_x_from.setText("-8.0");
+                textField_x_to.setText("8.0");
+                textField_y_from.setText("-8.0");
+                textField_y_to.setText("8.0");
             }
         }
         //Stage 5: special
 
-
-        choiceBox_gridStyle.getSelectionModel().select(options.getGridStyle());
+        if(options.getGridStyle() != null){
+            choiceBox_gridStyle.getSelectionModel().select(options.getGridStyle());
+        }else{
+            choiceBox_gridStyle.getSelectionModel().select(0);
+        }
         textField_helpLinesX.setText(options.getxLines());
         textField_helpLinesY.setText(options.getyLines());
         choiceBox_dblaxes.getSelectionModel().select(options.getAxisStyle());
