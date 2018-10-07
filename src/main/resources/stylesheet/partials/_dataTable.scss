@@ -16,6 +16,10 @@
       -fx-background-color: none;
       -fx-border-color: none;
       -fx-font-weight: bold;
+
+      &:focused {
+        -fx-background-color: lighten($tud-blue, 5%);
+      }
     }
 
 
@@ -28,6 +32,9 @@
     &.odd {
       -fx-background-color: lighten($tud-blue, 80%);
     }
+    &:focused {
+      -fx-border-color: $tud-blue;
+    }
 
     > .data-cell {
       -fx-pref-width: 200;
@@ -36,12 +43,13 @@
         // -fx-background-color: none;
         -fx-background-color: none;
         -fx-border: none;
+
+        &:focused {
+          -fx-text-fill: $tud-blue;
+          -fx-font-weight: bold;
+        }
       }
-      &:focused {
-        -fx-background-color: none;
-        -fx-text-fill: $tud-blue;
-        -fx-font-weight: bold;
-      }
+
 
       &-button {
         -fx-background-color: none;
