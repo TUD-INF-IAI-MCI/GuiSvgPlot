@@ -144,6 +144,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
         textField_rangeFrom.setText(-10 + "");
 
         this.guiSvgOptions.setDiagramType(DiagramType.FunctionPlot);
+        if (super.presets == null || super.presets.isEmpty()) {
+            super.presets = FXCollections.observableArrayList(super.presetService.getAllFunctions());
+        }
         super.initloadPreset();
         this.initFieldListenersForFunctionPreview();
     }

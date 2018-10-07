@@ -2,9 +2,9 @@ package application.service;
 
 import application.infrastructure.JacksonDeserializer.FunctionDeserializer;
 import application.infrastructure.JacksonDeserializer.IntegralPlotSettingsDeserializer;
-import application.model.Preset;
 import application.infrastructure.JacksonDeserializer.PointDeserializer;
 import application.infrastructure.JacksonDeserializer.RangeDeserializer;
+import application.model.Preset;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -12,10 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.data.Point;
+import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.plotting.Function;
 import tud.tangram.svgplot.plotting.IntegralPlotSettings;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -105,6 +105,47 @@ public class PresetService {
         }
         return presetList;
     }
+
+    /**
+     * Gets all saved {@link Preset}s with {@link DiagramType} not FunctionPlot.
+     * @return the chart-{@link Preset}s
+     */
+    public List<Preset> getAllCharts() {
+        List<Preset> presetList = new ArrayList<>();
+        try {
+            List<Preset> presets = mapper.readValue(path.toFile(), new TypeReference<List<Preset>>() {});
+            for (Preset preset: presets ) {
+                if (!preset.getDiagramType().equals(DiagramType.FunctionPlot)){
+                    presetList.add(preset);
+                }
+            }
+        } catch (Exception e) {
+            logger.error(bundle.getString("load_presets_error") + " " + e.getMessage());
+            e.printStackTrace();
+        }
+        return presetList;
+    }
+
+    /**
+     * Gets all saved {@link Preset}s with {@link DiagramType} FunctionPlot.
+     * @return the function-{@link Preset}s
+     */
+    public List<Preset> getAllFunctions() {
+        List<Preset> presetList = new ArrayList<>();
+        try {
+            List<Preset> presets = mapper.readValue(path.toFile(), new TypeReference<List<Preset>>() {});
+            for (Preset preset: presets ) {
+                if (preset.getDiagramType().equals(DiagramType.FunctionPlot)){
+                    presetList.add(preset);
+                }
+            }
+        } catch (Exception e) {
+            logger.error(bundle.getString("load_presets_error") + " " + e.getMessage());
+            e.printStackTrace();
+        }
+        return presetList;
+    }
+
 
     /**
      * Deletes the given {@link Preset} from json-file.

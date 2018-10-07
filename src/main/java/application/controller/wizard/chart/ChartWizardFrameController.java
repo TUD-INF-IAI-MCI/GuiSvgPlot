@@ -219,6 +219,9 @@ public class ChartWizardFrameController extends SVGWizardController {
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES, null);
         this.initiateAllStages();
         this.initChartOptionListeners();
+        if (super.presets == null || super.presets.isEmpty()) {
+            super.presets = FXCollections.observableArrayList(super.presetService.getAllCharts());
+        }
         super.initloadPreset();
         this.initFieldListenersForChartPreview();
 
@@ -1053,6 +1056,4 @@ public class ChartWizardFrameController extends SVGWizardController {
 
         }
     }
-
-
 }

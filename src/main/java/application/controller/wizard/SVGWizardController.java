@@ -2,7 +2,6 @@ package application.controller.wizard;
 
 import application.GuiSvgPlott;
 import application.controller.CsvEditorController;
-import application.controller.RootFrameController;
 import application.controller.wizard.chart.ChartWizardFrameController;
 import application.model.GuiSvgOptions;
 import application.model.Options.CssType;
@@ -179,7 +178,7 @@ public class SVGWizardController implements Initializable {
     public ChoiceBox<CsvType> choiceBox_csvType;
 
     public ObservableList<Preset> presets;
-    private PresetService presetService = PresetService.getInstance();
+    protected PresetService presetService = PresetService.getInstance();
 
     public VBox vBox_warnings;
     private PopOver popOver_warnings;
@@ -763,9 +762,6 @@ public class SVGWizardController implements Initializable {
      * initiates the preset list and adds an event listener to the load button
      */
     protected void initloadPreset() {
-        if (presets == null) {
-            presets = FXCollections.observableArrayList(this.presetService.getAll());
-        }
         button_Load.setOnAction(event -> {
             List<String> choices = new ArrayList<>();
             presets.sort((o1, o2) -> (o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase())));
@@ -793,6 +789,7 @@ public class SVGWizardController implements Initializable {
             }
             GuiSvgPlott.getInstance().getRootFrameController().loading.set(false);
         });
+
     }
 
 
@@ -938,12 +935,11 @@ public class SVGWizardController implements Initializable {
             this.yRange.set(newValue);
         });
         this.guiSvgOptions.cssProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null && !newValue.isEmpty()){
+            if (newValue != null && !newValue.isEmpty()) {
                 if (newValue.contains("{")) {
                     this.choiceBox_cssType.getSelectionModel().select(CssType.CUSTOM);
                     this.textArea_cssCustom.setText(newValue);
-                }
-                else choiceBox_cssType.getSelectionModel().select(CssType.FILE);
+                } else choiceBox_cssType.getSelectionModel().select(CssType.FILE);
             } else {
                 choiceBox_cssType.getSelectionModel().select(CssType.NONE);
             }
