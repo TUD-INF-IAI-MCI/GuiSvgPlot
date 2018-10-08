@@ -1144,7 +1144,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                 columnNumber.set(0);
                 // get all Names of the Datasets in row 0
                 if (firstLine.isEmpty().get()) {
-                    firstLine.set(line);
+                    firstLine.set(line.replaceFirst(",", "").trim());
                     return;
                 }
                 String[] xValues = firstLine.get().split((","));
