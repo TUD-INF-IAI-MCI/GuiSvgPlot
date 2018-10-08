@@ -1376,7 +1376,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
                 if (firstLine.get().length() > 0)
                     try {
-                        Files.write(f, (firstLine.get().substring(0, firstLine.get().length() - 1) + "\n").getBytes(Charset.defaultCharset()), StandardOpenOption.TRUNCATE_EXISTING);
+                        Files.write(f, ("," + firstLine.get().substring(0, firstLine.get().length() - 1) + "\n").getBytes(Charset.defaultCharset()), StandardOpenOption.TRUNCATE_EXISTING);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
