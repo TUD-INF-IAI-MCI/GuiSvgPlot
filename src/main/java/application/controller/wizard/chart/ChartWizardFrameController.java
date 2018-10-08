@@ -924,6 +924,8 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.guiSvgOptions.linePointsOptionProperty().addListener((observable, oldValue, newValue) -> {
             this.choiceBox_linepoints.getSelectionModel().select(newValue);
         });
+
+        this.guiSvgOptions.csvPathProperty().addListener((observable, oldValue, newValue) -> svgOptionsService.buildPreviewSVG(guiSvgOptions, webView_svg));
     }
 
     private void setValueToIndex(ObservableList<String> trendline, int index, String newValue) {
@@ -1111,7 +1113,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
 
     private void parseCSV() {
-        switch (this.choiceBox_diagramType.getSelectionModel().getSelectedItem()) {
+        switch (this.guiSvgOptions.getDiagramType()) {
             case BarChart: {
                 parseBarChart();
                 break;
@@ -1284,12 +1286,14 @@ public class ChartWizardFrameController extends SVGWizardController {
             });
         }
 
-        keyField.setPromptText("KeyField");
+        keyField.setPromptText(this.bundle.getString(guiSvgOptions.getDiagramType().name().toLowerCase() + "_keyField"));
+        keyField.setTooltip(new Tooltip(this.bundle.getString(guiSvgOptions.getDiagramType().name().toLowerCase() + "_keyField")));
 
         TextField valueField = new TextField(point.getValue());
         valueField.getStyleClass().add("data-cell");
         valueField.getStyleClass().add("data-cell-y");
-        valueField.setPromptText("valueField");
+        valueField.setPromptText(this.bundle.getString(guiSvgOptions.getDiagramType().name().toLowerCase() + "_valueField"));
+        valueField.setTooltip(new Tooltip(this.bundle.getString(guiSvgOptions.getDiagramType().name().toLowerCase() + "_valueField")));
 
         Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.TRASH);
         Button removeButton = new Button();
@@ -1305,6 +1309,7 @@ public class ChartWizardFrameController extends SVGWizardController {
             vBox_dataTable.getChildren().remove(row);
             choiceBox_DataSets.getValue().getAllPoints().remove(point);
             renderTable(choiceBox_DataSets.getValue());
+            svgOptionsService.buildPreviewSVG(guiSvgOptions, webView_svg);
         });
 
 
@@ -1321,7 +1326,6 @@ public class ChartWizardFrameController extends SVGWizardController {
         row.setFocusTraversable(true);
         row.setAccessibleRole(AccessibleRole.TABLE_ROW);
         row.setAccessibleText(this.bundle.getString("chart_row") + (vBox_dataTable.getChildren().size() + 1));
-
 
         HBox.setHgrow(valueField, Priority.ALWAYS);
         HBox.setHgrow(keyField, Priority.ALWAYS);
