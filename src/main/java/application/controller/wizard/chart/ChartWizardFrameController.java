@@ -315,7 +315,8 @@ public class ChartWizardFrameController extends SVGWizardController {
             TextInputDialog dialog = new TextInputDialog();
             dialog.setHeaderText(bundle.getString("dataset_entername"));
             dialog.showAndWait();
-            if (!dialog.getResult().isEmpty()) {
+
+            if (dialog.getResult() != null && !dialog.getResult().isEmpty()) {
                 DataSet set = new DataSet(null, dialog.getResult());
                 dataSets.add(set);
                 choiceBox_DataSets.getSelectionModel().select(set);
@@ -1192,6 +1193,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         try {
             Files.readAllLines(getResultFileProp().get()).forEach(line -> {
 
+                line = line.trim();
 
                 if (!line.startsWith(",")) {
                     //title and X-Values
@@ -1391,7 +1393,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                         for (DataPoint point : set.getAllPoints()) {
                             if (point.getKey().equals(name)) {
                                 if (!found) {
-                                    line += point.getValue() + ",";
+                                    line += "\"" + point.getValue() + "\"" + ",";
                                     found = true;
                                 }
                             }
@@ -1418,8 +1420,8 @@ public class ChartWizardFrameController extends SVGWizardController {
                     String line2 = ",";
 
                     for (DataPoint point : item.getAllPoints()) {
-                        line1 += point.getKey() + ",";
-                        line2 += point.getValue() + ",";
+                        line1 += "\"" + point.getKey() + "\"" + ",";
+                        line2 += "\"" + point.getValue() + "\"" + ",";
                     }
                     if (item.getAllPoints().size() > 0) {
                         int index = 0;
