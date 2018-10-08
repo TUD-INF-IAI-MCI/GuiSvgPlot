@@ -1,4 +1,6 @@
 .data-table {
+  -fx-spacing: 0;
+  -fx-padding: 0;
 
   &-container {
     -fx-border-color: none;
@@ -22,10 +24,14 @@
       }
     }
 
-
   }
   > .data-row {
-    -fx-padding: 5 0 5 0;
+    -fx-padding: 5 5 5 0;
+
+    &.edit {
+      -fx-padding: 5 0 5 5;
+    }
+
     &.even {
       -fx-background-color: white;
     }
@@ -40,7 +46,6 @@
       -fx-pref-width: 200;
       -fx-alignment: center-left;
       &.read-only {
-        // -fx-background-color: none;
         -fx-background-color: none;
         -fx-border: none;
 
@@ -49,7 +54,6 @@
           -fx-font-weight: bold;
         }
       }
-
 
       &-button {
         -fx-background-color: none;

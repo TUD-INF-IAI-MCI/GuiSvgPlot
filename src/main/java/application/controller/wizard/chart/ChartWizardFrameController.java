@@ -30,9 +30,7 @@ import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.Color;
 
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -80,7 +78,7 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private Button button_AddDataPoint;
     @FXML
-    private VBox vBox_DataTable;
+    private VBox vBox_dataTable;
     @FXML
     private ChoiceBox<DataSet> choiceBox_DataSets;
 
@@ -347,7 +345,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                 DataPoint p = new DataPoint("0", "0");
                 choiceBox_DataSets.getValue().addPoint(p);
 
-                vBox_DataTable.getChildren().add(generateTableEntry(p));
+                vBox_dataTable.getChildren().add(generateTableEntry(p));
             }
             setCSVOptions();
         });
@@ -1252,21 +1250,17 @@ public class ChartWizardFrameController extends SVGWizardController {
 
 
     private void renderTable(DataSet set) {
-
-        vBox_DataTable.getChildren().clear();
+        vBox_dataTable.getChildren().clear();
         if (set != null)
-            set.getAllPoints().forEach(point -> vBox_DataTable.getChildren().add(generateTableEntry(point)));
-
+            set.getAllPoints().forEach(point -> vBox_dataTable.getChildren().add(generateTableEntry(point)));
         setCSVOptions();
     }
 
     private HBox generateTableEntry(DataPoint point) {
-
-
         HBox row = new HBox();
 
         row.getStyleClass().add("data-row");
-        row.setSpacing(5);
+        row.getStyleClass().add("edit");
         row.setUserData(point);
 
         TextField keyField = new TextField(point.getKey());
@@ -1297,17 +1291,18 @@ public class ChartWizardFrameController extends SVGWizardController {
         valueField.getStyleClass().add("data-cell-y");
         valueField.setPromptText("valueField");
 
-        Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
+        Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.TRASH);
         Button removeButton = new Button();
         removeButton.setTooltip(new Tooltip(this.bundle.getString("datapoint_remove")));
 
         removeButton.setGraphic(closeGlyph);
         removeButton.getStyleClass().add("data-cell-button");
+        removeButton.getStyleClass().add("btn-upload");
         removeButton.setOnAction(event -> {
-            int idx = Math.max(0, vBox_DataTable.getChildren().indexOf(row));
-            vBox_DataTable.getChildren().get(idx).requestFocus();
+            int idx = Math.max(0, vBox_dataTable.getChildren().indexOf(row));
+            vBox_dataTable.getChildren().get(idx).requestFocus();
 
-            vBox_DataTable.getChildren().remove(row);
+            vBox_dataTable.getChildren().remove(row);
             choiceBox_DataSets.getValue().getAllPoints().remove(point);
             renderTable(choiceBox_DataSets.getValue());
         });
@@ -1325,7 +1320,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         row.getChildren().addAll(keyField, valueField, removeButton);
         row.setFocusTraversable(true);
         row.setAccessibleRole(AccessibleRole.TABLE_ROW);
-        row.setAccessibleText(this.bundle.getString("function_row") + (vBox_DataTable.getChildren().size() + 1));
+        row.setAccessibleText(this.bundle.getString("chart_row") + (vBox_dataTable.getChildren().size() + 1));
 
 
         HBox.setHgrow(valueField, Priority.ALWAYS);

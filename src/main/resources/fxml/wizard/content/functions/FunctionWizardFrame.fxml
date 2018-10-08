@@ -161,14 +161,14 @@
                                                                             </tooltip>
                                                                         </Button>
                                                                     </HBox>
-                                                                    <Button fx:id="button_EditDataSet" accessibleText="%label_csv_edit" maxWidth="1.7976931348623157E308" minWidth="50.0" mnemonicParsing="false" prefHeight="25.0" text="%label_functions" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                                    <Button fx:id="button_editDataSet" maxWidth="1.7976931348623157E308" minWidth="50.0" mnemonicParsing="false" prefHeight="25.0" text="%label_functions" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                                         <tooltip>
-                                                                            <Tooltip text="%label_csv_edit" />
+                                                                            <Tooltip text="%label_functions" />
                                                                         </tooltip>
                                                                     </Button>
                                                                 </children>
                                                             </GridPane>
-                                                            <VBox fx:id="vBox_dataTable" minWidth="10.0" spacing="10.0" />
+                                                            <VBox fx:id="vBox_dataTable"  styleClass="data-table"/>
                                                         </children>
                                                     </VBox>
                                                 </children>

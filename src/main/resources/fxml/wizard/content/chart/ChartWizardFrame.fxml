@@ -23,100 +23,122 @@
 <?import javafx.scene.web.WebView?>
 <?import org.controlsfx.glyphfont.Glyph?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
-    <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
+    <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                AnchorPane.topAnchor="0.0">
         <top>
             <VBox BorderPane.alignment="CENTER">
                 <children>
                     <HBox fx:id="hBox_pagination" accessibleRole="MENU_BAR" alignment="CENTER" prefHeight="48.0" prefWidth="600.0">
-                        <Button fx:id="button_Warnings" />
-                        <Button fx:id="button_Infos" />
+                        <Button fx:id="button_Warnings"/>
+                        <Button fx:id="button_Infos"/>
                     </HBox>
                 </children>
             </VBox>
         </top>
 
         <center>
-            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="264.0" prefWidth="503.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="264.0" prefWidth="503.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <columnConstraints>
-                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="0.0" />
-                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="0.0" />
+                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="0.0"/>
+                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="0.0"/>
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                 </rowConstraints>
                 <padding>
-                    <Insets left="10.0" right="10.0" />
+                    <Insets left="10.0" right="10.0"/>
                 </padding>
-                <BorderPane fx:id="borderPane_WizardContent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="500.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <BorderPane fx:id="borderPane_WizardContent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="500.0" AnchorPane.bottomAnchor="0"
+                            AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                     <center>
-                        <TabPane fx:id="tabPane_ContentHolder" layoutX="177.0" layoutY="112.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="312.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TabPane fx:id="tabPane_ContentHolder" layoutX="177.0" layoutY="112.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="312.0"
+                                 tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <Tab style="visibility: hidden" text="Stage1">
-                                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0"
+                                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <ScrollPane fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="440.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <ScrollPane fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="440.0"
+                                                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                                 <children>
-                                                    <GridPane fx:id="stage1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" vgap="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                    <GridPane fx:id="stage1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" vgap="25.0"
+                                                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                         <columnConstraints>
-                                                            <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                                                            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                                            <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
+                                                            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
                                                         </columnConstraints>
                                                         <rowConstraints>
-                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
-                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
-                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
-                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
-                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
-                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
-                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
+                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER"/>
+                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER"/>
+                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER"/>
+                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER"/>
+                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER"/>
+                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER"/>
+                                                            <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER"/>
                                                         </rowConstraints>
                                                         <padding>
-                                                            <Insets left="10.0" right="10.0" top="10.0" />
+                                                            <Insets left="10.0" right="10.0" top="10.0"/>
                                                         </padding>
                                                         <children>
-                                                            <Label fx:id="label_diagramType" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_diagram_type" textOverrun="CLIP" wrapText="true" GridPane.rowIndex="0" />
-                                                            <ChoiceBox fx:id="choiceBox_diagramType" accessibleText="%prompt_diagramtype_title" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" />
-                                                            <Label fx:id="label_title" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_diagram_title" GridPane.rowIndex="1" />
-                                                            <TextField fx:id="textField_title" accessibleText="%diagram_title" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%prompt_title" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                            <Label fx:id="label_diagramType" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_diagram_type" textOverrun="CLIP"
+                                                                   wrapText="true" GridPane.rowIndex="0"/>
+                                                            <ChoiceBox fx:id="choiceBox_diagramType" accessibleText="%prompt_diagramtype_title" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                       prefHeight="25.0" GridPane.columnIndex="1"/>
+                                                            <Label fx:id="label_title" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_diagram_title" GridPane.rowIndex="1"/>
+                                                            <TextField fx:id="textField_title" accessibleText="%diagram_title" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
+                                                                       promptText="%prompt_title" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                                 <tooltip>
-                                                                    <Tooltip text="%diagram_title" />
+                                                                    <Tooltip text="%diagram_title"/>
                                                                 </tooltip>
                                                             </TextField>
 
-                                                            <Label fx:id="label_outputDevice" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_output_device" GridPane.rowIndex="2" />
-                                                            <ChoiceBox fx:id="choiceBox_outputDevice" accessibleText="%label_output_device" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                            <Label fx:id="label_outputDevice" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_output_device"
+                                                                   GridPane.rowIndex="2"/>
+                                                            <ChoiceBox fx:id="choiceBox_outputDevice" accessibleText="%label_output_device" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                       prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-                                                            <Label fx:id="label_pageOrientation" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_pageOrientation" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                                                            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                            <Label fx:id="label_pageOrientation" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0"
+                                                                   text="%label_pageOrientation" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                                            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1"
+                                                                  GridPane.rowIndex="3">
                                                                 <children>
-                                                                    <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" prefHeight="17.0" text="%radio_portrait" GridPane.valignment="CENTER">
+                                                                    <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" prefHeight="17.0"
+                                                                                 text="%radio_portrait" GridPane.valignment="CENTER">
                                                                         <tooltip>
-                                                                            <Tooltip text="%radio_portrait" />
+                                                                            <Tooltip text="%radio_portrait"/>
                                                                         </tooltip>
                                                                         <toggleGroup>
-                                                                            <ToggleGroup fx:id="toggleGroup_pageOrientation" />
+                                                                            <ToggleGroup fx:id="toggleGroup_pageOrientation"/>
                                                                         </toggleGroup>
                                                                     </RadioButton>
-                                                                    <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_landscape" toggleGroup="$toggleGroup_pageOrientation">
+                                                                    <RadioButton fx:id="radioBtn_landscape" accessibleText="%radio_landscape" contentDisplay="RIGHT" mnemonicParsing="false"
+                                                                                 prefHeight="17.0" text="%radio_landscape" toggleGroup="$toggleGroup_pageOrientation">
                                                                         <tooltip>
-                                                                            <Tooltip text="%radio_landscape" />
+                                                                            <Tooltip text="%radio_landscape"/>
                                                                         </tooltip>
                                                                     </RadioButton>
                                                                 </children>
                                                             </HBox>
-                                                            <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram" GridPane.rowIndex="4" />
-                                                            <ChoiceBox fx:id="choiceBox_size" accessibleText="%label_size_of_diagram" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                                            <Label fx:id="label_customSizeWidth" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_width" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                                                            <TextField fx:id="textField_customSizeWidth" accessibleHelp="%size_of_diagram_width" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_width" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                            <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram" GridPane.rowIndex="4"/>
+                                                            <ChoiceBox fx:id="choiceBox_size" accessibleText="%label_size_of_diagram" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                       prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                                            <Label fx:id="label_customSizeWidth" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_width"
+                                                                   visible="false" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                                                            <TextField fx:id="textField_customSizeWidth" accessibleHelp="%size_of_diagram_width" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                       prefHeight="25.0" promptText="%size_of_diagram_width" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                                 <tooltip>
-                                                                    <Tooltip text="%size_of_diagram_width" />
+                                                                    <Tooltip text="%size_of_diagram_width"/>
                                                                 </tooltip>
                                                             </TextField>
-                                                            <Label fx:id="label_customSizeHeight" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_height" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                                                            <TextField fx:id="textField_customSizeHeight" accessibleHelp="%size_of_diagram_height" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_height" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                            <Label fx:id="label_customSizeHeight" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_height"
+                                                                   visible="false" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                                                            <TextField fx:id="textField_customSizeHeight" accessibleHelp="%size_of_diagram_height" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                       prefHeight="25.0" promptText="%size_of_diagram_height" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                                                 <tooltip>
-                                                                    <Tooltip text="%size_of_diagram_height" />
+                                                                    <Tooltip text="%size_of_diagram_height"/>
                                                                 </tooltip>
                                                             </TextField>
                                                         </children>
@@ -129,62 +151,79 @@
                                 </AnchorPane>
                             </Tab>
                             <Tab text="Stage2">
-                                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0"
+                                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <ScrollPane fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="440.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <ScrollPane fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="440.0"
+                                                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                 <children>
-                                                    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" spacing="10.0"
+                                                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                         <children>
                                                             <GridPane fx:id="stage2" vgap="25.0">
                                                                 <columnConstraints>
-                                                                    <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                                                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                                                    <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
+                                                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
                                                                 </columnConstraints>
                                                                 <rowConstraints>
-                                                                    <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS" />
-                                                                    <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
-                                                                    <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
-                                                                    <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
-                                                   <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER" />
+                                                                    <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS"/>
+                                                                    <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER"/>
+                                                                    <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER"/>
+                                                                    <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="NEVER"/>
                                                                 </rowConstraints>
                                                                 <children>
-                                                                    <Label id="label_CsvFile" fx:id="label_CsvFile" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_file" GridPane.rowIndex="0" />
-                                                                    <HBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                                                        <TextField fx:id="textField_csvPath" accessibleText="%csv_file_help_text_field" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%prompt_path_to_csv" HBox.hgrow="ALWAYS">
+                                                                    <Label id="label_CsvFile" fx:id="label_CsvFile" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_file"
+                                                                           GridPane.rowIndex="0"/>
+                                                                    <HBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" spacing="10.0"
+                                                                          GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                                                        <TextField fx:id="textField_csvPath" accessibleText="%csv_file_help_text_field" maxWidth="1.7976931348623157E308"
+                                                                                   minWidth="50.0" prefHeight="25.0" promptText="%prompt_path_to_csv" HBox.hgrow="ALWAYS">
                                                                             <tooltip>
-                                                                                <Tooltip text="%csv_file_help_text_field" />
+                                                                                <Tooltip text="%csv_file_help_text_field"/>
                                                                             </tooltip>
                                                                         </TextField>
-                                                                        <Button fx:id="button_csvPath" accessibleText="%csv_file_help_button" mnemonicParsing="false" styleClass="btn-upload" text="...">
+                                                                        <Button fx:id="button_csvPath" accessibleText="%csv_file_help_button" mnemonicParsing="false" styleClass="btn-upload"
+                                                                                text="...">
                                                                             <tooltip>
-                                                                                <Tooltip text="%csv_file_help_button" />
+                                                                                <Tooltip text="%csv_file_help_button"/>
                                                                             </tooltip>
                                                                         </Button>
                                                                     </HBox>
 
-                                                                    <Label fx:id="label_csvType" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_type" GridPane.rowIndex="1" />
-                                                                    <ChoiceBox id="choiceBox_CsvType" fx:id="choiceBox_csvType" accessibleText="%label_csv_type" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                   <Label text="%label_dataset" GridPane.rowIndex="2" />
-                                                   <ChoiceBox fx:id="choiceBox_DataSets" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-                                                   <Button fx:id="button_AddDataSet" mnemonicParsing="false" text="%dataset_add" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
-                                                      <GridPane.margin>
-                                                         <Insets left="5.0" right="5.0" />
-                                                      </GridPane.margin>
-                                                   </Button>
-                                                   <Button fx:id="button_RemoveDataSet" maxWidth="1.7976931348623157E308" minWidth="50.0" mnemonicParsing="false" prefHeight="25.0" text="%dataset_remove" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
-                                                      <GridPane.margin>
-                                                         <Insets />
-                                                      </GridPane.margin>
-                                                   </Button>
-                                                   <Label text="%label_datapoint" GridPane.rowIndex="4" />
-                                                   <Button fx:id="button_AddDataPoint" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%datapoint_add" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
+                                                                    <Label fx:id="label_csvType" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_csv_type"
+                                                                           GridPane.rowIndex="1"/>
+                                                                    <ChoiceBox id="choiceBox_CsvType" fx:id="choiceBox_csvType" accessibleText="%label_csv_type" maxWidth="1.7976931348623157E308"
+                                                                               minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                                                    <Label text="%label_dataset" GridPane.rowIndex="2"/>
+                                                                    <HBox GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" spacing="10.0" alignment="TOP_CENTER">
+                                                                        <ChoiceBox fx:id="choiceBox_DataSets" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS"/>
+                                                                        <Button fx:id="button_AddDataSet" mnemonicParsing="false" HBox.hgrow="NEVER" styleClass="btn-reset">
+                                                                            <graphic>
+                                                                                <Glyph fontFamily="FontAwesome" icon="PLUS"/>
+                                                                            </graphic>
+                                                                            <tooltip>
+                                                                                <Tooltip text="%dataset_add"/>
+                                                                            </tooltip>
+                                                                        </Button>
+                                                                        <Button fx:id="button_RemoveDataSet" mnemonicParsing="false" styleClass="btn-reset" HBox.hgrow="NEVER">
+                                                                            <graphic>
+                                                                                <Glyph fontFamily="FontAwesome" icon="TRASH"/>
+                                                                            </graphic>
+                                                                            <tooltip>
+                                                                                <Tooltip text="%dataset_remove"/>
+                                                                            </tooltip>
+                                                                        </Button>
+                                                                    </HBox>
+                                                                    <Label text="%label_datapoint" GridPane.rowIndex="3"/>
+                                                                    <Button fx:id="button_AddDataPoint" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%datapoint_add"
+                                                                            GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3"/>
                                                                 </children>
                                                             </GridPane>
-                                             <VBox fx:id="vBox_DataTable" spacing="5.0" />
+                                                            <VBox fx:id="vBox_dataTable" styleClass="data-table"/>
                                                         </children>
                                                         <padding>
-                                                            <Insets left="10.0" right="10.0" />
+                                                            <Insets left="10.0" right="10.0"/>
                                                         </padding>
                                                     </VBox>
                                                 </children>
@@ -196,141 +235,175 @@
                             <Tab text="Stage3">
                                 <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <ScrollPane fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+                                        <ScrollPane fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+                                                    VBox.vgrow="ALWAYS">
                                             <content>
                                                 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="440.0">
                                                     <children>
-                                                        <GridPane fx:id="stage3" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" vgap="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <GridPane fx:id="stage3" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" vgap="25.0"
+                                                                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                             <columnConstraints>
-                                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
+                                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
                                                             </columnConstraints>
                                                             <rowConstraints>
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
                                                             </rowConstraints>
                                                             <padding>
-                                                                <Insets left="10.0" right="10.0" top="10.0" />
+                                                                <Insets left="10.0" right="10.0" top="10.0"/>
                                                             </padding>
                                                             <children>
                                                                 <!--bar chart-->
-                                                                <Label fx:id="label_baraccumulation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_acc" visible="false" GridPane.rowIndex="0" />
-                                                                <ChoiceBox fx:id="choiceBox_baraccumulation" accessibleText="Art, in der mehrere Datenreihen in Balkendiagrammen akkumuliert werden." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                                                <Label fx:id="label_baraccumulation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_acc" visible="false"
+                                                                       GridPane.rowIndex="0"/>
+                                                                <ChoiceBox fx:id="choiceBox_baraccumulation" accessibleText="Art, in der mehrere Datenreihen in Balkendiagrammen akkumuliert werden."
+                                                                           maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1"
+                                                                           GridPane.rowIndex="0"/>
 
-                                                                <Label fx:id="label_firstTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_first_bar" visible="false" GridPane.rowIndex="1" />
+                                                                <Label fx:id="label_firstTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_first_bar"
+                                                                       visible="false" GridPane.rowIndex="1"/>
                                                                 <HBox fx:id="hbox_firstTexture" alignment="TOP_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                                    <ChoiceBox fx:id="choiceBox_firstTexture" accessibleText="%texture_first_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                                    <ChoiceBox fx:id="choiceBox_firstTexture" accessibleText="%texture_first_bar" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                               prefHeight="25.0" HBox.hgrow="ALWAYS"/>
                                                                     <Button fx:id="button_resetFirstTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset">
                                                                         <graphic>
-                                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE"/>
                                                                         </graphic>
                                                                         <tooltip>
-                                                                            <Tooltip text="%button_texture_reset" />
+                                                                            <Tooltip text="%button_texture_reset"/>
                                                                         </tooltip>
                                                                     </Button>
                                                                 </HBox>
-                                                                <Label fx:id="label_secondTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_second_bar" visible="false" GridPane.rowIndex="2" />
+                                                                <Label fx:id="label_secondTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_second_bar"
+                                                                       visible="false" GridPane.rowIndex="2"/>
                                                                 <HBox fx:id="hbox_secondTexture" alignment="TOP_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                                                    <ChoiceBox fx:id="choiceBox_secondTexture" accessibleText="%texture_second_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                                    <ChoiceBox fx:id="choiceBox_secondTexture" accessibleText="%texture_second_bar" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                               prefHeight="25.0" HBox.hgrow="ALWAYS"/>
                                                                     <Button fx:id="button_resetSecondTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset">
                                                                         <graphic>
-                                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE"/>
                                                                         </graphic>
                                                                         <tooltip>
-                                                                            <Tooltip text="%button_texture_reset" />
+                                                                            <Tooltip text="%button_texture_reset"/>
                                                                         </tooltip>
                                                                     </Button>
                                                                 </HBox>
-                                                                <Label fx:id="label_thirdTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_third_bar" visible="false" GridPane.rowIndex="3" />
+                                                                <Label fx:id="label_thirdTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_third_bar"
+                                                                       visible="false" GridPane.rowIndex="3"/>
                                                                 <HBox fx:id="hbox_thirdTexture" alignment="TOP_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                                                    <ChoiceBox fx:id="choiceBox_thirdTexture" accessibleText="%texture_third_bar" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                                    <ChoiceBox fx:id="choiceBox_thirdTexture" accessibleText="%texture_third_bar" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                               prefHeight="25.0" HBox.hgrow="ALWAYS"/>
                                                                     <Button fx:id="button_resetThirdTexture" accessibleText="%button_texture_reset" mnemonicParsing="false" styleClass="btn-reset">
                                                                         <graphic>
-                                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE"/>
                                                                         </graphic>
                                                                         <tooltip>
-                                                                            <Tooltip text="%button_texture_reset" />
+                                                                            <Tooltip text="%button_texture_reset"/>
                                                                         </tooltip>
                                                                     </Button>
                                                                 </HBox>
 
-                                                                <Label fx:id="label_sorting" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sorting" visible="false" GridPane.rowIndex="4" />
-                                                                <ChoiceBox fx:id="choiceBox_sorting" accessibleText="%label_sorting" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                                                <Label fx:id="label_sortOrder" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sort_order" visible="false" GridPane.rowIndex="5" />
-                                                                <ChoiceBox fx:id="choicebox_sortOrder" accessibleText="%label_sort_order" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                <Label fx:id="label_sorting" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sorting" visible="false"
+                                                                       GridPane.rowIndex="4"/>
+                                                                <ChoiceBox fx:id="choiceBox_sorting" accessibleText="%label_sorting" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
+                                                                           visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                                                <Label fx:id="label_sortOrder" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sort_order" visible="false"
+                                                                       GridPane.rowIndex="5"/>
+                                                                <ChoiceBox fx:id="choicebox_sortOrder" accessibleText="%label_sort_order" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                           prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
                                                                 <!--line chart-->
-                                                                <Label fx:id="label_secondLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_second" visible="false" GridPane.rowIndex="0" />
+                                                                <Label fx:id="label_secondLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_second"
+                                                                       visible="false" GridPane.rowIndex="0"/>
                                                                 <HBox fx:id="hbox_secondLineStyle" alignment="TOP_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                                                    <ChoiceBox fx:id="choiceBox_secondLineStyle" accessibleText="%label_line_style_second" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
-                                                                    <Button fx:id="button_resetSecondLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset">
+                                                                    <ChoiceBox fx:id="choiceBox_secondLineStyle" accessibleText="%label_line_style_second" maxWidth="1.7976931348623157E308"
+                                                                               minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS"/>
+                                                                    <Button fx:id="button_resetSecondLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false"
+                                                                            styleClass="btn-reset">
                                                                         <graphic>
-                                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE"/>
                                                                         </graphic>
                                                                         <tooltip>
-                                                                            <Tooltip text="%button_line_style_reset" />
+                                                                            <Tooltip text="%button_line_style_reset"/>
                                                                         </tooltip>
                                                                     </Button>
                                                                 </HBox>
 
-                                                                <Label fx:id="label_thirdLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_third" visible="false" GridPane.rowIndex="1" />
+                                                                <Label fx:id="label_thirdLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_third"
+                                                                       visible="false" GridPane.rowIndex="1"/>
                                                                 <HBox fx:id="hbox_thirdLineStyle" alignment="TOP_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                                    <ChoiceBox fx:id="choiceBox_thirdLineStyle" accessibleText="%label_line_style_third" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                                    <ChoiceBox fx:id="choiceBox_thirdLineStyle" accessibleText="%label_line_style_third" maxWidth="1.7976931348623157E308"
+                                                                               minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS"/>
                                                                     <Button fx:id="button_resetThirdLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset">
                                                                         <graphic>
-                                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE"/>
                                                                         </graphic>
                                                                         <tooltip>
-                                                                            <Tooltip text="%button_line_style_reset" />
+                                                                            <Tooltip text="%button_line_style_reset"/>
                                                                         </tooltip>
                                                                     </Button>
                                                                 </HBox>
 
-                                                                <Label fx:id="label_firstLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_default" visible="false" GridPane.rowIndex="2" />
+                                                                <Label fx:id="label_firstLineStyle" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_line_style_default"
+                                                                       visible="false" GridPane.rowIndex="2"/>
                                                                 <HBox fx:id="hbox_firstLineStyle" alignment="TOP_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                                                    <ChoiceBox fx:id="choiceBox_firstLineStyle" accessibleText="%label_line_style_default" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS" />
+                                                                    <ChoiceBox fx:id="choiceBox_firstLineStyle" accessibleText="%label_line_style_default" maxWidth="1.7976931348623157E308"
+                                                                               minWidth="50.0" prefHeight="25.0" HBox.hgrow="ALWAYS"/>
                                                                     <Button fx:id="button_resetFirstLineStyle" accessibleText="%button_line_style_reset" mnemonicParsing="false" styleClass="btn-reset">
                                                                         <graphic>
-                                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                                                            <Glyph fontFamily="FontAwesome" icon="CLOSE"/>
                                                                         </graphic>
                                                                         <tooltip>
-                                                                            <Tooltip text="%button_line_style_reset" />
+                                                                            <Tooltip text="%button_line_style_reset"/>
                                                                         </tooltip>
                                                                     </Button>
                                                                 </HBox>
 
 
-                                                                <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_mark_data" visible="false" GridPane.rowIndex="3" />
-                                                                <ChoiceBox fx:id="choiceBox_linepoints" accessibleText="%mark_data_on_line" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_mark_data" visible="false"
+                                                                       GridPane.rowIndex="3"/>
+                                                                <ChoiceBox fx:id="choiceBox_linepoints" accessibleText="%mark_data_on_line" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                           prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
                                                                 <!--scatter plot-->
-                                                                <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="0" />
-                                                                <ChoiceBox fx:id="choiceBox_trendline" accessibleText="%label_trendline_helptext" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                                                <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                                                <TextField fx:id="textField_trendline_alpha" accessibleText="%text_trendline_alpha" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                                <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false"
+                                                                       GridPane.rowIndex="0"/>
+                                                                <ChoiceBox fx:id="choiceBox_trendline" accessibleText="%label_trendline_helptext" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                           prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                                                <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha"
+                                                                       visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                                                <TextField fx:id="textField_trendline_alpha" accessibleText="%text_trendline_alpha" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                           prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                                     <tooltip>
-                                                                        <Tooltip text="%text_trendline_alpha" />
+                                                                        <Tooltip text="%text_trendline_alpha"/>
                                                                     </tooltip>
                                                                 </TextField>
-                                                                <Label fx:id="label_trendline_forecast" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_forecast" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                                                                <TextField fx:id="textField_trendline_forecast" accessibleText="%text_trendline_forecast" maxWidth="1.7976931348623157E308" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                                <Label fx:id="label_trendline_forecast" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_forecast"
+                                                                       visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                                                <TextField fx:id="textField_trendline_forecast" accessibleText="%text_trendline_forecast" maxWidth="1.7976931348623157E308"
+                                                                           prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                                     <tooltip>
-                                                                        <Tooltip text="%text_trendline_forecast" />
+                                                                        <Tooltip text="%text_trendline_forecast"/>
                                                                     </tooltip>
                                                                 </TextField>
-                                                                <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_n" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                                                <TextField fx:id="textField_trendline_n" accessibleText="%text_trendline_n" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                                <Label fx:id="label_trendline_n" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_n" visible="false"
+                                                                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                                                <TextField fx:id="textField_trendline_n" accessibleText="%text_trendline_n" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                           prefHeight="17.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                                     <tooltip>
-                                                                        <Tooltip text="%text_trendline_n" />
+                                                                        <Tooltip text="%text_trendline_n"/>
                                                                     </tooltip>
                                                                 </TextField>
-                                                                <Label fx:id="label_originalPoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_hide_original_points" visible="false" GridPane.rowIndex="3" />
-                                                                <ChoiceBox fx:id="choiceBox_originalPoints" accessibleText="%label_hide_original_points" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                <Label fx:id="label_originalPoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_hide_original_points"
+                                                                       visible="false" GridPane.rowIndex="3"/>
+                                                                <ChoiceBox fx:id="choiceBox_originalPoints" accessibleText="%label_hide_original_points" maxWidth="1.7976931348623157E308"
+                                                                           minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
                                                             </children>
                                                         </GridPane>
@@ -348,79 +421,96 @@
                                             <content>
                                                 <AnchorPane>
                                                     <children>
-                                                        <GridPane fx:id="stage4" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" vgap="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <GridPane fx:id="stage4" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" vgap="25.0"
+                                                                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                             <columnConstraints>
-                                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="136.0" />
+                                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
+                                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="136.0"/>
                                                             </columnConstraints>
                                                             <rowConstraints>
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
                                                             </rowConstraints>
                                                             <padding>
-                                                                <Insets left="10.0" right="10.0" top="10.0" />
+                                                                <Insets left="10.0" right="10.0" top="10.0"/>
                                                             </padding>
                                                             <children>
-                                                                <Label fx:id="label_xunit" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_x_axis_title" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                                                <TextField fx:id="textField_xunit" accessibleText="%label_x_axis_title" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="%prompt_x_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                                                <Label fx:id="label_xunit" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0"
+                                                                       text="%label_x_axis_title" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                                                <TextField fx:id="textField_xunit" accessibleText="%label_x_axis_title" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                           prefHeight="17.0" promptText="%prompt_x_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="0">
                                                                     <tooltip>
-                                                                        <Tooltip text="%label_x_axis_title" />
+                                                                        <Tooltip text="%label_x_axis_title"/>
                                                                     </tooltip>
                                                                 </TextField>
-                                                                <Label fx:id="label_yunit" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_y_axis_title" GridPane.rowIndex="1" />
-                                                                <TextField fx:id="textField_yunit" accessibleText="%label_y_axis_title" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="%prompt_y_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                                <Label fx:id="label_yunit" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0"
+                                                                       text="%label_y_axis_title" GridPane.rowIndex="1"/>
+                                                                <TextField fx:id="textField_yunit" accessibleText="%label_y_axis_title" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                           prefHeight="17.0" promptText="%prompt_y_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                                     <tooltip>
-                                                                        <Tooltip text="%label_y_axis_title" />
+                                                                        <Tooltip text="%label_y_axis_title"/>
                                                                     </tooltip>
                                                                 </TextField>
 
-                                                                <Label fx:id="label_Autoscale" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_scale_data" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                                                                <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                                <Label fx:id="label_Autoscale" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0"
+                                                                       text="%label_scale_data" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                                                <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1"
+                                                                      GridPane.rowIndex="2">
                                                                     <children>
-                                                                        <RadioButton fx:id="radioBtn_autoscale" accessibleText="%help_radio_scale_to_data_area" mnemonicParsing="false" prefHeight="17.0" text="%radio_scale_to_data_area" GridPane.valignment="CENTER">
+                                                                        <RadioButton fx:id="radioBtn_autoscale" accessibleText="%help_radio_scale_to_data_area" mnemonicParsing="false"
+                                                                                     prefHeight="17.0" text="%radio_scale_to_data_area" GridPane.valignment="CENTER">
                                                                             <tooltip>
-                                                                                <Tooltip text="%help_radio_scale_to_data_area" />
+                                                                                <Tooltip text="%help_radio_scale_to_data_area"/>
                                                                             </tooltip>
                                                                             <toggleGroup>
-                                                                                <ToggleGroup fx:id="toggleGroup_autoScale" />
+                                                                                <ToggleGroup fx:id="toggleGroup_autoScale"/>
                                                                             </toggleGroup>
                                                                         </RadioButton>
-                                                                        <RadioButton fx:id="radioBtn_customScale" accessibleText="%help_radio_custom_scale" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$toggleGroup_autoScale">
+                                                                        <RadioButton fx:id="radioBtn_customScale" accessibleText="%help_radio_custom_scale" contentDisplay="RIGHT"
+                                                                                     mnemonicParsing="false" prefHeight="17.0" text="%radio_custom_scale" toggleGroup="$toggleGroup_autoScale">
                                                                             <tooltip>
-                                                                                <Tooltip text="%help_radio_custom_scale" />
+                                                                                <Tooltip text="%help_radio_custom_scale"/>
                                                                             </tooltip>
                                                                         </RadioButton>
                                                                     </children>
                                                                 </HBox>
 
-                                                                <Label fx:id="label_yfrom" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_from" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                                                <TextField fx:id="textField_yfrom" accessibleHelp="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                                <Label fx:id="label_yfrom" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0"
+                                                                       prefWidth="200.0" text="%label_display_area_y_from" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="3"/>
+                                                                <TextField fx:id="textField_yfrom" accessibleHelp="%display_area_y_from" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                           prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                                     <tooltip>
-                                                                        <Tooltip text="%display_area_y_from" />
+                                                                        <Tooltip text="%display_area_y_from"/>
                                                                     </tooltip>
                                                                 </TextField>
-                                                                <Label fx:id="label_yto" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_y_to" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                                                                <TextField fx:id="textField_yto" accessibleHelp="%display_area_y_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                                <Label fx:id="label_yto" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0"
+                                                                       text="%label_display_area_y_to" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="4"/>
+                                                                <TextField fx:id="textField_yto" accessibleHelp="%display_area_y_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
+                                                                           GridPane.columnIndex="1" GridPane.rowIndex="4">
                                                                     <tooltip>
-                                                                        <Tooltip text="%display_area_y_to" />
+                                                                        <Tooltip text="%display_area_y_to"/>
                                                                     </tooltip>
                                                                 </TextField>
 
-                                                                <Label fx:id="label_xfrom" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_from" textAlignment="RIGHT" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
-                                                                <TextField fx:id="textField_xfrom" accessibleHelp="%display_area_x_from" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                                <Label fx:id="label_xfrom" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0"
+                                                                       text="%label_display_area_x_from" textAlignment="RIGHT" GridPane.halignment="LEFT" GridPane.rowIndex="5"/>
+                                                                <TextField fx:id="textField_xfrom" accessibleHelp="%display_area_x_from" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                           prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                                                     <tooltip>
-                                                                        <Tooltip text="%display_area_x_from" />
+                                                                        <Tooltip text="%display_area_x_from"/>
                                                                     </tooltip>
                                                                 </TextField>
-                                                                <Label fx:id="label_xto" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="200.0" text="%label_display_area_x_to" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                                                                <TextField fx:id="textField_xto" accessibleHelp="%display_area_x_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                                <Label fx:id="label_xto" alignment="TOP_LEFT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="18.0"
+                                                                       prefWidth="200.0" text="%label_display_area_x_to" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="6"/>
+                                                                <TextField fx:id="textField_xto" accessibleHelp="%display_area_x_to" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0"
+                                                                           GridPane.columnIndex="1" GridPane.rowIndex="6">
                                                                     <tooltip>
-                                                                        <Tooltip text="%display_area_x_to" />
+                                                                        <Tooltip text="%display_area_x_to"/>
                                                                     </tooltip>
                                                                 </TextField>
                                                             </children>
@@ -439,44 +529,51 @@
                                             <content>
                                                 <AnchorPane>
                                                     <children>
-                                                        <GridPane fx:id="stage5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" vgap="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <GridPane fx:id="stage5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" vgap="25.0"
+                                                                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                             <columnConstraints>
-                                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                                                                <ColumnConstraints />
+                                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
+                                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
+                                                                <ColumnConstraints/>
                                                             </columnConstraints>
                                                             <rowConstraints>
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
                                                             </rowConstraints>
                                                             <padding>
-                                                                <Insets left="10.0" right="10.0" top="10.0" />
+                                                                <Insets left="10.0" right="10.0" top="10.0"/>
                                                             </padding>
                                                             <children>
-                                                                <Label fx:id="label_grid" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_grid_style" />
-                                                                <ChoiceBox fx:id="choicebox_gridStyle" accessibleHelp="%label_grid_style" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                                                <Label fx:id="label_grid" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_grid_style"/>
+                                                                <ChoiceBox fx:id="choicebox_gridStyle" accessibleHelp="%label_grid_style" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                           prefHeight="25.0" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-                                                                <Label fx:id="label_xlines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_x" GridPane.rowIndex="1" />
-                                                                <TextField fx:id="textField_xlines" accessibleHelp="%help_lines_y_tooltip_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="x1 x2 x3" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                                                <Label fx:id="label_xlines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_x"
+                                                                       GridPane.rowIndex="1"/>
+                                                                <TextField fx:id="textField_xlines" accessibleHelp="%help_lines_y_tooltip_text" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                           prefHeight="17.0" promptText="x1 x2 x3" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                                     <tooltip>
-                                                                        <Tooltip text="%help_lines_x_tooltip_text" />
+                                                                        <Tooltip text="%help_lines_x_tooltip_text"/>
                                                                     </tooltip>
                                                                 </TextField>
 
-                                                                <Label fx:id="label_ylines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_y" GridPane.rowIndex="2" />
-                                                                <TextField fx:id="textField_ylines" accessibleHelp="%help_lines_y_tooltip_text" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" promptText="y1 y2 y3" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                                <Label fx:id="label_ylines" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_help_lines_y"
+                                                                       GridPane.rowIndex="2"/>
+                                                                <TextField fx:id="textField_ylines" accessibleHelp="%help_lines_y_tooltip_text" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                           prefHeight="17.0" promptText="y1 y2 y3" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                                     <tooltip>
-                                                                        <Tooltip text="%help_lines_y_tooltip_text" />
+                                                                        <Tooltip text="%help_lines_y_tooltip_text"/>
                                                                     </tooltip>
                                                                 </TextField>
 
-                                                                <Label fx:id="label_dblaxes" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_axis_style" GridPane.rowIndex="3" />
-                                                                <ChoiceBox fx:id="choicebox_dblaxes" accessibleHelp="%label_axis_style" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                <Label fx:id="label_dblaxes" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_axis_style" GridPane.rowIndex="3"/>
+                                                                <ChoiceBox fx:id="choicebox_dblaxes" accessibleHelp="%label_axis_style" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                           prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
                                                             </children>
                                                         </GridPane>
                                                     </children>
@@ -493,47 +590,54 @@
                                             <content>
                                                 <AnchorPane>
                                                     <children>
-                                                        <GridPane fx:id="stage6" vgap="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <GridPane fx:id="stage6" vgap="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                                  AnchorPane.topAnchor="0.0">
                                                             <columnConstraints>
-                                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                                                <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
+                                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
                                                             </columnConstraints>
                                                             <rowConstraints>
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS" />
-                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS" />
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS"/>
+                                                                <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS"/>
                                                             </rowConstraints>
                                                             <children>
-                                                                <Label fx:id="label_css" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0" text="%label_csstype" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                                                <ChoiceBox fx:id="choiceBox_cssType" accessibleText="%label_csstype" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                                                <Label fx:id="label_css" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0"
+                                                                       text="%label_csstype" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                                                <ChoiceBox fx:id="choiceBox_cssType" accessibleText="%label_csstype" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
+                                                                           GridPane.columnIndex="1" GridPane.rowIndex="0">
                                                                     <tooltip>
-                                                                        <Tooltip text="%label_csstype" />
+                                                                        <Tooltip text="%label_csstype"/>
                                                                     </tooltip>
                                                                 </ChoiceBox>
 
-                                                                <Label fx:id="label_cssPath" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_file" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                                                <Label fx:id="label_cssPath" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_file" visible="false"
+                                                                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                                                                 <HBox fx:id="hBox_cssPath" alignment="CENTER_RIGHT" spacing="10.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                                    <TextField fx:id="textField_cssPath" accessibleText="%label_css_path_text_field" promptText="%prompt_path_to_css" HBox.hgrow="ALWAYS">
+                                                                    <TextField fx:id="textField_cssPath" accessibleText="%label_css_path_text_field" promptText="%prompt_path_to_css"
+                                                                               HBox.hgrow="ALWAYS">
                                                                         <tooltip>
-                                                                            <Tooltip text="%label_css_path_text_field" />
+                                                                            <Tooltip text="%label_css_path_text_field"/>
                                                                         </tooltip>
                                                                     </TextField>
                                                                     <Button fx:id="button_cssPath" accessibleText="%label_css_path_button" mnemonicParsing="false" styleClass="btn-upload" text="...">
                                                                         <tooltip>
-                                                                            <Tooltip text="%label_css_path_button" />
+                                                                            <Tooltip text="%label_css_path_button"/>
                                                                         </tooltip>
                                                                     </Button>
                                                                 </HBox>
-                                                                <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                                                <TextArea fx:id="textArea_cssCustom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                                                                <Label fx:id="label_cssCustom" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_css_custom" visible="false"
+                                                                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                                                <TextArea fx:id="textArea_cssCustom" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                                                                          GridPane.valignment="TOP">
                                                                     <tooltip>
-                                                                        <Tooltip text="%label_css_custom" />
+                                                                        <Tooltip text="%label_css_custom"/>
                                                                     </tooltip>
 
                                                                 </TextArea>
                                                             </children>
                                                             <padding>
-                                                                <Insets left="10.0" right="10.0" top="10.0" />
+                                                                <Insets left="10.0" right="10.0" top="10.0"/>
                                                             </padding>
                                                         </GridPane>
                                                     </children>
@@ -548,7 +652,8 @@
                 </BorderPane>
                 <AnchorPane styleClass="preview-container" GridPane.columnIndex="1" GridPane.rowIndex="0">
                     <children>
-                        <WebView fx:id="webView_svg" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <WebView fx:id="webView_svg" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
                     </children>
                 </AnchorPane>
             </GridPane>
@@ -563,10 +668,10 @@
                                 <buttons>
                                     <Button fx:id="button_Cancel" cancelButton="true" mnemonicParsing="false" text="%button_cancel" ButtonBar.buttonData="LEFT">
                                         <graphic>
-                                            <Glyph fontFamily="FontAwesome" icon="CLOSE" />
+                                            <Glyph fontFamily="FontAwesome" icon="CLOSE"/>
                                         </graphic>
                                         <tooltip>
-                                            <Tooltip text="%button_cancel_wizard" />
+                                            <Tooltip text="%button_cancel_wizard"/>
                                         </tooltip>
                                     </Button>
                                 </buttons>
@@ -575,7 +680,7 @@
                                 <buttons>
                                     <Button fx:id="button_rerenderPreview" mnemonicParsing="false" styleClass="btn-preview" text="%button_rerender_preview_text">
                                         <tooltip>
-                                            <Tooltip text="%button_rerender_preview" />
+                                            <Tooltip text="%button_rerender_preview"/>
                                         </tooltip>
                                     </Button>
                                 </buttons>
@@ -584,41 +689,41 @@
                                 <buttons>
                                     <Button fx:id="button_Back" mnemonicParsing="false" text="%button_back">
                                         <graphic>
-                                            <Glyph fontFamily="FontAwesome" icon="CHEVRON_LEFT" />
+                                            <Glyph fontFamily="FontAwesome" icon="CHEVRON_LEFT"/>
                                         </graphic>
                                         <tooltip>
-                                            <Tooltip text="%button_back_tooltip" />
+                                            <Tooltip text="%button_back_tooltip"/>
                                         </tooltip>
                                     </Button>
                                     <Button fx:id="button_Next" accessibleText="%label_next" contentDisplay="RIGHT" mnemonicParsing="false" text="%button_next">
                                         <graphic>
-                                            <Glyph fontFamily="FontAwesome" icon="CHEVRON_RIGHT" />
+                                            <Glyph fontFamily="FontAwesome" icon="CHEVRON_RIGHT"/>
                                         </graphic>
                                         <tooltip>
-                                            <Tooltip text="%button_next_tooltip" />
+                                            <Tooltip text="%button_next_tooltip"/>
                                         </tooltip>
                                     </Button>
                                     <Button fx:id="button_Load" mnemonicParsing="false" text="%button_load">
                                         <tooltip>
-                                            <Tooltip text="%button_load_tooltip" />
+                                            <Tooltip text="%button_load_tooltip"/>
                                         </tooltip>
                                     </Button>
                                     <Button fx:id="button_Create" mnemonicParsing="false" text="%button_create">
                                         <graphic>
-                                            <Glyph fontFamily="FontAwesome" icon="SAVE" />
+                                            <Glyph fontFamily="FontAwesome" icon="SAVE"/>
                                         </graphic>
                                         <tooltip>
-                                            <Tooltip text="%button_create_tooltip" />
+                                            <Tooltip text="%button_create_tooltip"/>
                                         </tooltip>
                                     </Button>
                                 </buttons>
                             </ButtonBar>
                         </children>
                         <opaqueInsets>
-                            <Insets />
+                            <Insets/>
                         </opaqueInsets>
                         <padding>
-                            <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="15.0"/>
                         </padding>
                     </HBox>
                 </children>

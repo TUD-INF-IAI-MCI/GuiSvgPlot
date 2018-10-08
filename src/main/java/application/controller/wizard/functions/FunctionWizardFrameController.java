@@ -47,7 +47,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
     @FXML
     private GridPane stage2;
     @FXML
-    private Button button_EditDataSet;
+    private Button button_editDataSet;
 
     //    @FXML
 //    private ScrollPane scrollPane_dataTable;
@@ -184,7 +184,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         super.initCsvFieldListeners();
 
 
-        button_EditDataSet.setOnAction(event -> {
+        button_editDataSet.setOnAction(event -> {
             HBox row = generateTableEntry(new Function("", ""));
             vBox_dataTable.getChildren().add(row);
         });
@@ -390,7 +390,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         HBox row = new HBox();
 
         row.getStyleClass().add("data-row");
-        row.setSpacing(5);
+        row.getStyleClass().add("edit");
         row.setUserData(f);
 
         if ((f.getTitle().isEmpty() && f.getFunction().isEmpty()))
@@ -422,7 +422,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
         titleField.focusedProperty().addListener(invalidationListener);
         functionField.focusedProperty().addListener(invalidationListener);
 
-        Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
+        Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.TRASH);
         Button removeButton = new Button();
         removeButton.setTooltip(new Tooltip(this.bundle.getString("function_remove_function")));
 

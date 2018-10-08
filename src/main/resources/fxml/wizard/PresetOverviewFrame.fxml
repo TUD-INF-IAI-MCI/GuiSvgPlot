@@ -27,19 +27,20 @@
             <HBox fx:id="overviewUpperHBox" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <ButtonBar buttonMinWidth="200.0" prefHeight="50.0" prefWidth="221.0">
-                     <buttons>
-                        <Button fx:id="button_newPreset" accessibleText="%button_create_preset" alignment="CENTER" contentDisplay="RIGHT" minWidth="350.0" mnemonicParsing="false" onAction="#createNewPreset" prefHeight="26.0" text="%button_create_preset" textAlignment="CENTER">
-                           <tooltip>
-                              <Tooltip text="%button_create_preset_tooltip" />
-                           </tooltip></Button>
-                     </buttons>
+                  <ButtonBar buttonMinWidth="200.0" prefHeight="50.0" prefWidth="221.0" HBox.hgrow="ALWAYS">
                      <HBox.margin>
-                        <Insets right="50.0" top="10.0" />
+                        <Insets right="20.0" top="10.0" />
                      </HBox.margin>
                      <padding>
                         <Insets bottom="10.0" />
                      </padding>
+                     <buttons>
+                        <Button fx:id="button_newPreset" accessibleText="%button_create_preset" alignment="CENTER" contentDisplay="RIGHT" minWidth="350.0" mnemonicParsing="false" onAction="#createNewPreset" prefHeight="26.0" text="%button_create_preset" textAlignment="RIGHT">
+                           <tooltip>
+                              <Tooltip text="%button_create_preset_tooltip" />
+                           </tooltip>
+                        </Button>
+                     </buttons>
                   </ButtonBar>
                </children>
             </HBox>
@@ -63,23 +64,23 @@
             </AnchorPane>
          </bottom>
          <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" styleClass="data-table" BorderPane.alignment="CENTER">
+            <VBox prefHeight="200.0" prefWidth="100.0" styleClass="" BorderPane.alignment="CENTER">
                <children>
                   <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="305.0" prefWidth="600.0" styleClass="data-table-container" VBox.vgrow="ALWAYS">
                      <content>
                         <VBox fx:id="vBox_Preset_DataTable" styleClass="data-table">
                            <HBox styleClass="header-row">
-                              <Button fx:id="button_sortByName" styleClass="header-cell" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" contentDisplay="RIGHT" text="%preset_name">
+                              <Button fx:id="button_sortByName" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" styleClass="header-cell" text="%preset_name" HBox.hgrow="ALWAYS">
                                  <tooltip>
                                     <Tooltip text="%button_sortTable_name" />
                                  </tooltip>
                               </Button>
-                              <Button fx:id="button_sortByDate" styleClass="header-cell" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" contentDisplay="RIGHT" text="%preset_creationDate">
+                              <Button fx:id="button_sortByDate" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" styleClass="header-cell" text="%preset_creationDate" HBox.hgrow="ALWAYS">
                                  <tooltip>
                                     <Tooltip text="%button_sortTable_date" />
                                  </tooltip>
                               </Button>
-                              <Button fx:id="button_sortByType" styleClass="header-cell" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" contentDisplay="RIGHT" text="%preset_diagramType">
+                              <Button fx:id="button_sortByType" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" styleClass="header-cell" text="%preset_diagramType" HBox.hgrow="ALWAYS">
                                  <tooltip>
                                     <Tooltip text="%button_sortTable_type" />
                                  </tooltip>
@@ -90,6 +91,12 @@
                            </HBox>
                         </VBox>
                      </content>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </ScrollPane>
                </children>
             </VBox>
