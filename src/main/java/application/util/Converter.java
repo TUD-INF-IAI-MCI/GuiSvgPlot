@@ -1,7 +1,9 @@
 package application.util;
 
+import application.model.DataSet;
 import application.model.Options.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.util.StringConverter;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
@@ -437,6 +439,20 @@ public class Converter {
                     }
                 }
                 return integralOption;
+            }
+        };
+    }
+
+    public StringConverter<DataSet> getDataSetStringConverter(ObservableList<DataSet> dataSets) {
+        return new StringConverter<DataSet>() {
+            @Override
+            public String toString(DataSet set) {
+                return set.getName();
+            }
+
+            @Override
+            public DataSet fromString(String setName) {
+                return dataSets.stream().filter(item -> item.getName().equals(setName)).findFirst().get();
             }
         };
     }

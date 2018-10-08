@@ -1,20 +1,22 @@
 package application.controller.wizard.chart;
 
 import application.controller.wizard.SVGWizardController;
+import application.model.DataPoint;
+import application.model.DataSet;
 import application.model.Options.*;
 import application.util.KeyValuePair;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.AccessibleRole;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.stage.Modality;
+import javafx.scene.layout.VBox;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.slf4j.Logger;
@@ -28,7 +30,14 @@ import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.Color;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 /**
@@ -65,11 +74,15 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private GridPane stage2;
     @FXML
-    private Button button_EditDataSet;
+    private Button button_AddDataSet;
     @FXML
-    private Button button_addDataPoint;
+    private Button button_RemoveDataSet;
     @FXML
-    private ListView<String> listView_SetNames;
+    private Button button_AddDataPoint;
+    @FXML
+    private VBox vBox_DataTable;
+    @FXML
+    private ChoiceBox<DataSet> choiceBox_DataSets;
 
 
     /* stage 3 */
@@ -205,6 +218,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
     private ObservableList<String> setNames;
     private HashMap<String, ArrayList<KeyValuePair>> keyMap;
+    private ObservableList<DataSet> dataSets = FXCollections.observableArrayList();
 
 
     private boolean isInitial = true;
@@ -219,6 +233,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         super.initiatePagination(this.hBox_pagination, AMOUNTOFSTAGES, null);
         this.initiateAllStages();
         this.initChartOptionListeners();
+
         if (super.presets == null || super.presets.isEmpty()) {
             super.presets = FXCollections.observableArrayList(super.presetService.getAllCharts());
         }
@@ -256,6 +271,9 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_diagramType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 guiSvgOptions.setDiagramType(newValue);
+                guiSvgOptions.setCsvPath("");
+                dataSets.clear();
+                textField_csvPath.clear();
                 toggleBarChartOptions(newValue == DiagramType.BarChart);
                 toggleLineChartOptions(newValue == DiagramType.LineChart);
                 toggleScatterPlotOptions(newValue == DiagramType.ScatterPlot);
@@ -264,6 +282,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.choiceBox_diagramType.getSelectionModel().select(0);
     }
 
+    private int counter = 0;
 
     /**
      * Will initiate the second stage. Depending on {@code extended}, some parts will be dis- or enabled.
@@ -271,23 +290,69 @@ public class ChartWizardFrameController extends SVGWizardController {
     private void initStage2() {
         super.initCsvFieldListeners();
 
+        button_AddDataPoint.setDisable(true);
 
-        button_EditDataSet.setOnAction(event -> {
-            Dialog d = new TextInputDialog();
-            d.setHeaderText("header");
-            d.setContentText("content");
-            d.initModality(Modality.APPLICATION_MODAL);
-            d.showAndWait();
-            if (d.getResult() != null) {
-                String result = ((TextInputDialog) d).getResult();
-                if (!result.isEmpty()) {
-                    setNames.add(result);
-                }
+
+        getResultFileProp().addListener(inval -> {
+            try {
+                parseCSV();
+            } catch (Exception e) {
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setHeaderText(bundle.getString("csv_parse_error"));
+                a.showAndWait();
+            }
+            if (!dataSets.isEmpty()) {
+                choiceBox_DataSets.getSelectionModel().select(0);
             }
         });
-        listView_SetNames.setItems(setNames);
+
+        choiceBox_DataSets.setConverter(this.converter.getDataSetStringConverter(dataSets));
+        choiceBox_DataSets.setItems(dataSets);
+
+
+        button_AddDataSet.setOnAction(event -> {
+
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setHeaderText(bundle.getString("dataset_entername"));
+            dialog.showAndWait();
+            if (!dialog.getResult().isEmpty()) {
+                DataSet set = new DataSet(null, dialog.getResult());
+                dataSets.add(set);
+                choiceBox_DataSets.getSelectionModel().select(set);
+            }
+        });
+
+        button_RemoveDataSet.setOnAction(event -> {
+            if (dataSets.size() > 0) {
+                int index = Math.max(0, choiceBox_DataSets.getSelectionModel().getSelectedIndex() - 1);
+                dataSets.remove(choiceBox_DataSets.getValue());
+                choiceBox_DataSets.getSelectionModel().select(index);
+                setCSVOptions();
+
+                if (dataSets.isEmpty())
+                    button_AddDataPoint.setDisable(true);
+            }
+
+        });
+
+        choiceBox_DataSets.setOnAction(event -> {
+            renderTable(choiceBox_DataSets.getValue());
+            if (choiceBox_DataSets.getValue() != null)
+                button_AddDataPoint.setDisable(false);
+        });
+
+        button_AddDataPoint.setOnAction(event -> {
+            if (choiceBox_DataSets.getValue() != null) {
+                DataPoint p = new DataPoint("0", "0");
+                choiceBox_DataSets.getValue().addPoint(p);
+
+                vBox_DataTable.getChildren().add(generateTableEntry(p));
+            }
+            setCSVOptions();
+        });
 
     }
+
 
     /**
      * Will initiate the third stage. Depending on {@code extended}, some parts will be dis- or enabled.
@@ -897,7 +962,8 @@ public class ChartWizardFrameController extends SVGWizardController {
         });
     }
 
-    private void drawPointSymbolField(final Map<Label, HBox> map, ObservableList<PointSymbol> observableList, final int index, final boolean visible) {
+    private void drawPointSymbolField(final Map<Label, HBox> map, ObservableList<PointSymbol> observableList,
+                                      final int index, final boolean visible) {
 
         String labelStr = (index + 1) + ". " + this.bundle.getString("label_pointSymbol");
 
@@ -945,7 +1011,8 @@ public class ChartWizardFrameController extends SVGWizardController {
     }
 
 
-    private void drawColorField(final Map<Label, HBox> map, ObservableList<Color> observableList, final int index, final boolean visible) {
+    private void drawColorField(final Map<Label, HBox> map, ObservableList<Color> observableList, final int index,
+                                final boolean visible) {
 
         String idStr = "label_color_" + (index + 1);
 
@@ -997,7 +1064,8 @@ public class ChartWizardFrameController extends SVGWizardController {
         colorChoiceBoxes.add(colorChoiceBox);
     }
 
-    private void changeColors(final Map<Label, HBox> map, ObservableList<Color> observableList, final int index, Label label, final Color newValue, final Color oldValue) {
+    private void changeColors(final Map<Label, HBox> map, ObservableList<Color> observableList,
+                              final int index, Label label, final Color newValue, final Color oldValue) {
         if (oldValue != null) {
             map.forEach((label1, hBox) -> {
                 if (!label1.equals(label)) {
@@ -1019,7 +1087,8 @@ public class ChartWizardFrameController extends SVGWizardController {
         }
     }
 
-    private void changePointSymbols(final Map<Label, HBox> map, ObservableList<PointSymbol> observableList, final int index, Label label, final PointSymbol newValue, final PointSymbol oldValue) {
+    private void changePointSymbols(final Map<Label, HBox> map, ObservableList<PointSymbol> observableList,
+                                    final int index, Label label, final PointSymbol newValue, final PointSymbol oldValue) {
         if (oldValue != null) {
             map.forEach((label1, hBox) -> {
                 if (!label1.equals(label)) {
@@ -1043,17 +1112,341 @@ public class ChartWizardFrameController extends SVGWizardController {
 
 
     private void parseCSV() {
-
         switch (this.choiceBox_diagramType.getSelectionModel().getSelectedItem()) {
-
             case BarChart: {
-
+                parseBarChart();
+                break;
+            }
+            case LineChart: {
+                //hackyTheHack says, its the same like scatterPlot
+                parseScatterPlot();
+                break;
+            }
+            case ScatterPlot: {
+                parseScatterPlot();
                 break;
             }
             default: {
 
             }
 
+        }
+    }
+
+
+    private void parseBarChart() {
+
+        IntegerProperty columnNumber = new SimpleIntegerProperty(0);
+        StringProperty firstLine = new SimpleStringProperty("");
+
+        try {
+            Files.readAllLines(getResultFileProp().get()).forEach(line -> {
+                columnNumber.set(0);
+                // get all Names of the Datasets in row 0
+                if (firstLine.isEmpty().get()) {
+                    firstLine.set(line);
+                    return;
+                }
+                String[] xValues = firstLine.get().split((","));
+
+
+                String[] data = (line + ",").split("");
+                DataSet set = null;
+                boolean escaped = false;
+                String actualValue = "";
+
+                // just programmer magic parsing
+                for (String aData : data) {
+                    if (aData.equals("\"")) {
+                        escaped = !escaped;
+                        continue;
+                    }
+                    if (aData.equals(",") && !escaped) {
+                        if (set == null) {
+                            set = new DataSet(DiagramType.BarChart, actualValue);
+                        } else {
+                            set.addPoint(new DataPoint(xValues[columnNumber.get()], actualValue));
+                            columnNumber.set(columnNumber.get() + 1);
+                        }
+                        actualValue = "";
+                        continue;
+                    }
+                    actualValue += aData;
+                }
+                if (set != null)
+                    dataSets.add(set);
+                columnNumber.set(-1);
+
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private void parseScatterPlot() {
+
+        ObjectProperty<DataSet> dataSet = new SimpleObjectProperty<>(new DataSet(null, ""));
+
+        try {
+            Files.readAllLines(getResultFileProp().get()).forEach(line -> {
+
+
+                if (!line.startsWith(",")) {
+                    //title and X-Values
+                    dataSet.set(new DataSet(DiagramType.ScatterPlot, line.split(",")[0].trim()));
+                    dataSets.add(dataSet.get());
+                    String[] data = (line.substring(line.indexOf(",") + 1) + ",").split("");
+                    boolean escaped = false;
+                    String actualValue = "";
+
+                    for (String aData : data) {
+                        if (aData.equals("\"")) {
+                            escaped = !escaped;
+                            continue;
+                        }
+                        if (aData.equals(",") && !escaped) {
+                            dataSet.get().addPoint(new DataPoint(actualValue, ""));
+                            actualValue = "";
+                            continue;
+                        }
+                        actualValue += aData;
+                    }
+
+
+                } else {
+                    String[] data = (line.substring(1) + ",").split("");
+                    boolean escaped = false;
+                    String actualValue = "";
+                    int counter = 0;
+                    for (String aData : data) {
+                        if (aData.equals("\"")) {
+                            escaped = !escaped;
+                            continue;
+                        }
+                        if (aData.equals(",") && !escaped) {
+                            if (dataSet.get().getAllPoints().size() >= counter)
+                                dataSet.get().getAllPoints().get(counter).setValue(actualValue);
+                            actualValue = "";
+                            counter++;
+                            continue;
+                        }
+                        actualValue += aData;
+                    }
+
+                }
+
+
+            });
+        } catch (
+                IOException e) {
+            e.printStackTrace();
+
+        }
+        dataSets.forEach(item -> System.out.println(item.getAllPoints()));
+
+    }
+
+
+    private void renderTable(DataSet set) {
+
+        vBox_DataTable.getChildren().clear();
+        if (set != null)
+            set.getAllPoints().forEach(point -> vBox_DataTable.getChildren().add(generateTableEntry(point)));
+
+        setCSVOptions();
+    }
+
+    private HBox generateTableEntry(DataPoint point) {
+
+
+        HBox row = new HBox();
+
+        row.getStyleClass().add("data-row");
+        row.setSpacing(5);
+        row.setUserData(point);
+
+        TextField keyField = new TextField(point.getKey());
+        keyField.getStyleClass().add("data-cell");
+        keyField.getStyleClass().add("data-cell-x");
+
+
+        if (choiceBox_diagramType.getValue().equals(DiagramType.BarChart)) {
+            keyField.textProperty().addListener((args, oldVal, newVal) -> {
+                point.setKey(newVal);
+                setCSVOptions();
+            });
+        } else {
+            keyField.textProperty().addListener((args, oldVal, newVal) -> {
+                if (newVal.matches("[0-9]+\\,{0,1}[0-9]*")) {
+                    point.setKey(newVal);
+                } else {
+                    keyField.setText(oldVal);
+                }
+                setCSVOptions();
+            });
+        }
+
+        keyField.setPromptText("KeyField");
+
+        TextField valueField = new TextField(point.getValue());
+        valueField.getStyleClass().add("data-cell");
+        valueField.getStyleClass().add("data-cell-y");
+        valueField.setPromptText("valueField");
+
+        Glyph closeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
+        Button removeButton = new Button();
+        removeButton.setTooltip(new Tooltip(this.bundle.getString("datapoint_remove")));
+
+        removeButton.setGraphic(closeGlyph);
+        removeButton.getStyleClass().add("data-cell-button");
+        removeButton.setOnAction(event -> {
+            int idx = Math.max(0, vBox_DataTable.getChildren().indexOf(row));
+            vBox_DataTable.getChildren().get(idx).requestFocus();
+
+            vBox_DataTable.getChildren().remove(row);
+            choiceBox_DataSets.getValue().getAllPoints().remove(point);
+            renderTable(choiceBox_DataSets.getValue());
+        });
+
+
+        valueField.textProperty().addListener((args, oldVal, newVal) -> {
+            if (newVal.matches("[0-9]+\\,{0,1}[0-9]*")) {
+                point.setValue(newVal);
+                setCSVOptions();
+            } else {
+                keyField.setText(oldVal);
+            }
+        });
+
+        row.getChildren().addAll(keyField, valueField, removeButton);
+        row.setFocusTraversable(true);
+        row.setAccessibleRole(AccessibleRole.TABLE_ROW);
+        row.setAccessibleText(this.bundle.getString("function_row") + (vBox_DataTable.getChildren().size() + 1));
+
+
+        HBox.setHgrow(valueField, Priority.ALWAYS);
+        HBox.setHgrow(keyField, Priority.ALWAYS);
+        HBox.setHgrow(removeButton, Priority.NEVER);
+
+        return row;
+    }
+
+    private void setCSVOptions() {
+
+        HashSet<String> barChartNames = new HashSet<>();
+
+
+        String title = choiceBox_diagramType.getValue() + "_" + textField_title.getText();
+
+//        File f = new File("i:\\" + title + ".csv");
+
+        try {
+            final Path f = Files.createTempFile(title, ".csv");
+
+
+            if (f == null) {
+                return;
+            }
+
+
+            try {
+                Files.write(f, ("").getBytes(Charset.defaultCharset()), StandardOpenOption.TRUNCATE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (dataSets.isEmpty())
+                return;
+
+
+            if (choiceBox_diagramType.getValue().equals(DiagramType.BarChart)) {
+
+                dataSets.forEach(set ->
+                        set.getAllPoints().forEach(point ->
+                                barChartNames.add(point.getKey())));
+
+
+                StringProperty firstLine = new SimpleStringProperty("");
+                // writeHeader
+                for (String name : barChartNames) {
+                    firstLine.set(firstLine.get() + name + ",");
+                }
+
+                if (firstLine.get().length() > 0)
+                    try {
+                        Files.write(f, (firstLine.get().substring(0, firstLine.get().length() - 1) + "\n").getBytes(Charset.defaultCharset()), StandardOpenOption.TRUNCATE_EXISTING);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                dataSets.forEach(set -> {
+                    if (set.getAllPoints().isEmpty()) return;
+                    String line = set.getName() + ",";
+
+                    for (String name : barChartNames) {
+                        boolean found = false;
+                        for (DataPoint point : set.getAllPoints()) {
+                            if (point.getKey().equals(name)) {
+                                if (!found) {
+                                    line += point.getValue() + ",";
+                                    found = true;
+                                }
+                            }
+                        }
+                        if (!found)
+                            line += "0,";
+                    }
+                    line = line.substring(0, line.length() - 1);
+
+                    try {
+                        Files.write(f, (line + "\n").getBytes(Charset.defaultCharset()), StandardOpenOption.APPEND);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                });
+
+
+            } else {
+
+                dataSets.forEach(item -> {
+                    String line1 = item.getName() + ",";
+                    String line2 = ",";
+
+                    for (DataPoint point : item.getAllPoints()) {
+                        line1 += point.getKey() + ",";
+                        line2 += point.getValue() + ",";
+                    }
+                    if (item.getAllPoints().size() > 0) {
+                        int index = 0;
+                        if (choiceBox_diagramType.getValue().equals(DiagramType.BarChart)) {
+                            index = 1;
+                        }
+                        line1 = line1.substring(index, line1.length() - 1) + "\n";
+                        line2 = line2.substring(index, line2.length() - 1) + "\n";
+
+
+                    }
+                    try {
+                        Files.write(f, (line1).getBytes(Charset.defaultCharset()), StandardOpenOption.APPEND);
+                        Files.write(f, (line2).getBytes(Charset.defaultCharset()), StandardOpenOption.APPEND);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                });
+
+
+            }
+            this.guiSvgOptions.setCsvPath(f.toAbsolutePath().toString());
+            System.out.println(this.guiSvgOptions.getCsvPath());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -49,7 +49,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
     @FXML
     private Button button_EditDataSet;
 
-//    @FXML
+    //    @FXML
 //    private ScrollPane scrollPane_dataTable;
     @FXML
     private VBox vBox_dataTable;
@@ -448,7 +448,8 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
     private void renderFunctions() {
         choiceBox_function1.setItems(functionList);
-        choiceBox_function1.getSelectionModel().select(functionList.get(0));
+        if (!functionList.isEmpty())
+            choiceBox_function1.getSelectionModel().select(functionList.stream().findFirst().get());
         choiceBox_function2.setItems(functionList);
     }
 
@@ -456,7 +457,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
     /**
      * @author Emma Müller
      */
-    private void initFunctionOptionListeners(){
+    private void initFunctionOptionListeners() {
         super.initOptionListeners();
         this.guiSvgOptions.piProperty().addListener((observable, oldValue, newValue) -> {
             this.radioButton_scalingPi.selectedProperty().set(newValue);

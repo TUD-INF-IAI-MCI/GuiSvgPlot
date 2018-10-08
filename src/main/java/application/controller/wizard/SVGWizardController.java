@@ -29,6 +29,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
@@ -458,11 +459,10 @@ public class SVGWizardController implements Initializable {
 
     protected void initCsvFieldListeners() {
 
-        // csv path
-        this.textField_csvPath.textProperty().bindBidirectional(this.guiSvgOptions.csvPathProperty());
-
-        currentDataSet.addListener(item -> {
-            guiSvgOptions.setCsvPath(generateCSV());
+        textField_csvPath.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                guiSvgOptions.setCsvPath(generateCSV());
+            }
         });
 
         textField_csvPath.setOnDragOver(dragOverHandler(".csv"));
@@ -480,20 +480,21 @@ public class SVGWizardController implements Initializable {
             fileChooser.getExtensionFilters().add(extFilter);
             File file = fileChooser.showOpenDialog(GuiSvgPlott.getInstance().getPrimaryStage());
             if (file != null) {
-                this.textField_csvPath.setText(file.getAbsolutePath());
+                textField_csvPath.setText(file.getAbsolutePath());
+                guiSvgOptions.setCsvPath(generateCSV());
             }
         });
 
         if (this instanceof ChartWizardFrameController) {
 
-            // csv orientation
-            ObservableList<CsvOrientation> csvOrientationObservableList = FXCollections.observableArrayList(CsvOrientation.values());
-            this.choiceBox_csvOrientation.setItems(csvOrientationObservableList);
-            this.choiceBox_csvOrientation.setConverter(this.converter.getCsvOrientationStringConverter());
-            this.choiceBox_csvOrientation.getSelectionModel().select(CsvOrientation.HORIZONTAL);
-            this.choiceBox_csvOrientation.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                this.guiSvgOptions.setCsvOrientation(newValue);
-            });
+//            // csv orientation
+//            ObservableList<CsvOrientation> csvOrientationObservableList = FXCollections.observableArrayList(CsvOrientation.values());
+//            this.choiceBox_csvOrientation.setItems(csvOrientationObservableList);
+//            this.choiceBox_csvOrientation.setConverter(this.converter.getCsvOrientationStringConverter());
+//            this.choiceBox_csvOrientation.getSelectionModel().select(CsvOrientation.HORIZONTAL);
+//            this.choiceBox_csvOrientation.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+//                this.guiSvgOptions.setCsvOrientation(newValue);
+//            });
 
             // csv type
             ObservableList<CsvType> csvTypeObservableList = FXCollections.observableArrayList(CsvType.values());
@@ -967,40 +968,6 @@ public class SVGWizardController implements Initializable {
         return dragOverHandler;
     }
 
-
-    protected void openEditDataSetFrame() {
-
-        FXMLLoader loader = new FXMLLoader();
-
-        try {
-
-            loader.setResources(bundle);
-            loader.setLocation(GuiSvgPlott.CsvEditorFrame);
-
-            BorderPane bp = loader.load();
-            Stage stage = new Stage();
-            Scene scene = new Scene(bp);
-
-            stage.setMinHeight(450);
-            stage.setScene(scene);
-
-            CsvEditorController csvController = loader.getController();
-
-
-            csvController.button_Cancel.setOnAction(event -> {
-                stage.close();
-            });
-            csvController.init(pointMap, textField_csvPath.getText(), guiSvgOptions, this);
-
-            stage.showAndWait();
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
 
     protected String generateCSV() {
 
