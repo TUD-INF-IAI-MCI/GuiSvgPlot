@@ -379,6 +379,9 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_outputDevice.setItems(FXCollections.observableArrayList(OutputDevice.values()));
         choiceBox_outputDevice.setConverter(converter.getOutputDeviceStringConverter());
 
+        pageOrientationTG.setUserData(radioBtn_portrait);
+        pageOrientationTG.setUserData(radioBtn_landscape);
+
         //pagesize
         ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
         ObservableList<PageSize> sortedPageSizes = pageSizeObservableList.sorted(Comparator.comparing(PageSize::getName));
@@ -400,6 +403,7 @@ public class PresetsController extends SVGWizardController implements Initializa
                 }
             }
         });
+
 
         //CSV
         button_csvPath.setDisable(false);
@@ -755,7 +759,6 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 
     }
-
     private void changePointSymbols(ObservableList<PointSymbol> checkedPointSymbols, CheckComboBox<PointSymbol> checkComboBox, ObservableList<PointSymbol> allPointSymbols) {
         checkedPointSymbols.clear();
         ObservableList<PointSymbol> checkedItems = checkComboBox.getCheckModel().getCheckedItems();
@@ -1140,9 +1143,22 @@ public class PresetsController extends SVGWizardController implements Initializa
         //Stage 1: basics
         choiceBox_outputDevice.getSelectionModel().select(options.getOutputDevice());
         //TODO how to get page orientation from presets?
-        pageOrientationTG.selectToggle(radioBtn_portrait);
+
         //TODO Pagesize is not propagated properly
-        PageSize pageSize = PageSize.getByPoint(options.getSize());
+        PageSize pageSize = PageSize.getByPoint(options.getOptions().getSize());
+        PageSize.PageOrientation pageOrientation = PageSize.PageOrientation.getByPoint(options.getOptions().getSize());
+        switch (pageOrientation){
+            case LANDSCAPE:
+                pageOrientationTG.selectToggle(radioBtn_landscape);
+                break;
+            case PORTRAIT:
+                pageOrientationTG.selectToggle(radioBtn_portrait);
+                break;
+        }
+        System.out.println(pageOrientationTG.getToggles());
+        System.out.println(pageOrientation);
+        System.out.println(pageSize.getWidth());
+        System.out.println(pageSize.getHeight());
         choiceBox_size.getSelectionModel().select(pageSize);
         if (pageSize.equals(PageSize.CUSTOM)) {
             textField_customSizeWidth.setText("" + pageSize.getWidth());
