@@ -4,6 +4,7 @@ import application.controller.wizard.SVGWizardController;
 import application.model.DataPoint;
 import application.model.DataSet;
 import application.model.Options.*;
+import application.model.Settings;
 import application.util.KeyValuePair;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -17,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.slf4j.Logger;
@@ -76,7 +78,7 @@ public class ChartWizardFrameController extends SVGWizardController {
     @FXML
     private Button button_RemoveDataSet;
     @FXML
-    private Button button_AddDataPoint;
+    private Button button_addDataPoint;
     @FXML
     private VBox vBox_dataTable;
     @FXML
@@ -288,7 +290,7 @@ public class ChartWizardFrameController extends SVGWizardController {
     private void initStage2() {
         super.initCsvFieldListeners();
 
-        button_AddDataPoint.setDisable(true);
+        button_addDataPoint.setDisable(true);
 
 
         getResultFileProp().addListener(inval -> {
@@ -297,6 +299,8 @@ public class ChartWizardFrameController extends SVGWizardController {
             } catch (Exception e) {
                 Alert a = new Alert(Alert.AlertType.ERROR);
                 a.setHeaderText(bundle.getString("csv_parse_error"));
+                Stage stage = (Stage) a.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(Settings.getInstance().favicon);
                 a.showAndWait();
             }
             if (!dataSets.isEmpty()) {
@@ -312,6 +316,8 @@ public class ChartWizardFrameController extends SVGWizardController {
 
             TextInputDialog dialog = new TextInputDialog();
             dialog.setHeaderText(bundle.getString("dataset_entername"));
+            Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(Settings.getInstance().favicon);
             dialog.showAndWait();
 
             if (dialog.getResult() != null && !dialog.getResult().isEmpty()) {
@@ -329,7 +335,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                 setCSVOptions();
 
                 if (dataSets.isEmpty())
-                    button_AddDataPoint.setDisable(true);
+                    button_addDataPoint.setDisable(true);
             }
 
         });
@@ -337,10 +343,10 @@ public class ChartWizardFrameController extends SVGWizardController {
         choiceBox_DataSets.setOnAction(event -> {
             renderTable(choiceBox_DataSets.getValue());
             if (choiceBox_DataSets.getValue() != null)
-                button_AddDataPoint.setDisable(false);
+                button_addDataPoint.setDisable(false);
         });
 
-        button_AddDataPoint.setOnAction(event -> {
+        button_addDataPoint.setOnAction(event -> {
             if (choiceBox_DataSets.getValue() != null) {
                 DataPoint p = new DataPoint("0", "0");
                 choiceBox_DataSets.getValue().addPoint(p);

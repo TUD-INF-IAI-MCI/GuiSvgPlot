@@ -216,7 +216,7 @@
                                                                         </Button>
                                                                     </HBox>
                                                                     <Label text="%label_datapoint" GridPane.rowIndex="3"/>
-                                                                    <Button fx:id="button_AddDataPoint" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%datapoint_add"
+                                                                    <Button fx:id="button_addDataPoint" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="%datapoint_add"
                                                                             GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3"/>
                                                                 </children>
                                                             </GridPane>
