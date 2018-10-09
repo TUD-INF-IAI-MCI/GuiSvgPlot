@@ -727,7 +727,9 @@ public class SVGWizardController implements Initializable {
             boolean doCreate = true;
             if (guiSvgOptions.getCsvPath() != null && guiSvgOptions.getCsvPath().isEmpty()) {
                 Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-                a.setHeaderText(bundle.getString("empty_diagram"));
+                a.setTitle(bundle.getString("empty_diagram_title"));
+                a.setHeaderText(bundle.getString("empty_diagram_header"));
+                a.setContentText(bundle.getString("empty_diagram_content"));
                 Stage stage = (Stage) a.getDialogPane().getScene().getWindow();
                 stage.getIcons().add(Settings.getInstance().favicon);
                 a.showAndWait();
