@@ -458,7 +458,7 @@ public class SVGWizardController implements Initializable {
     }
 
     protected void initCsvFieldListeners() {
-
+        textField_csvPath.textProperty().bindBidirectional(this.guiSvgOptions.csvPathProperty());
         textField_csvPath.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 guiSvgOptions.setCsvPath(generateCSV());

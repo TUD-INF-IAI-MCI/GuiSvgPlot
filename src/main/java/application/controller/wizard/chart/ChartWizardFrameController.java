@@ -1445,7 +1445,6 @@ public class ChartWizardFrameController extends SVGWizardController {
 
             }
             this.guiSvgOptions.setCsvPath(f.toAbsolutePath().toString());
-            System.out.println(this.guiSvgOptions.getCsvPath());
         } catch (IOException e) {
             e.printStackTrace();
         }

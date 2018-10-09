@@ -20,9 +20,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.glyphfont.Glyph?>
 
-<AnchorPane fx:id="overViewAnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.PresetsController">
+<AnchorPane fx:id="overViewAnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.PresetsController">
    <children>
-      <BorderPane fx:id="overViewBorderPane" prefHeight="400.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane fx:id="overViewBorderPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <HBox fx:id="overviewUpperHBox" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
@@ -198,7 +198,7 @@
                         </Label>
                         <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
-                              <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" selected="true" text="%radio_portrait">
+                              <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" text="%radio_portrait">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="pageOrientationTG" />
                                  </toggleGroup>
@@ -591,7 +591,8 @@
                                     <Insets left="100.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="textField_presetName" accessibleText="%label_preset_name" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="400.0" prefWidth="400.0" />
+                              <TextField fx:id="textField_presetName" accessibleText="%label_preset_name" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="200.0" prefWidth="200.0" />
+                              <Label fx:id="label_diagramType" />
                            </children>
                            <padding>
                               <Insets left="20.0" right="20.0" />
