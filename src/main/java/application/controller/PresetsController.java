@@ -27,6 +27,7 @@ import org.controlsfx.glyphfont.Glyph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.coordinatesystem.Range;
+import tud.tangram.svgplot.data.Point;
 import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
@@ -1021,6 +1022,8 @@ public class PresetsController extends SVGWizardController implements Initializa
         Button copyButton = new Button();
         Glyph copyGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.COPY);
         copyButton.setGraphic(copyGlyph);
+        //still buggy af, lots of unexpected behaviour, needs refurbishment
+        copyButton.setDisable(true);
         copyButton.setTooltip(new Tooltip(this.bundle.getString("preset_copy")));
         copyButton.setOnAction(event -> {
             //TODO handle incrementing numbers more efficiently
@@ -1036,7 +1039,8 @@ public class PresetsController extends SVGWizardController implements Initializa
                 copiedPreset.setName(copiedPreset.getName() + " " + bundle.getString("preset_copy") + " 1");
             }
             vBox_Preset_DataTable.getChildren().add(generateTableEntry(copiedPreset));
-            this.presetService.create(preset);
+            this.presetService.create(copiedPreset);
+            //WARNING: deleting copied presets of the same initial preset will delete every copied preset, the cause is currently unkown
         });
 
 
@@ -1064,9 +1068,10 @@ public class PresetsController extends SVGWizardController implements Initializa
      * loads the saved options of the current editor frame and sets the corresponding option into the current preset
      */
     private void flagGetter() {
+        PageSize page_size;
         PageSize.PageOrientation page_orientation;
         GuiSvgOptions editor_options = currentPreset.getOptions();
-        //ObservableList<String> editor_trendline;
+        editor_options.setDiagramType(currentPreset.getDiagramType());
 
         //Stage 1: basics
         editor_options.setOutputDevice(choiceBox_outputDevice.getSelectionModel().getSelectedItem());
@@ -1076,7 +1081,15 @@ public class PresetsController extends SVGWizardController implements Initializa
         }else{
             page_orientation = PageSize.PageOrientation.LANDSCAPE;
         }
-        editor_options.setSize(choiceBox_size.getSelectionModel().getSelectedItem().getPageSizeWithOrientation(page_orientation));
+
+        if(choiceBox_size.getSelectionModel().getSelectedItem().equals(PageSize.CUSTOM)){
+            int custom_height = Integer.parseInt(textField_customSizeHeight.getText());
+            int custom_width = Integer.parseInt(textField_customSizeWidth.getText());
+            page_size = PageSize.getByPoint(new Point(custom_height, custom_width));
+            editor_options.setSize(page_size.getPageSizeWithOrientation(page_orientation));
+        }else{
+            editor_options.setSize(choiceBox_size.getSelectionModel().getSelectedItem().getPageSizeWithOrientation(page_orientation));
+        }
 
         //Stage 2: data
         if(textField_csvpath.getText() != null){
@@ -1124,7 +1137,6 @@ public class PresetsController extends SVGWizardController implements Initializa
                     }
                     editor_options.setTrendLine(trendline_list);
                     editor_options.setHideOriginalPoints((VisibilityOfDataPoints) choiceBox_hide_original_points.getSelectionModel().getSelectedItem());
-                    //System.out.println(editor_options.getTrendLine());
                     break;
                 }
         }
@@ -1162,6 +1174,7 @@ public class PresetsController extends SVGWizardController implements Initializa
             editor_options.setyLines(textField_helpLinesY.getText());
         }
         editor_options.setAxisStyle((GuiAxisStyle) choiceBox_dblaxes.getSelectionModel().getSelectedItem());
+
 
         //Stage 6: display
         if (choiceBox_cssType.getSelectionModel().getSelectedItem().equals(CssType.CUSTOM)) {
@@ -1248,7 +1261,6 @@ public class PresetsController extends SVGWizardController implements Initializa
                 break;
             case ScatterPlot:
                 if (!options.getTrendLine().isEmpty()) {
-                    System.out.println(options.getTrendLine().get(0));
                     switch (options.getTrendLine().get(0)) {
                         case "MovingAverage":
                             choiceBox_trendline.getSelectionModel().select(1);
