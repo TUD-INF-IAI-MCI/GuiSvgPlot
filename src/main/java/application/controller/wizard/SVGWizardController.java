@@ -724,22 +724,33 @@ public class SVGWizardController implements Initializable {
 
         // create chart
         this.button_Create.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setInitialDirectory(userDir);
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Scalable Vector Graphics (SVG)", "*.svg");
-            fileChooser.getExtensionFilters().add(extFilter);
-            String title = this.guiSvgOptions.getTitle().isEmpty() ? "untitled" : this.guiSvgOptions.getTitle();
-            fileChooser.setInitialFileName(title.toLowerCase() + ".svg");
-            File file = fileChooser.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
-            if (file != null) {
-                try {
-                    this.guiSvgOptions.setOutput(file.getAbsolutePath());
-                    this.svgOptionsService.buildSVG(guiSvgOptions.getOptions());
-                    this.popOver_infos.hide();
-                    this.popOver_warnings.hide();
-                    GuiSvgPlott.getInstance().closeWizard();
-                } catch (ValidationException e) {
-                    logger.error(this.bundle.getString("svg_creation_validation_error"));
+            boolean doCreate = true;
+            if (guiSvgOptions.getCsvPath() != null && guiSvgOptions.getCsvPath().isEmpty()) {
+                Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+                a.setHeaderText(bundle.getString("empty_diagram"));
+                Stage stage = (Stage) a.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(Settings.getInstance().favicon);
+                a.showAndWait();
+                doCreate = a.getResult().getButtonData().isDefaultButton();
+            }
+            if (doCreate) {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setInitialDirectory(userDir);
+                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Scalable Vector Graphics (SVG)", "*.svg");
+                fileChooser.getExtensionFilters().add(extFilter);
+                String title = this.guiSvgOptions.getTitle().isEmpty() ? "untitled" : this.guiSvgOptions.getTitle();
+                fileChooser.setInitialFileName(title.toLowerCase() + ".svg");
+                File file = fileChooser.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
+                if (file != null) {
+                    try {
+                        this.guiSvgOptions.setOutput(file.getAbsolutePath());
+                        this.svgOptionsService.buildSVG(guiSvgOptions.getOptions());
+                        this.popOver_infos.hide();
+                        this.popOver_warnings.hide();
+                        GuiSvgPlott.getInstance().closeWizard();
+                    } catch (ValidationException e) {
+                        logger.error(this.bundle.getString("svg_creation_validation_error"));
+                    }
                 }
             }
         });
