@@ -1283,7 +1283,7 @@ public class ChartWizardFrameController extends SVGWizardController {
             });
         } else {
             keyField.textProperty().addListener((args, oldVal, newVal) -> {
-                if (newVal.matches("[0-9]+\\,{0,1}[0-9]*")) {
+                if (newVal.matches("\\-{0,1}[0-9]+\\,{0,1}[0-9]*")) {
                     point.setKey(newVal);
                 } else {
                     keyField.setText(oldVal);
@@ -1320,7 +1320,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
 
         valueField.textProperty().addListener((args, oldVal, newVal) -> {
-            if (newVal.matches("[0-9]+\\,{0,1}[0-9]*")) {
+            if (newVal.matches("\\-{0,1}[0-9]+\\,{0,1}[0-9]*")) {
                 point.setValue(newVal);
                 setCSVOptions();
             } else {
