@@ -490,9 +490,13 @@ public class SVGWizardController implements Initializable {
 				guiSvgOptions.setCsvPath(generateCSV());
 
 				Alert a = new Alert(AlertType.INFORMATION);
-				a.setTitle();
-				a.setHeaderText(headerText);
-				a.showAndWait();
+				a.setTitle(this.bundle.getString("csv_added_title"));
+				a.setHeaderText(file.getName() + " " + this.bundle.getString("csv_added"));
+
+                Stage stage = (Stage) a.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(Settings.getInstance().favicon);
+
+                a.showAndWait();
 			}
 		});
 
