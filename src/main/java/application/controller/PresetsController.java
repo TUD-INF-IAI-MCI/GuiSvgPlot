@@ -91,11 +91,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private HBox hBox_thirdTexture;
     @FXML
-    private HBox hBox_integral_integral;
-    @FXML
     private HBox hBox_cssPath;
-    @FXML
-    private HBox hBox_valueRange;
 
     //labels
     @FXML
@@ -155,13 +151,17 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private Label label_rangeTo;
     @FXML
+    private Label label_integral;
+    @FXML
     private Label label_integral_name;
     @FXML
     private Label label_integral_function1;
     @FXML
-    private Label label_integral_measuring;
+    private Label label_integral_function2;
     @FXML
-    private Label label_valueRange;
+    private Label label_pi;
+    @FXML
+    private Label label_scale_data;
 
     //choiceboxes
     @FXML
@@ -200,6 +200,12 @@ public class PresetsController extends SVGWizardController implements Initializa
     private ChoiceBox choiceBox_firstLineStyle;
     @FXML
     private ChoiceBox choiceBox_baraccumulation;
+    @FXML
+    private ChoiceBox choiceBox_integralOption;
+    @FXML
+    private ChoiceBox choiceBox_function1;
+    @FXML
+    private ChoiceBox choiceBox_function2;
 
     //buttons
     @FXML
@@ -287,13 +293,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private RadioButton radioBtn_landscape;
     @FXML
-    private RadioButton radioBtn_valueRange_default;
+    private RadioButton radioButton_scalingDecimal;
     @FXML
-    private RadioButton radioBtn_valueRange_custom;
-    @FXML
-    private RadioButton radioBtn_x_axis;
-    @FXML
-    private RadioButton radioBtn_integral_func_1;
+    private RadioButton radioButton_scalingPi;
+
 
     //borderpanes
     @FXML
@@ -301,11 +304,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private BorderPane borderPane_editor;
 
-    //anchorpanes
-    @FXML
-    private AnchorPane anchorPane_function1;
-    @FXML
-    private AnchorPane anchorPane_function2;
 
     //observablelists
     @FXML
@@ -372,14 +370,16 @@ public class PresetsController extends SVGWizardController implements Initializa
         toggleVisibility(false, label_thirdTexture, hBox_thirdTexture);
         toggleVisibility(false, label_sorting, choiceBox_sorting);
         toggleVisibility(false, label_integral_name, textField_integralName);
-        toggleVisibility(false, label_integral_function1, anchorPane_function1);
-        toggleVisibility(false, label_integral_measuring, hBox_integral_integral);
-        toggleVisibility(false, label_valueRange, hBox_valueRange);
+        toggleVisibility(false, label_integral_function1, choiceBox_function1);
+        toggleVisibility(false, label_integral_function2, choiceBox_function2);
         toggleVisibility(false, label_trendline, choiceBox_trendline);
         toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
         toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
         toggleVisibility(false, label_trendline_n, textField_trendline_n);
         toggleVisibility(false, label_hide_original_points, choiceBox_hide_original_points);
+        toggleVisibility(false, label_pi, radioButton_scalingDecimal);
+        toggleVisibility(false, label_pi, radioButton_scalingPi);
+
     }
 
 
@@ -728,47 +728,35 @@ public class PresetsController extends SVGWizardController implements Initializa
      */
     private void initFunction() {
         textField_presetName.setText(currentPreset.getName());
-        toggleVisibility(true, label_integral_name, textField_integralName);
-        toggleVisibility(true, label_integral_function1, anchorPane_function1);
-        toggleVisibility(true, label_integral_measuring, hBox_integral_integral);
-        toggleVisibility(true, label_valueRange, hBox_valueRange);
-
-        radioBtn_x_axis.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        toggleVisibility(false, label_scale_data, radioBtn_customScale);
+        toggleVisibility(false, label_scale_data, radioBtn_scale_to_data);
+        toggleVisibility(true, label_integral, choiceBox_integralOption);
+        toggleVisibility(true, label_pi, radioButton_scalingDecimal);
+        toggleVisibility(true, label_pi, radioButton_scalingPi);
+        choiceBox_integralOption.selectionModelProperty().addListener(new ChangeListener() {
             @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean wasPreviouslySelected, Boolean isNowSelected) {
-                if (isNowSelected) {
-                    anchorPane_function2.setVisible(false);
-                }
-            }
-        });
-
-        radioBtn_integral_func_1.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean wasPreviouslySelected, Boolean isNowSelected) {
-                if (isNowSelected) {
-                    anchorPane_function2.setVisible(true);
-                }
-            }
-        });
-
-        radioBtn_valueRange_default.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue) {
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                if(newValue == IntegralOption.XAXIS){
+                    toggleVisibility(true, label_integral, textField_integralName);
+                    toggleVisibility(true, label_integral_function1, choiceBox_function1);
+                    toggleVisibility(true, label_rangeFrom, textField_rangeFrom);
+                    toggleVisibility(true, label_rangeTo, textField_rangeTo);
+                }else if(newValue == IntegralOption.FUNCTION){
+                    toggleVisibility(true, label_integral, textField_integralName);
+                    toggleVisibility(true, label_integral_function1, choiceBox_function1);
+                    toggleVisibility(true, label_integral_function2, choiceBox_function2);
+                    toggleVisibility(true, label_rangeFrom, textField_rangeFrom);
+                    toggleVisibility(true, label_rangeTo, textField_rangeTo);
+                }else{
+                    toggleVisibility(false, label_integral, textField_integralName);
+                    toggleVisibility(false, label_integral_function1, choiceBox_function1);
+                    toggleVisibility(false, label_integral_function2, choiceBox_function2);
                     toggleVisibility(false, label_rangeFrom, textField_rangeFrom);
                     toggleVisibility(false, label_rangeTo, textField_rangeTo);
                 }
             }
         });
-        radioBtn_valueRange_custom.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue) {
-                    toggleVisibility(true, label_rangeFrom, textField_rangeFrom);
-                    toggleVisibility(true, label_rangeTo, textField_rangeTo);
-                }
-            }
-        });
+
 
 
     }
@@ -1040,7 +1028,7 @@ public class PresetsController extends SVGWizardController implements Initializa
             }
             vBox_Preset_DataTable.getChildren().add(generateTableEntry(copiedPreset));
             this.presetService.create(copiedPreset);
-            //WARNING: deleting copied presets of the same initial preset will delete every copied preset, the cause is currently unkown
+            //WARNING: deleting copied presets of the same initial preset will delete every copied preset, the cause is currently unknown
         });
 
 
@@ -1081,11 +1069,12 @@ public class PresetsController extends SVGWizardController implements Initializa
         }else{
             page_orientation = PageSize.PageOrientation.LANDSCAPE;
         }
-
         if(choiceBox_size.getSelectionModel().getSelectedItem().equals(PageSize.CUSTOM)){
-            int custom_height = Integer.parseInt(textField_customSizeHeight.getText());
-            int custom_width = Integer.parseInt(textField_customSizeWidth.getText());
+            double custom_height = Double.parseDouble(textField_customSizeHeight.getText());
+            double custom_width = Double.parseDouble(textField_customSizeWidth.getText());
             page_size = PageSize.getByPoint(new Point(custom_height, custom_width));
+            System.out.println(custom_width);
+            System.out.println(custom_height);
             editor_options.setSize(page_size.getPageSizeWithOrientation(page_orientation));
         }else{
             editor_options.setSize(choiceBox_size.getSelectionModel().getSelectedItem().getPageSizeWithOrientation(page_orientation));
