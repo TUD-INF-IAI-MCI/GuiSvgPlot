@@ -235,15 +235,18 @@ public class GuiSvgPlott extends Application {
 		settings.loadSettings(primaryStage);
 	}
 
-	public void closeWizard() {
+	public void closeWizard(boolean created) {
 
 		Alert a = new Alert(AlertType.CONFIRMATION);
 		a.setTitle(bundle.getString("alert_stage_exit_title"));
 		a.setHeaderText(bundle.getString("alert_stage_exit_header"));
 
-		Optional<ButtonType> result = a.showAndWait();
+		Optional<ButtonType> result = null;
 
-		if (result.isPresent() && result.get().equals(ButtonType.OK))
+		if (!created)
+			result = a.showAndWait();
+
+		if (created || (result != null && result.isPresent() && result.get().equals(ButtonType.OK)))
 			if (rootFrameController != null)
 				rootFrameController.closeWizard();
 	}

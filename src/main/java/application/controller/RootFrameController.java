@@ -243,7 +243,7 @@ public class RootFrameController implements Initializable {
 		// Function/Chartwizard Frame -> fixes #24
 		if (wizardPath.contains("Wizard")) {
 			GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
-			GuiSvgPlott.getInstance().closeWizard();
+			GuiSvgPlott.getInstance().closeWizard(false);
 		}
 		menuItem_Preset_Editor.setDisable(true);
 		menuItem_Save_Preset.setDisable(true);
