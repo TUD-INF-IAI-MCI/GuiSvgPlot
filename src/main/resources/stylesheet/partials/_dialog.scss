@@ -1,4 +1,5 @@
 .dialog {
+  -fx-pref-width: 500px;
   > *.button-bar > *.container {
     -fx-background-color: none;
   }

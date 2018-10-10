@@ -1,7 +1,6 @@
 package application.controller.wizard;
 
 import application.GuiSvgPlott;
-import application.controller.CsvEditorController;
 import application.controller.wizard.chart.ChartWizardFrameController;
 import application.model.GuiSvgOptions;
 import application.model.Options.CssType;

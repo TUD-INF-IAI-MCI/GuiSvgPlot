@@ -4,6 +4,7 @@ import application.controller.SettingsDialogController;
 import application.controller.RootFrameController;
 import application.infrastructure.UTF8Control;
 import application.model.Settings;
+import application.util.DialogUtil;
 import com.google.gson.*;
 import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
@@ -238,17 +239,13 @@ public class GuiSvgPlott extends Application {
 	}
 
 	public void closeWizard(boolean created) {
+		DialogUtil dialogUtil = DialogUtil.getInstance();
+		dialogUtil.setBundle(this.bundle);
+		Alert a = dialogUtil.alert(AlertType.CONFIRMATION, "alert_stage_exit_title", "alert_stage_exit_header", "alert_stage_exit_header");
 
-		Alert a = new Alert(AlertType.CONFIRMATION);
-		a.setTitle(bundle.getString("alert_stage_exit_title"));
-		a.setHeaderText(bundle.getString("alert_stage_exit_header"));
+		Optional<ButtonType> result = a.showAndWait();
 
-		Optional<ButtonType> result = null;
-
-		if (!created)
-			result = a.showAndWait();
-
-		if (created || (result != null && result.isPresent() && result.get().equals(ButtonType.OK)))
+		if (result.isPresent() && result.get().equals(ButtonType.OK))
 			if (rootFrameController != null)
 				rootFrameController.closeWizard();
 	}
