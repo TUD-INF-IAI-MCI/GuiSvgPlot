@@ -2,9 +2,11 @@ package application.controller;
 
 import application.GuiSvgPlott;
 import application.controller.wizard.SVGWizardController;
+import application.controller.wizard.chart.ChartWizardFrameController;
 import application.model.Preset;
 import application.model.Settings;
 import application.service.PresetService;
+import application.util.DialogUtil;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -78,6 +80,8 @@ public class RootFrameController implements Initializable {
 
     private PresetService presetService = PresetService.getInstance();
 
+    private DialogUtil dialogUtil = DialogUtil.getInstance();
+
     public static String wizardPath = "none";
 
 
@@ -116,9 +120,7 @@ public class RootFrameController implements Initializable {
             alert.setResizable(true);
             alert.getDialogPane().setMinSize(500, 250);
             alert.setContentText(bundle.getString("menu_help_about_content"));
-
-            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-            stage.getIcons().add(Settings.getInstance().favicon);
+            dialogUtil.styleDialog(alert);
 
             alert.showAndWait();
         });
@@ -134,11 +136,13 @@ public class RootFrameController implements Initializable {
             Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName", svgWizardController.getGuiSvgOptions().getDiagramType());
             TextInputDialog nameDialogue = new TextInputDialog();
             nameDialogue.setTitle(bundle.getString("prompt_preset_name_title"));
-            nameDialogue.setHeaderText(bundle.getString("prompt_preset_name_header"));
+            String headerText = bundle.getString("prompt_preset_name_header");
+            if (svgWizardController instanceof ChartWizardFrameController){
+                headerText = headerText.concat("\n" + this.bundle.getString("prompt_preset_name_header_sub"));
+            }
+            nameDialogue.setHeaderText(headerText);
             nameDialogue.setContentText(bundle.getString("prompt_preset_name_content"));
-
-            Stage stage = (Stage) nameDialogue.getDialogPane().getScene().getWindow();
-            stage.getIcons().add(Settings.getInstance().favicon);
+            dialogUtil.styleDialog(nameDialogue);
 
             Optional<String> result = nameDialogue.showAndWait();
             if (result.isPresent() && result.get().equals("")) {
@@ -151,10 +155,7 @@ public class RootFrameController implements Initializable {
                 alert.setHeaderText(bundle.getString("alert_preset_created_header"));
                 alert.setContentText(bundle.getString("alert_preset_created_content"));
                 alert.getDialogPane().setMinSize(500, 150);
-
-                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-                alertStage.getIcons().add(Settings.getInstance().favicon);
-
+                dialogUtil.styleDialog(alert);
                 alert.showAndWait();
             } else if (result.isPresent()) {
                 String header = bundle.getString("alert_preset_duplicate_header1") + result.get() + bundle.getString("alert_preset_duplicate_header2");
@@ -217,6 +218,7 @@ public class RootFrameController implements Initializable {
         alert.setTitle(bundle.getString("alert_exit_title"));
         alert.setHeaderText(bundle.getString("alert_exit_header"));
         alert.setContentText(bundle.getString("alert_exit_content"));
+        dialogUtil.styleDialog(alert);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             // ... user chose OK
@@ -318,6 +320,7 @@ public class RootFrameController implements Initializable {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
+        dialogUtil.styleDialog(alert);
         alert.showAndWait();
     }
 }

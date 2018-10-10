@@ -297,10 +297,8 @@ public class ChartWizardFrameController extends SVGWizardController {
             try {
                 parseCSV();
             } catch (Exception e) {
-                Alert a = new Alert(Alert.AlertType.ERROR);
-                a.setHeaderText(bundle.getString("csv_parse_error"));
-                Stage stage = (Stage) a.getDialogPane().getScene().getWindow();
-                stage.getIcons().add(Settings.getInstance().favicon);
+                Alert a = dialogUtil.alert(Alert.AlertType.ERROR, "csv_parse_error_title", "csv_parse_error_header", "csv_parse_error");
+                a.getDialogPane().getStyleClass().add("h-100");
                 a.showAndWait();
             }
             if (!dataSets.isEmpty()) {
@@ -314,10 +312,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
         button_AddDataSet.setOnAction(event -> {
 
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setHeaderText(bundle.getString("dataset_entername"));
-            Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-            stage.getIcons().add(Settings.getInstance().favicon);
+            TextInputDialog dialog = dialogUtil.textInputDialog("dataset_entername_title","dataset_entername_header","dataset_entername_content");
             dialog.showAndWait();
 
             if (dialog.getResult() != null && !dialog.getResult().isEmpty()) {

@@ -1,17 +1,16 @@
 package application.controller.wizard;
 
 import application.GuiSvgPlott;
-import application.controller.CsvEditorController;
 import application.controller.wizard.chart.ChartWizardFrameController;
 import application.model.GuiSvgOptions;
 import application.model.Options.CssType;
 import application.model.Options.PageSize;
 import application.model.Preset;
-import application.model.Settings;
 import application.service.PresetService;
 import application.service.SvgOptionsService;
 import application.util.ChoiceBoxUtil;
 import application.util.Converter;
+import application.util.DialogUtil;
 import application.util.TextFieldUtil;
 import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
 import javafx.beans.property.*;
@@ -19,13 +18,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.DragEvent;
@@ -33,10 +30,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -181,6 +178,7 @@ public class SVGWizardController implements Initializable {
 
 	public ObservableList<Preset> presets;
 	protected PresetService presetService = PresetService.getInstance();
+	protected DialogUtil dialogUtil = DialogUtil.getInstance();
 
 	public VBox vBox_warnings;
 	private PopOver popOver_warnings;
@@ -218,6 +216,7 @@ public class SVGWizardController implements Initializable {
 		this.converter.setBundle(resources);
 		this.textFieldUtil.setBundle(resources);
 		this.choiceBoxUtil.setBundle(resources);
+		this.dialogUtil.setBundle(resources);
 		this.currentStage = new SimpleIntegerProperty();
 		this.isExtended = new SimpleBooleanProperty(false);
 		this.size = new SimpleObjectProperty<>(new Point(PageSize.A4.getWidth(), PageSize.A4.getHeight()));
@@ -489,13 +488,8 @@ public class SVGWizardController implements Initializable {
 				textField_csvPath.setText(file.getAbsolutePath());
 				guiSvgOptions.setCsvPath(generateCSV());
 
-				Alert a = new Alert(AlertType.INFORMATION);
-				a.setTitle(this.bundle.getString("csv_added_title"));
-				a.setHeaderText(file.getName() + " " + this.bundle.getString("csv_added"));
-
-                Stage stage = (Stage) a.getDialogPane().getScene().getWindow();
-                stage.getIcons().add(Settings.getInstance().favicon);
-
+				Alert a = dialogUtil.alert(AlertType.INFORMATION, "csv_added_title", "csv_added_header", "csv_added");
+				a.setContentText(file.getName() + " " + this.bundle.getString("csv_added"));
                 a.showAndWait();
 			}
 		});
@@ -750,12 +744,7 @@ public class SVGWizardController implements Initializable {
 		this.button_Create.setOnAction(event -> {
 			boolean doCreate = true;
 			if (guiSvgOptions.getCsvPath() != null && guiSvgOptions.getCsvPath().isEmpty()) {
-				Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-				a.setTitle(bundle.getString("empty_diagram_title"));
-				a.setHeaderText(bundle.getString("empty_diagram_header"));
-				a.setContentText(bundle.getString("empty_diagram_content"));
-				Stage stage = (Stage) a.getDialogPane().getScene().getWindow();
-				stage.getIcons().add(Settings.getInstance().favicon);
+				Alert a = 	dialogUtil.alert(AlertType.CONFIRMATION, "empty_diagram_title", "empty_diagram_header", "empty_diagram_content");
 				a.showAndWait();
 				doCreate = a.getResult().getButtonData().isDefaultButton();
 			}
@@ -809,9 +798,7 @@ public class SVGWizardController implements Initializable {
 			dialog.setTitle(bundle.getString("prompt_load_title"));
 			dialog.setHeaderText(bundle.getString("prompt_load_header"));
 			dialog.setContentText(bundle.getString("prompt_load_content"));
-
-			Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(Settings.getInstance().favicon);
+			dialogUtil.styleDialog(dialog);
 
 			GuiSvgPlott.getInstance().getRootFrameController().loading.set(true);
 			Optional<String> result = dialog.showAndWait();

@@ -59,7 +59,7 @@ Label {
 
 }
 
-ChoiceBox, Combobox,
+ChoiceBox, ComboBox,
 .check-combo-box > .combo-box {
   @extend Label;
   -fx-cursor: hand;
@@ -86,10 +86,24 @@ ChoiceBox, Combobox,
     -fx-border-width: 2px;
     -fx-border-radius: 3;
   }
+
+  .list-view .list-cell:filled {
+    &:selected, :selected:hover {
+      -fx-background: $tud-blue;
+      -fx-background-color: $tud-blue;
+      -fx-text-fill: $menu-font-color;
+    }
+
+    &:hover {
+      -fx-background-color: $tud-blue;
+      -fx-text-fill: $menu-font-color;
+      -fx-font-weight: bold;
+    }
+  }
 }
 
 TextField, TextArea {
-  @extend ChoiceBox;;
+  @extend ChoiceBox;
   -fx-cursor: text;
   -fx-border-radius: 3;
   -fx-min-height: 25;
