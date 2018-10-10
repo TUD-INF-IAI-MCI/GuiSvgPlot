@@ -92,6 +92,7 @@ TextField, TextArea {
   @extend ChoiceBox;;
   -fx-cursor: text;
   -fx-border-radius: 3;
+  -fx-min-height: 25;
 
   &.invalid {
     -fx-border-color: $error-font-color;

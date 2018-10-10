@@ -141,7 +141,9 @@ public class GuiSvgPlott extends Application {
 
             switch (event.getCode()) {
                 case F5: {
-                    rootFrameController.svgWizardController.button_rerenderPreview.fire();
+                    if( rootFrameController.svgWizardController != null) {
+                        rootFrameController.svgWizardController.button_rerenderPreview.fire();
+                    }
                     break;
                 }
                 case F1: {
@@ -156,13 +158,13 @@ public class GuiSvgPlott extends Application {
                     break;
                 }
                 case I: {
-                    if (event.isControlDown()) {
+                    if (event.isControlDown() && rootFrameController.svgWizardController != null) {
                         rootFrameController.svgWizardController.button_Infos.fire();
                         break;
                     }
                 }
                 case W: {
-                    if (event.isControlDown()) {
+                    if (event.isControlDown() && rootFrameController.svgWizardController != null) {
                         rootFrameController.svgWizardController.button_Warnings.fire();
                         break;
                     }
@@ -181,8 +183,7 @@ public class GuiSvgPlott extends Application {
                 }
                 case S: {
                     if (event.isControlDown()) {
-                        //TODO: update this upon completing the functionality
-                        //rootFrameController.svgWizardController.initSaveAsPreset();
+                        rootFrameController.saveAsPreset();
                         break;
                     }
                 }

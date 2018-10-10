@@ -6,7 +6,7 @@ import tud.tangram.svgplot.coordinatesystem.Range;
  * @author Emma Müller
  */
 public enum IntegralOption {
-    NONE(new Range(0.00001, 0.00001), false),
+    NONE(new Range(0, 0), false),
     XAXIS(new Range(-10,10), true),
     FUNCTION(new Range(-10,10), true);
 

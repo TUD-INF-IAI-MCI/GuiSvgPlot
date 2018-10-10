@@ -106,38 +106,7 @@ public class RootFrameController implements Initializable {
         this.menuItem_settings.setOnAction(event -> GuiSvgPlott.getInstance().setSettingsDialog());
         this.menuItem_Save_Preset.setDisable(true);
         this.menuItem_Save_Preset.setOnAction(event -> {
-            if (wizardPath.contains("Chart") || wizardPath.contains("Function")) {
-                Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName", svgWizardController.getGuiSvgOptions().getDiagramType());
-                TextInputDialog nameDialogue = new TextInputDialog();
-                nameDialogue.setTitle(bundle.getString("prompt_preset_name_title"));
-                nameDialogue.setHeaderText(bundle.getString("prompt_preset_name_header"));
-                nameDialogue.setContentText(bundle.getString("prompt_preset_name_content"));
-
-                Stage stage = (Stage) nameDialogue.getDialogPane().getScene().getWindow();
-                stage.getIcons().add(Settings.getInstance().favicon);
-
-                Optional<String> result = nameDialogue.showAndWait();
-                if (result.isPresent() && result.get().equals("")) {
-                    showErrorAlert(bundle.getString("alert_preset_empty_title"), bundle.getString("alert_preset_empty_header"), bundle.getString("alert_preset_empty_content"));
-                } else if (result.isPresent() && presetService.findByName(result.get()).size() == 0) {
-                    savedPreset.setName(result.get());
-                    presetService.create(savedPreset);
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle(bundle.getString("alert_preset_created_title"));
-                    alert.setHeaderText(bundle.getString("alert_preset_created_header"));
-                    alert.setContentText(bundle.getString("alert_preset_created_content"));
-                    alert.getDialogPane().setMinSize(500, 150);
-
-                    Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-                    alertStage.getIcons().add(Settings.getInstance().favicon);
-
-                    alert.showAndWait();
-                } else if (result.isPresent()) {
-                    String header = bundle.getString("alert_preset_duplicate_header1") + result.get() + bundle.getString("alert_preset_duplicate_header2");
-                    showErrorAlert(bundle.getString("alert_preset_duplicate_title"), header,
-                            bundle.getString("alert_preset_duplicate_content"));
-                }
-            }
+           saveAsPreset();
         });
 
         this.menuItem_About.setOnAction(event -> {
@@ -160,6 +129,40 @@ public class RootFrameController implements Initializable {
 
     }
 
+    public void saveAsPreset(){
+        if (svgWizardController != null) {
+            Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName", svgWizardController.getGuiSvgOptions().getDiagramType());
+            TextInputDialog nameDialogue = new TextInputDialog();
+            nameDialogue.setTitle(bundle.getString("prompt_preset_name_title"));
+            nameDialogue.setHeaderText(bundle.getString("prompt_preset_name_header"));
+            nameDialogue.setContentText(bundle.getString("prompt_preset_name_content"));
+
+            Stage stage = (Stage) nameDialogue.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(Settings.getInstance().favicon);
+
+            Optional<String> result = nameDialogue.showAndWait();
+            if (result.isPresent() && result.get().equals("")) {
+                showErrorAlert(bundle.getString("alert_preset_empty_title"), bundle.getString("alert_preset_empty_header"), bundle.getString("alert_preset_empty_content"));
+            } else if (result.isPresent() && presetService.findByName(result.get()).size() == 0) {
+                savedPreset.setName(result.get());
+                presetService.create(savedPreset);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle(bundle.getString("alert_preset_created_title"));
+                alert.setHeaderText(bundle.getString("alert_preset_created_header"));
+                alert.setContentText(bundle.getString("alert_preset_created_content"));
+                alert.getDialogPane().setMinSize(500, 150);
+
+                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                alertStage.getIcons().add(Settings.getInstance().favicon);
+
+                alert.showAndWait();
+            } else if (result.isPresent()) {
+                String header = bundle.getString("alert_preset_duplicate_header1") + result.get() + bundle.getString("alert_preset_duplicate_header2");
+                showErrorAlert(bundle.getString("alert_preset_duplicate_title"), header,
+                        bundle.getString("alert_preset_duplicate_content"));
+            }
+        }
+    }
     private void showCsvHelper() {
 
         FXMLLoader loader = new FXMLLoader();

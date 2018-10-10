@@ -1024,8 +1024,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         Button copyButton = new Button();
         Glyph copyGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.COPY);
         copyButton.setGraphic(copyGlyph);
-        //still buggy af, lots of unexpected behaviour, needs refurbishment
-//        copyButton.setDisable(true);
         copyButton.setTooltip(new Tooltip(this.bundle.getString("preset_copy")));
         copyButton.setOnAction(event -> {
             Preset copiedPreset = new Preset(preset);
@@ -1048,7 +1046,6 @@ public class PresetsController extends SVGWizardController implements Initializa
             }
             this.presetService.create(copiedPreset);
             this.presets.add(copiedPreset);
-            //WARNING: deleting copied presets of the same initial preset will delete every copied preset, the cause is currently unknown
         });
 
 

@@ -478,7 +478,9 @@ public class FunctionWizardFrameController extends SVGWizardController {
             if (!newValue.equals(integralPlotSettings)) {
                 IntegralOption integralOption = IntegralOption.NONE;
                 if (!newValue.xRange.equals(IntegralOption.NONE.getDefaultXRange())) {
-                    choiceBox_function1.getSelectionModel().select(functionList.get(newValue.function1));
+                    if (functionList.size() > 1) {
+                        choiceBox_function1.getSelectionModel().select(functionList.get(newValue.function1));
+                    }
                     if (newValue.function2 == -1) {
                         integralOption = IntegralOption.XAXIS;
                     } else {
