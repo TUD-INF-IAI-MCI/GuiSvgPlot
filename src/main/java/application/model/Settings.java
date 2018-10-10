@@ -43,6 +43,7 @@ public class Settings {
         this.bundle = ResourceBundle.getBundle("langBundle", currentLocale.get(), new UTF8Control());
         this.currentLocale.addListener((observable, oldValue, newValue) -> {
             this.bundle = ResourceBundle.getBundle("langBundle", currentLocale.get(), new UTF8Control());
+            Locale.setDefault(currentLocale.get());
             try {
                 storeLocale();
             } catch (IOException e) {

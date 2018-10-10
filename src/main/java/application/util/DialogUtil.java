@@ -36,6 +36,7 @@ public class DialogUtil {
         alert.setTitle(bundle.getString(titleMsgStr));
         alert.setHeaderText(bundle.getString(headerMsgStr));
         alert.setContentText(bundle.getString(contextMsgStr));
+
         styleDialog(alert);
         return alert;
     }

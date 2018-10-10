@@ -246,24 +246,26 @@ public class RootFrameController implements Initializable {
 		// Function/Chartwizard Frame -> fixes #24
 		if (wizardPath.contains("Wizard")) {
 			GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
-			GuiSvgPlott.getInstance().closeWizard(false);
-		}
-		menuItem_Preset_Editor.setDisable(true);
-		menuItem_Save_Preset.setDisable(true);
-		this.setSceneTitle("application_preset_overview");
-		this.label_Headline.setText(this.bundle.getString("headline_presets"));
-		FXMLLoader loader = new FXMLLoader();
-		loader.setResources(bundle);
-		loader.setLocation((GuiSvgPlott.PresetOverviewFrame));
-		try {
-			center = borderPane_Content.getCenter();
-			borderPane_Content.setCenter(loader.load());
-			if (presetsController == null) {
-				presetsController = loader.getController();
+			if (GuiSvgPlott.getInstance().closeWizard(false)){
+				menuItem_Preset_Editor.setDisable(true);
+				menuItem_Save_Preset.setDisable(true);
+				this.setSceneTitle("application_preset_overview");
+				this.label_Headline.setText(this.bundle.getString("headline_presets"));
+				FXMLLoader loader = new FXMLLoader();
+				loader.setResources(bundle);
+				loader.setLocation((GuiSvgPlott.PresetOverviewFrame));
+				try {
+					center = borderPane_Content.getCenter();
+					borderPane_Content.setCenter(loader.load());
+					if (presetsController == null) {
+						presetsController = loader.getController();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+
 	}
 
 	private void startWizard(URL fxmlPath, boolean isExtended) {

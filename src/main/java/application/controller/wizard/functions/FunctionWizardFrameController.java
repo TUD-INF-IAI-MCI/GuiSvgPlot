@@ -409,7 +409,6 @@ public class FunctionWizardFrameController extends SVGWizardController {
 
         InvalidationListener invalidationListener = args -> {
             functionList.remove(row.getUserData());
-
             if (!functionField.getText().trim().isEmpty()) {
                 Function func = new Function(titleField.getText(), functionField.getText());
                 row.setUserData(func);
