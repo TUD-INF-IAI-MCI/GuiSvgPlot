@@ -159,8 +159,15 @@ public class SvgOptionsService {
 
         } catch (ClassCastException e) {
             logger.warn(this.bundle.getString("preview_pointlist_warning"));
+        } catch (NullPointerException e){
+            if (svgPlotOptions.getDiagramType().equals(DiagramType.BarChart)){
+                logger.error(this.bundle.getString("preview_barchart_error"));
+            } else {
+                logger.error(this.bundle.getString("preview_load_error") + " " + e.getClass());
+                e.printStackTrace();
+            }
         } catch (Exception e) {
-            logger.error(this.bundle.getString("preview_load_error"));
+            logger.error(this.bundle.getString("preview_load_error") + " " + e.getClass());
             e.printStackTrace();
         }
     }
