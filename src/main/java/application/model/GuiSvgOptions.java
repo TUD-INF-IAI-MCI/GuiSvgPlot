@@ -65,6 +65,8 @@ public class GuiSvgOptions {
     private ObjectProperty<GridStyle> gridStyle;
     private ObjectProperty<GuiAxisStyle> axisStyle;
     private ObjectProperty<IntegralPlotSettings> integral;
+
+    @JsonIgnore
     private ObjectProperty<PointListList> points;
 
 
@@ -94,8 +96,7 @@ public class GuiSvgOptions {
     @JsonDeserialize(using = StringDeserializer.class)
     @JsonSerialize(using = StringSerializer.class)
     private final StringProperty output;
-    @JsonDeserialize(using = StringDeserializer.class)
-    @JsonSerialize(using = StringSerializer.class)
+    @JsonIgnore
     private final StringProperty csvPath;
     @JsonDeserialize(using = StringDeserializer.class)
     @JsonSerialize(using = StringSerializer.class)

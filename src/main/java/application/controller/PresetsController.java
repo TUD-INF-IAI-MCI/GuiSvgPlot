@@ -1025,10 +1025,9 @@ public class PresetsController extends SVGWizardController implements Initializa
         Glyph copyGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.COPY);
         copyButton.setGraphic(copyGlyph);
         //still buggy af, lots of unexpected behaviour, needs refurbishment
-        copyButton.setDisable(true);
+//        copyButton.setDisable(true);
         copyButton.setTooltip(new Tooltip(this.bundle.getString("preset_copy")));
         copyButton.setOnAction(event -> {
-            //TODO handle incrementing numbers more efficiently
             Preset copiedPreset = new Preset(preset);
             // presetname is a copy of another preset and ends with a digit
             if (copiedPreset.getName().contains(bundle.getString("preset_copy")) && Character.isDigit(copiedPreset.getName().charAt(copiedPreset.getName().length() - 1))) {
@@ -1036,12 +1035,19 @@ public class PresetsController extends SVGWizardController implements Initializa
                 int amountOfCopies = Integer.valueOf(lastDigit);
                 amountOfCopies++;
                 String newName = copiedPreset.getName().substring(0, copiedPreset.getName().length() - 1) + amountOfCopies;
+
                 copiedPreset.setName(newName);
             } else {
-                copiedPreset.setName(copiedPreset.getName() + " " + bundle.getString("preset_copy") + " 1");
+                int amountOfCopies = 1;
+                String newName = copiedPreset.getName() + " " + bundle.getString("preset_copy") + amountOfCopies;
+                while (!this.presetService.findByName(newName).isEmpty()){
+                    amountOfCopies++;
+                    newName = copiedPreset.getName() + " " + bundle.getString("preset_copy") + amountOfCopies;
+                }
+                copiedPreset.setName(newName);
             }
-            vBox_Preset_DataTable.getChildren().add(generateTableEntry(copiedPreset));
             this.presetService.create(copiedPreset);
+            this.presets.add(copiedPreset);
             //WARNING: deleting copied presets of the same initial preset will delete every copied preset, the cause is currently unknown
         });
 
