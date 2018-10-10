@@ -117,18 +117,19 @@ public class PresetService {
 	 */
 	public List<Preset> getAllCharts() {
 		List<Preset> presetList = new ArrayList<>();
-		try {
-			List<Preset> presets = mapper.readValue(path.toFile(), new TypeReference<List<Preset>>() {
-			});
-			for (Preset preset : presets) {
-				if (!preset.getDiagramType().equals(DiagramType.FunctionPlot)) {
-					presetList.add(preset);
+		if (path.toFile().exists())
+			try {
+				List<Preset> presets = mapper.readValue(path.toFile(), new TypeReference<List<Preset>>() {
+				});
+				for (Preset preset : presets) {
+					if (!preset.getDiagramType().equals(DiagramType.FunctionPlot)) {
+						presetList.add(preset);
+					}
 				}
+			} catch (Exception e) {
+				logger.error(bundle.getString("load_presets_error") + " " + e.getMessage());
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			logger.error(bundle.getString("load_presets_error") + " " + e.getMessage());
-			e.printStackTrace();
-		}
 		return presetList;
 	}
 

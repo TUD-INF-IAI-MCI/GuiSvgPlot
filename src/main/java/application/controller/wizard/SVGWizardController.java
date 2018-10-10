@@ -1,6 +1,7 @@
 package application.controller.wizard;
 
 import application.GuiSvgPlott;
+import application.controller.CsvEditorController;
 import application.controller.wizard.chart.ChartWizardFrameController;
 import application.model.GuiSvgOptions;
 import application.model.Options.CssType;
@@ -54,9 +55,11 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
@@ -730,7 +733,7 @@ public class SVGWizardController implements Initializable {
 		// closes the wizard
 		this.button_Cancel.setOnAction(event -> {
 			GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
-			GuiSvgPlott.getInstance().closeWizard();
+			GuiSvgPlott.getInstance().closeWizard(false);
 			wizardPath = "none";
 			if (GuiSvgPlott.getInstance().getRootFrameController().menuItem_Preset_Editor.isDisable()) {
 				GuiSvgPlott.getInstance().getRootFrameController().menuItem_Preset_Editor.setDisable(false);
@@ -759,12 +762,17 @@ public class SVGWizardController implements Initializable {
 				File file = fileChooser.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
 				if (file != null) {
 					try {
+						File tempCSV = new File(this.guiSvgOptions.getCsvPath());
+						File newCsv = new File(file.getAbsolutePath().replaceAll(".svg", ".csv"));
+						if (tempCSV.exists())
+							Files.copy(tempCSV.toPath(), newCsv.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
 						this.guiSvgOptions.setOutput(file.getAbsolutePath());
 						this.svgOptionsService.buildSVG(guiSvgOptions.getOptions());
 						this.popOver_infos.hide();
 						this.popOver_warnings.hide();
-						GuiSvgPlott.getInstance().closeWizard();
-					} catch (ValidationException e) {
+						GuiSvgPlott.getInstance().closeWizard(true);
+					} catch (ValidationException | IOException e) {
 						logger.error(this.bundle.getString("svg_creation_validation_error"));
 					}
 				}
@@ -1006,6 +1014,10 @@ public class SVGWizardController implements Initializable {
 
 		tempFileProp.set(tempFile);
 
+		GuiSvgPlott.possibleTempFiles.add(tempFile);
+
+		System.out.println(tempFile);
+
 		return (tempFile != null) ? tempFile.toString() : "";
 	}
 
@@ -1036,6 +1048,8 @@ public class SVGWizardController implements Initializable {
 				}
 
 			});
+		GuiSvgPlott.possibleTempFiles.add(resultFile);
+
 		f.deleteOnExit();
 
 	}

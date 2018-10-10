@@ -1448,7 +1448,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
         GuiSvgPlott.getInstance().getRootFrameController().menuItem_Preset_Editor.setDisable(false);
         resetSpecifics();
-        GuiSvgPlott.getInstance().closeWizard();
+        GuiSvgPlott.getInstance().closeWizard(false);
     }
 
 
