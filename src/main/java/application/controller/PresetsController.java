@@ -433,6 +433,8 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_csvType.setConverter(converter.getCsvTypeStringConverter());
 
         //axis
+        toggleVisibility(true, label_scale_data, radioBtn_scale_to_data);
+        toggleVisibility(true, label_scale_data, radioBtn_customScale);
         //textFieldUtil.addDoubleValidation(textField_x_from, label_x_from);
         //textFieldUtil.addDoubleValidation(textField_x_to, label_x_to);
         //textFieldUtil.addNotEqualValidation(textField_x_from, label_x_from, textField_x_to, label_x_to);
@@ -527,6 +529,11 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void cssCustomHider() {
         toggleVisibility(false, label_cssCustom, textArea_cssCustom);
         toggleVisibility(false, label_cssPath, hBox_cssPath);
+    }
+
+    private void functionRadioButtonHider(){
+        toggleVisibility(false, label_pi, radioButton_scalingDecimal);
+        toggleVisibility(false, label_pi, radioButton_scalingPi);
     }
 
     /**
@@ -733,6 +740,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         toggleVisibility(true, label_integral, choiceBox_integralOption);
         toggleVisibility(true, label_pi, radioButton_scalingDecimal);
         toggleVisibility(true, label_pi, radioButton_scalingPi);
+        ObservableList<IntegralOption> integralOptionObservableList = FXCollections.observableArrayList(IntegralOption.values());
+        choiceBox_integralOption.setItems(integralOptionObservableList);
+        choiceBox_integralOption.getSelectionModel().select(IntegralOption.NONE);
+        choiceBox_integralOption.setConverter(super.converter.getIntegralOptionStringConverter());
         choiceBox_integralOption.selectionModelProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
@@ -995,12 +1006,15 @@ public class PresetsController extends SVGWizardController implements Initializa
                     break;
                 case LineChart:
                     initLineChart();
+                    functionRadioButtonHider();
                     break;
                 case ScatterPlot:
                     initScatterPlot();
+                    functionRadioButtonHider();
                     break;
                 case BarChart:
                     initBarChart();
+                    functionRadioButtonHider();
                     break;
             }
             editorDisplayer();
