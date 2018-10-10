@@ -110,12 +110,10 @@ public class RootFrameController implements Initializable {
         });
 
         this.menuItem_About.setOnAction(event -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle(bundle.getString("menu_help_about_title"));
-            alert.setHeaderText(null);
+            Alert alert = dialogUtil.alert(Alert.AlertType.INFORMATION, "menu_help_about_title", "menu_help_about_content", "menu_help_about_content");
+			alert.setHeaderText(null);
             alert.setResizable(true);
             alert.getDialogPane().setMinSize(500, 250);
-            alert.setContentText(bundle.getString("menu_help_about_content"));
             dialogUtil.styleDialog(alert);
 
             alert.showAndWait();
@@ -126,16 +124,10 @@ public class RootFrameController implements Initializable {
         });
 
         this.menuItem_About.setOnAction(event -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle(bundle.getString("menu_help_about_title"));
+            Alert alert = dialogUtil.alert(Alert.AlertType.INFORMATION, "menu_help_about_title", "menu_help_about_content", "menu_help_about_content");
             alert.setHeaderText(null);
             alert.setResizable(true);
             alert.getDialogPane().setMinSize(500, 250);
-            alert.setContentText(bundle.getString("menu_help_about_content"));
-
-            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-            stage.getIcons().add(Settings.getInstance().favicon);
-
             alert.showAndWait();
         });
 
@@ -149,14 +141,12 @@ public class RootFrameController implements Initializable {
 	public void saveAsPreset(){
 		if (svgWizardController != null) {
 			Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName", svgWizardController.getGuiSvgOptions().getDiagramType());
-			TextInputDialog nameDialogue = new TextInputDialog();
-			nameDialogue.setTitle(bundle.getString("prompt_preset_name_title"));
+			TextInputDialog nameDialogue = dialogUtil.textInputDialog("prompt_preset_name_title", "prompt_preset_name_header", "prompt_preset_name_content");
 			String headerText = bundle.getString("prompt_preset_name_header");
 			if (svgWizardController instanceof ChartWizardFrameController){
 				headerText = headerText.concat("\n" + this.bundle.getString("prompt_preset_name_header_sub"));
 			}
 			nameDialogue.setHeaderText(headerText);
-			nameDialogue.setContentText(bundle.getString("prompt_preset_name_content"));
 			dialogUtil.styleDialog(nameDialogue);
 
 			Optional<String> result = nameDialogue.showAndWait();
@@ -165,15 +155,8 @@ public class RootFrameController implements Initializable {
 			} else if (result.isPresent() && presetService.findByName(result.get()).size() == 0) {
 				savedPreset.setName(result.get());
 				presetService.create(savedPreset);
-				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setTitle(bundle.getString("alert_preset_created_title"));
-				alert.setHeaderText(bundle.getString("alert_preset_created_header"));
-				alert.setContentText(bundle.getString("alert_preset_created_content"));
+				Alert alert = dialogUtil.alert(Alert.AlertType.CONFIRMATION, "alert_preset_created_title", "alert_preset_created_header", "alert_preset_created_content");
 				alert.getDialogPane().setMinSize(500, 150);
-
-				Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-				alertStage.getIcons().add(Settings.getInstance().favicon);
-
 				alert.showAndWait();
 			} else if (result.isPresent()) {
 				String header = bundle.getString("alert_preset_duplicate_header1") + result.get() + bundle.getString("alert_preset_duplicate_header2");
@@ -228,12 +211,9 @@ public class RootFrameController implements Initializable {
 
 	@FXML
 	private void closeButtonAction() {
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		Alert alert = dialogUtil.alert(Alert.AlertType.CONFIRMATION, "alert_exit_title", "alert_exit_header", "alert_exit_content");
 		alert.setResizable(true);
 		alert.getDialogPane().setMinWidth(400);
-		alert.setTitle(bundle.getString("alert_exit_title"));
-		alert.setHeaderText(bundle.getString("alert_exit_header"));
-		alert.setContentText(bundle.getString("alert_exit_content"));
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.isPresent() && result.get() == ButtonType.OK) {
 			// ... user chose OK
@@ -328,10 +308,7 @@ public class RootFrameController implements Initializable {
     }
 
 	private void showErrorAlert(String title, String header, String content) {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle(title);
-		alert.setHeaderText(header);
-		alert.setContentText(content);
+		Alert alert = dialogUtil.alertWithTexts(Alert.AlertType.ERROR, title, header, content);
 		alert.showAndWait();
 	}
 }
