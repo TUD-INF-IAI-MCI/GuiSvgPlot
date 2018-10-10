@@ -493,10 +493,10 @@ public class SVGWizardController implements Initializable {
 				a.setTitle(this.bundle.getString("csv_added_title"));
 				a.setHeaderText(file.getName() + " " + this.bundle.getString("csv_added"));
 
-                Stage stage = (Stage) a.getDialogPane().getScene().getWindow();
-                stage.getIcons().add(Settings.getInstance().favicon);
+				Stage stage = (Stage) a.getDialogPane().getScene().getWindow();
+				stage.getIcons().add(Settings.getInstance().favicon);
 
-                a.showAndWait();
+				a.showAndWait();
 			}
 		});
 
@@ -1019,6 +1019,10 @@ public class SVGWizardController implements Initializable {
 
 		tempFileProp.set(tempFile);
 
+		GuiSvgPlott.possibleTempFiles.add(tempFile);
+
+		System.out.println(tempFile);
+
 		return (tempFile != null) ? tempFile.toString() : "";
 	}
 
@@ -1049,6 +1053,8 @@ public class SVGWizardController implements Initializable {
 				}
 
 			});
+		GuiSvgPlott.possibleTempFiles.add(resultFile);
+
 		f.deleteOnExit();
 
 	}

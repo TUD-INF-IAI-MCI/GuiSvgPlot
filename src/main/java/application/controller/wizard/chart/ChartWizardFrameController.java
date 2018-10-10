@@ -1,5 +1,6 @@
 package application.controller.wizard.chart;
 
+import application.GuiSvgPlott;
 import application.controller.wizard.SVGWizardController;
 import application.model.DataPoint;
 import application.model.DataSet;
@@ -1381,6 +1382,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
 		try {
 			final Path f = Files.createTempFile(title, ".csv");
+			GuiSvgPlott.possibleTempFiles.add(f);
 
 			if (f == null) {
 				return;

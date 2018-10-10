@@ -1,27 +1,29 @@
 package application;
 
-import application.controller.SettingsDialogController;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
 import application.controller.RootFrameController;
+import application.controller.SettingsDialogController;
 import application.infrastructure.UTF8Control;
 import application.model.Settings;
-import com.google.gson.*;
 import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.*;
-import java.net.URL;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
 /**
  * @author Robert Schlegel
@@ -49,6 +51,7 @@ public class GuiSvgPlott extends Application {
 			.getResource("/fxml/wizard/content/chart/ChartWizardFrame.fxml");
 	public static URL LanguageDialog = GuiSvgPlott.class.getResource("/fxml/wizard/SettingsDialog.fxml");
 	public static URL CsvFormatHelper = GuiSvgPlott.class.getResource("/fxml/wizard/content/CSVFormatHelp.fxml");
+	public static HashSet<Path> possibleTempFiles = new HashSet<>();
 
 	////////////////
 
@@ -137,6 +140,20 @@ public class GuiSvgPlott extends Application {
 		primaryStage.show();
 
 		setHotKeys(primaryStage);
+
+		primaryStage.setOnCloseRequest(event -> {
+			possibleTempFiles.forEach(path -> {
+				System.out.println(path);
+
+				if (path.toFile().exists())
+					try {
+						Files.delete(path);
+						System.out.println(path);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			});
+		});
 
 	}
 
