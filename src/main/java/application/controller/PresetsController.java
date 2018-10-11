@@ -1248,10 +1248,12 @@ public class PresetsController extends SVGWizardController implements Initializa
             }
         }else{
             radioBtn_scalingDecimal.setSelected(true);
-            textField_x_from.setText(String.valueOf(options.getxRange().getFrom()));
-            textField_x_to.setText(String.valueOf(options.getxRange().getTo()));
-            textField_y_from.setText(String.valueOf(options.getyRange().getFrom()));
-            textField_y_to.setText(String.valueOf(options.getyRange().getTo()));
+            if (options.getxRange() != null && options.getyRange() != null) {
+                textField_x_from.setText(String.valueOf(options.getxRange().getFrom()));
+                textField_x_to.setText(String.valueOf(options.getxRange().getTo()));
+                textField_y_from.setText(String.valueOf(options.getyRange().getFrom()));
+                textField_y_to.setText(String.valueOf(options.getyRange().getTo()));
+            }
         }
 
         // Stage 5: special
