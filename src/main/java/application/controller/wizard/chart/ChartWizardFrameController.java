@@ -981,6 +981,12 @@ public class ChartWizardFrameController extends SVGWizardController {
                     if (!dataSets.isEmpty() && !dataSets.get(0).getAllPoints().isEmpty())
                         svgOptionsService.buildPreviewSVG(guiSvgOptions, webView_svg);
                 });
+
+        this.guiSvgOptions.hideOriginalPointsProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null) {
+                this.choiceBox_originalPoints.getSelectionModel().select(newValue);
+            }
+        });
     }
 
     private void setValueToIndex(ObservableList<String> trendline, int index, String newValue) {

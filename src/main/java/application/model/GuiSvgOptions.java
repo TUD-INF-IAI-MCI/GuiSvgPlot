@@ -847,7 +847,6 @@ public class GuiSvgOptions {
         this.csvType.set(guiSvgOptions.csvType.get());
         this.functions.setAll(guiSvgOptions.functions);
         this.gridStyle.set(guiSvgOptions.gridStyle.get());
-        this.hideOriginalPoints.set(guiSvgOptions.hideOriginalPoints.get());
         this.integral.set(guiSvgOptions.integral.get());
         this.linePointsOption.set(guiSvgOptions.getLinePointsOption());
         this.outputDevice.set(guiSvgOptions.getOutputDevice());
@@ -871,5 +870,6 @@ public class GuiSvgOptions {
         if (guiSvgOptions.getColors() != null) {
             this.colors.setAll(guiSvgOptions.colors);
         }
+        this.hideOriginalPoints.set(guiSvgOptions.hideOriginalPoints.get());
     }
 }
