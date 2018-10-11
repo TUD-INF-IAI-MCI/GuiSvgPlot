@@ -249,12 +249,12 @@
                            <children>
                               <HBox fx:id="hBox_scaling" visible="false">
                                  <children>
-                                    <RadioButton fx:id="radioButton_scalingDecimal" mnemonicParsing="false" selected="true" text="%radiobutton_scaling_decimal">
+                                    <RadioButton fx:id="radioBtn_scalingDecimal" mnemonicParsing="false" selected="true" text="%radiobutton_scaling_decimal">
                                        <toggleGroup>
                                           <ToggleGroup fx:id="togglePi" />
                                        </toggleGroup>
                                     </RadioButton>
-                                    <RadioButton fx:id="radioButton_scalingPi" mnemonicParsing="false" text="%radiobutton_scaling_pi" toggleGroup="$togglePi" />
+                                    <RadioButton fx:id="radioBtn_scalingPi" mnemonicParsing="false" text="%radiobutton_scaling_pi" toggleGroup="$togglePi" />
                                  </children>
                                  <padding>
                                     <Insets top="5.0" />
