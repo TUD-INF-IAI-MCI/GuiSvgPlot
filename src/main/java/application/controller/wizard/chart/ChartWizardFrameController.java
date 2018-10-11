@@ -292,27 +292,28 @@ public class ChartWizardFrameController extends SVGWizardController {
 
 		button_addDataPoint.setDisable(true);
 
-
-        getResultFileProp().addListener(inval -> {
-            try {
-                parseCSV();
-            } catch (Exception e) {
-                Alert a = dialogUtil.alert(Alert.AlertType.ERROR, "csv_parse_error_title", "csv_parse_error_header", "csv_parse_error");
-                a.getDialogPane().getStyleClass().add("h-100");
-                a.showAndWait();
-            }
-            if (!dataSets.isEmpty()) {
-                choiceBox_DataSets.getSelectionModel().select(0);
-            }
-        });
+		getResultFileProp().addListener(inval -> {
+			try {
+				parseCSV();
+			} catch (Exception e) {
+				Alert a = dialogUtil.alert(Alert.AlertType.ERROR, "csv_parse_error_title", "csv_parse_error_header",
+						"csv_parse_error");
+				a.getDialogPane().getStyleClass().add("h-100");
+				a.showAndWait();
+			}
+			if (!dataSets.isEmpty()) {
+				choiceBox_DataSets.getSelectionModel().select(0);
+			}
+		});
 
 		choiceBox_DataSets.setConverter(this.converter.getDataSetStringConverter(dataSets));
 		choiceBox_DataSets.setItems(dataSets);
 
 		button_AddDataSet.setOnAction(event -> {
 
-            TextInputDialog dialog = dialogUtil.textInputDialog("dataset_entername_title","dataset_entername_header","dataset_entername_content");
-            dialog.showAndWait();
+			TextInputDialog dialog = dialogUtil.textInputDialog("dataset_entername_title", "dataset_entername_header",
+					"dataset_entername_content");
+			dialog.showAndWait();
 
 			if (dialog.getResult() != null && !dialog.getResult().isEmpty()) {
 				DataSet set = new DataSet(null, dialog.getResult());
@@ -344,7 +345,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
 		button_addDataPoint.setOnAction(event -> {
 			if (choiceBox_DataSets.getValue() != null) {
-				DataPoint p = new DataPoint("0", "0");
+				DataPoint p = new DataPoint("", "");
 				choiceBox_DataSets.getValue().addPoint(p);
 
 				vBox_dataTable.getChildren().add(generateTableEntry(p));
@@ -1175,8 +1176,8 @@ public class ChartWizardFrameController extends SVGWizardController {
 
 	private void parseBarChart() {
 
-        IntegerProperty columnNumber = new SimpleIntegerProperty(0);
-        StringProperty firstLine = new SimpleStringProperty("");
+		IntegerProperty columnNumber = new SimpleIntegerProperty(0);
+		StringProperty firstLine = new SimpleStringProperty("");
 
 		try {
 			Files.readAllLines(getResultFileProp().get()).forEach(line -> {
@@ -1297,9 +1298,9 @@ public class ChartWizardFrameController extends SVGWizardController {
 		row.getStyleClass().add("edit");
 		row.setUserData(point);
 
-        TextField keyField = new TextField(point.getKey());
-        keyField.getStyleClass().add("data-cell");
-        keyField.getStyleClass().add("data-cell-x");
+		TextField keyField = new TextField(point.getKey());
+		keyField.getStyleClass().add("data-cell");
+		keyField.getStyleClass().add("data-cell-x");
 
 		if (choiceBox_diagramType.getValue().equals(DiagramType.BarChart)) {
 			keyField.textProperty().addListener((args, oldVal, newVal) -> {
@@ -1308,7 +1309,8 @@ public class ChartWizardFrameController extends SVGWizardController {
 			});
 		} else {
 			keyField.textProperty().addListener((args, oldVal, newVal) -> {
-				if (newVal.matches("\\-{0,1}[0-9]+\\,{0,1}[0-9]*")) {
+
+				if (newVal.isEmpty() || newVal.matches("\\-{0,1}[0-9]+\\,{0,1}[0-9]*")) {
 					point.setKey(newVal);
 				} else {
 					keyField.setText(oldVal);
@@ -1348,7 +1350,8 @@ public class ChartWizardFrameController extends SVGWizardController {
 		});
 
 		valueField.textProperty().addListener((args, oldVal, newVal) -> {
-			if (newVal.matches("\\-{0,1}[0-9]+\\,{0,1}[0-9]*")) {
+
+			if (newVal.isEmpty() || newVal.matches("\\-{0,1}[0-9]+\\,{0,1}[0-9]*")) {
 				point.setValue(newVal);
 				setCSVOptions();
 			} else {
@@ -1419,12 +1422,13 @@ public class ChartWizardFrameController extends SVGWizardController {
 					for (String name : barChartNames) {
 						boolean found = false;
 						for (DataPoint point : set.getAllPoints()) {
-							if (point.getKey().equals(name)) {
-								if (!found) {
-									line += "\"" + point.getValue() + "\"" + ",";
-									found = true;
+							if (!point.getKey().isEmpty() && point.getValue().isEmpty())
+								if (point.getKey().equals(name)) {
+									if (!found) {
+										line += "\"" + point.getValue() + "\"" + ",";
+										found = true;
+									}
 								}
-							}
 						}
 						if (!found)
 							line += "0,";
@@ -1446,8 +1450,10 @@ public class ChartWizardFrameController extends SVGWizardController {
 					String line2 = ",";
 
 					for (DataPoint point : item.getAllPoints()) {
-						line1 += "\"" + point.getKey() + "\"" + ",";
-						line2 += "\"" + point.getValue() + "\"" + ",";
+						if (!point.getKey().isEmpty() && !point.getValue().isEmpty()) {
+							line1 += "\"" + point.getKey() + "\"" + ",";
+							line2 += "\"" + point.getValue() + "\"" + ",";
+						}
 					}
 					if (item.getAllPoints().size() > 0) {
 						int index = 0;
