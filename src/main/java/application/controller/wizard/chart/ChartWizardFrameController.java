@@ -504,7 +504,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
         this.pointSymbolInputs = new HashMap<>();
         for (int i = 0; i < amountOfPointSymbolInputs.get(); i++) {
-            this.drawPointSymbolField(pointSymbolInputs, this.customPointSymbols, i, true);
+            this.drawPointSymbolField(pointSymbolInputs, this.customPointSymbols, i, false);
         }
         selectedPointSymbols.forEach((label, pointSymbol) -> {
             HBox hBox_scatter = pointSymbolInputs.get(label);
@@ -681,6 +681,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                             case MovingAverage:
                                 show(label_trendline_n, textField_trendline_n);
                                 show(label_originalPoints, choiceBox_originalPoints);
+                                pointSymbolInputs.forEach((label, hBox) -> toggleVisibility(guiSvgOptions.getHideOriginalPoints().equals(VisibilityOfDataPoints.SHOW), label, hBox));
                                 hide(label_trendline_alpha, textField_trendline_alpha);
                                 hide(label_trendline_forecast, textField_trendline_forecast);
 
@@ -691,6 +692,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                                 show(label_trendline_alpha, textField_trendline_alpha);
                                 show(label_trendline_forecast, textField_trendline_forecast);
                                 show(label_originalPoints, choiceBox_originalPoints);
+                                pointSymbolInputs.forEach((label, hBox) -> toggleVisibility(guiSvgOptions.getHideOriginalPoints().equals(VisibilityOfDataPoints.SHOW), label, hBox));
                                 hide(label_trendline_n, textField_trendline_n);
 
                                 trendline.setAll(newValue.toString(), alpha, forecast);
@@ -701,6 +703,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                             case ExponentialSmoothing:
                                 show(label_trendline_alpha, textField_trendline_alpha);
                                 show(label_originalPoints, choiceBox_originalPoints);
+                                pointSymbolInputs.forEach((label, hBox) -> toggleVisibility(guiSvgOptions.getHideOriginalPoints().equals(VisibilityOfDataPoints.SHOW), label, hBox));
                                 hide(label_trendline_forecast, textField_trendline_forecast);
                                 hide(label_trendline_n, textField_trendline_n);
 
@@ -709,6 +712,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                                 break;
                             case LinearRegression:
                                 show(label_originalPoints, choiceBox_originalPoints);
+                                pointSymbolInputs.forEach((label, hBox) -> toggleVisibility(guiSvgOptions.getHideOriginalPoints().equals(VisibilityOfDataPoints.SHOW), label, hBox));
                                 hide(label_trendline_alpha, textField_trendline_alpha);
                                 hide(label_trendline_forecast, textField_trendline_forecast);
                                 hide(label_trendline_n, textField_trendline_n);
@@ -719,8 +723,8 @@ public class ChartWizardFrameController extends SVGWizardController {
                                 hide(label_trendline_forecast, textField_trendline_forecast);
                                 hide(label_trendline_n, textField_trendline_n);
                                 hide(label_originalPoints, choiceBox_originalPoints);
+                                pointSymbolInputs.forEach((label, hBox) -> hide(label, hBox));
                                 trendline.clear();
-                                choiceBox_originalPoints.getSelectionModel().select(VisibilityOfDataPoints.SHOW);
                                 break;
                         }
                     }
