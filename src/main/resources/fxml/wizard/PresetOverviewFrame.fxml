@@ -219,7 +219,7 @@
                         <Label fx:id="label_customSizeHeight" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_height" visible="false" GridPane.rowIndex="6" />
                         <TextField fx:id="textField_customSizeHeight" accessibleText="%size_of_diagram_height" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" promptText="%size_of_diagram_height" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                         <Label text="%chart_stage3_editor" underline="true" GridPane.rowIndex="7" />
-                        <Label text="%label_x_axis_title" GridPane.rowIndex="8">
+                        <Label fx:id="label_x_axis_title" text="%label_x_axis_title" GridPane.rowIndex="8">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -228,7 +228,7 @@
                            </padding>
                         </Label>
                         <TextField fx:id="textField_xAxisTitle" accessibleText="%label_x_axis_title" promptText="%prompt_x_axis_title" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <Label text="%label_y_axis_title" GridPane.rowIndex="9">
+                        <Label fx:id="label_y_axis_title" text="%label_y_axis_title" GridPane.rowIndex="9">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -400,8 +400,8 @@
                               </Button>
                            </children>
                         </HBox>
-                        <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_mark_data" visible="false" GridPane.rowIndex="28" />
-                        <ChoiceBox fx:id="choiceBox_linepoints" accessibleText="%mark_data_on_line" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="28" />
+                        <Label fx:id="label_linepoints" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_mark_data" visible="false" GridPane.rowIndex="25" />
+                        <ChoiceBox fx:id="choiceBox_linepoints" accessibleText="%mark_data_on_line" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="25" />
                         <Label fx:id="label_baraccumulation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_acc" visible="false" GridPane.rowIndex="25" />
                         <ChoiceBox fx:id="choiceBox_baraccumulation" accessibleText="Art, in der mehrere Datenreihen in Balkendiagrammen akkumuliert werden." maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="25" />
                         <Label fx:id="label_firstTexture" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_texture_first_bar" visible="false" GridPane.rowIndex="26" />
@@ -446,10 +446,10 @@
                               </Button>
                            </children>
                         </HBox>
-                        <Label fx:id="label_sorting" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sorting" visible="false" GridPane.rowIndex="29" />
-                        <ChoiceBox fx:id="choiceBox_sorting" accessibleText="%label_sorting" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="29" />
-                        <Label fx:id="label_sortOrder" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sort_order" visible="false" GridPane.rowIndex="30" />
-                        <ChoiceBox fx:id="choiceBox_sortOrder" accessibleText="%label_sort_order" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="30" />
+                        <Label fx:id="label_sorting" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sorting" visible="false" GridPane.rowIndex="26" />
+                        <ChoiceBox fx:id="choiceBox_sorting" accessibleText="%label_sorting" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="26" />
+                        <Label fx:id="label_sortOrder" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_sort_order" visible="false" GridPane.rowIndex="27" />
+                        <ChoiceBox fx:id="choiceBox_sortOrder" accessibleText="%label_sort_order" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="27" />
                         <Label fx:id="label_trendline" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline" visible="false" GridPane.rowIndex="25" />
                         <ChoiceBox fx:id="choiceBox_trendline" accessibleText="Trendlinienalgorithmus" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="25" />
                         <Label fx:id="label_trendline_alpha" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_trendline_alpha" visible="false" GridPane.rowIndex="26" />
