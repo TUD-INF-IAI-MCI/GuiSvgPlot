@@ -71,8 +71,8 @@ public class TextFieldUtil {
         String message = message_key;
 
         try {
-            Double.parseDouble(textField2.getText());
-            Double.parseDouble(textField1.getText());
+            val1 = Double.parseDouble(textField1.getText());
+            val2 = Double.parseDouble(textField2.getText());
             message = "error_fieldsMustNotBeEmpty";
         } catch (NumberFormatException e) {
 
