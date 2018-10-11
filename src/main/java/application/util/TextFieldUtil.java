@@ -23,6 +23,7 @@ public class TextFieldUtil {
     private ResourceBundle bundle;
 
     private TextFieldUtil() {
+    	this.bundle = GuiSvgPlott.getInstance().getBundle();    
     }
 
     public static TextFieldUtil getInstance() {

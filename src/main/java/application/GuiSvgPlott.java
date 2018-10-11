@@ -272,4 +272,8 @@ public class GuiSvgPlott extends Application {
 		return rootFrameController;
 	}
 
+	public ResourceBundle getBundle() {
+		return bundle;
+	}
+
 }
