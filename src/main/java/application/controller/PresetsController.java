@@ -1303,6 +1303,7 @@ public class PresetsController extends SVGWizardController implements Initializa
             hideAllEditors();
             presetService.save(currentPreset);
             overviewDisplayer();
+            resetSpecifics();
         } else {
             emptyNameAlert();
         }
