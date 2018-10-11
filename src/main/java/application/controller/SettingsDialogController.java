@@ -21,70 +21,68 @@ import javafx.stage.Stage;
  * @author Robert Schlegel
  */
 public class SettingsDialogController implements Initializable {
-	private ResourceBundle bundle;
 
-	@FXML
-	private Button button_Save;
-	@FXML
-	private Button button_Cancel;
-	@FXML
-	private ChoiceBox<Locale> choiceBox_languages;
-	@FXML
-	private TextField textField_gnuplotPath;
-	@FXML
-	private Button button_gnuplotPath;
+    private ResourceBundle bundle;
 
-	private Locale chosenLocale;
-	private String gnuplotPath;
-	private ObservableList<Locale> availableLanguages;
-	private Settings settings = Settings.getInstance();
-	private Converter converter = Converter.getInstance();
+    @FXML
+    private Button button_Save;
+    @FXML
+    private Button button_Cancel;
+    @FXML
+    private ChoiceBox<Locale> choiceBox_languages;
+    @FXML
+    private TextField textField_gnuplotPath;
+    @FXML
+    private Button button_gnuplotPath;
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		this.bundle = resources;
-		this.chosenLocale = settings.getCurrentLocale();
-		this.gnuplotPath = settings.getGnuPlotPath();
-		converter.setBundle(bundle);
-		availableLanguages = FXCollections.observableArrayList();
-		availableLanguages.addAll(Settings.getInstance().supportedLocals);
-	}
+    private Locale chosenLocale;
+    private String gnuplotPath;
+    private ObservableList<Locale> availableLanguages;
+    private Settings settings = Settings.getInstance();
+    private Converter converter = Converter.getInstance();
 
-	public void init(Stage stage) {
-		button_Save.setOnAction(event -> {
-			if (chosenLocale != null)
-				settings.setCurrentLocale(chosenLocale);
-			if (gnuplotPath != null || !gnuplotPath.isEmpty())
-				settings.setGnuPlotPath(gnuplotPath);
-			stage.close();
-		});
-		button_Cancel.setOnAction(event -> stage.close());
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.bundle = resources;
+        this.chosenLocale = settings.getCurrentLocale();
+        this.gnuplotPath = settings.getGnuPlotPath();
+        converter.setBundle(bundle);
+        availableLanguages = FXCollections.observableArrayList();
+        availableLanguages.addAll(Settings.getInstance().supportedLocals);
+    }
 
-		this.initLanguageSettings();
-		this.initGnuplotSettings(stage);
-	}
+    public void init(Stage stage) {
+        button_Save.setOnAction(event -> {
+            if (chosenLocale != null)
+                settings.setCurrentLocale(chosenLocale);
+            if (gnuplotPath != null && !gnuplotPath.isEmpty())
+                settings.setGnuPlotPath(gnuplotPath);
+            stage.close();
+        });
+        button_Cancel.setOnAction(event -> stage.close());
 
-	private void initLanguageSettings() {
-		choiceBox_languages.setItems(availableLanguages);
-		choiceBox_languages.setConverter(Converter.getInstance().getLocaleStringConverter());
-		choiceBox_languages.getSelectionModel().select(chosenLocale);
-		choiceBox_languages.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-			chosenLocale = newValue;
-		});
-	}
+        this.initLanguageSettings();
+        this.initGnuplotSettings(stage);
+    }
 
-	private void initGnuplotSettings(Stage stage) {
-		this.textField_gnuplotPath.setText(settings.getGnuPlotPath());
-		this.textField_gnuplotPath.textProperty().addListener((observable, oldValue, newValue) -> {
-			this.gnuplotPath = newValue;
-		});
-		this.button_gnuplotPath.setOnAction(event -> {
-			FileChooser fileChooser = new FileChooser();
-			File file = fileChooser.showOpenDialog(stage);
-			if (file != null) {
-				this.textField_gnuplotPath.setText(file.getAbsolutePath());
-			}
-		});
+    private void initLanguageSettings() {
+        choiceBox_languages.setItems(availableLanguages);
+        choiceBox_languages.setConverter(Converter.getInstance().getLocaleStringConverter());
+        choiceBox_languages.getSelectionModel().select(chosenLocale);
+        choiceBox_languages.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
+                chosenLocale = newValue);
+    }
 
-	}
+    private void initGnuplotSettings(Stage stage) {
+        this.textField_gnuplotPath.setText(settings.getGnuPlotPath());
+        this.textField_gnuplotPath.textProperty().addListener((observable, oldValue, newValue) -> this.gnuplotPath = newValue);
+        this.button_gnuplotPath.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            File file = fileChooser.showOpenDialog(stage);
+            if (file != null) {
+                this.textField_gnuplotPath.setText(file.getAbsolutePath());
+            }
+        });
+
+    }
 }
