@@ -26,7 +26,10 @@ import tud.tangram.svgplot.plotting.IntegralPlotSettings;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ResourceBundle;
 
 /**
@@ -124,6 +127,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
     private IntegralPlotSettings integralPlotSettings;
 
     private ObservableList<Function> functionList;
+    private Path tempPath;
 
 
     public FunctionWizardFrameController() {
@@ -167,6 +171,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
      */
     private void initStage1() {
         super.initGeneralFieldListeners();
+
     }
 
 
@@ -176,6 +181,14 @@ public class FunctionWizardFrameController extends SVGWizardController {
     private void initStage2() {
         vBox_dataTable.getStyleClass().add("data-table");
         vBox_dataTable.setFillWidth(true);
+
+        try {
+            tempPath = Files.createTempFile("fuction", "csv");
+            guiSvgOptions.setCsvPath(tempPath.toFile().getAbsolutePath());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 //        scrollPane_dataTable.setFitToWidth(true);
 
@@ -187,6 +200,8 @@ public class FunctionWizardFrameController extends SVGWizardController {
         button_editDataSet.setOnAction(event -> {
             HBox row = generateTableEntry(new Function("", ""));
             vBox_dataTable.getChildren().add(row);
+
+
         });
 
         getResultFileProp().addListener(inval -> {
@@ -196,6 +211,7 @@ public class FunctionWizardFrameController extends SVGWizardController {
                     vBox_dataTable.getChildren().add(row);
                 });
             } catch (IOException e) {
+
             }
 
 
@@ -495,5 +511,25 @@ public class FunctionWizardFrameController extends SVGWizardController {
                 rangeTo.set(newValue.xRange.getTo());
             }
         });
+    }
+
+    public void createFuntionsCsv() {
+
+        try {
+            Files.write(tempPath, ("").getBytes(Charset.defaultCharset()), StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        functionList.forEach(function -> {
+            try {
+                Files.write(tempPath, (function.getTitle() + "," + function.getFunction() + "\n").getBytes(Charset.defaultCharset()), StandardOpenOption.APPEND);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        guiSvgOptions.setCsvPath(tempPath.toFile().getAbsolutePath());
     }
 }
