@@ -74,9 +74,13 @@ public class GuiSvgOptions {
     private BooleanProperty autoScale;
 
     private ObservableList<Function> functions;
+    @JsonIgnore
     private ObservableList<Color> colors;
+    @JsonIgnore
     private ObservableList<Texture> textures;
+    @JsonIgnore
     private ObservableList<PointSymbol> pointSymbols;
+    @JsonIgnore
     private ObservableList<LineStyle> lineStyles;
     private ObservableList<String> trendLine;
 
