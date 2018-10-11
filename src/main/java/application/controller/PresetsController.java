@@ -1029,7 +1029,12 @@ public class PresetsController extends SVGWizardController implements Initializa
         // Stage 3: specific
         switch (currentPreset.getDiagramType()) {
             case FunctionPlot:
-                editor_options.setPi(!radioBtn_scalingDecimal.isSelected());
+                if(radioBtn_scalingPi.isSelected()){
+                    editor_options.setPi(true);
+                }
+                if(radioBtn_scalingDecimal.isSelected()){
+                    editor_options.setPi(false);
+                }
                 break;
             case BarChart:
                 editor_options.setBarAccumulationStyle((BarAccumulationStyle) choiceBox_baraccumulation.getSelectionModel().getSelectedItem());
@@ -1232,6 +1237,21 @@ public class PresetsController extends SVGWizardController implements Initializa
                 textField_y_from.setText("-8.0");
                 textField_y_to.setText("8.0");
             }
+        }
+        if (options.isPi()) {
+            radioBtn_scalingPi.setSelected(true);
+            if (options.getxRange() != null && options.getyRange() != null) {
+                textField_x_from.setText(String.valueOf(options.getxRange().getFrom()));
+                textField_x_to.setText(String.valueOf(options.getxRange().getTo()));
+                textField_y_from.setText(String.valueOf(options.getyRange().getFrom()));
+                textField_y_to.setText(String.valueOf(options.getyRange().getTo()));
+            }
+        }else{
+            radioBtn_scalingDecimal.setSelected(true);
+            textField_x_from.setText(String.valueOf(options.getxRange().getFrom()));
+            textField_x_to.setText(String.valueOf(options.getxRange().getTo()));
+            textField_y_from.setText(String.valueOf(options.getyRange().getFrom()));
+            textField_y_to.setText(String.valueOf(options.getyRange().getTo()));
         }
 
         // Stage 5: special
