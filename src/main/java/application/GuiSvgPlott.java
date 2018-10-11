@@ -31,249 +31,237 @@ import javafx.stage.Stage;
  */
 public class GuiSvgPlott extends Application {
 
-	private static GuiSvgPlott instance;
+    private static GuiSvgPlott instance;
 
-	private RootFrameController rootFrameController;
-	private Stage primaryStage;
-	private ResourceBundle bundle;
-	private SimpleObjectProperty<Locale> locale;
-	private Settings settings = Settings.getInstance();
+    private RootFrameController rootFrameController;
+    private Stage primaryStage;
+    private ResourceBundle bundle;
+    private SimpleObjectProperty<Locale> locale;
+    private Settings settings = Settings.getInstance();
 
-	///// PATHS ////
+    ///// PATHS ////
 
-	public static URL RootFrame = GuiSvgPlott.class.getResource("/fxml/RootFrame.fxml");
-	public static URL WizardFrame = GuiSvgPlott.class.getResource("/fxml/wizard/Wizard.fxml");
-	public static URL PresetOverviewFrame = GuiSvgPlott.class.getResource("/fxml/wizard/PresetOverviewFrame.fxml");
-	public static URL IntroFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/Intro.fxml");
-	public static URL CsvEditorFrame = GuiSvgPlott.class.getResource("/fxml/wizard/content/CsvEditor.fxml");
-	public static URL FunctionWizardFrame = GuiSvgPlott.class
-			.getResource("/fxml/wizard/content/functions/FunctionWizardFrame.fxml");
-	public static URL ChartWizardFrame = GuiSvgPlott.class
-			.getResource("/fxml/wizard/content/chart/ChartWizardFrame.fxml");
-	public static URL LanguageDialog = GuiSvgPlott.class.getResource("/fxml/wizard/SettingsDialog.fxml");
-	public static URL CsvFormatHelper = GuiSvgPlott.class.getResource("/fxml/wizard/content/CSVFormatHelp.fxml");
-	public static HashSet<Path> possibleTempFiles = new HashSet<>();
+    public static URL RootFrame = GuiSvgPlott.class.getResource("/fxml/RootFrame.fxml");
+    public static URL PresetOverviewFrame = GuiSvgPlott.class.getResource("/fxml/wizard/PresetOverviewFrame.fxml");
+    public static URL FunctionWizardFrame = GuiSvgPlott.class
+            .getResource("/fxml/wizard/content/functions/FunctionWizardFrame.fxml");
+    public static URL ChartWizardFrame = GuiSvgPlott.class
+            .getResource("/fxml/wizard/content/chart/ChartWizardFrame.fxml");
+    public static URL LanguageDialog = GuiSvgPlott.class.getResource("/fxml/wizard/SettingsDialog.fxml");
+    public static URL CsvFormatHelper = GuiSvgPlott.class.getResource("/fxml/wizard/content/CSVFormatHelp.fxml");
+    public static HashSet<Path> possibleTempFiles = new HashSet<>();
 
-	////////////////
+    ////////////////
 
-	public GuiSvgPlott() {
-		// favicon for macos
-		try {
-			// only works in macos
-			// com.apple.eawt.Application.getApplication().setDockIconImage(new
-			// ImageIcon(getClass().getResource("/images/barchart_circle.png")).getImage());
-		} catch (Exception e) {
-		}
-		instance = this;
-	}
+    public GuiSvgPlott() {
+        // favicon for macos
 
-	public static synchronized GuiSvgPlott getInstance() {
-		if (instance == null)
-			return new GuiSvgPlott();
-		return instance;
-	}
+        instance = this;
+    }
 
-	public void setSettingsDialog() {
+    public static synchronized GuiSvgPlott getInstance() {
+        if (instance == null)
+            return new GuiSvgPlott();
+        return instance;
+    }
 
-		FXMLLoader loader = new FXMLLoader();
-		loader.setResources(bundle);
-		loader.setLocation(GuiSvgPlott.LanguageDialog);
+    public void setSettingsDialog() {
 
-		try {
-			AnchorPane anchorPane = loader.load();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+        loader.setLocation(GuiSvgPlott.LanguageDialog);
 
-			Scene scene = new Scene(anchorPane);
-			Stage stage = new Stage();
-			stage.setResizable(true);
-			stage.setTitle(bundle.getString("application_settings"));
-			stage.getIcons().add(Settings.getInstance().favicon);
-			stage.setScene(scene);
+        try {
+            AnchorPane anchorPane = loader.load();
 
-			stage.setMinHeight(200);
-			stage.setMinWidth(350);
+            Scene scene = new Scene(anchorPane);
+            Stage stage = new Stage();
+            stage.setResizable(true);
+            stage.setTitle(bundle.getString("application_settings"));
+            stage.getIcons().add(Settings.getInstance().favicon);
+            stage.setScene(scene);
 
-			SettingsDialogController controller = loader.getController();
-			controller.init(stage);
+            stage.setMinHeight(200);
+            stage.setMinWidth(350);
 
-			Locale lang = locale.get();
-			stage.showAndWait();
+            SettingsDialogController controller = loader.getController();
+            controller.init(stage);
 
-			if (!locale.get().equals(lang))
-				start(primaryStage);
+            Locale lang = locale.get();
+            stage.showAndWait();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            if (!locale.get().equals(lang))
+                start(primaryStage);
 
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	public void setLanguage(Locale locale) {
-		this.locale.set(locale);
-	}
+    public void setLanguage(Locale locale) {
+        this.locale.set(locale);
+    }
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
 
-		if (locale == null) {
-			locale = new SimpleObjectProperty<>();
-			locale.bindBidirectional(settings.currentLocaleProperty());
-		}
-		setSettings();
+        if (locale == null) {
+            locale = new SimpleObjectProperty<>();
+            locale.bindBidirectional(settings.currentLocaleProperty());
+        }
+        setSettings();
 
-		this.bundle = ResourceBundle.getBundle("langBundle", locale.get(), new UTF8Control());
+        this.bundle = ResourceBundle.getBundle("langBundle", locale.get(), new UTF8Control());
 
-		DialogUtil dialogUtil = DialogUtil.getInstance();
-		dialogUtil.setBundle(this.bundle);
+        DialogUtil dialogUtil = DialogUtil.getInstance();
+        dialogUtil.setBundle(this.bundle);
 
-		FXMLLoader loader = new FXMLLoader();
-		loader.setResources(bundle);
-		loader.setLocation(GuiSvgPlott.RootFrame);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+        loader.setLocation(GuiSvgPlott.RootFrame);
 
-		AnchorPane anchorPane = loader.load();
+        AnchorPane anchorPane = loader.load();
 
-		rootFrameController = loader.getController();
+        rootFrameController = loader.getController();
 
-		rootFrameController.init();
+        rootFrameController.init();
 
-		Scene scene = new Scene(anchorPane);
-		this.primaryStage = primaryStage;
-		primaryStage.setResizable(true);
-		primaryStage.setTitle(bundle.getString("application_title"));
-		primaryStage.setScene(scene);
-		primaryStage.getIcons().add(settings.favicon);
+        Scene scene = new Scene(anchorPane);
+        this.primaryStage = primaryStage;
+        primaryStage.setResizable(true);
+        primaryStage.setTitle(bundle.getString("application_title"));
+        primaryStage.setScene(scene);
+        primaryStage.getIcons().add(settings.favicon);
 
-		primaryStage.show();
+        primaryStage.show();
 
-		setHotKeys(primaryStage);
+        setHotKeys(primaryStage);
 
-		primaryStage.setOnCloseRequest(event -> {
-			possibleTempFiles.forEach(path -> {
-				// System.out.println(path);
+        primaryStage.setOnCloseRequest(event ->
+                possibleTempFiles.forEach(path -> {
+                    if (path.toFile().exists())
+                        try {
+                            Files.delete(path);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                })
+        );
 
-				if (path.toFile().exists())
-					try {
-						Files.delete(path);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-			});
-		});
+    }
 
-	}
+    private void setHotKeys(Stage primaryStage) {
+        primaryStage.getScene().setOnKeyPressed(event -> {
 
-	private void setHotKeys(Stage primaryStage2) {
-		primaryStage.getScene().setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case F5: {
+                    if (rootFrameController.svgWizardController != null) {
+                        rootFrameController.svgWizardController.button_rerenderPreview.fire();
+                    }
+                    break;
+                }
+                case F1: {
+                    VBox messages = rootFrameController.vBox_messages;
+                    ScrollPane messages_container = rootFrameController.scrollPane_message;
+                    if (messages.getChildren().size() > 0) {
+                        messages.getChildren().get(0).requestFocus();
+                    } else {
+                        messages_container.setFocusTraversable(true);
+                        messages_container.requestFocus();
+                    }
+                    break;
+                }
+                case I: {
+                    if (event.isControlDown() && rootFrameController.svgWizardController != null) {
+                        rootFrameController.svgWizardController.button_Infos.fire();
+                        break;
+                    }
+                }
+                case W: {
+                    if (event.isControlDown() && rootFrameController.svgWizardController != null) {
+                        rootFrameController.svgWizardController.button_Warnings.fire();
+                        break;
+                    }
+                }
+                case Q: {
+                    if (event.isControlDown()) {
+                        primaryStage.close();
+                        break;
+                    }
+                }
+                case P: {
+                    if (event.isControlDown()) {
+                        rootFrameController.startPresetOverview();
+                        break;
+                    }
+                }
+                case S: {
+                    if (event.isControlDown()) {
+                        rootFrameController.saveAsPreset();
+                        break;
+                    }
+                }
+                case N: {
+                    if (event.isControlDown()) {
+                        try {
+                            start(primaryStage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                }
+                case TAB: {
+                    if (event.isControlDown() && rootFrameController.svgWizardController != null) {
+                        if (!event.isShiftDown()) {
+                            rootFrameController.svgWizardController.incrementCurrentStage();
+                        } else {
+                            rootFrameController.svgWizardController.decrementCurrentStage();
+                        }
+                    }
+                }
+                default:
+                    break;
+            }
+        });
 
-			switch (event.getCode()) {
-			case F5: {
-				if (rootFrameController.svgWizardController != null) {
-					rootFrameController.svgWizardController.button_rerenderPreview.fire();
-				}
-				break;
-			}
-			case F1: {
-				VBox messages = rootFrameController.vBox_messages;
-				ScrollPane messages_container = rootFrameController.scrollPane_message;
-				if (messages.getChildren().size() > 0) {
-					messages.getChildren().get(0).requestFocus();
-				} else {
-					messages_container.setFocusTraversable(true);
-					messages_container.requestFocus();
-				}
-				break;
-			}
-			case I: {
-				if (event.isControlDown() && rootFrameController.svgWizardController != null) {
-					rootFrameController.svgWizardController.button_Infos.fire();
-					break;
-				}
-			}
-			case W: {
-				if (event.isControlDown() && rootFrameController.svgWizardController != null) {
-					rootFrameController.svgWizardController.button_Warnings.fire();
-					break;
-				}
-			}
-			case Q: {
-				if (event.isControlDown()) {
-					primaryStage.close();
-					break;
-				}
-			}
-			case P: {
-				if (event.isControlDown()) {
-					rootFrameController.startPresetOverview();
-					break;
-				}
-			}
-			case S: {
-				if (event.isControlDown()) {
-					rootFrameController.saveAsPreset();
-					break;
-				}
-			}
-			case N: {
-				if (event.isControlDown()) {
-					try {
-						start(primaryStage);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				break;
-			}
-			case TAB: {
-				if (event.isControlDown() && rootFrameController.svgWizardController != null) {
-					if (!event.isShiftDown()) {
-						rootFrameController.svgWizardController.incrementCurrentStage();
-					} else {
-						rootFrameController.svgWizardController.decrementCurrentStage();
-					}
-				}
-			}
-			default:
-				break;
-			}
-		});
+    }
 
-	}
+    private void setSettings() throws IOException {
+        settings.loadSettings(primaryStage);
+    }
 
-	private void setSettings() throws IOException {
-		settings.loadSettings(primaryStage);
-	}
+    public boolean closeWizard(boolean created) {
+        DialogUtil dialogUtil = DialogUtil.getInstance();
+        dialogUtil.setBundle(this.bundle);
+        Alert a = dialogUtil.alert(AlertType.CONFIRMATION, "alert_stage_exit_title", "alert_stage_exit_header",
+                "alert_stage_exit_content");
 
-	public boolean closeWizard(boolean created) {
-		DialogUtil dialogUtil = DialogUtil.getInstance();
-		dialogUtil.setBundle(this.bundle);
-		Alert a = dialogUtil.alert(AlertType.CONFIRMATION, "alert_stage_exit_title", "alert_stage_exit_header",
-				"alert_stage_exit_content");
+        Optional<ButtonType> result = Optional.empty();
 
-		Optional<ButtonType> result = null;
+        if (!created)
+            result = a.showAndWait();
 
-		if (!created)
-			result = a.showAndWait();
 
-		if (result == null || (result.isPresent() && result.get().equals(ButtonType.OK))) {
-			if (rootFrameController != null) {
-				rootFrameController.closeWizard();
-				return true;
-			}
-		}
-		return false;
-	}
+        if ((!result.isPresent() || result.get().equals(ButtonType.OK))) {
+            if (rootFrameController != null) {
+                rootFrameController.closeWizard();
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public Stage getPrimaryStage() {
-		return primaryStage;
-	}
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
 
-	public RootFrameController getRootFrameController() {
-		return rootFrameController;
-	}
+    public RootFrameController getRootFrameController() {
+        return rootFrameController;
+    }
 
-	public ResourceBundle getBundle() {
-		return bundle;
-	}
+    public ResourceBundle getBundle() {
+        return bundle;
+    }
 
 }

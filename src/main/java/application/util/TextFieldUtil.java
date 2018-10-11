@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javafx.scene.control.Label;
 
+import java.awt.*;
 import java.util.ResourceBundle;
 
 /**
@@ -23,7 +24,7 @@ public class TextFieldUtil {
     private ResourceBundle bundle;
 
     private TextFieldUtil() {
-    	this.bundle = GuiSvgPlott.getInstance().getBundle();    
+        this.bundle = GuiSvgPlott.getInstance().getBundle();
     }
 
     public static TextFieldUtil getInstance() {
@@ -52,7 +53,9 @@ public class TextFieldUtil {
     }
 
     private void validateTextFields(final TextField textField1, final Label label1, final TextField textField2, final Label label2) {
+
         String errorMessageString = this.bundle.getString("error_fieldsMustNotBeEqual").replace("{0}", label1.getText()).replace("{1}", label2.getText());
+
         if (textField1.getText().equals(textField2.getText())) {
             setTextFieldInvalid(textField1, label1, errorMessageString);
             setTextFieldInvalid(textField2, label2, errorMessageString);
@@ -61,7 +64,35 @@ public class TextFieldUtil {
             setTextFieldValid(textField2, label2, errorMessageString);
         }
     }
-    private void setTextFieldInvalid(final TextField textField, final Label label, final String errorMsgString){
+
+    private void validateGTH(final TextField textField1, final Label label1, final TextField textField2, final Label label2, final String message_key) {
+        Double val1 = null;
+        Double val2 = null;
+        String message = message_key;
+
+        try {
+            Double.parseDouble(textField2.getText());
+            Double.parseDouble(textField1.getText());
+            message = "error_fieldsMustNotBeEmpty";
+        } catch (NumberFormatException e) {
+
+        }
+        String errorMessageString = bundle.getString(message).replace("{0}", label1.getText()).replace("{1}", label2.getText());
+
+        if (val1 == null || val2 == null) {
+            setTextFieldInvalid(textField1, label1, errorMessageString);
+            setTextFieldInvalid(textField2, label2, errorMessageString);
+
+        } else if (val1 > val2) {
+            setTextFieldInvalid(textField1, label1, errorMessageString);
+            setTextFieldInvalid(textField2, label2, errorMessageString);
+        } else {
+            setTextFieldValid(textField1, label1, errorMessageString);
+            setTextFieldValid(textField2, label2, errorMessageString);
+        }
+    }
+
+    private void setTextFieldInvalid(final TextField textField, final Label label, final String errorMsgString) {
         label.getStyleClass().add("invalid");
         textField.getStyleClass().add("invalid");
         String textField1AccessibleHelp = textField.getAccessibleHelp() == null ? "" : textField.getAccessibleHelp();
@@ -69,6 +100,7 @@ public class TextFieldUtil {
             textField.setAccessibleHelp(textField1AccessibleHelp + " " + errorMsgString);
         }
     }
+
     private void setTextFieldValid(final TextField textField, final Label label, final String errorMsgString) {
         label.getStyleClass().remove("invalid");
         textField.getStyleClass().remove("invalid");
@@ -248,19 +280,6 @@ public class TextFieldUtil {
         });
     }
 
-    private void validateGTH(final TextField textField1, final Label label1, final TextField textField2, final Label label2, final String message_key) {
-        double textField1Value = Double.parseDouble(textField1.getText());
-        double textField2Value = Double.parseDouble(textField2.getText());
-        String errorMessageString = bundle.getString(message_key).replace("{0}", label1.getText()).replace("{1}", label2.getText());
-
-        if (textField1Value > textField2Value) {
-            setTextFieldInvalid(textField1, label1, errorMessageString);
-            setTextFieldInvalid(textField2, label2, errorMessageString);
-        } else {
-            setTextFieldValid(textField1, label1, errorMessageString);
-            setTextFieldValid(textField2, label2, errorMessageString);
-        }
-    }
 
     /**
      * Adds a change listener to each given {@link TextField}'s focusedProperty that updates the preview when user left the field.
