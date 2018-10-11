@@ -92,6 +92,9 @@ public class GuiSvgPlott extends Application {
 			stage.getIcons().add(Settings.getInstance().favicon);
 			stage.setScene(scene);
 
+			stage.setMinHeight(200);
+			stage.setMinWidth(350);
+
 			SettingsDialogController controller = loader.getController();
 			controller.init(stage);
 
@@ -150,7 +153,7 @@ public class GuiSvgPlott extends Application {
 
 		primaryStage.setOnCloseRequest(event -> {
 			possibleTempFiles.forEach(path -> {
-				//System.out.println(path);
+				// System.out.println(path);
 
 				if (path.toFile().exists())
 					try {
@@ -167,75 +170,75 @@ public class GuiSvgPlott extends Application {
 	private void setHotKeys(Stage primaryStage2) {
 		primaryStage.getScene().setOnKeyPressed(event -> {
 
-            switch (event.getCode()) {
-                case F5: {
-                    if( rootFrameController.svgWizardController != null) {
-                        rootFrameController.svgWizardController.button_rerenderPreview.fire();
-                    }
-                    break;
-                }
-                case F1: {
-                    VBox messages = rootFrameController.vBox_messages;
-                    ScrollPane messages_container = rootFrameController.scrollPane_message;
-                    if (messages.getChildren().size() > 0) {
-                        messages.getChildren().get(0).requestFocus();
-                    } else {
-                        messages_container.setFocusTraversable(true);
-                        messages_container.requestFocus();
-                    }
-                    break;
-                }
-                case I: {
-                    if (event.isControlDown() && rootFrameController.svgWizardController != null) {
-                        rootFrameController.svgWizardController.button_Infos.fire();
-                        break;
-                    }
-                }
-                case W: {
-                    if (event.isControlDown() && rootFrameController.svgWizardController != null) {
-                        rootFrameController.svgWizardController.button_Warnings.fire();
-                        break;
-                    }
-                }
-                case Q: {
-                    if (event.isControlDown()) {
-                        primaryStage.close();
-                        break;
-                    }
-                }
-                case P: {
-                    if (event.isControlDown()) {
-                        rootFrameController.startPresetOverview();
-                        break;
-                    }
-                }
-                case S: {
-                    if (event.isControlDown()) {
-                        rootFrameController.saveAsPreset();
-                        break;
-                    }
-                }
-                case N: {
-                    if (event.isControlDown()) {
-                        try {
-                            start(primaryStage);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    break;
-                }
-                case TAB: {
-                    if (event.isControlDown() &&  rootFrameController.svgWizardController != null) {
-                        if (!event.isShiftDown()) {
-                            rootFrameController.svgWizardController.incrementCurrentStage();
-                        } else {
-                            rootFrameController.svgWizardController.decrementCurrentStage();
-                        }
-                    }
-                }
-            }
-        });
+			switch (event.getCode()) {
+			case F5: {
+				if (rootFrameController.svgWizardController != null) {
+					rootFrameController.svgWizardController.button_rerenderPreview.fire();
+				}
+				break;
+			}
+			case F1: {
+				VBox messages = rootFrameController.vBox_messages;
+				ScrollPane messages_container = rootFrameController.scrollPane_message;
+				if (messages.getChildren().size() > 0) {
+					messages.getChildren().get(0).requestFocus();
+				} else {
+					messages_container.setFocusTraversable(true);
+					messages_container.requestFocus();
+				}
+				break;
+			}
+			case I: {
+				if (event.isControlDown() && rootFrameController.svgWizardController != null) {
+					rootFrameController.svgWizardController.button_Infos.fire();
+					break;
+				}
+			}
+			case W: {
+				if (event.isControlDown() && rootFrameController.svgWizardController != null) {
+					rootFrameController.svgWizardController.button_Warnings.fire();
+					break;
+				}
+			}
+			case Q: {
+				if (event.isControlDown()) {
+					primaryStage.close();
+					break;
+				}
+			}
+			case P: {
+				if (event.isControlDown()) {
+					rootFrameController.startPresetOverview();
+					break;
+				}
+			}
+			case S: {
+				if (event.isControlDown()) {
+					rootFrameController.saveAsPreset();
+					break;
+				}
+			}
+			case N: {
+				if (event.isControlDown()) {
+					try {
+						start(primaryStage);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				break;
+			}
+			case TAB: {
+				if (event.isControlDown() && rootFrameController.svgWizardController != null) {
+					if (!event.isShiftDown()) {
+						rootFrameController.svgWizardController.incrementCurrentStage();
+					} else {
+						rootFrameController.svgWizardController.decrementCurrentStage();
+					}
+				}
+			}
+			}
+		});
 
 	}
 
@@ -244,20 +247,20 @@ public class GuiSvgPlott extends Application {
 	}
 
 	public boolean closeWizard(boolean created) {
-			DialogUtil dialogUtil = DialogUtil.getInstance();
-			dialogUtil.setBundle(this.bundle);
-			Alert a = dialogUtil.alert(AlertType.CONFIRMATION, "alert_stage_exit_title", "alert_stage_exit_header", "alert_stage_exit_content");
-			Optional<ButtonType> result = a.showAndWait();
+		DialogUtil dialogUtil = DialogUtil.getInstance();
+		dialogUtil.setBundle(this.bundle);
+		Alert a = dialogUtil.alert(AlertType.CONFIRMATION, "alert_stage_exit_title", "alert_stage_exit_header",
+				"alert_stage_exit_content");
+		Optional<ButtonType> result = a.showAndWait();
 
-			if (result.isPresent() && result.get().equals(ButtonType.OK)) {
-				if (rootFrameController != null) {
-					rootFrameController.closeWizard();
-					return true;
-				}
+		if (result.isPresent() && result.get().equals(ButtonType.OK)) {
+			if (rootFrameController != null) {
+				rootFrameController.closeWizard();
+				return true;
 			}
-			return false;
+		}
+		return false;
 	}
-
 
 	public Stage getPrimaryStage() {
 		return primaryStage;
