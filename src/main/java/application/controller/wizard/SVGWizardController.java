@@ -19,6 +19,7 @@ import java.util.ResourceBundle;
 
 import javax.xml.bind.ValidationException;
 
+import application.controller.wizard.functions.FunctionWizardFrameController;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -37,10 +38,8 @@ import application.util.ChoiceBoxUtil;
 import application.util.Converter;
 import application.util.DialogUtil;
 import application.util.TextFieldUtil;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -80,7 +79,6 @@ import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.data.Point;
-import tud.tangram.svgplot.data.parse.CsvOrientation;
 import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
@@ -764,6 +762,10 @@ public class SVGWizardController implements Initializable {
                 doCreate = a.getResult().getButtonData().isDefaultButton();
             }
             if (doCreate) {
+
+                if(this instanceof FunctionWizardFrameController)
+                    ((FunctionWizardFrameController)this).createFuntionsCsv();
+
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setInitialDirectory(userDir);
                 FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
@@ -774,7 +776,8 @@ public class SVGWizardController implements Initializable {
                 File file = fileChooser.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
                 if (file != null) {
                     try {
-                        File tempCSV = new File(this.guiSvgOptions.getCsvPath());
+                        String tempPath = this.guiSvgOptions.getCsvPath();
+                        File tempCSV = new File(tempPath);
                         File newCsv = new File(file.getAbsolutePath().replaceAll(".svg", ".csv"));
                         if (tempCSV.exists())
                             Files.copy(tempCSV.toPath(), newCsv.toPath(), StandardCopyOption.REPLACE_EXISTING);
