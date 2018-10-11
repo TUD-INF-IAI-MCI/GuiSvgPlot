@@ -255,7 +255,6 @@ public class GuiSvgOptions {
             this.options.setyLines(newValue);
         });
         this.xUnit.addListener((observable, oldValue, newValue) -> {
-
             this.options.setxUnit(newValue.trim().isEmpty() ? null : newValue);
         });
         this.yUnit.addListener((observable, oldValue, newValue) -> {
@@ -299,6 +298,7 @@ public class GuiSvgOptions {
         this.trendLine.addListener(new ListChangeListener<String>() {
             @Override
             public void onChanged(Change<? extends String> c) {
+				System.out.println(trendLine);
                 options.setTrendLine(trendLine);
             }
         });
