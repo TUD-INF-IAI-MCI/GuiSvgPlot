@@ -22,7 +22,7 @@
 
 <AnchorPane fx:id="overViewAnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.PresetsController">
    <children>
-      <BorderPane fx:id="overViewBorderPane" prefHeight="400.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane fx:id="overViewBorderPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <HBox fx:id="overviewUpperHBox" prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
@@ -102,7 +102,7 @@
             </VBox>
          </center>
       </BorderPane>
-      <BorderPane fx:id="borderPane_editor" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane fx:id="borderPane_editor" prefHeight="400.0" prefWidth="600.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
             <AnchorPane fx:id="anchorPane_settingsBottom">
                <children>
@@ -496,7 +496,7 @@
                            </tooltip>
                         </TextField>
                         <Label fx:id="label_integral_function1" text="%label_integral_func1" visible="false" GridPane.rowIndex="30" />
-                        <ChoiceBox fx:id="choiceBox_function1" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="30" />
+                        <ChoiceBox fx:id="choiceBox_function1" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="30" />
                         <Label fx:id="label_integral_function2" prefHeight="17.0" prefWidth="200.0" text="%label_integral_func2" visible="false" GridPane.rowIndex="31" />
                         <ChoiceBox fx:id="choiceBox_function2" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="31" />
                         <Label fx:id="label_rangeFrom" text="%label_integral_from" visible="false" GridPane.rowIndex="32" />
