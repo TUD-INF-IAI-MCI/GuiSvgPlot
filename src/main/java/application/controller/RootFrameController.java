@@ -238,7 +238,7 @@ public class RootFrameController implements Initializable {
         // Function/Chartwizard Frame -> fixes #24
         if (!menuItem_Save_Preset.disableProperty().get()) {
             GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
-            if (GuiSvgPlott.getInstance().closeWizard(false)) {
+            if (GuiSvgPlott.getInstance().closeWizard(true)) {
                 menuItem_Preset_Editor.setDisable(true);
                 menuItem_Save_Preset.setDisable(true);
                 this.setSceneTitle("application_preset_overview");
