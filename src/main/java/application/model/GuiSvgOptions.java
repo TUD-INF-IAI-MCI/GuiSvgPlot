@@ -298,7 +298,6 @@ public class GuiSvgOptions {
         this.trendLine.addListener(new ListChangeListener<String>() {
             @Override
             public void onChanged(Change<? extends String> c) {
-				System.out.println(trendLine);
                 options.setTrendLine(trendLine);
             }
         });
