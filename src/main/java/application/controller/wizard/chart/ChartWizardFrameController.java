@@ -652,7 +652,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                     if (newValue != null) {
                         this.guiSvgOptions.setHideOriginalPoints(newValue);
                         pointSymbolInputs.forEach((label,
-                           hBox) -> toggleVisibility(newValue.equals(VisibilityOfDataPoints.SHOW), label, hBox));
+                                                   hBox) -> toggleVisibility(newValue.equals(VisibilityOfDataPoints.SHOW), label, hBox));
                     }
 
                 });
@@ -983,7 +983,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                 });
 
         this.guiSvgOptions.hideOriginalPointsProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
                 this.choiceBox_originalPoints.getSelectionModel().select(newValue);
             }
         });
@@ -1321,7 +1321,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         row.getStyleClass().add("edit");
         row.setUserData(point);
 
-        TextField keyField = new TextField(point.getKey());
+        TextField keyField = new TextField(point.getKey().replaceAll(",", "."));
         keyField.getStyleClass().add("data-cell");
         keyField.getStyleClass().add("data-cell-x");
 
@@ -1334,8 +1334,8 @@ public class ChartWizardFrameController extends SVGWizardController {
         } else {
             keyField.textProperty().addListener((args, oldVal, newVal) -> {
 
-                if (newVal.isEmpty() || newVal.matches("\\-{0,1}[0-9]+\\,{0,1}[0-9]*")) {
-                    point.setKey(newVal);
+                if (newVal.isEmpty() || newVal.matches("\\-{0,1}[0-9]+\\.{0,1}[0-9]*")) {
+                    point.setKey(newVal.replaceAll("\\.", "\\,"));
                 } else {
                     keyField.setText(oldVal);
                 }
@@ -1348,7 +1348,7 @@ public class ChartWizardFrameController extends SVGWizardController {
         keyField.setTooltip(
                 new Tooltip(this.bundle.getString(guiSvgOptions.getDiagramType().name().toLowerCase() + "_keyField")));
 
-        TextField valueField = new TextField(point.getValue());
+        TextField valueField = new TextField(point.getValue().replaceAll(",", "."));
         valueField.getStyleClass().add("data-cell");
         valueField.getStyleClass().add("data-cell-y");
         valueField.setPromptText(
@@ -1376,8 +1376,8 @@ public class ChartWizardFrameController extends SVGWizardController {
 
         valueField.textProperty().addListener((args, oldVal, newVal) -> {
 
-            if (newVal.matches("\\-{0,1}[0-9]+\\,{0,1}[0-9]*")) {
-                point.setValue(newVal);
+            if (newVal.isEmpty() || newVal.matches("\\-{0,1}[0-9]+\\.{0,1}[0-9]*")) {
+                point.setValue(newVal.replaceAll("\\.", ","));
                 setCSVOptions();
             } else {
                 valueField.setText(oldVal);
