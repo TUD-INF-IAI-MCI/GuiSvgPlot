@@ -19,6 +19,7 @@ import application.model.GuiSvgOptions;
 import application.model.Preset;
 import application.model.Options.CssType;
 import application.model.Options.GuiAxisStyle;
+import application.model.Options.IntegralOption;
 import application.model.Options.LinePointsOption;
 import application.model.Options.PageSize;
 import application.model.Options.SortOrder;
@@ -52,17 +53,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.data.Point;
+import tud.tangram.svgplot.data.parse.CsvType;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
+import tud.tangram.svgplot.plotting.Function;
 import tud.tangram.svgplot.plotting.line.LineStyle;
 import tud.tangram.svgplot.plotting.point.PointSymbol;
 import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.GridStyle;
-
-
 
 /**
  * @author Constantin Amend
@@ -96,27 +97,6 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     // start of fxml variable declaration
 
-	// h and vboxes
-	@FXML
-	public VBox vBox_Preset_DataTable;
-	@FXML
-	private HBox hBox_firstLineStyle;
-	@FXML
-	private HBox hBox_secondLineStyle;
-	@FXML
-	private HBox hBox_thirdLineStyle;
-	@FXML
-	private HBox hBox_firstTexture;
-	@FXML
-	private HBox hBox_secondTexture;
-	@FXML
-	private HBox hBox_thirdTexture;
-	@FXML
-	private HBox hBox_cssPath;
-	@FXML
-    private HBox hBox_scale_to_data;
-	@FXML
-    private HBox hBox_scaling;
     // h and vboxes
     @FXML
     public VBox vBox_Preset_DataTable;
@@ -135,63 +115,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private HBox hBox_cssPath;
 
-	// labels
-    @FXML
-    private Label label_chart_stage2;
-	@FXML
-	private Label label_diagramType;
-	@FXML
-	private Label label_firstTexture;
-	@FXML
-	private Label label_secondTexture;
-	@FXML
-	private Label label_thirdTexture;
-	@FXML
-	private Label label_sortOrder;
-	@FXML
-	private Label label_sorting;
-	@FXML
-	private Label label_baraccumulation;
-	@FXML
-	private Label label_customSizeWidth;
-	@FXML
-	private Label label_customSizeHeight;
-	@FXML
-	private Label label_pointSymbols_lineChart;
-	@FXML
-	private Label label_pointSymbols_scatterPlot;
-	@FXML
-	private Label label_secondLineStyle;
-	@FXML
-	private Label label_thirdLineStyle;
-	@FXML
-	private Label label_firstLineStyle;
-	@FXML
-	private Label label_linepoints;
-	@FXML
-	private Label label_trendline;
-	@FXML
-	private Label label_trendline_n;
-	@FXML
-	private Label label_x_from;
-	@FXML
-	private Label label_x_to;
-	@FXML
-	private Label label_y_from;
-	@FXML
-	private Label label_y_to;
-	@FXML
-	private Label label_cssCustom;
-	@FXML
-	private Label label_cssPath;
-	@FXML
-	private Label label_trendline_forecast;
-	@FXML
-	private Label label_trendline_alpha;
-	@FXML
-	private Label label_hide_original_points;
-	@FXML
-	private Label label_scale_data;
     // labels
     @FXML
     private Label label_diagramType;
@@ -262,41 +185,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private Label label_scale_data;
 
-	// choiceboxes
-	@FXML
-	private ChoiceBox<SortingType> choiceBox_sorting;
-	@FXML
-	private ChoiceBox<Texture> choiceBox_firstTexture;
-	@FXML
-	private ChoiceBox<Texture> choiceBox_secondTexture;
-	@FXML
-	private ChoiceBox<Texture> choiceBox_thirdTexture;
-	@FXML
-	private ChoiceBox<TrendlineAlgorithm> choiceBox_trendline;
-	@FXML
-	private ChoiceBox<SortOrder> choiceBox_sortOrder;
-	@FXML
-	private ChoiceBox<GridStyle> choiceBox_gridStyle;
-	@FXML
-	private ChoiceBox<GuiAxisStyle> choiceBox_dblaxes;
-	@FXML
-	private ChoiceBox<CssType> choiceBox_cssType;
-	@FXML
-	private ChoiceBox<LinePointsOption> choiceBox_linepoints;
-	@FXML
-	private ChoiceBox<LineStyle> choiceBox_secondLineStyle;
-	@FXML
-	private ChoiceBox<VisibilityOfDataPoints> choiceBox_hide_original_points;
-	@FXML
-	private ChoiceBox<PointSymbol> choiceBox_pointSymbols_lineChart;
-	@FXML
-	private ChoiceBox<PointSymbol> choiceBox_pointSymbols_scatterPlot;
-	@FXML
-	private ChoiceBox<LineStyle> choiceBox_thirdLineStyle;
-	@FXML
-	private ChoiceBox<LineStyle> choiceBox_firstLineStyle;
-	@FXML
-	private ChoiceBox<BarAccumulationStyle> choiceBox_baraccumulation;
     // choiceboxes
     @FXML
     private ChoiceBox<SortingType> choiceBox_sorting;
@@ -341,38 +229,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private ChoiceBox<Function> choiceBox_function2;
 
-
-	// buttons
-	@FXML
-	private Button button_cssPath;
-	@FXML
-	private Button button_resetFirstTexture;
-	@FXML
-	private Button button_resetSecondTexture;
-	@FXML
-	private Button button_resetThirdTexture;
-	@FXML
-	private Button button_resetFirstLineStyle;
-	@FXML
-	private Button button_resetSecondLineStyle;
-	@FXML
-	private Button button_resetThirdLineStyle;
-	@FXML
-	private Button button_cancel;
-	@FXML
-	private Button button_cancel_editor;
-	@FXML
-	private Button button_back;
-	@FXML
-	private Button button_savePreset;
-	@FXML
-	private Button button_deletePreset;
-	@FXML
-	private Button button_sortByName;
-	@FXML
-	private Button button_sortByDate;
-	@FXML
-	private Button button_sortByType;
     // buttons
     @FXML
     private Button button_csvPath;
@@ -407,37 +263,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private Button button_sortByType;
 
-	// textfields
-	@FXML
-	private TextField textField_trendline_alpha;
-	@FXML
-	private TextField textField_xAxisTitle;
-	@FXML
-	private TextField textField_yAxisTitle;
-	@FXML
-	private TextField textField_trendline_forecast;
-	@FXML
-	private TextField textField_trendline_n;
-	@FXML
-	private TextField textField_customSizeWidth;
-	@FXML
-	private TextField textField_customSizeHeight;
-	@FXML
-	private TextField textField_x_from;
-	@FXML
-	private TextField textField_x_to;
-	@FXML
-	private TextField textField_y_from;
-	@FXML
-	private TextField textField_y_to;
-	@FXML
-	private TextArea textArea_cssCustom;
-	@FXML
-	private TextField textField_helpLinesX;
-	@FXML
-	private TextField textField_helpLinesY;
-	@FXML
-	private TextField textField_presetName;
     // textfields
     @FXML
     private TextField textField_Title;
@@ -480,17 +305,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     @FXML
     private TextField textField_rangeTo;
 
-	// radiobuttons
-	@FXML
-	private RadioButton radioBtn_scale_to_data;
-	@FXML
-	private RadioButton radioBtn_customScale;
-	@FXML
-	private RadioButton radioBtn_portrait;
-	@FXML
-	private RadioButton radioBtn_landscape;
-	@FXML
-    private RadioButton radioButton_scalingDecimal;
     // radiobuttons
     @FXML
     private RadioButton radioBtn_scale_to_data;
@@ -562,14 +376,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         button_deletePreset.setGraphic(deleteGlyph);
     }
 
-	/**
-	 * initiates the general options in the preset editor. Depending on
-	 * {@code extended}, some parts will be dis- or enabled.
-	 */
-	private void initEditor() {
-		// diagramtype label
-		label_diagramType
-				.setText(bundle.getString("diagramType_" + currentPreset.getDiagramTypeString().toLowerCase()));
     /**
      * resets the visibilty of {@link TextField}'s, {@link ChoiceBox}es,
      * {@link HBox}es from the diagram/function specific part of the editor
@@ -611,13 +417,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_outputDevice.setItems(FXCollections.observableArrayList(OutputDevice.values()));
         choiceBox_outputDevice.setConverter(converter.getOutputDeviceStringConverter());
 
-
-		// pagesize
-		ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
-		ObservableList<PageSize> sortedPageSizes = pageSizeObservableList
-				.sorted(Comparator.comparing(PageSize::getName));
-		choiceBox_size.setItems(sortedPageSizes);
-		choiceBox_size.setConverter(converter.getPageSizeStringConverter());
         // pagesize
         ObservableList<PageSize> pageSizeObservableList = FXCollections.observableArrayList(PageSize.values());
         ObservableList<PageSize> sortedPageSizes = pageSizeObservableList
@@ -639,15 +438,6 @@ public class PresetsController extends SVGWizardController implements Initializa
             }
         });
 
-		// axis
-		toggleVisibility(true, label_scale_data, radioBtn_scale_to_data);
-		toggleVisibility(true, label_scale_data, radioBtn_customScale);
-		// textFieldUtil.addDoubleValidation(textField_x_from, label_x_from);
-		// textFieldUtil.addDoubleValidation(textField_x_to, label_x_to);
-		// textFieldUtil.addNotEqualValidation(textField_x_from, label_x_from,
-		// textField_x_to, label_x_to);
-		// textFieldUtil.addFirstNotGreaterThanSecondValidationListener(textField_x_from,
-		// label_xfrom, textField_x_to, label_x_to);
         // CSV
         button_csvPath.setDisable(false);
         button_csvPath.setOnAction(event -> {
@@ -678,11 +468,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_gridStyle.setItems(FXCollections.observableArrayList(GridStyle.values()));
         choiceBox_gridStyle.setConverter(converter.getGridStyleStringConverter());
 
-        hBox_scale_to_data.setVisible(true);
-
-		// doubleaxis
-		choiceBox_dblaxes.setItems(FXCollections.observableArrayList(GuiAxisStyle.values()));
-		choiceBox_dblaxes.setConverter(converter.getAxisStyleStringConverter());
         // doubleaxis
         choiceBox_dblaxes.setItems(FXCollections.observableArrayList(GuiAxisStyle.values()));
         choiceBox_dblaxes.setConverter(converter.getAxisStyleStringConverter());
@@ -711,20 +496,6 @@ public class PresetsController extends SVGWizardController implements Initializa
 
         });
 
-		this.button_cssPath.setOnAction(event -> {
-			FileChooser fileChooser = new FileChooser();
-			fileChooser.setInitialDirectory(this.userDir);
-			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSS files (*.css)", "*.css");
-			fileChooser.getExtensionFilters().add(extFilter);
-			File file = fileChooser.showOpenDialog(GuiSvgPlott.getInstance().getPrimaryStage());
-			if (file != null) {
-				this.textField_cssPath.setText(file.getAbsolutePath());
-			}
-		});
-		radioBtn_scale_to_data.setToggleGroup(scaleGroup);
-		radioBtn_scale_to_data.setSelected(true);
-		radioBtn_customScale.setToggleGroup(scaleGroup);
-		radioBtn_customScale.selectedProperty().addListener((args, oldVal, newVal) -> {
         this.button_cssPath.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setInitialDirectory(this.userDir);
@@ -768,35 +539,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         toggleVisibility(false, label_cssPath, hBox_cssPath);
     }
 
-	/**
-	 * initiates the linechart specific options in the preset editor. Depending on
-	 * {@code extended}, some parts will be dis- or enabled.
-	 */
-	private void initLineChart() {
-		textField_presetName.setText(currentPreset.getName());
-		toggleVisibility(true, label_secondLineStyle, hBox_secondLineStyle);
-		toggleVisibility(true, label_thirdLineStyle, hBox_thirdLineStyle);
-		toggleVisibility(true, label_firstLineStyle, hBox_firstLineStyle);
-		toggleVisibility(true, label_linepoints, choiceBox_linepoints);
-		ObservableList<LineStyle> secondLineStyleObservableList = FXCollections.observableArrayList(
-				LineStyle.getByOutputDeviceOrderedById(currentPreset.getOptions().getOutputDevice()));
-		choiceBox_secondLineStyle.setItems(secondLineStyleObservableList);
-		choiceBox_secondLineStyle.setConverter(this.converter.getLineStyleStringConverter());
-		ObservableList<LineStyle> thirdLineStyleObservableList = FXCollections.observableArrayList(
-				LineStyle.getByOutputDeviceOrderedById(currentPreset.getOptions().getOutputDevice()));
-		choiceBox_thirdLineStyle.setItems(thirdLineStyleObservableList);
-		choiceBox_thirdLineStyle.setConverter(this.converter.getLineStyleStringConverter());
-		ObservableList<LineStyle> firstLineStyleObservableList = FXCollections.observableArrayList(
-				LineStyle.getByOutputDeviceOrderedById(currentPreset.getOptions().getOutputDevice()));
-		choiceBox_firstLineStyle.setItems(firstLineStyleObservableList);
-		choiceBox_firstLineStyle.setConverter(this.converter.getLineStyleStringConverter());
-		ObservableList<LinePointsOption> linePointsOptionObservableList = FXCollections
-				.observableArrayList(LinePointsOption.values());
-		choiceBox_linepoints.setItems(linePointsOptionObservableList);
-		choiceBox_linepoints.setConverter(converter.getLinePointsOptionStringConverter());
-		choiceBox_linepoints.getSelectionModel().selectedItemProperty()
-				.addListener((observable, oldValue, newValue) -> {
-					// TODO linepointsymbols
     private void functionRadioButtonHider() {
         toggleVisibility(false, label_pi, radioButton_scalingDecimal);
         toggleVisibility(false, label_pi, radioButton_scalingPi);
@@ -1010,26 +752,6 @@ public class PresetsController extends SVGWizardController implements Initializa
 
     }
 
-	/**
-	 * initiates the function specific options in the preset editor. Depending on
-	 * {@code extended}, some parts will be dis- or enabled.
-	 */
-	private void initFunction() {
-		textField_presetName.setText(currentPreset.getName());
-		hBox_scale_to_data.setVisible(false);
-		hBox_scaling.setVisible(true);
-		toggleVisibility(true, label_x_from, textField_x_from);
-        toggleVisibility(true, label_x_to, textField_x_to);
-        toggleVisibility(true,label_y_from, textField_y_from);
-        toggleVisibility(true,label_y_to, textField_y_to);
-        if (currentPreset.getOptions().getxRange() == null || currentPreset.getOptions().getyRange() == null) {
-            textField_x_from.setText("-8.0");
-            textField_x_to.setText("8.0");
-            textField_y_from.setText("-8.0");
-            textField_y_to.setText("8.0");
-        }
-        label_chart_stage2.setVisible(false);
-	}
     /**
      * initiates the function specific options in the preset editor. Depending on
      * {@code extended}, some parts will be dis- or enabled.
@@ -1074,7 +796,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 //	private void changePointSymbols(ObservableList<PointSymbol> checkedPointSymbols,
 //			CheckComboBox<PointSymbol> checkComboBox, ObservableList<PointSymbol> allPointSymbols) {
-//		
+//
 //		checkedPointSymbols.clear();
 //		ObservableList<PointSymbol> checkedItems = checkComboBox.getCheckModel().getCheckedItems();
 //		ObservableList<PointSymbol> newItems = checkedItems
@@ -1294,31 +1016,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         diagramTypeField.setMaxWidth(1.7976931348623157E308);
         diagramTypeField.setMaxHeight(1.7976931348623157E308);
 
-		Button editButton = new Button();
-		Glyph editGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.EDIT);
-		editButton.setGraphic(editGlyph);
-		editButton.setTooltip(new Tooltip(this.bundle.getString("preset_edit")));
-		editButton.setOnAction(event -> {
-			currentPreset = preset;
-			overViewHider();
-			initEditor();
-			switch (currentPreset.getDiagramType()) {
-			case FunctionPlot:
-				initFunction();
-				break;
-			case LineChart:
-				initLineChart();
-				break;
-			case ScatterPlot:
-				initScatterPlot();
-				break;
-			case BarChart:
-				initBarChart();
-				break;
-			}
-			editorDisplayer();
-			loadFlagsFromPreset(currentPreset);
-		});
         Button editButton = new Button();
         Glyph editGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.EDIT);
         editButton.setGraphic(editGlyph);
@@ -1425,51 +1122,6 @@ public class PresetsController extends SVGWizardController implements Initializa
                     choiceBox_size.getSelectionModel().getSelectedItem().getPageSizeWithOrientation(page_orientation));
         }
 
-		// Stage 3: specific
-		switch (currentPreset.getDiagramType()) {
-		case FunctionPlot:
-			editor_options.setPi(!radioButton_scalingDecimal.isSelected());
-			break;
-		case BarChart:
-			editor_options.setBarAccumulationStyle(
-					(BarAccumulationStyle) choiceBox_baraccumulation.getSelectionModel().getSelectedItem());
-			editor_options.setSortingType((SortingType) choiceBox_sorting.getSelectionModel().getSelectedItem());
-			editor_options.setSortOrder((SortOrder) choiceBox_sortOrder.getSelectionModel().getSelectedItem());
-			break;
-		case LineChart:
-			ObservableList<LineStyle> line_styles = FXCollections.observableArrayList();
-			line_styles.add((LineStyle) choiceBox_secondLineStyle.getSelectionModel().getSelectedItem());
-			line_styles.add((LineStyle) choiceBox_thirdLineStyle.getSelectionModel().getSelectedItem());
-			line_styles.add((LineStyle) choiceBox_firstLineStyle.getSelectionModel().getSelectedItem());
-			editor_options.setLineStyles(line_styles);
-			break;
-		case ScatterPlot:
-			if (!choiceBox_trendline.getSelectionModel().getSelectedItem().equals(TrendlineAlgorithm.None)) {
-				ObservableList<String> trendline_list = FXCollections.observableArrayList();
-				TrendlineAlgorithm trendline_type = choiceBox_trendline.getSelectionModel().getSelectedItem();
-				trendline_list.add(trendline_type.toString());
-				switch (trendline_type) {
-				case MovingAverage:
-					trendline_list.add(textField_trendline_n.getText());
-					break;
-				case ExponentialSmoothing:
-					trendline_list.add(textField_trendline_alpha.getText());
-					break;
-				case BrownLES:
-					trendline_list.add(textField_trendline_alpha.getText());
-					trendline_list.add(textField_trendline_forecast.getText());
-					break;
-				case LinearRegression:
-					break;
-				default:
-					break;
-				}
-				editor_options.setTrendLine(trendline_list);
-				editor_options.setHideOriginalPoints(
-						(VisibilityOfDataPoints) choiceBox_hide_original_points.getSelectionModel().getSelectedItem());
-				break;
-			}
-		}
         // Stage 2: data
         if (textField_csvpath.getText() != null) {
             editor_options.setCsvPath(textField_csvpath.getText());
@@ -1599,67 +1251,6 @@ public class PresetsController extends SVGWizardController implements Initializa
             }
         }
 
-		// Stage 3: specific
-		switch (currentPreset.getDiagramType()) {
-		case FunctionPlot:
-
-		    break;
-		case BarChart:
-			if (options.getTexturesAsList().size() != 0) {
-				choiceBox_firstTexture.getSelectionModel().select(options.getTextures().get(0));
-				choiceBox_secondTexture.getSelectionModel().select(options.getTextures().get(1));
-				choiceBox_thirdTexture.getSelectionModel().select(options.getTextures().get(2));
-			} else {
-				choiceBox_firstTexture.getSelectionModel().select(0);
-				choiceBox_secondTexture.getSelectionModel().select(1);
-				choiceBox_thirdTexture.getSelectionModel().select(2);
-			}
-			choiceBox_baraccumulation.getSelectionModel().select(options.getBarAccumulationStyle());
-			choiceBox_sorting.getSelectionModel().select(options.getSortingType());
-			choiceBox_sortOrder.getSelectionModel().select(options.getSortOrder());
-			break;
-		case LineChart:
-			if (options.getLineStylesAsList().size() != 0) {
-				choiceBox_firstLineStyle.getSelectionModel().select(options.getLineStyles().get(0));
-				choiceBox_secondLineStyle.getSelectionModel().select(options.getLineStyles().get(1));
-				choiceBox_thirdLineStyle.getSelectionModel().select(options.getLineStyles().get(2));
-			} else {
-				// defaults
-				choiceBox_firstLineStyle.getSelectionModel().select(1);
-				choiceBox_secondLineStyle.getSelectionModel().select(2);
-				choiceBox_thirdLineStyle.getSelectionModel().select(0);
-			}
-			if (options.getHideOriginalPoints() == VisibilityOfDataPoints.HIDE) {
-				choiceBox_hide_original_points.getSelectionModel().select(0);
-			} else {
-
-			}
-			break;
-		case ScatterPlot:
-			if (!options.getTrendLine().isEmpty()) {
-				switch (options.getTrendLine().get(0)) {
-				case "MovingAverage":
-					choiceBox_trendline.getSelectionModel().select(1);
-					textField_trendline_n.setText(options.getTrendLine().get(1));
-					break;
-				case "ExponentialSmoothing":
-					choiceBox_trendline.getSelectionModel().select(2);
-					textField_trendline_alpha.setText(options.getTrendLine().get(1));
-					break;
-				case "BrownLES":
-					choiceBox_trendline.getSelectionModel().select(3);
-					textField_trendline_alpha.setText(options.getTrendLine().get(1));
-					textField_trendline_forecast.setText(options.getTrendLine().get(2));
-					break;
-				case "LinearRegression":
-					choiceBox_trendline.getSelectionModel().select(4);
-					break;
-				}
-			} else {
-				choiceBox_trendline.getSelectionModel().select(0);
-			}
-			choiceBox_hide_original_points.getSelectionModel().select(options.getHideOriginalPoints());
-			break;
         // Stage 2: data
         textField_csvpath.setText(options.getCsvPath());
         choiceBox_csvType.getSelectionModel().select(options.getCsvType());
@@ -1794,36 +1385,6 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
     /**
-     * resets the visibility of diagramtype/functiongraph specific {@link Label}s, {@link TextField}s and {@link ChoiceBox}es
-     */
-    private void resetSpecifics() {
-        toggleVisibility(false, label_secondLineStyle, hBox_secondLineStyle);
-        toggleVisibility(false, label_thirdLineStyle, hBox_thirdLineStyle);
-        toggleVisibility(false, label_firstLineStyle, hBox_firstLineStyle);
-        toggleVisibility(false, label_linepoints, choiceBox_linepoints);
-        toggleVisibility(false, label_baraccumulation, choiceBox_baraccumulation);
-        toggleVisibility(false, label_firstTexture, hBox_firstTexture);
-        toggleVisibility(false, label_secondTexture, hBox_secondTexture);
-        toggleVisibility(false, label_thirdTexture, hBox_thirdTexture);
-        toggleVisibility(false, label_sorting, choiceBox_sorting);
-        toggleVisibility(false, label_sortOrder, choiceBox_sortOrder);
-        toggleVisibility(false, label_trendline, choiceBox_trendline);
-        toggleVisibility(false, label_trendline_alpha, textField_trendline_alpha);
-        toggleVisibility(false, label_trendline_forecast, textField_trendline_forecast);
-        toggleVisibility(false, label_trendline_n, textField_trendline_n);
-        toggleVisibility(false, label_hide_original_points, choiceBox_hide_original_points);
-        label_chart_stage2.setVisible(true);
-        hBox_scaling.setVisible(false);
-    }
-
-	/**
-	 * handles the delete button onclick and prompts an deleteConfirmationAlert
-	 */
-	@FXML
-	private void deletePreset() {
-		deleteConfirmationAlert(currentPreset);
-	}
-    /**
      * handles the delete button onclick and prompts an deleteConfirmationAlert
      */
     @FXML
@@ -1896,19 +1457,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
     }
 
-	/**
-	 * prompts for confirmation of the user if the {@link Preset} shall really be
-	 * deleted
-	 *
-	 * @param duplicate the name of the preset that is a duplicate as a String
-	 */
-	public void duplicateAlert(String duplicate) {
-		Alert alert = dialogUtil.alert(Alert.AlertType.ERROR, "alert_preset_duplicate_title",
-				"alert_preset_duplicate_header1", "alert_preset_duplicate_content");
-		alert.setHeaderText(bundle.getString("alert_preset_duplicate_header1") + duplicate
-				+ bundle.getString("alert_preset_duplicate_header2"));
-		alert.showAndWait();
-	}
     /**
      * prompts for confirmation of the user if the {@link Preset} shall really be
      * deleted
