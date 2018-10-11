@@ -97,18 +97,19 @@ public class PresetsController extends SVGWizardController implements Initializa
     // h and vboxes
     @FXML
     public VBox vBox_Preset_DataTable;
-    @FXML
-    private HBox hBox_firstLineStyle;
-    @FXML
-    private HBox hBox_secondLineStyle;
-    @FXML
-    private HBox hBox_thirdLineStyle;
-    @FXML
-    private HBox hBox_firstTexture;
-    @FXML
-    private HBox hBox_secondTexture;
-    @FXML
-    private HBox hBox_thirdTexture;
+    // commented because at the end of development, it was not clear whether it is sensible to have this option without saving the data set in the first place
+//    @FXML
+//    private HBox hBox_firstLineStyle;
+//    @FXML
+//    private HBox hBox_secondLineStyle;
+//    @FXML
+//    private HBox hBox_thirdLineStyle;
+//    @FXML
+//    private HBox hBox_firstTexture;
+//    @FXML
+//    private HBox hBox_secondTexture;
+//    @FXML
+//    private HBox hBox_thirdTexture;
     @FXML
     private HBox hBox_cssPath;
     @FXML
@@ -121,12 +122,12 @@ public class PresetsController extends SVGWizardController implements Initializa
     private Label label_chart_stage2;
     @FXML
     private Label label_diagramType;
-    @FXML
-    private Label label_firstTexture;
-    @FXML
-    private Label label_secondTexture;
-    @FXML
-    private Label label_thirdTexture;
+//    @FXML
+//    private Label label_firstTexture;
+//    @FXML
+//    private Label label_secondTexture;
+//    @FXML
+//    private Label label_thirdTexture;
     @FXML
     private Label label_sortOrder;
     @FXML
@@ -143,10 +144,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     private Label label_pointSymbols_scatterPlot;
     @FXML
     private Label label_secondLineStyle;
-    @FXML
-    private Label label_thirdLineStyle;
-    @FXML
-    private Label label_firstLineStyle;
+//    @FXML
+//    private Label label_thirdLineStyle;
+//    @FXML
+//    private Label label_firstLineStyle;
     @FXML
     private Label label_linepoints;
     @FXML
@@ -161,6 +162,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     private Label label_y_from;
     @FXML
     private Label label_y_to;
+    @FXML
+    private Label label_x_axis_title;
+    @FXML
+    private Label label_y_axis_title;
     @FXML
     private Label label_cssCustom;
     @FXML
@@ -471,9 +476,9 @@ public class PresetsController extends SVGWizardController implements Initializa
      */
     private void initLineChart() {
         textField_presetName.setText(currentPreset.getName());
-        toggleVisibility(true, label_secondLineStyle, hBox_secondLineStyle);
-        toggleVisibility(true, label_thirdLineStyle, hBox_thirdLineStyle);
-        toggleVisibility(true, label_firstLineStyle, hBox_firstLineStyle);
+//        toggleVisibility(true, label_secondLineStyle, hBox_secondLineStyle);
+//        toggleVisibility(true, label_thirdLineStyle, hBox_thirdLineStyle);
+//        toggleVisibility(true, label_firstLineStyle, hBox_firstLineStyle);
         toggleVisibility(true, label_linepoints, choiceBox_linepoints);
         ObservableList<LineStyle> secondLineStyleObservableList = FXCollections.observableArrayList(
                 LineStyle.getByOutputDeviceOrderedById(currentPreset.getOptions().getOutputDevice()));
@@ -606,10 +611,10 @@ public class PresetsController extends SVGWizardController implements Initializa
     private void initBarChart() {
         textField_presetName.setText(currentPreset.getName());
         toggleVisibility(true, label_baraccumulation, choiceBox_baraccumulation);
-        toggleVisibility(true, label_firstTexture, hBox_firstTexture);
-        toggleVisibility(true, label_secondTexture, hBox_secondTexture);
-        toggleVisibility(true, label_thirdTexture, hBox_thirdTexture);
         toggleVisibility(true, label_sorting, choiceBox_sorting);
+//        toggleVisibility(true, label_firstTexture, hBox_firstTexture);
+//        toggleVisibility(true, label_secondTexture, hBox_secondTexture);
+//        toggleVisibility(true, label_thirdTexture, hBox_thirdTexture);
 
         List<Button> resetButtons = new ArrayList<>();
         resetButtons.add(button_resetFirstTexture);
@@ -683,8 +688,10 @@ public class PresetsController extends SVGWizardController implements Initializa
         hBox_scaling.setVisible(true);
         toggleVisibility(true, label_x_from, textField_x_from);
         toggleVisibility(true, label_x_to, textField_x_to);
-        toggleVisibility(true,label_y_from, textField_y_from);
-        toggleVisibility(true,label_y_to, textField_y_to);
+        toggleVisibility(true, label_y_from, textField_y_from);
+        toggleVisibility(true, label_y_to, textField_y_to);
+        toggleVisibility(false, label_x_axis_title, textField_xAxisTitle);
+        toggleVisibility(false, label_y_axis_title, textField_yAxisTitle);
         if (currentPreset.getOptions().getxRange() == null || currentPreset.getOptions().getyRange() == null) {
             textField_x_from.setText("-8.0");
             textField_x_to.setText("8.0");
@@ -1346,14 +1353,14 @@ public class PresetsController extends SVGWizardController implements Initializa
      * {@link HBox}es from the diagram/function specific part of the editor
      */
     private void resetSpecifics() {
-        toggleVisibility(false, label_secondLineStyle, hBox_secondLineStyle);
-        toggleVisibility(false, label_thirdLineStyle, hBox_thirdLineStyle);
-        toggleVisibility(false, label_firstLineStyle, hBox_firstLineStyle);
+//        toggleVisibility(false, label_secondLineStyle, hBox_secondLineStyle);
+//        toggleVisibility(false, label_thirdLineStyle, hBox_thirdLineStyle);
+//        toggleVisibility(false, label_firstLineStyle, hBox_firstLineStyle);
+//        toggleVisibility(false, label_firstTexture, hBox_firstTexture);
+//        toggleVisibility(false, label_secondTexture, hBox_secondTexture);
+//        toggleVisibility(false, label_thirdTexture, hBox_thirdTexture);
         toggleVisibility(false, label_linepoints, choiceBox_linepoints);
         toggleVisibility(false, label_baraccumulation, choiceBox_baraccumulation);
-        toggleVisibility(false, label_firstTexture, hBox_firstTexture);
-        toggleVisibility(false, label_secondTexture, hBox_secondTexture);
-        toggleVisibility(false, label_thirdTexture, hBox_thirdTexture);
         toggleVisibility(false, label_sorting, choiceBox_sorting);
         toggleVisibility(false, label_sortOrder, choiceBox_sortOrder);
         toggleVisibility(false, label_trendline, choiceBox_trendline);
