@@ -10,6 +10,7 @@ import tud.tangram.svgplot.plotting.IntegralPlotSettings;
 
 import java.io.IOException;
 
+@SuppressWarnings("serial")
 public class IntegralPlotSettingsDeserializer extends StdDeserializer<IntegralPlotSettings> {
     public IntegralPlotSettingsDeserializer() {
         this(null);

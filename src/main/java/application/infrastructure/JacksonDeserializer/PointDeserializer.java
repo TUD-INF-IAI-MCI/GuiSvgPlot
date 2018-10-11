@@ -14,28 +14,27 @@ import java.io.IOException;
 /**
  * @author Emma Müller
  */
+@SuppressWarnings("serial")
 public class PointDeserializer extends StdDeserializer<Point> {
-    public PointDeserializer() {
-        this(null);
-    }
+	public PointDeserializer() {
+		this(null);
+	}
 
-    public PointDeserializer(Class<?> vc) {
-        super(vc);
-    }
+	public PointDeserializer(Class<?> vc) {
+		super(vc);
+	}
 
-    @Override
-    public Point deserialize(JsonParser jp, DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {
-        JsonNode node = jp.getCodec().readTree(jp);
-        double x = (Double) ((DoubleNode) node.get("x")).numberValue();
-        double y = (Double) ((DoubleNode) node.get("y")).numberValue();
-        String name = node.get("name").asText();
-        if (!node.get("symbol").isNull()){
-            Element symbol = (Element) (node.get("symbol"));
-            return new Point(x, y, name, symbol);
-        }
-        return new Point(x, y, name);
+	@Override
+	public Point deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+		JsonNode node = jp.getCodec().readTree(jp);
+		double x = (Double) ((DoubleNode) node.get("x")).numberValue();
+		double y = (Double) ((DoubleNode) node.get("y")).numberValue();
+		String name = node.get("name").asText();
+		if (!node.get("symbol").isNull()) {
+			Element symbol = (Element) (node.get("symbol"));
+			return new Point(x, y, name, symbol);
+		}
+		return new Point(x, y, name);
 
-    }
+	}
 }
-

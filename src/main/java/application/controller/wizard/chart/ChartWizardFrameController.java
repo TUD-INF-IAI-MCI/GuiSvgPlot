@@ -1,29 +1,57 @@
 package application.controller.wizard.chart;
 
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import application.GuiSvgPlott;
 import application.controller.wizard.SVGWizardController;
 import application.model.DataPoint;
 import application.model.DataSet;
-import application.model.Options.*;
-import application.model.Settings;
-import application.util.KeyValuePair;
-import javafx.beans.property.*;
+import application.model.Options.GuiAxisStyle;
+import application.model.Options.LinePointsOption;
+import application.model.Options.SortOrder;
+import application.model.Options.TrendlineAlgorithm;
+import application.model.Options.VisibilityOfDataPoints;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.AccessibleRole;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import org.controlsfx.glyphfont.FontAwesome;
-import org.controlsfx.glyphfont.Glyph;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
@@ -33,20 +61,13 @@ import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.Color;
 
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.util.*;
-
 /**
  * The controller for chart-wizard.
  *
  * @author Emma Müller
  */
 public class ChartWizardFrameController extends SVGWizardController {
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ChartWizardFrameController.class);
 
 	private static final int AMOUNTOFSTAGES = 6;
@@ -215,11 +236,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 	private Map<Label, Color> selectedColors;
 	private List<ChoiceBox<Color>> colorChoiceBoxes;
 
-	private ObservableList<String> setNames;
-	private HashMap<String, ArrayList<KeyValuePair>> keyMap;
 	private ObservableList<DataSet> dataSets = FXCollections.observableArrayList();
-
-	private boolean isInitial = true;
 
 	public ChartWizardFrameController() {
 
@@ -238,8 +255,6 @@ public class ChartWizardFrameController extends SVGWizardController {
 		super.initloadPreset();
 		this.initFieldListenersForChartPreview();
 
-		this.setNames = FXCollections.observableArrayList();
-		this.keyMap = new HashMap<>();
 	}
 
 	@Override
@@ -280,8 +295,6 @@ public class ChartWizardFrameController extends SVGWizardController {
 				});
 		this.choiceBox_diagramType.getSelectionModel().select(0);
 	}
-
-	private int counter = 0;
 
 	/**
 	 * Will initiate the second stage. Depending on {@code extended}, some parts

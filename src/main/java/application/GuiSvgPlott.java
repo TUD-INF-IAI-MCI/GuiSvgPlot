@@ -1,11 +1,19 @@
 package application;
 
-import application.controller.SettingsDialogController;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
 import application.controller.RootFrameController;
+import application.controller.SettingsDialogController;
 import application.infrastructure.UTF8Control;
 import application.model.Settings;
 import application.util.DialogUtil;
-import com.google.gson.*;
 import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
@@ -15,19 +23,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
 /**
  * @author Robert Schlegel
@@ -236,6 +233,8 @@ public class GuiSvgPlott extends Application {
 					}
 				}
 			}
+			default:
+				break;
 			}
 		});
 

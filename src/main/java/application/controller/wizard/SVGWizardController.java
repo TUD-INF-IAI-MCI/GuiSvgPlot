@@ -1,19 +1,48 @@
 package application.controller.wizard;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
+import javax.xml.bind.ValidationException;
+
+import org.controlsfx.control.PopOver;
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import application.GuiSvgPlott;
 import application.controller.wizard.chart.ChartWizardFrameController;
 import application.model.GuiSvgOptions;
+import application.model.Preset;
 import application.model.Options.CssType;
 import application.model.Options.PageSize;
-import application.model.Preset;
 import application.service.PresetService;
 import application.service.SvgOptionsService;
 import application.util.ChoiceBoxUtil;
 import application.util.Converter;
 import application.util.DialogUtil;
 import application.util.TextFieldUtil;
-import com.sun.javafx.scene.control.skin.ScrollPaneSkin;
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -23,22 +52,32 @@ import javafx.geometry.Insets;
 import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.*;
-import javafx.scene.text.Text;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
-import org.controlsfx.control.PopOver;
-import org.controlsfx.glyphfont.FontAwesome;
-import org.controlsfx.glyphfont.Glyph;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.data.Point;
 import tud.tangram.svgplot.data.parse.CsvOrientation;
@@ -47,20 +86,6 @@ import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.styles.GridStyle;
-
-import javax.xml.bind.ValidationException;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.CopyOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
-import java.util.*;
 
 /**
  * The controller for wizards. Parent of {@link ChartWizardFrameController} and
@@ -263,7 +288,6 @@ public class SVGWizardController implements Initializable {
 		this.choiceBox_outputDevice.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> {
 					this.guiSvgOptions.setOutputDevice(newValue);
-					boolean isColorDevice = newValue == OutputDevice.ScreenColor;
 //            this.toggleVisibility(isColorDevice, this.label_color1, this.hbox_firstColor);
 //            this.toggleVisibility(isColorDevice, this.label_color2, this.hbox_secondColor);
 //            this.toggleVisibility(isColorDevice, this.label_color3, this.hbox_thirdColor);
@@ -636,7 +660,7 @@ public class SVGWizardController implements Initializable {
 						+ this.vBox_infos.getChildren().get(0).getAccessibleText();
 				this.vBox_infos.getChildren().get(0).setAccessibleText(accessibleText);
 				this.vBox_infos.getChildren().get(0).requestFocus();
-				this.fixBlurryText(infoScrollPane);
+				SVGWizardController.fixBlurryText(infoScrollPane);
 			}
 		});
 		button_Warnings.setOnAction(event -> {
@@ -660,7 +684,7 @@ public class SVGWizardController implements Initializable {
 						+ this.vBox_warnings.getChildren().get(0).getAccessibleText();
 				this.vBox_warnings.getChildren().get(0).setAccessibleText(accessibleText);
 				this.vBox_warnings.getChildren().get(0).requestFocus();
-				this.fixBlurryText(warningScrollPane);
+				SVGWizardController.fixBlurryText(warningScrollPane);
 			}
 		});
 
@@ -836,7 +860,8 @@ public class SVGWizardController implements Initializable {
 	 */
 	private static void fixBlurryText(Node node) {
 		try {
-			Field field = ScrollPaneSkin.class.getDeclaredField("viewRect");
+			@SuppressWarnings("restriction")
+			Field field = com.sun.javafx.scene.control.skin.ScrollPaneSkin.class.getDeclaredField("viewRect");
 			field.setAccessible(true);
 
 			ScrollPane scrollPane = (ScrollPane) node.lookup(".scroll-pane");

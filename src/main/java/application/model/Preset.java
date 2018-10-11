@@ -15,106 +15,103 @@ import java.util.UUID;
  */
 public class Preset {
 
-    private String id;
-    private String name;
-    @JsonFormat(pattern = "dd.MM.yyyy HH:mm:ss")
-    private Date creationDate;
-    private GuiSvgOptions options;
-    private DiagramType diagramType;
+	private String id;
+	private String name;
+	@JsonFormat(pattern = "dd.MM.yyyy HH:mm:ss")
+	private Date creationDate;
+	private GuiSvgOptions options;
+	private DiagramType diagramType;
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
-    // this is necessary for jackson
-    private Preset() {
-        this.id = UUID.randomUUID().toString();
-    }
+	// this is necessary for jackson
+	@SuppressWarnings("unused")
+	private Preset() {
+		this.id = UUID.randomUUID().toString();
+	}
 
-    public Preset(final Preset preset) {
-        this(preset.getOptions(), preset.getName(), preset.getDiagramType());
-    }
+	public Preset(final Preset preset) {
+		this(preset.getOptions(), preset.getName(), preset.getDiagramType());
+	}
 
-    public Preset(GuiSvgOptions options, String name, DiagramType diagramType) {
-        this.id = UUID.randomUUID().toString();
-        this.options = options;
-        this.creationDate = new Date();
-        this.name = name;
-        this.diagramType = diagramType;
-    }
+	public Preset(GuiSvgOptions options, String name, DiagramType diagramType) {
+		this.id = UUID.randomUUID().toString();
+		this.options = options;
+		this.creationDate = new Date();
+		this.name = name;
+		this.diagramType = diagramType;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    @JsonSetter("id")
-    private void setId(final String id) {
-        this.id = id;
-    }
+	@JsonSetter("id")
+	private void setId(final String id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public GuiSvgOptions getOptions() {
-        return options;
-    }
+	public GuiSvgOptions getOptions() {
+		return options;
+	}
 
-    public void setOptions(GuiSvgOptions options) {
-        this.options = options;
-    }
+	public void setOptions(GuiSvgOptions options) {
+		this.options = options;
+	}
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
+	public Date getCreationDate() {
+		return creationDate;
+	}
 
-    @JsonGetter("diagramType")
-    public String getDiagramTypeString() {
-        return diagramType.toString();
-    }
+	@JsonGetter("diagramType")
+	public String getDiagramTypeString() {
+		return diagramType.toString();
+	}
 
-    public DiagramType getDiagramType() {
-        return diagramType;
-    }
+	public DiagramType getDiagramType() {
+		return diagramType;
+	}
 
-    public void setDiagramType(DiagramType diagramType) {
-        this.diagramType = diagramType;
-    }
+	public void setDiagramType(DiagramType diagramType) {
+		this.diagramType = diagramType;
+	}
 
-    @JsonIgnore
-    public String getFormattedCreationDate() {
-        return sdf.format(creationDate);
-    }
+	@JsonIgnore
+	public String getFormattedCreationDate() {
+		return sdf.format(creationDate);
+	}
 
-    public void update(final Preset preset) {
-        this.options = preset.getOptions();
-        this.name = preset.getName();
-        this.diagramType = preset.getDiagramType();
-    }
+	public void update(final Preset preset) {
+		this.options = preset.getOptions();
+		this.name = preset.getName();
+		this.diagramType = preset.getDiagramType();
+	}
 
-    @Override
-    public String toString() {
-        return "Preset{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", creationDate=" + creationDate +
-                ", options=" + options +
-                ", diagramType=" + diagramType +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "Preset{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", creationDate=" + creationDate
+				+ ", options=" + options + ", diagramType=" + diagramType + '}';
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
 
-        if (!(o instanceof Preset)) return false;
+		if (!(o instanceof Preset))
+			return false;
 
-        Preset preset = (Preset) o;
-        return this.id.equals(preset.id) &&
-                this.getFormattedCreationDate().equals(preset.getFormattedCreationDate()) &&
-                this.diagramType.equals(preset.diagramType);
-    }
+		Preset preset = (Preset) o;
+		return this.id.equals(preset.id) && this.getFormattedCreationDate().equals(preset.getFormattedCreationDate())
+				&& this.diagramType.equals(preset.diagramType);
+	}
 
 }

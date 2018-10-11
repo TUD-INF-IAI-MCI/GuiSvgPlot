@@ -13,25 +13,24 @@ import java.io.IOException;
 /**
  * @author Emma Müller
  */
+@SuppressWarnings("serial")
 public class RangeDeserializer extends StdDeserializer<Range> {
-    public RangeDeserializer() {
-        this(null);
-    }
+	public RangeDeserializer() {
+		this(null);
+	}
 
-    public RangeDeserializer(Class<?> vc) {
-        super(vc);
-    }
+	public RangeDeserializer(Class<?> vc) {
+		super(vc);
+	}
 
-    @Override
-    public Range deserialize(JsonParser jp, DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {
-        JsonNode node = jp.getCodec().readTree(jp);
-        double from = (Double) ((DoubleNode) node.get("from")).numberValue();
-        double to = (Double) ((DoubleNode) node.get("to")).numberValue();
-        String name = node.get("name").asText();
+	@Override
+	public Range deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+		JsonNode node = jp.getCodec().readTree(jp);
+		double from = (Double) ((DoubleNode) node.get("from")).numberValue();
+		double to = (Double) ((DoubleNode) node.get("to")).numberValue();
+		String name = node.get("name").asText();
 
-        return new Range(from, to, name);
+		return new Range(from, to, name);
 
-    }
+	}
 }
-

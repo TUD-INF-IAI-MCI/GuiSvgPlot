@@ -9,23 +9,24 @@ import tud.tangram.svgplot.plotting.Function;
 
 import java.io.IOException;
 
+@SuppressWarnings("serial")
 public class FunctionDeserializer extends StdDeserializer<Function> {
-    public FunctionDeserializer() {
-        this(null);
-    }
+	public FunctionDeserializer() {
+		this(null);
+	}
 
-    public FunctionDeserializer(Class<?> vc) {
-        super(vc);
-    }
+	public FunctionDeserializer(Class<?> vc) {
+		super(vc);
+	}
 
-    @Override
-    public Function deserialize(JsonParser jp, DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {
-        JsonNode node = jp.getCodec().readTree(jp);
+	@Override
+	public Function deserialize(JsonParser jp, DeserializationContext ctxt)
+			throws IOException, JsonProcessingException {
+		JsonNode node = jp.getCodec().readTree(jp);
 
-        String title = node.get("title").asText();
-        String function = node.get("function").asText();
+		String title = node.get("title").asText();
+		String function = node.get("function").asText();
 
-        return new Function(title, function);
-    }
+		return new Function(title, function);
+	}
 }
