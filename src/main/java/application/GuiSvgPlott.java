@@ -15,6 +15,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -122,6 +124,9 @@ public class GuiSvgPlott extends Application {
 
 		this.bundle = ResourceBundle.getBundle("langBundle", locale.get(), new UTF8Control());
 
+		DialogUtil dialogUtil = DialogUtil.getInstance();
+		dialogUtil.setBundle(this.bundle);
+
 		FXMLLoader loader = new FXMLLoader();
 		loader.setResources(bundle);
 		loader.setLocation(GuiSvgPlott.RootFrame);
@@ -145,7 +150,7 @@ public class GuiSvgPlott extends Application {
 
 		primaryStage.setOnCloseRequest(event -> {
 			possibleTempFiles.forEach(path -> {
-				System.out.println(path);
+				//System.out.println(path);
 
 				if (path.toFile().exists())
 					try {
@@ -252,6 +257,7 @@ public class GuiSvgPlott extends Application {
 			}
 			return false;
 	}
+
 
 	public Stage getPrimaryStage() {
 		return primaryStage;

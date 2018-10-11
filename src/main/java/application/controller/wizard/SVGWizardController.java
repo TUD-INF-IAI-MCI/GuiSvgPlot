@@ -1015,7 +1015,7 @@ public class SVGWizardController implements Initializable {
 
 		GuiSvgPlott.possibleTempFiles.add(tempFile);
 
-		System.out.println(tempFile);
+		//System.out.println(tempFile);
 
 		return (tempFile != null) ? tempFile.toString() : "";
 	}

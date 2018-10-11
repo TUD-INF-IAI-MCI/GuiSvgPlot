@@ -244,6 +244,7 @@ public class RootFrameController implements Initializable {
 	public void startPresetOverview() {
 		// checks whether the PresetOverview window has been opened from within the
 		// Function/Chartwizard Frame -> fixes #24
+        System.out.println(wizardPath);
 		if (wizardPath.contains("Wizard")) {
 			GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
 			if (GuiSvgPlott.getInstance().closeWizard(false)){

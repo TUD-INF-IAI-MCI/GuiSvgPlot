@@ -5,7 +5,6 @@ import application.controller.wizard.SVGWizardController;
 import application.model.GuiSvgOptions;
 import application.model.Options.*;
 import application.model.Preset;
-import application.model.Settings;
 import application.service.PresetService;
 import application.util.Converter;
 import application.util.DiagramTypeUtil;
@@ -20,7 +19,6 @@ import javafx.scene.AccessibleRole;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -358,7 +356,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
     /**
-     * resets the visibilty of {@link TextField}'s, {@link ChoiceBox}es, {@link HBox}es etc.
+     * resets the visibilty of {@link TextField}'s, {@link ChoiceBox}es, {@link HBox}es from the diagram/function specific part of the editor
      */
     private void resetSpecifics() {
         toggleVisibility(false, label_secondLineStyle, hBox_secondLineStyle);
@@ -370,6 +368,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         toggleVisibility(false, label_secondTexture, hBox_secondTexture);
         toggleVisibility(false, label_thirdTexture, hBox_thirdTexture);
         toggleVisibility(false, label_sorting, choiceBox_sorting);
+        toggleVisibility(false, label_integral, choiceBox_integralOption);
         toggleVisibility(false, label_integral_name, textField_integralName);
         toggleVisibility(false, label_integral_function1, choiceBox_function1);
         toggleVisibility(false, label_integral_function2, choiceBox_function2);
@@ -743,24 +742,25 @@ public class PresetsController extends SVGWizardController implements Initializa
         toggleVisibility(true, label_pi, radioButton_scalingPi);
         ObservableList<IntegralOption> integralOptionObservableList = FXCollections.observableArrayList(IntegralOption.values());
         choiceBox_integralOption.setItems(integralOptionObservableList);
-        choiceBox_integralOption.getSelectionModel().select(IntegralOption.NONE);
         choiceBox_integralOption.setConverter(super.converter.getIntegralOptionStringConverter());
-        choiceBox_integralOption.selectionModelProperty().addListener(new ChangeListener() {
+        choiceBox_integralOption.getSelectionModel().select(IntegralOption.NONE);
+        choiceBox_integralOption.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                //System.out.println(newValue);
                 if(newValue == IntegralOption.XAXIS){
-                    toggleVisibility(true, label_integral, textField_integralName);
+                    toggleVisibility(true, label_integral_name, textField_integralName);
                     toggleVisibility(true, label_integral_function1, choiceBox_function1);
                     toggleVisibility(true, label_rangeFrom, textField_rangeFrom);
                     toggleVisibility(true, label_rangeTo, textField_rangeTo);
                 }else if(newValue == IntegralOption.FUNCTION){
-                    toggleVisibility(true, label_integral, textField_integralName);
+                    toggleVisibility(true, label_integral_name, textField_integralName);
                     toggleVisibility(true, label_integral_function1, choiceBox_function1);
                     toggleVisibility(true, label_integral_function2, choiceBox_function2);
                     toggleVisibility(true, label_rangeFrom, textField_rangeFrom);
                     toggleVisibility(true, label_rangeTo, textField_rangeTo);
                 }else{
-                    toggleVisibility(false, label_integral, textField_integralName);
+                    toggleVisibility(false, label_integral_name, textField_integralName);
                     toggleVisibility(false, label_integral_function1, choiceBox_function1);
                     toggleVisibility(false, label_integral_function2, choiceBox_function2);
                     toggleVisibility(false, label_rangeFrom, textField_rangeFrom);
@@ -1011,7 +1011,7 @@ public class PresetsController extends SVGWizardController implements Initializa
                     break;
             }
             editorDisplayer();
-            flagSetter(currentPreset);
+            loadFlagsFromPreset(currentPreset);
         });
 
         Button copyButton = new Button();
@@ -1065,7 +1065,7 @@ public class PresetsController extends SVGWizardController implements Initializa
     /**
      * loads the saved options of the current editor frame and sets the corresponding option into the current preset
      */
-    private void flagGetter() {
+    private void saveFlagsToPreset() {
         PageSize page_size;
         PageSize.PageOrientation page_orientation;
         GuiSvgOptions editor_options = currentPreset.getOptions();
@@ -1082,10 +1082,9 @@ public class PresetsController extends SVGWizardController implements Initializa
         if(choiceBox_size.getSelectionModel().getSelectedItem().equals(PageSize.CUSTOM)){
             double custom_height = Double.parseDouble(textField_customSizeHeight.getText());
             double custom_width = Double.parseDouble(textField_customSizeWidth.getText());
-            page_size = PageSize.getByPoint(new Point(custom_height, custom_width));
             System.out.println(custom_width);
             System.out.println(custom_height);
-            editor_options.setSize(page_size.getPageSizeWithOrientation(page_orientation));
+            editor_options.setSize(new Point(custom_height, custom_width));
         }else{
             editor_options.setSize(choiceBox_size.getSelectionModel().getSelectedItem().getPageSizeWithOrientation(page_orientation));
         }
@@ -1188,16 +1187,14 @@ public class PresetsController extends SVGWizardController implements Initializa
      *
      * @param p the {@link Preset}, that the flags are being taken out of
      */
-    private void flagSetter(Preset p) {
+    private void loadFlagsFromPreset(Preset p) {
         GuiSvgOptions options = p.getOptions();
+        Point point = options.getOptions().getSize();
+        PageSize pageSize = PageSize.getByPoint(point);
+        PageSize.PageOrientation pageOrientation = PageSize.PageOrientation.getByPoint(options.getOptions().getSize());
 
         //Stage 1: basics
         choiceBox_outputDevice.getSelectionModel().select(options.getOutputDevice());
-        //TODO how to get page orientation from presets?
-
-        //TODO Pagesize is not propagated properly
-        PageSize pageSize = PageSize.getByPoint(options.getOptions().getSize());
-        PageSize.PageOrientation pageOrientation = PageSize.PageOrientation.getByPoint(options.getOptions().getSize());
         switch (pageOrientation){
             case LANDSCAPE:
                 radioBtn_landscape.setSelected(true);
@@ -1206,14 +1203,14 @@ public class PresetsController extends SVGWizardController implements Initializa
                 radioBtn_portrait.setSelected(true);
                 break;
         }
-        choiceBox_size.getSelectionModel().select(pageSize);
+        choiceBox_size.getSelectionModel().select(PageSize.getByPoint(point));
         if (pageSize.equals(PageSize.CUSTOM)) {
             if(pageOrientation.equals(PageSize.PageOrientation.PORTRAIT)){
-                textField_customSizeWidth.setText("" + pageSize.getWidth());
-                textField_customSizeHeight.setText("" + pageSize.getHeight());
+                textField_customSizeWidth.setText("" + point.x());
+                textField_customSizeHeight.setText("" + point.y());
             }else{
-                textField_customSizeWidth.setText("" + pageSize.getHeight());
-                textField_customSizeHeight.setText("" + pageSize.getWidth());
+                textField_customSizeWidth.setText("" + point.y());
+                textField_customSizeHeight.setText("" + point.x());
             }
         }
 
@@ -1224,8 +1221,12 @@ public class PresetsController extends SVGWizardController implements Initializa
         //Stage 3: specific
         switch (currentPreset.getDiagramType()) {
             case FunctionPlot:
-                //TODO: Robert code goes here after usability overhaul #51
-
+                if(!options.getFunctions().isEmpty()){
+                    System.out.println(options.getFunctions());
+                    System.out.println(options.getFunctionsAsList());
+                }else{
+                    choiceBox_integralOption.getSelectionModel().select(IntegralOption.NONE);
+                }
                 break;
             case BarChart:
                 if (options.getTexturesAsList().size() != 0) {
@@ -1372,14 +1373,14 @@ public class PresetsController extends SVGWizardController implements Initializa
     }
 
     /**
-     * handle for the save Preset Button. Gets all the options via the flagGetter function and saves it via the presetServer.save function
+     * handle for the save Preset Button. Gets all the options via the saveFlagsToPreset function and saves it via the presetServer.save function
      * an empty name will cause an alert to be triggered
      */
     @FXML
     private void savePreset() {
         if (!isPresetNameEmpty()) {
             currentPreset.setName(textField_presetName.getText());
-            flagGetter();
+            saveFlagsToPreset();
             hideAllEditors();
             presetService.save(currentPreset);
             overviewDisplayer();
