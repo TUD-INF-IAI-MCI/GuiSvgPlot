@@ -1461,7 +1461,7 @@ public class PresetsController extends SVGWizardController implements Initializa
      * prompts for confirmation of the user if the {@link Preset} shall really be
      * deleted
      *
-     * @param o the name of the preset that is a duplicate as a String
+     * @param duplicate the name of the preset that is a duplicate as a String
      */
     public void duplicateAlert(String duplicate) {
         Alert alert = dialogUtil.alert(Alert.AlertType.ERROR, "alert_preset_duplicate_title",
