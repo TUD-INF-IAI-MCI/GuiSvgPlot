@@ -138,9 +138,6 @@ public class SvgOptionsService {
                 }
             });
 
-//            URL url = svg.toURI().toURL();
-//            webEngine.load(url.toExternalForm());
-//            webEngine.load("https://w>ww.google.com/maps/");
             webEngine.loadContent(sb.toString());
             webView_svg.setFocusTraversable(true);
 //            webView_svg.requestFocus();

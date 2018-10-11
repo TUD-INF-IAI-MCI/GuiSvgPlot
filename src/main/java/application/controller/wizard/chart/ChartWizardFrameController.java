@@ -652,7 +652,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                     if (newValue != null) {
                         this.guiSvgOptions.setHideOriginalPoints(newValue);
                         pointSymbolInputs.forEach((label,
-                                                   hBox) -> toggleVisibility(newValue.equals(VisibilityOfDataPoints.SHOW), label, hBox));
+                           hBox) -> toggleVisibility(newValue.equals(VisibilityOfDataPoints.SHOW), label, hBox));
                     }
 
                 });
@@ -712,6 +712,7 @@ public class ChartWizardFrameController extends SVGWizardController {
                                 hide(label_trendline_alpha, textField_trendline_alpha);
                                 hide(label_trendline_forecast, textField_trendline_forecast);
                                 hide(label_trendline_n, textField_trendline_n);
+                                trendline.setAll(newValue.toString());
                                 break;
                             default:
                                 hide(label_trendline_alpha, textField_trendline_alpha);
