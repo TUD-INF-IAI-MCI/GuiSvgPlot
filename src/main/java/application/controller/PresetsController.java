@@ -1,29 +1,56 @@
 package application.controller;
 
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import application.GuiSvgPlott;
 import application.controller.wizard.SVGWizardController;
 import application.model.GuiSvgOptions;
-import application.model.Options.*;
 import application.model.Preset;
+import application.model.Options.CssType;
+import application.model.Options.GuiAxisStyle;
+import application.model.Options.IntegralOption;
+import application.model.Options.LinePointsOption;
+import application.model.Options.PageSize;
+import application.model.Options.SortOrder;
+import application.model.Options.TrendlineAlgorithm;
+import application.model.Options.VisibilityOfDataPoints;
 import application.service.PresetService;
 import application.util.Converter;
 import application.util.DiagramTypeUtil;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.AccessibleRole;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import org.controlsfx.control.CheckComboBox;
-import org.controlsfx.glyphfont.FontAwesome;
-import org.controlsfx.glyphfont.Glyph;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import tud.tangram.svgplot.coordinatesystem.Range;
 import tud.tangram.svgplot.data.Point;
 import tud.tangram.svgplot.data.parse.CsvType;
@@ -31,20 +58,18 @@ import tud.tangram.svgplot.data.sorting.SortingType;
 import tud.tangram.svgplot.options.DiagramType;
 import tud.tangram.svgplot.options.OutputDevice;
 import tud.tangram.svgplot.options.SvgPlotOptions;
+import tud.tangram.svgplot.plotting.Function;
 import tud.tangram.svgplot.plotting.line.LineStyle;
 import tud.tangram.svgplot.plotting.point.PointSymbol;
 import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.GridStyle;
 
-import java.io.File;
-import java.net.URL;
-import java.util.*;
-
 /**
  * @author Constantin Amend
  */
 public class PresetsController extends SVGWizardController implements Initializable {
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PresetsController.class);
 	private ResourceBundle bundle;
 
@@ -54,14 +79,14 @@ public class PresetsController extends SVGWizardController implements Initializa
 	private Preset currentPreset;
 	private GuiSvgOptions currentOptions = new GuiSvgOptions(new SvgPlotOptions());
 	private final ToggleGroup scaleGroup = new ToggleGroup();
-	private final ToggleGroup valueRangeGroup = new ToggleGroup();
-	private final ToggleGroup integralToggle = new ToggleGroup();
+//	private final ToggleGroup valueRangeGroup = new ToggleGroup();
+//	private final ToggleGroup integralToggle = new ToggleGroup();
 	@FXML
 	private final ToggleGroup pageOrientationTG = new ToggleGroup();
 	private final DiagramTypeUtil diagramTypeUtil = DiagramTypeUtil.getInstance();
 	private PresetService presetService = PresetService.getInstance();
-	private ObservableList<Texture> textures;
-	private ObservableList<PointSymbol> customPointSymbols_scatterPlott;
+//	private ObservableList<Texture> textures;
+//	private ObservableList<PointSymbol> customPointSymbols_scatterPlott;
 
 	// glyphs
 	Glyph abortGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.CLOSE);
@@ -162,47 +187,47 @@ public class PresetsController extends SVGWizardController implements Initializa
 
 	// choiceboxes
 	@FXML
-	private ChoiceBox choiceBox_sorting;
+	private ChoiceBox<SortingType> choiceBox_sorting;
 	@FXML
-	private ChoiceBox choiceBox_firstTexture;
+	private ChoiceBox<Texture> choiceBox_firstTexture;
 	@FXML
-	private ChoiceBox choiceBox_secondTexture;
+	private ChoiceBox<Texture> choiceBox_secondTexture;
 	@FXML
-	private ChoiceBox choiceBox_thirdTexture;
+	private ChoiceBox<Texture> choiceBox_thirdTexture;
 	@FXML
-	private ChoiceBox choiceBox_trendline;
+	private ChoiceBox<TrendlineAlgorithm> choiceBox_trendline;
 	@FXML
-	private ChoiceBox choiceBox_sortOrder;
+	private ChoiceBox<SortOrder> choiceBox_sortOrder;
 	@FXML
-	private ChoiceBox choiceBox_csvType;
+	private ChoiceBox<CsvType> choiceBox_csvType;
 	@FXML
-	private ChoiceBox choiceBox_gridStyle;
+	private ChoiceBox<GridStyle> choiceBox_gridStyle;
 	@FXML
-	private ChoiceBox choiceBox_dblaxes;
+	private ChoiceBox<GuiAxisStyle> choiceBox_dblaxes;
 	@FXML
 	private ChoiceBox<CssType> choiceBox_cssType;
 	@FXML
-	private ChoiceBox choiceBox_linepoints;
+	private ChoiceBox<LinePointsOption> choiceBox_linepoints;
 	@FXML
-	private ChoiceBox choiceBox_secondLineStyle;
+	private ChoiceBox<LineStyle> choiceBox_secondLineStyle;
 	@FXML
-	private ChoiceBox choiceBox_hide_original_points;
+	private ChoiceBox<VisibilityOfDataPoints> choiceBox_hide_original_points;
 	@FXML
 	private ChoiceBox<PointSymbol> choiceBox_pointSymbols_lineChart;
 	@FXML
 	private ChoiceBox<PointSymbol> choiceBox_pointSymbols_scatterPlot;
 	@FXML
-	private ChoiceBox choiceBox_thirdLineStyle;
+	private ChoiceBox<LineStyle> choiceBox_thirdLineStyle;
 	@FXML
-	private ChoiceBox choiceBox_firstLineStyle;
+	private ChoiceBox<LineStyle> choiceBox_firstLineStyle;
 	@FXML
-	private ChoiceBox choiceBox_baraccumulation;
+	private ChoiceBox<BarAccumulationStyle> choiceBox_baraccumulation;
 	@FXML
-	private ChoiceBox choiceBox_integralOption;
+	private ChoiceBox<IntegralOption> choiceBox_integralOption;
 	@FXML
-	private ChoiceBox choiceBox_function1;
+	private ChoiceBox<Function> choiceBox_function1;
 	@FXML
-	private ChoiceBox choiceBox_function2;
+	private ChoiceBox<Function> choiceBox_function2;
 
 	// buttons
 	@FXML
@@ -743,53 +768,49 @@ public class PresetsController extends SVGWizardController implements Initializa
 		choiceBox_integralOption.setItems(integralOptionObservableList);
 		choiceBox_integralOption.setConverter(super.converter.getIntegralOptionStringConverter());
 		choiceBox_integralOption.getSelectionModel().select(IntegralOption.NONE);
-		choiceBox_integralOption.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-			@Override
-			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-				// System.out.println(newValue);
-				if (newValue == IntegralOption.XAXIS) {
-					toggleVisibility(true, label_integral_name, textField_integralName);
-					toggleVisibility(true, label_integral_function1, choiceBox_function1);
-					toggleVisibility(true, label_rangeFrom, textField_rangeFrom);
-					toggleVisibility(true, label_rangeTo, textField_rangeTo);
-				} else if (newValue == IntegralOption.FUNCTION) {
-					toggleVisibility(true, label_integral_name, textField_integralName);
-					toggleVisibility(true, label_integral_function1, choiceBox_function1);
-					toggleVisibility(true, label_integral_function2, choiceBox_function2);
-					toggleVisibility(true, label_rangeFrom, textField_rangeFrom);
-					toggleVisibility(true, label_rangeTo, textField_rangeTo);
-				} else {
-					toggleVisibility(false, label_integral_name, textField_integralName);
-					toggleVisibility(false, label_integral_function1, choiceBox_function1);
-					toggleVisibility(false, label_integral_function2, choiceBox_function2);
-					toggleVisibility(false, label_rangeFrom, textField_rangeFrom);
-					toggleVisibility(false, label_rangeTo, textField_rangeTo);
-				}
+
+		choiceBox_integralOption.getSelectionModel().selectedItemProperty().addListener((args, oldVal, newValue) -> {
+
+			if (newValue == IntegralOption.XAXIS) {
+				toggleVisibility(true, label_integral_name, textField_integralName);
+				toggleVisibility(true, label_integral_function1, choiceBox_function1);
+				toggleVisibility(true, label_rangeFrom, textField_rangeFrom);
+				toggleVisibility(true, label_rangeTo, textField_rangeTo);
+			} else if (newValue == IntegralOption.FUNCTION) {
+				toggleVisibility(true, label_integral_name, textField_integralName);
+				toggleVisibility(true, label_integral_function1, choiceBox_function1);
+				toggleVisibility(true, label_integral_function2, choiceBox_function2);
+				toggleVisibility(true, label_rangeFrom, textField_rangeFrom);
+				toggleVisibility(true, label_rangeTo, textField_rangeTo);
+			} else {
+				toggleVisibility(false, label_integral_name, textField_integralName);
+				toggleVisibility(false, label_integral_function1, choiceBox_function1);
+				toggleVisibility(false, label_integral_function2, choiceBox_function2);
+				toggleVisibility(false, label_rangeFrom, textField_rangeFrom);
+				toggleVisibility(false, label_rangeTo, textField_rangeTo);
 			}
+
 		});
 
 	}
 
-	private void changePointSymbols(ObservableList<PointSymbol> checkedPointSymbols,
-			CheckComboBox<PointSymbol> checkComboBox, ObservableList<PointSymbol> allPointSymbols) {
-		checkedPointSymbols.clear();
-		ObservableList<PointSymbol> checkedItems = checkComboBox.getCheckModel().getCheckedItems();
-		ObservableList<PointSymbol> newItems = checkedItems
-				.filtered(pointSymbol -> !checkedPointSymbols.contains(pointSymbol));
-		ObservableList<PointSymbol> oldItems = allPointSymbols.filtered(
-				pointSymbol -> !checkedItems.contains(pointSymbol) && checkedPointSymbols.contains(pointSymbol));
-		if (newItems.size() > 0) {
-			for (PointSymbol pointSymbol : newItems) {
-				checkedPointSymbols.add(pointSymbol);
-			}
-		}
-		if (oldItems.size() > 0) {
-			for (PointSymbol pointSymbol : oldItems) {
-				checkedPointSymbols.remove(pointSymbol);
-			}
-		}
-		guiSvgOptions.setPointSymbols(checkedPointSymbols);
-	}
+//	private void changePointSymbols(ObservableList<PointSymbol> checkedPointSymbols,
+//			CheckComboBox<PointSymbol> checkComboBox, ObservableList<PointSymbol> allPointSymbols) {
+//		
+//		checkedPointSymbols.clear();
+//		ObservableList<PointSymbol> checkedItems = checkComboBox.getCheckModel().getCheckedItems();
+//		ObservableList<PointSymbol> newItems = checkedItems
+//				.filtered(pointSymbol -> !checkedPointSymbols.contains(pointSymbol));
+//		ObservableList<PointSymbol> oldItems = allPointSymbols.filtered(
+//				pointSymbol -> !checkedItems.contains(pointSymbol) && checkedPointSymbols.contains(pointSymbol));
+//		for (PointSymbol pointSymbol : newItems) {
+//			checkedPointSymbols.add(pointSymbol);
+//		}
+//		for (PointSymbol pointSymbol : oldItems) {
+//			checkedPointSymbols.remove(pointSymbol);
+//		}
+//		guiSvgOptions.setPointSymbols(checkedPointSymbols);
+//	}
 
 	/**
 	 * handle for the create new preset button from the fxml file. leads to the
@@ -848,7 +869,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 			super.presets.add(currentPreset);
 
 		} else if (result.isPresent()) {
-			duplicateAlert(result);
+			duplicateAlert(result.get());
 		}
 	}
 
@@ -1077,7 +1098,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 	 * corresponding option into the current preset
 	 */
 	private void saveFlagsToPreset() {
-		PageSize page_size;
+
 		PageSize.PageOrientation page_orientation;
 		GuiSvgOptions editor_options = currentPreset.getOptions();
 		editor_options.setDiagramType(currentPreset.getDiagramType());
@@ -1130,9 +1151,9 @@ public class PresetsController extends SVGWizardController implements Initializa
 		case ScatterPlot:
 			if (!choiceBox_trendline.getSelectionModel().getSelectedItem().equals(TrendlineAlgorithm.None)) {
 				ObservableList<String> trendline_list = FXCollections.observableArrayList();
-				Object trendline_type = choiceBox_trendline.getSelectionModel().getSelectedItem();
+				TrendlineAlgorithm trendline_type = choiceBox_trendline.getSelectionModel().getSelectedItem();
 				trendline_list.add(trendline_type.toString());
-				switch ((TrendlineAlgorithm) trendline_type) {
+				switch (trendline_type) {
 				case MovingAverage:
 					trendline_list.add(textField_trendline_n.getText());
 					break;
@@ -1144,6 +1165,8 @@ public class PresetsController extends SVGWizardController implements Initializa
 					trendline_list.add(textField_trendline_forecast.getText());
 					break;
 				case LinearRegression:
+					break;
+				default:
 					break;
 				}
 				editor_options.setTrendLine(trendline_list);
@@ -1366,8 +1389,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 	 */
 	@FXML
 	private void deletePreset() {
-		Preset tobedeletedPreset = currentPreset;
-		deleteConfirmationAlert(tobedeletedPreset);
+		deleteConfirmationAlert(currentPreset);
 	}
 
 	private void hideAllEditors() {
@@ -1392,7 +1414,7 @@ public class PresetsController extends SVGWizardController implements Initializa
 	 */
 	@FXML
 	private void savePreset() {
-		if (!isPresetNameEmpty()) {
+		if (!textField_presetName.getText().trim().isEmpty()) {
 			currentPreset.setName(textField_presetName.getText());
 			saveFlagsToPreset();
 			hideAllEditors();
@@ -1441,10 +1463,10 @@ public class PresetsController extends SVGWizardController implements Initializa
 	 *
 	 * @param o the name of the preset that is a duplicate as a String
 	 */
-	public void duplicateAlert(Optional o) {
+	public void duplicateAlert(String duplicate) {
 		Alert alert = dialogUtil.alert(Alert.AlertType.ERROR, "alert_preset_duplicate_title",
 				"alert_preset_duplicate_header1", "alert_preset_duplicate_content");
-		alert.setHeaderText(bundle.getString("alert_preset_duplicate_header1") + o.get()
+		alert.setHeaderText(bundle.getString("alert_preset_duplicate_header1") + duplicate
 				+ bundle.getString("alert_preset_duplicate_header2"));
 		alert.showAndWait();
 	}
