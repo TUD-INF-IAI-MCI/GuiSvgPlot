@@ -62,8 +62,6 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
-import static application.controller.RootFrameController.wizardPath;
-
 /**
  * The controller for wizards. Parent of {@link ChartWizardFrameController} and
  * {@link application.controller.wizard.functions.FunctionWizardFrameController}.
@@ -492,7 +490,7 @@ public class SVGWizardController implements Initializable {
 
 				Alert a = dialogUtil.alert(AlertType.INFORMATION, "csv_added_title", "csv_added_header", "csv_added");
 				a.setContentText(file.getName() + " " + this.bundle.getString("csv_added"));
-                a.showAndWait();
+				a.showAndWait();
 			}
 		});
 
@@ -733,7 +731,6 @@ public class SVGWizardController implements Initializable {
 		this.button_Cancel.setOnAction(event -> {
 			GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
 			GuiSvgPlott.getInstance().closeWizard(false);
-			wizardPath = "none";
 			if (GuiSvgPlott.getInstance().getRootFrameController().menuItem_Preset_Editor.isDisable()) {
 				GuiSvgPlott.getInstance().getRootFrameController().menuItem_Preset_Editor.setDisable(false);
 			}
@@ -746,7 +743,8 @@ public class SVGWizardController implements Initializable {
 		this.button_Create.setOnAction(event -> {
 			boolean doCreate = true;
 			if (guiSvgOptions.getCsvPath() != null && guiSvgOptions.getCsvPath().isEmpty()) {
-				Alert a = 	dialogUtil.alert(AlertType.CONFIRMATION, "empty_diagram_title", "empty_diagram_header", "empty_diagram_content");
+				Alert a = dialogUtil.alert(AlertType.CONFIRMATION, "empty_diagram_title", "empty_diagram_header",
+						"empty_diagram_content");
 				a.showAndWait();
 				doCreate = a.getResult().getButtonData().isDefaultButton();
 			}
@@ -1015,7 +1013,7 @@ public class SVGWizardController implements Initializable {
 
 		GuiSvgPlott.possibleTempFiles.add(tempFile);
 
-		//System.out.println(tempFile);
+		// System.out.println(tempFile);
 
 		return (tempFile != null) ? tempFile.toString() : "";
 	}

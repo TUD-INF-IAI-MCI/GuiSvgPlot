@@ -79,9 +79,7 @@ public class RootFrameController implements Initializable {
 
 	private PresetService presetService = PresetService.getInstance();
 
-	public static String wizardPath = "none";
-    private DialogUtil dialogUtil = DialogUtil.getInstance();
-
+	private DialogUtil dialogUtil = DialogUtil.getInstance();
 
 	public SimpleBooleanProperty loading;
 
@@ -103,47 +101,50 @@ public class RootFrameController implements Initializable {
 		this.button_StartDiagram.setOnAction(this::startDiagram);
 		this.button_StartFunction.setOnAction(event -> startFunction(true));
 
-        this.menuItem_settings.setOnAction(event -> GuiSvgPlott.getInstance().setSettingsDialog());
-        this.menuItem_Save_Preset.setDisable(true);
-        this.menuItem_Save_Preset.setOnAction(event -> {
-           saveAsPreset();
-        });
+		this.menuItem_settings.setOnAction(event -> GuiSvgPlott.getInstance().setSettingsDialog());
+		this.menuItem_Save_Preset.setDisable(true);
+		this.menuItem_Save_Preset.setOnAction(event -> {
+			saveAsPreset();
+		});
 
-        this.menuItem_About.setOnAction(event -> {
-            Alert alert = dialogUtil.alert(Alert.AlertType.INFORMATION, "menu_help_about_title", "menu_help_about_content", "menu_help_about_content");
+		this.menuItem_About.setOnAction(event -> {
+			Alert alert = dialogUtil.alert(Alert.AlertType.INFORMATION, "menu_help_about_title",
+					"menu_help_about_content", "menu_help_about_content");
 			alert.setHeaderText(null);
-            alert.setResizable(true);
-            alert.getDialogPane().setMinSize(500, 250);
-            dialogUtil.styleDialog(alert);
+			alert.setResizable(true);
+			alert.getDialogPane().setMinSize(500, 250);
+			dialogUtil.styleDialog(alert);
 
-            alert.showAndWait();
-        });
+			alert.showAndWait();
+		});
 
-        this.menuItem_csvHelp.setOnAction(event -> {
-            showCsvHelper();
-        });
+		this.menuItem_csvHelp.setOnAction(event -> {
+			showCsvHelper();
+		});
 
-        this.menuItem_About.setOnAction(event -> {
-            Alert alert = dialogUtil.alert(Alert.AlertType.INFORMATION, "menu_help_about_title", "menu_help_about_content", "menu_help_about_content");
-            alert.setHeaderText(null);
-            alert.setResizable(true);
-            alert.getDialogPane().setMinSize(500, 250);
-            alert.showAndWait();
-        });
+		this.menuItem_About.setOnAction(event -> {
+			Alert alert = dialogUtil.alert(Alert.AlertType.INFORMATION, "menu_help_about_title",
+					"menu_help_about_content", "menu_help_about_content");
+			alert.setHeaderText(null);
+			alert.setResizable(true);
+			alert.getDialogPane().setMinSize(500, 250);
+			alert.showAndWait();
+		});
 
-        this.menuItem_csvHelp.setOnAction(event -> {
-            showCsvHelper();
-        });
+		this.menuItem_csvHelp.setOnAction(event -> {
+			showCsvHelper();
+		});
 
-    }
+	}
 
-
-	public void saveAsPreset(){
+	public void saveAsPreset() {
 		if (svgWizardController != null) {
-			Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName", svgWizardController.getGuiSvgOptions().getDiagramType());
-			TextInputDialog nameDialogue = dialogUtil.textInputDialog("prompt_preset_name_title", "prompt_preset_name_header", "prompt_preset_name_content");
+			Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName",
+					svgWizardController.getGuiSvgOptions().getDiagramType());
+			TextInputDialog nameDialogue = dialogUtil.textInputDialog("prompt_preset_name_title",
+					"prompt_preset_name_header", "prompt_preset_name_content");
 			String headerText = bundle.getString("prompt_preset_name_header");
-			if (svgWizardController instanceof ChartWizardFrameController){
+			if (svgWizardController instanceof ChartWizardFrameController) {
 				headerText = headerText.concat("\n" + this.bundle.getString("prompt_preset_name_header_sub"));
 			}
 			nameDialogue.setHeaderText(headerText);
@@ -151,22 +152,25 @@ public class RootFrameController implements Initializable {
 
 			Optional<String> result = nameDialogue.showAndWait();
 			if (result.isPresent() && result.get().equals("")) {
-				showErrorAlert(bundle.getString("alert_preset_empty_title"), bundle.getString("alert_preset_empty_header"), bundle.getString("alert_preset_empty_content"));
+				showErrorAlert(bundle.getString("alert_preset_empty_title"),
+						bundle.getString("alert_preset_empty_header"), bundle.getString("alert_preset_empty_content"));
 			} else if (result.isPresent() && presetService.findByName(result.get()).size() == 0) {
 				savedPreset.setName(result.get());
 				presetService.create(savedPreset);
-				Alert alert = dialogUtil.alert(Alert.AlertType.CONFIRMATION, "alert_preset_created_title", "alert_preset_created_header", "alert_preset_created_content");
+				Alert alert = dialogUtil.alert(Alert.AlertType.CONFIRMATION, "alert_preset_created_title",
+						"alert_preset_created_header", "alert_preset_created_content");
 				alert.getDialogPane().setMinSize(500, 150);
 				alert.showAndWait();
 			} else if (result.isPresent()) {
-				String header = bundle.getString("alert_preset_duplicate_header1") + result.get() + bundle.getString("alert_preset_duplicate_header2");
+				String header = bundle.getString("alert_preset_duplicate_header1") + result.get()
+						+ bundle.getString("alert_preset_duplicate_header2");
 				showErrorAlert(bundle.getString("alert_preset_duplicate_title"), header,
 						bundle.getString("alert_preset_duplicate_content"));
 			}
 		}
 	}
 
-    private void showCsvHelper() {
+	private void showCsvHelper() {
 
 		FXMLLoader loader = new FXMLLoader();
 		loader.setResources(bundle);
@@ -211,7 +215,8 @@ public class RootFrameController implements Initializable {
 
 	@FXML
 	private void closeButtonAction() {
-		Alert alert = dialogUtil.alert(Alert.AlertType.CONFIRMATION, "alert_exit_title", "alert_exit_header", "alert_exit_content");
+		Alert alert = dialogUtil.alert(Alert.AlertType.CONFIRMATION, "alert_exit_title", "alert_exit_header",
+				"alert_exit_content");
 		alert.setResizable(true);
 		alert.getDialogPane().setMinWidth(400);
 		Optional<ButtonType> result = alert.showAndWait();
@@ -244,27 +249,28 @@ public class RootFrameController implements Initializable {
 	public void startPresetOverview() {
 		// checks whether the PresetOverview window has been opened from within the
 		// Function/Chartwizard Frame -> fixes #24
-        System.out.println(wizardPath);
-		if (wizardPath.contains("Wizard")) {
+		if (!menuItem_Save_Preset.disableProperty().get()) {
 			GuiSvgPlott.getInstance().getRootFrameController().scrollPane_message.setVisible(false);
-			if (GuiSvgPlott.getInstance().closeWizard(false)){
+			if (GuiSvgPlott.getInstance().closeWizard(false)) {
 				menuItem_Preset_Editor.setDisable(true);
 				menuItem_Save_Preset.setDisable(true);
 				this.setSceneTitle("application_preset_overview");
 				this.label_Headline.setText(this.bundle.getString("headline_presets"));
-				FXMLLoader loader = new FXMLLoader();
-				loader.setResources(bundle);
-				loader.setLocation((GuiSvgPlott.PresetOverviewFrame));
-				try {
-					center = borderPane_Content.getCenter();
-					borderPane_Content.setCenter(loader.load());
-					if (presetsController == null) {
-						presetsController = loader.getController();
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+
 			}
+		}
+
+		FXMLLoader loader = new FXMLLoader();
+		loader.setResources(bundle);
+		loader.setLocation((GuiSvgPlott.PresetOverviewFrame));
+		try {
+			center = borderPane_Content.getCenter();
+			borderPane_Content.setCenter(loader.load());
+			if (presetsController == null) {
+				presetsController = loader.getController();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -274,7 +280,6 @@ public class RootFrameController implements Initializable {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setResources(bundle);
 		loader.setLocation((fxmlPath));
-		wizardPath = fxmlPath.getPath();
 		menuItem_Save_Preset.setDisable(false);
 
 		try {
@@ -305,10 +310,10 @@ public class RootFrameController implements Initializable {
 		}
 	}
 
-    public void setSceneTitle(final String messageCode) {
-        Stage scene = GuiSvgPlott.getInstance().getPrimaryStage();
-        scene.titleProperty().set(this.bundle.getString(messageCode));
-    }
+	public void setSceneTitle(final String messageCode) {
+		Stage scene = GuiSvgPlott.getInstance().getPrimaryStage();
+		scene.titleProperty().set(this.bundle.getString(messageCode));
+	}
 
 	private void showErrorAlert(String title, String header, String content) {
 		Alert alert = dialogUtil.alertWithTexts(Alert.AlertType.ERROR, title, header, content);

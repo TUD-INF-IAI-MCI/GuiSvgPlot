@@ -100,13 +100,14 @@ public class PresetService {
 	 */
 	public List<Preset> getAll() {
 		List<Preset> presetList = new ArrayList<>();
-		try {
-			presetList = mapper.readValue(path.toFile(), new TypeReference<List<Preset>>() {
-			});
-		} catch (Exception e) {
-			logger.error(bundle.getString("load_presets_error") + " " + e.getMessage());
-			e.printStackTrace();
-		}
+		if (path.toFile().exists())
+			try {
+				presetList = mapper.readValue(path.toFile(), new TypeReference<List<Preset>>() {
+				});
+			} catch (Exception e) {
+				logger.error(bundle.getString("load_presets_error") + " " + e.getMessage());
+				e.printStackTrace();
+			}
 		return presetList;
 	}
 
