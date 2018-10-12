@@ -38,7 +38,7 @@ public class DialogUtil {
 		alert.setTitle(bundle.getString(titleMsgStr));
 		alert.setHeaderText(bundle.getString(headerMsgStr));
 		alert.setContentText(bundle.getString(contextMsgStr));
-
+		alert.getDialogPane().setAccessibleHelp(bundle.getString(contextMsgStr));
 		styleDialog(alert);
 		return alert;
 	}
@@ -49,6 +49,7 @@ public class DialogUtil {
 		alert.setTitle(title);
 		alert.setHeaderText(header);
 		alert.setContentText(context);
+		alert.getDialogPane().setAccessibleHelp(context);
 		styleDialog(alert);
 		return alert;
 	}
@@ -59,6 +60,7 @@ public class DialogUtil {
 		textInputDialog.setTitle(bundle.getString(titleMsgStr));
 		textInputDialog.setHeaderText(bundle.getString(headerMsgStr));
 		textInputDialog.setContentText(bundle.getString(contextMsgStr));
+		textInputDialog.getDialogPane().setAccessibleHelp(bundle.getString(contextMsgStr));
 		styleDialog(textInputDialog);
 		return textInputDialog;
 	}
