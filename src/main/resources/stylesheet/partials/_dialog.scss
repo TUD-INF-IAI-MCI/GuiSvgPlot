@@ -11,6 +11,11 @@
     -fx-min-height: 50px;
     -fx-padding: 10px;
     -fx-text-alignment: justify;
+
+    &:focused {
+      -fx-text-fill: $tud-blue;
+      -fx-font-style: italic;
+    }
   }
 
   &:header *.header-panel {

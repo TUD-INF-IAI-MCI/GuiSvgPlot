@@ -546,7 +546,7 @@ public class PresetsController extends SVGWizardController implements Initializa
         choiceBox_trendline.getSelectionModel().select(TrendlineAlgorithm.None);
         choiceBox_trendline.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                switch ((TrendlineAlgorithm) newValue) {
+                switch (newValue) {
                     case MovingAverage:
                         toggleVisibility(true, label_trendline_n, textField_trendline_n);
                         toggleVisibility(true, label_hide_original_points, choiceBox_hide_original_points);
@@ -1407,6 +1407,7 @@ public class PresetsController extends SVGWizardController implements Initializa
                 "alert_preset_duplicate_header1", "alert_preset_duplicate_content");
         alert.setHeaderText(bundle.getString("alert_preset_duplicate_header1") + duplicate
                 + bundle.getString("alert_preset_duplicate_header2"));
+        dialogUtil.setAccessibility(alert);
         alert.showAndWait();
     }
 

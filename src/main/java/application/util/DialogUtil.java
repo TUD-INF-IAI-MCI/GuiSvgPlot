@@ -1,11 +1,12 @@
 package application.util;
 
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.model.Settings;
 import application.util.dialog.AccessibleTextInputDialog;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Dialog;
+import javafx.event.Event;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 /**
@@ -35,12 +36,11 @@ public class DialogUtil {
 	public Alert alert(final Alert.AlertType alertType, final String titleMsgStr, final String headerMsgStr,
 			final String contextMsgStr) {
 		Alert alert = new Alert(alertType);
-		// this is necessary for accessibility --> nvda only reads the title and OK-Button and ignores ohter elements
-		alert.setTitle(bundle.getString(titleMsgStr) + " " + bundle.getString(contextMsgStr));
+		alert.setTitle(bundle.getString(titleMsgStr));
 		alert.setHeaderText(bundle.getString(headerMsgStr));
 		alert.setContentText(bundle.getString(contextMsgStr));
-		alert.getDialogPane().setFocusTraversable(true);
 		styleDialog(alert);
+		setAccessibility(alert);
 		return alert;
 	}
 
@@ -52,6 +52,7 @@ public class DialogUtil {
 		alert.setContentText(context);
 		alert.getDialogPane().setAccessibleHelp(context);
 		styleDialog(alert);
+		setAccessibility(alert);
 		return alert;
 	}
 
@@ -63,10 +64,27 @@ public class DialogUtil {
 		textInputDialog.setContentText(bundle.getString(contextMsgStr));
 		textInputDialog.getTextField().setAccessibleHelp(bundle.getString(contextMsgStr));
 		styleDialog(textInputDialog);
+		setAccessibility(textInputDialog);
 		return textInputDialog;
 	}
 
 	public void setBundle(final ResourceBundle bundle) {
 		this.bundle = bundle;
+	}
+
+    /**
+     * Sets AccessibleText of given {@link Dialog}'s content label and focuses it on showing.
+     * @param dialog the {@link Dialog}
+     */
+	public void setAccessibility(final Dialog dialog){
+		dialog.showingProperty().addListener((observable, oldValue, newValue) -> {
+			dialog.getDialogPane().getChildren().forEach(node -> {
+				if (node instanceof Label) {
+					node.setFocusTraversable(true);
+					node.setAccessibleText(dialog.getHeaderText() + " " + dialog.getContentText());
+					node.requestFocus();
+				}
+			});
+		});
 	}
 }

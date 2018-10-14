@@ -116,17 +116,6 @@ public class RootFrameController implements Initializable {
 
         this.menuItem_csvHelp.setOnAction(event -> showCsvHelper());
 
-        this.menuItem_About.setOnAction(event -> {
-            Alert alert = dialogUtil.alert(Alert.AlertType.INFORMATION, "menu_help_about_title",
-                    "menu_help_about_content", "menu_help_about_content");
-            alert.setHeaderText(null);
-            alert.setResizable(true);
-            alert.getDialogPane().setMinSize(500, 250);
-            alert.showAndWait();
-        });
-
-        this.menuItem_csvHelp.setOnAction(event -> showCsvHelper());
-
     }
 
     public void saveAsPreset() {
