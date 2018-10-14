@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import application.util.dialog.AccessibleTextInputDialog;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.slf4j.Logger;
@@ -45,7 +46,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
@@ -324,7 +324,7 @@ public class ChartWizardFrameController extends SVGWizardController {
 
         button_AddDataSet.setOnAction(event -> {
 
-            TextInputDialog dialog = dialogUtil.textInputDialog("dataset_entername_title", "dataset_entername_header",
+            AccessibleTextInputDialog dialog = dialogUtil.textInputDialog("dataset_entername_title", "dataset_entername_header",
                     "dataset_entername_content");
             dialog.showAndWait();
 

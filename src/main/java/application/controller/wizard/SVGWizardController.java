@@ -20,6 +20,8 @@ import java.util.ResourceBundle;
 import javax.xml.bind.ValidationException;
 
 import application.controller.wizard.functions.FunctionWizardFrameController;
+import application.util.*;
+import application.util.dialog.AccessibleChoiceDialog;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -34,10 +36,6 @@ import application.model.Options.CssType;
 import application.model.Options.PageSize;
 import application.service.PresetService;
 import application.service.SvgOptionsService;
-import application.util.ChoiceBoxUtil;
-import application.util.Converter;
-import application.util.DialogUtil;
-import application.util.TextFieldUtil;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -56,7 +54,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
@@ -817,10 +814,11 @@ public class SVGWizardController implements Initializable {
             for (Preset p : presets) {
                 choices.add(p.getName());
             }
-            ChoiceDialog<String> dialog = new ChoiceDialog<>(bundle.getString("combo_preset_prompt"), choices);
+            AccessibleChoiceDialog<String> dialog = new AccessibleChoiceDialog<>(bundle.getString("combo_preset_prompt"), choices);
             dialog.setTitle(bundle.getString("prompt_load_title"));
             dialog.setHeaderText(bundle.getString("prompt_load_header"));
             dialog.setContentText(bundle.getString("prompt_load_content"));
+            dialog.getChoiceBox().setAccessibleHelp(bundle.getString("prompt_load_content"));
             dialogUtil.styleDialog(dialog);
 
             GuiSvgPlott.getInstance().getRootFrameController().loading.set(true);

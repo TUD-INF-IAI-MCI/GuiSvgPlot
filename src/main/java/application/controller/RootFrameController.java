@@ -6,6 +6,7 @@ import application.controller.wizard.chart.ChartWizardFrameController;
 import application.model.Preset;
 import application.model.Settings;
 import application.service.PresetService;
+import application.util.dialog.AccessibleTextInputDialog;
 import application.util.DialogUtil;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -132,7 +133,7 @@ public class RootFrameController implements Initializable {
         if (svgWizardController != null) {
             Preset savedPreset = new Preset(svgWizardController.getGuiSvgOptions(), "tempName",
                     svgWizardController.getGuiSvgOptions().getDiagramType());
-            TextInputDialog nameDialogue = dialogUtil.textInputDialog("prompt_preset_name_title",
+            AccessibleTextInputDialog nameDialogue = dialogUtil.textInputDialog("prompt_preset_name_title",
                     "prompt_preset_name_header", "prompt_preset_name_content");
             String headerText = bundle.getString("prompt_preset_name_header");
             if (svgWizardController instanceof ChartWizardFrameController) {

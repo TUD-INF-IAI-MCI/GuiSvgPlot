@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import application.util.dialog.AccessibleChoiceDialog;
+import application.util.dialog.AccessibleTextInputDialog;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.slf4j.Logger;
@@ -37,12 +39,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
@@ -740,12 +740,13 @@ public class PresetsController extends SVGWizardController implements Initializa
         for (DiagramType diagramType : DiagramType.values()) {
             choices.add(diagramTypeUtil.toString(diagramType));
         }
-        ChoiceDialog<String> dialogue = new ChoiceDialog<>(diagramTypeUtil.toString(DiagramType.LineChart), choices);
+        AccessibleChoiceDialog<String> dialogue = new AccessibleChoiceDialog<>(diagramTypeUtil.toString(DiagramType.LineChart), choices);
 
         dialogue.setTitle(bundle.getString("prompt_diagramtype_title"));
         dialogue.setResizable(true);
         dialogue.setHeaderText(bundle.getString("prompt_diagramtype_header"));
         dialogue.setContentText(bundle.getString("prompt_diagramtype_content"));
+        dialogue.getChoiceBox().setAccessibleHelp(bundle.getString("prompt_diagramtype_content"));
         dialogUtil.styleDialog(dialogue);
 
         Optional<String> result = dialogue.showAndWait();
@@ -762,7 +763,7 @@ public class PresetsController extends SVGWizardController implements Initializa
      * @param dt {@link DiagramType} in order to know which flag to set
      */
     private void presetNamePrompt(DiagramType dt) {
-        TextInputDialog nameDialogue = dialogUtil.textInputDialog("prompt_preset_name_title",
+        AccessibleTextInputDialog nameDialogue = dialogUtil.textInputDialog("prompt_preset_name_title",
                 "prompt_preset_name_header", "prompt_preset_name_content");
 
         Optional<String> result = nameDialogue.showAndWait();

@@ -105,8 +105,10 @@ public class PresetService {
 				presetList = mapper.readValue(path.toFile(), new TypeReference<List<Preset>>() {
 				});
 			} catch (Exception e) {
-				logger.error(bundle.getString("load_presets_error") + " " + e.getMessage());
-				e.printStackTrace();
+				if (!e.getMessage().equals("No content to map due to end-of-input")) {
+					logger.error(bundle.getString("load_presets_error") + " " + e.getMessage());
+					e.printStackTrace();
+				}
 			}
 		return presetList;
 	}

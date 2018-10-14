@@ -3,9 +3,9 @@ package application.util;
 import java.util.ResourceBundle;
 
 import application.model.Settings;
+import application.util.dialog.AccessibleTextInputDialog;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Dialog;
-import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 
 /**
@@ -35,10 +35,11 @@ public class DialogUtil {
 	public Alert alert(final Alert.AlertType alertType, final String titleMsgStr, final String headerMsgStr,
 			final String contextMsgStr) {
 		Alert alert = new Alert(alertType);
-		alert.setTitle(bundle.getString(titleMsgStr));
+		// this is necessary for accessibility --> nvda only reads the title and OK-Button and ignores ohter elements
+		alert.setTitle(bundle.getString(titleMsgStr) + " " + bundle.getString(contextMsgStr));
 		alert.setHeaderText(bundle.getString(headerMsgStr));
 		alert.setContentText(bundle.getString(contextMsgStr));
-		alert.getDialogPane().setAccessibleHelp(bundle.getString(contextMsgStr));
+		alert.getDialogPane().setFocusTraversable(true);
 		styleDialog(alert);
 		return alert;
 	}
@@ -54,13 +55,13 @@ public class DialogUtil {
 		return alert;
 	}
 
-	public TextInputDialog textInputDialog(final String titleMsgStr, final String headerMsgStr,
-			final String contextMsgStr) {
-		TextInputDialog textInputDialog = new TextInputDialog();
+	public AccessibleTextInputDialog textInputDialog(final String titleMsgStr, final String headerMsgStr,
+													 final String contextMsgStr) {
+		AccessibleTextInputDialog textInputDialog = new AccessibleTextInputDialog();
 		textInputDialog.setTitle(bundle.getString(titleMsgStr));
 		textInputDialog.setHeaderText(bundle.getString(headerMsgStr));
 		textInputDialog.setContentText(bundle.getString(contextMsgStr));
-		textInputDialog.getDialogPane().setAccessibleHelp(bundle.getString(contextMsgStr));
+		textInputDialog.getTextField().setAccessibleHelp(bundle.getString(contextMsgStr));
 		styleDialog(textInputDialog);
 		return textInputDialog;
 	}
