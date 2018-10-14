@@ -17,7 +17,7 @@
         <bottom>
             <ButtonBar maxWidth="1.7976931348623157E308" prefHeight="40.0" BorderPane.alignment="CENTER">
                 <buttons>
-                    <Button fx:id="button_Back" accessibleText="Vorheriger Schritt" mnemonicParsing="false"
+                    <Button fx:id="button_back" accessibleText="Vorheriger Schritt" mnemonicParsing="false"
                             text="%button_back"
                             ButtonBar.buttonData="RIGHT">
                         <tooltip>

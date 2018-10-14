@@ -43,7 +43,7 @@
                     </menus>
                 </MenuBar>
                 <Label fx:id="label_Headline" maxWidth="1.7976931348623157E308" minWidth="200.0" styleClass="headline" text="%application_title"/>
-                <ScrollPane fx:id="scrollPane_message" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxWidth="1.7976931348623157E308" prefHeight="200.0" styleClass="messages_conatiner">
+                <ScrollPane fx:id="scrollPane_message" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxWidth="1.7976931348623157E308" prefHeight="200.0" styleClass="messages_container">
                     <content>
                         <VBox fx:id="vBox_messages" alignment="center" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="984.0" styleClass="p-0" AnchorPane.leftAnchor="0"
                               AnchorPane.rightAnchor="0">

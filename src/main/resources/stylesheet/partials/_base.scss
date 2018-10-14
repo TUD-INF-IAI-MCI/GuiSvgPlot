@@ -67,7 +67,6 @@ ChoiceBox, ComboBox,
   -fx-min-width: 50px;
   -fx-pref-height: 25px;
   -fx-focus-color: $tud-blue;
-  //-fx-faint-focus-color: transparentize($tud-blue, 0.5);
 
   .menu-item:focused {
     -fx-background-color: $tud-blue;
