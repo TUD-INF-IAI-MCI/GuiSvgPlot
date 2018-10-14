@@ -518,17 +518,17 @@ public class PresetsController extends SVGWizardController implements Initializa
 //            }
                 });
 
-        button_resetFirstLineStyle.setOnAction(event -> {
-            choiceBox_firstLineStyle.getSelectionModel().select(null);
-        });
+        button_resetFirstLineStyle.setOnAction(event ->
+            choiceBox_firstLineStyle.getSelectionModel().select(null)
+        );
         button_resetFirstLineStyle.getStyleClass().add("btn-reset");
-        button_resetSecondLineStyle.setOnAction(event -> {
-            choiceBox_secondLineStyle.getSelectionModel().select(null);
-        });
+        button_resetSecondLineStyle.setOnAction(event ->
+            choiceBox_secondLineStyle.getSelectionModel().select(null)
+        );
         button_resetSecondLineStyle.getStyleClass().add("btn-reset");
-        button_resetThirdLineStyle.setOnAction(event -> {
-            choiceBox_thirdLineStyle.getSelectionModel().select(null);
-        });
+        button_resetThirdLineStyle.setOnAction(event ->
+            choiceBox_thirdLineStyle.getSelectionModel().select(null)
+        );
         button_resetThirdLineStyle.getStyleClass().add("btn-reset");
     }
 
@@ -876,7 +876,7 @@ public class PresetsController extends SVGWizardController implements Initializa
      * three columns (name, date, diagramtype) and another three for
      * edit/copy/delete buttons *
      *
-     * @param preset
+     * @param preset the {@link Preset}
      * @return the {@link HBox}
      */
     private HBox generateTableEntry(final Preset preset) {
@@ -983,9 +983,9 @@ public class PresetsController extends SVGWizardController implements Initializa
         Glyph removeGlyph = new Glyph("FontAwesome", FontAwesome.Glyph.TRASH);
         removeButton.setGraphic(removeGlyph);
         removeButton.setTooltip(new Tooltip(this.bundle.getString("preset_remove")));
-        removeButton.setOnAction(event -> {
-            deleteConfirmationAlert(preset);
-        });
+        removeButton.setOnAction(event ->
+            deleteConfirmationAlert(preset)
+        );
 
         row.getChildren().addAll(nameField, creationDateField, diagramTypeField, editButton, copyButton, removeButton);
         row.setFocusTraversable(true);
@@ -1019,8 +1019,6 @@ public class PresetsController extends SVGWizardController implements Initializa
         if (choiceBox_size.getSelectionModel().getSelectedItem().equals(PageSize.CUSTOM)) {
             double custom_height = Double.parseDouble(textField_customSizeHeight.getText());
             double custom_width = Double.parseDouble(textField_customSizeWidth.getText());
-            System.out.println(custom_width);
-            System.out.println(custom_height);
             editor_options.setSize(new Point(custom_height, custom_width));
         } else {
             editor_options.setSize(
@@ -1038,15 +1036,15 @@ public class PresetsController extends SVGWizardController implements Initializa
                 }
                 break;
             case BarChart:
-                editor_options.setBarAccumulationStyle((BarAccumulationStyle) choiceBox_baraccumulation.getSelectionModel().getSelectedItem());
-                editor_options.setSortingType((SortingType) choiceBox_sorting.getSelectionModel().getSelectedItem());
-                editor_options.setSortOrder((SortOrder) choiceBox_sortOrder.getSelectionModel().getSelectedItem());
+                editor_options.setBarAccumulationStyle(choiceBox_baraccumulation.getSelectionModel().getSelectedItem());
+                editor_options.setSortingType(choiceBox_sorting.getSelectionModel().getSelectedItem());
+                editor_options.setSortOrder(choiceBox_sortOrder.getSelectionModel().getSelectedItem());
                 break;
             case LineChart:
                 ObservableList<LineStyle> line_styles = FXCollections.observableArrayList();
-                line_styles.add((LineStyle) choiceBox_secondLineStyle.getSelectionModel().getSelectedItem());
-                line_styles.add((LineStyle) choiceBox_thirdLineStyle.getSelectionModel().getSelectedItem());
-                line_styles.add((LineStyle) choiceBox_firstLineStyle.getSelectionModel().getSelectedItem());
+                line_styles.add(choiceBox_secondLineStyle.getSelectionModel().getSelectedItem());
+                line_styles.add(choiceBox_thirdLineStyle.getSelectionModel().getSelectedItem());
+                line_styles.add(choiceBox_firstLineStyle.getSelectionModel().getSelectedItem());
                 editor_options.setLineStyles(line_styles);
                 break;
             case ScatterPlot:
@@ -1071,8 +1069,7 @@ public class PresetsController extends SVGWizardController implements Initializa
                             break;
                     }
                     editor_options.setTrendLine(trendline_list);
-                    editor_options.setHideOriginalPoints(
-                            (VisibilityOfDataPoints) choiceBox_hide_original_points.getSelectionModel().getSelectedItem());
+                    editor_options.setHideOriginalPoints(choiceBox_hide_original_points.getSelectionModel().getSelectedItem());
                     break;
                 }
         }
@@ -1102,14 +1099,14 @@ public class PresetsController extends SVGWizardController implements Initializa
         }
 
         // Stage 5: special
-        editor_options.setGridStyle((GridStyle) choiceBox_gridStyle.getSelectionModel().getSelectedItem());
+        editor_options.setGridStyle(choiceBox_gridStyle.getSelectionModel().getSelectedItem());
         if (textField_helpLinesX.getText() != null && !textField_helpLinesX.getText().isEmpty()) {
             editor_options.setxLines(textField_helpLinesX.getText());
         }
         if (textField_helpLinesY.getText() != null && !textField_helpLinesY.getText().isEmpty()) {
             editor_options.setyLines(textField_helpLinesY.getText());
         }
-        editor_options.setAxisStyle((GuiAxisStyle) choiceBox_dblaxes.getSelectionModel().getSelectedItem());
+        editor_options.setAxisStyle(choiceBox_dblaxes.getSelectionModel().getSelectedItem());
 
         // Stage 6: display
         if (choiceBox_cssType.getSelectionModel().getSelectedItem().equals(CssType.CUSTOM)) {
@@ -1188,8 +1185,6 @@ public class PresetsController extends SVGWizardController implements Initializa
                 }
                 if (options.getHideOriginalPoints() == VisibilityOfDataPoints.HIDE) {
                     choiceBox_hide_original_points.getSelectionModel().select(0);
-                } else {
-                    // TODO
                 }
                 break;
             case ScatterPlot:
@@ -1361,13 +1356,11 @@ public class PresetsController extends SVGWizardController implements Initializa
                 + bundle.getString("alert_preset_delete_content2"));
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             this.presetService.delete(p);
             super.presets.remove(p);
             hideAllEditors();
             overviewDisplayer();
-        } else {
-            // ... user chose CANCEL or closed the dialog, hence do nothing
         }
     }
 
