@@ -853,7 +853,7 @@ public class SVGWizardController implements Initializable {
     private static void fixBlurryText(Node node) {
         try {
             @SuppressWarnings("restriction")
-            Field field = com.sun.javafx.scene.control.skin.ScrollPaneSkin.class.getDeclaredField("viewRect");
+            Field field = javafx.scene.control.skin.ScrollPaneSkin.class.getDeclaredField("viewRect");
             field.setAccessible(true);
 
             ScrollPane scrollPane = (ScrollPane) node.lookup(".scroll-pane");
