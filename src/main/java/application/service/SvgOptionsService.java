@@ -2,16 +2,25 @@ package application.service;
 
 import application.GuiSvgPlott;
 import application.model.GuiSvgOptions;
+import application.model.OutputGenerator;
+import de.tudresden.inf.mci.brailleplot.GeneralResource;
+import de.tudresden.inf.mci.brailleplot.configparser.ConfigurationParsingException;
+import de.tudresden.inf.mci.brailleplot.configparser.ConfigurationValidationException;
+import de.tudresden.inf.mci.brailleplot.layout.InsufficientRenderingAreaException;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker;
+import javafx.scene.control.Alert;
+import javafx.scene.layout.Region;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import tud.tangram.svgplot.options.DiagramType;
+import tud.tangram.svgplot.options.SvgOptions;
 import tud.tangram.svgplot.options.SvgPlotOptions;
 import tud.tangram.svgplot.plotting.point.PointSymbol;
 import tud.tangram.svgplot.svgcreator.SvgCreator;
@@ -19,12 +28,11 @@ import tud.tangram.svgplot.svgcreator.SvgCreator;
 import javax.xml.bind.ValidationException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -35,7 +43,9 @@ import java.util.ResourceBundle;
 public class SvgOptionsService {
     private static final Logger logger = LoggerFactory.getLogger(SvgOptionsService.class);
     private static final SvgOptionsService INSTANCE = new SvgOptionsService();
+    private static final BraillePlotService brlplot = new BraillePlotService();
     private ResourceBundle bundle;
+    private boolean webViewZoomUpdated = false;
 
     private SvgOptionsService() {
     }
@@ -48,9 +58,10 @@ public class SvgOptionsService {
     /**
      * Builds the Svg.
      *
-     * @param svgPlotOptions the {@link SvgPlotOptions}
+     * @param guiSvgOptions the {@link GuiSvgOptions}
      */
-    public void buildSVG(SvgPlotOptions svgPlotOptions) throws ValidationException {
+    public void buildSVG(GuiSvgOptions guiSvgOptions) throws ValidationException {
+        SvgPlotOptions svgPlotOptions = guiSvgOptions.getOptions();
         if (!this.isSvgPlottOptionsValid(svgPlotOptions)) {
             throw new ValidationException("The SvgPlottOptions are not valid!");
         }
@@ -58,11 +69,77 @@ public class SvgOptionsService {
         svgPlotOptions.finalizeOptions();
 
         try {
-            SvgCreator creator = svgPlotOptions.getDiagramType().getInstance(svgPlotOptions);
-            creator.run();
-            logger.info(this.bundle.getString("chart_creation_success_message") + " " + svgPlotOptions.getOutput());
+
+            // If BraillePlot is selected as generator
+            if (guiSvgOptions.getOutputGenerator().equals(OutputGenerator.BraillePlot)) {
+                logger.info(bundle.getString("info_functionality_restricted"));
+
+                if (!brlplot.isInitialized()) {
+                    brlplot.initialize();
+                }
+
+                if (!guiSvgOptions.getCsvPath().isEmpty()) {
+                    if (!guiSvgOptions.getBrlPlotPrint() && !guiSvgOptions.getBrlPlotSvgExport() && !guiSvgOptions.getBrlPlotTextDump()) {
+                        Alert missingPrinter = new Alert(Alert.AlertType.WARNING);
+                        missingPrinter.setTitle(this.bundle.getString("brailleplot_no_action"));
+                        missingPrinter.setHeaderText(this.bundle.getString("brailleplot_no_output_generated"));
+                        missingPrinter.setContentText(this.bundle.getString("brailleplot_please_select_action"));
+                        missingPrinter.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                        missingPrinter.showAndWait();
+                        return;
+                    }
+                    brlplot.configure(guiSvgOptions.getBrlPlotConfig().getAbsolutePath());
+                    brlplot.processInput(svgPlotOptions);
+                    if (guiSvgOptions.getBrlPlotPrint()) {
+                        String targetDeviceName = brlplot.print();
+                        logger.info(this.bundle.getString("brailleplot_print_message") + ": " + targetDeviceName);
+                    }
+                    FileChooser fc = new FileChooser();
+                    File initialDir = new File(System.getProperty("user.home"));
+                    String initialName = (guiSvgOptions.getTitle().isEmpty() ? "untitled" : guiSvgOptions.getTitle()).toLowerCase();
+                    if (guiSvgOptions.getBrlPlotSvgExport()) {
+                        fc.setInitialDirectory(initialDir);
+                        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Scalable Vector Graphics (SVG)", "*.svg"));
+                        fc.setInitialFileName(initialName + ".svg");
+                        File file = fc.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
+                        if (file != null) {
+                            String svgPath = file.getAbsolutePath();
+                            String svgLegendPath = svgPath.substring(0, svgPath.length() - 4) + "_legend.svg";
+                            brlplot.svgExport(svgPath, svgLegendPath);
+                            logger.info(this.bundle.getString("brailleplot_svg_export_message") + ": " + file.getAbsolutePath());
+                            initialDir = file.getParentFile(); // save location for txt dump
+                        }
+                    }
+                    if (guiSvgOptions.getBrlPlotTextDump()) {
+                        fc.setInitialDirectory(initialDir);
+                        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Dump", "*.bin"));
+                        fc.setInitialFileName(initialName + ".txt");
+                        File file = fc.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
+                        if (file != null) {
+                            String txtPath = file.getAbsolutePath();
+                            String txtLegendPath = txtPath.substring(0, txtPath.length() - 4) + "_legend.txt";
+                            logger.info(this.bundle.getString("brailleplot_text_dump_message") + ": " + file.getAbsolutePath());
+                            brlplot.textDump(txtPath, txtLegendPath);
+                        }
+                    }
+                }
+            }
+
+            // If SvgPlot is selected as generator
+            if (guiSvgOptions.getOutputGenerator().equals(OutputGenerator.SvgPlot)) {
+                SvgCreator creator = svgPlotOptions.getDiagramType().getInstance(svgPlotOptions);
+                creator.run();
+                logger.info(this.bundle.getString("chart_creation_success_message") + " " + svgPlotOptions.getOutput());
+            }
+        } catch (BraillePlotService.PrinterNotInstalledException e) {
+            Alert missingPrinter = new Alert(Alert.AlertType.ERROR);
+            missingPrinter.setTitle(this.bundle.getString("brailleplot_printer_not_installed"));
+            missingPrinter.setHeaderText(this.bundle.getString("brailleplot_no_printer_with_name") + ": '" + e.getDeviceName() + "'");
+            missingPrinter.setContentText(this.bundle.getString("brailleplot_check_config_printer_name") + ": " + guiSvgOptions.getBrlPlotConfig().getAbsolutePath());
+            missingPrinter.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            missingPrinter.showAndWait();
         } catch (Exception e) {
-            logger.error(this.bundle.getString("chart_creation_error"));
+            logger.error(this.bundle.getString("chart_creation_error") + " " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -85,13 +162,34 @@ public class SvgOptionsService {
         Path svgPath = Paths.get(System.getProperty("user.home") + "//svgPlot/svg.svg");
         Path legendPath = Paths.get(System.getProperty("user.home") + "//svgPlot/svg_legend.svg");
 
+        svgPath.toFile().delete();
+        legendPath.toFile().delete();
+
         File svg = new File(svgPath.toString());
         svgPlotOptions.setOutput(svg);
         svgPlotOptions.finalizeOptions();
 
         try {
-            SvgCreator creator = svgPlotOptions.getDiagramType().getInstance(svgPlotOptions);
-            creator.run();
+            // If BraillePlot is selected as generator
+            if (guiSvgOptions.getOutputGenerator().equals(OutputGenerator.BraillePlot)) {
+                logger.info(bundle.getString("info_functionality_restricted"));
+
+                if (!brlplot.isInitialized()) {
+                    brlplot.initialize();
+                }
+
+                if (Objects.nonNull(guiSvgOptions.getCsvPath()) && !guiSvgOptions.getCsvPath().isEmpty()) {
+                    brlplot.configure(guiSvgOptions.getBrlPlotConfig().getAbsolutePath());
+                    brlplot.processInput(svgPlotOptions);
+                    brlplot.svgExport(svgPath.toString(), legendPath.toString());
+                }
+            }
+
+            // If SvgPlot is selected as generator
+            if (guiSvgOptions.getOutputGenerator().equals(OutputGenerator.SvgPlot)) {
+                SvgCreator creator = svgPlotOptions.getDiagramType().getInstance(svgPlotOptions);
+                creator.run();
+            }
 
             guiSvgOptions.updatePointSpecificOptions();
 
@@ -130,11 +228,13 @@ public class SvgOptionsService {
                 }
             }
             sb.append("</svg>");
+            webViewZoomUpdated = false;
 
             WebEngine webEngine = webView_svg.getEngine();
             webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
-                if (newState == Worker.State.SUCCEEDED) {
+                if (newState == Worker.State.SUCCEEDED && !webViewZoomUpdated) {
                     adjustScaleOfWebView(webView_svg);
+                    webViewZoomUpdated = true;
                 }
             });
 
@@ -143,9 +243,14 @@ public class SvgOptionsService {
 //            webView_svg.requestFocus();
 
             // accessibility
-            Path descPath = Paths.get(svg.getParentFile().getPath() + "/" + svg.getName().replace(".svg", "_desc.html"));
-            String description = loadDescription(descPath.toString());
-            webView_svg.setAccessibleHelp(bundle.getString("preview") + ": " + description);
+            if (guiSvgOptions.getOutputGenerator().equals(OutputGenerator.SvgPlot)) {
+                Path descPath = Paths.get(svg.getParentFile().getPath() + "/" + svg.getName().replace(".svg", "_desc.html"));
+                String description = loadDescription(descPath.toString());
+                webView_svg.setAccessibleHelp(bundle.getString("preview") + ": " + description);
+            } else {
+                webView_svg.setAccessibleHelp(bundle.getString("preview"));
+            }
+
             // reset zoom
             ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
                 adjustScaleOfWebView(webView_svg);
@@ -154,11 +259,23 @@ public class SvgOptionsService {
             window.widthProperty().addListener(stageSizeListener);
             window.heightProperty().addListener(stageSizeListener);
 
+        } catch (BraillePlotService.LibLouisLibraryMissingException e) {
+            logger.error(this.bundle.getString("liblouis_missing") + " '" + System.getProperty("jna.library.path") + "'");
+            e.printStackTrace();
+        } catch (InsufficientRenderingAreaException e) {
+            logger.error(this.bundle.getString("brailleplot_insufficient_area") + ": " + e.getMessage());
+            e.printStackTrace();
+        } catch (IllegalStateException | ConfigurationValidationException | ConfigurationParsingException e) {
+            logger.error(this.bundle.getString("brailleplot_config_error") + ": " + e.getMessage());
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            logger.warn(this.bundle.getString("no_output_generated"));
         } catch (ClassCastException e) {
             logger.warn(this.bundle.getString("preview_pointlist_warning"));
         } catch (NullPointerException e){
             if (svgPlotOptions.getDiagramType().equals(DiagramType.BarChart)){
                 logger.error(this.bundle.getString("preview_barchart_error"));
+                e.printStackTrace();
             } else {
                 logger.error(this.bundle.getString("preview_load_error") + " " + e.getClass());
                 e.printStackTrace();
@@ -210,7 +327,8 @@ public class SvgOptionsService {
      * @param webView the {@link WebView}
      */
     private void adjustScaleOfWebView(WebView webView) {
-        webView.setZoom(1.0);
+        double currentZoom = webView.getZoom();
+        //webView.setZoom(1.0); WHY???
         WebEngine webEngine = webView.getEngine();
         //http://endmemo.com/sconvert/millimeterpixel.php
         double oneMMinPixel = 3.779528;
@@ -236,7 +354,9 @@ public class SvgOptionsService {
                 zoom = docWidth / webViewWidth;
             }
         }
-        webView.setZoom(zoom);
+        if (zoom != currentZoom) {
+            webView.setZoom(zoom);
+        }
     }
 
     public static String getLoggerName() {

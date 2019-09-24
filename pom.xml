@@ -69,7 +69,24 @@
             <version>2.3.1</version>
         </dependency>
 
+        <!-- before you can include this subproject, you have to install the jar
+            into local Maven repository:
 
+            mvn install:install-file -Dfile=brailleplot.jar -DgroupId=de.tudresden.inf.mci.brailleplot -DartifactId=brailleplot -Dversion=2019-09-06 -Dpackaging=jar
+
+            you can get the brailleplot.jar from: https://gitlab.hrz.tu-chemnitz.de/s9444737%2D%2Dtu-dresden.de/brailleplot
+        -->
+        <dependency>
+            <groupId>de.tudresden.inf.mci.brailleplot</groupId>
+            <artifactId>brailleplot</artifactId>
+            <version>2019-09-06</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liblouis</groupId>
+            <artifactId>liblouis-java</artifactId>
+            <version>4.2.0</version>
+        </dependency>
 
         <!-- before you can include this subproject, you have to install the jar
             into local Maven repository:

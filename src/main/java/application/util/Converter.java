@@ -1,7 +1,9 @@
 package application.util;
 
+import application.model.BrlPlotMode;
 import application.model.DataSet;
 import application.model.Options.*;
+import application.model.OutputGenerator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.StringConverter;
@@ -16,6 +18,7 @@ import tud.tangram.svgplot.plotting.texture.Texture;
 import tud.tangram.svgplot.styles.BarAccumulationStyle;
 import tud.tangram.svgplot.styles.GridStyle;
 
+import java.io.File;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -263,6 +266,68 @@ public class Converter {
                     }
                 }
                 return outputDevice;
+            }
+        };
+    }
+
+    /*
+    TODO: Document extension in the converter
+    - a new string converter for the OutputGenerator enum was added (translates enum value to selected language)
+    - also see the extension in the resource bundle language files, were the outputGenerator names were defined
+     */
+    public StringConverter<OutputGenerator> getOutputGeneratorStringConverter() {
+        return new StringConverter<OutputGenerator>() {
+            @Override
+            public String toString(OutputGenerator outputGenerator) {
+                return bundle.getString("outputGenerator_" + outputGenerator.toString().toLowerCase());
+            }
+
+            @Override
+            public OutputGenerator fromString(String string) {
+                OutputGenerator outputGenerator = OutputGenerator.SvgPlot;
+                for (OutputGenerator generator : FXCollections.observableArrayList(OutputGenerator.values())) {
+                    if (this.toString(generator).equals(string)) {
+                        outputGenerator = generator;
+                    }
+                }
+                return outputGenerator;
+            }
+        };
+    }
+
+    public StringConverter<File> getFileStringConverter() {
+        return new StringConverter<File>() {
+            @Override
+            public String toString(File file) {
+                String name = file.getName();
+                String[] parts = name.split("\\.");
+                String ext = parts[parts.length - 1];
+                return name.substring(0, name.length() - (ext.length() + 1)).toUpperCase();
+            }
+
+            @Override
+            public File fromString(String string) {
+                return new File(string);
+            }
+        };
+    }
+
+    public StringConverter<BrlPlotMode> getBrlPlotModeStringConverter() {
+        return new StringConverter<BrlPlotMode>() {
+            @Override
+            public String toString(BrlPlotMode brlPlotMode) {
+                return bundle.getString("brlPlotMode_" + brlPlotMode.toString().toLowerCase());
+            }
+
+            @Override
+            public BrlPlotMode fromString(String string) {
+                BrlPlotMode brlPlotMode = BrlPlotMode.DefaultPrinter;
+                for (BrlPlotMode mode : FXCollections.observableArrayList(BrlPlotMode.values())) {
+                    if (this.toString(mode).equals(string)) {
+                        brlPlotMode = mode;
+                    }
+                }
+                return brlPlotMode;
             }
         };
     }

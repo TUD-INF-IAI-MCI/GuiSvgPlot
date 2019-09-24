@@ -1,19 +1,25 @@
 package application.controller.wizard.chart;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
+import application.model.BrlPlotMode;
+import application.model.OutputGenerator;
 import application.util.dialog.AccessibleTextInputDialog;
+import de.tudresden.inf.mci.brailleplot.GeneralResource;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.slf4j.Logger;
@@ -40,14 +46,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.AccessibleRole;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -107,6 +105,8 @@ public class ChartWizardFrameController extends SVGWizardController {
     private ChoiceBox<DataSet> choiceBox_DataSets;
 
     /* stage 3 */
+    @FXML
+    private Text text_stage3_not_supported;
     @FXML
     private GridPane stage3;
     @FXML
@@ -212,9 +212,15 @@ public class ChartWizardFrameController extends SVGWizardController {
 
     /* stage 5 */
     @FXML
+    private Text text_stage5_not_supported;
+    @FXML
     private GridPane stage5;
+    @FXML
+    private Label label_dblaxes;
 
     /* stage 6 */
+    @FXML
+    private Text text_stage6_not_supported;
     @FXML
     private GridPane stage6;
     /* End: FXML Nodes */
@@ -268,12 +274,173 @@ public class ChartWizardFrameController extends SVGWizardController {
     }
 
     /**
+     * Help function to switch visibility for multiple nodes.
+     * @param nodes An array of nodes to perform the action on.
+     * @param visible The new visibility state.
+     */
+    private void setVisibilityForNodes(Node[] nodes, boolean visible) {
+        for (Node node : nodes) {
+            node.setVisible(visible);
+        }
+    }
+
+    /**
+     * Help function to disable/enable multiple nodes.
+     * @param nodes An array of nodes to perform the action on.
+     * @param disable The new disable state.
+     */
+    private void setDisableForNodes(Node[] nodes, boolean disable) {
+        for (Node node : nodes) {
+            node.setDisable(disable);
+        }
+    }
+
+    /**
+     * Help function to update the visibility and status of different controls in the UI
+     * which must be disabled / enabled based on the selected output generator
+     */
+    private void updateSupportedGeneratorFeatures() {
+
+        System.out.println("Feature restriction");
+
+        OutputGenerator gen = guiSvgOptions.getOutputGenerator();
+        boolean useBraillePlot = gen.equals(OutputGenerator.BraillePlot);
+
+        if (useBraillePlot) {
+            // Set default before disabling
+            choiceBox_outputDevice.getSelectionModel().select(0);
+            choiceBox_baraccumulation.getSelectionModel().select(1);
+            choiceBox_trendline.getSelectionModel().select(0);
+            toggleGroup_autoScale.selectToggle(radioBtn_autoscale);
+            choicebox_gridStyle.getSelectionModel().select(0);
+            choicebox_dblaxes.getSelectionModel().select(1);
+            choiceBox_cssType.getSelectionModel().select(0);
+            choiceBox_sorting.getSelectionModel().select(3);
+            textField_xlines.clear();
+            textField_ylines.clear();
+        }
+
+        // Enable/Disable (un)supported features:
+        setDisableForNodes(
+                new Node[]{
+                        choiceBox_outputDevice, choiceBox_baraccumulation, radioBtn_customScale,
+                        choiceBox_linepoints, choiceBox_trendline, choiceBox_sorting,
+                        choicebox_gridStyle, textField_xlines, textField_ylines,
+                        choiceBox_cssType, hBox_cssPath
+                },
+                useBraillePlot
+        );
+        setVisibilityForNodes(
+                new Node[]{
+                        choiceBox_outputDevice, label_firstTexture, label_secondTexture, label_thirdTexture,
+                        choiceBox_firstTexture, choiceBox_secondTexture, choiceBox_thirdTexture,
+                        button_resetFirstTexture, button_resetSecondTexture, button_resetThirdTexture,
+                        label_firstLineStyle, label_secondLineStyle, label_thirdLineStyle,
+                        choiceBox_firstLineStyle, choiceBox_secondLineStyle, choiceBox_thirdLineStyle,
+                        button_resetFirstLineStyle, button_resetSecondLineStyle, button_resetThirdLineStyle,
+                        label_dblaxes, choicebox_dblaxes
+                },
+                !useBraillePlot
+        );
+        setVisibilityForNodes(
+                new Node[]{
+                        choiceBox_brlPlotConfig, label_brailleplot_actions, checkbox_brlplot_print,
+                        checkbox_brlplot_svgexport, checkbox_brlplot_textdump,
+                        text_stage3_not_supported, text_stage5_not_supported, text_stage6_not_supported
+                },
+                useBraillePlot
+        );
+
+        if (!Objects.isNull(pointSymbolInputs)) {
+            // only do this after full initialization
+            pointSymbolInputs.forEach((label, hBox) -> {
+                label.setVisible(!useBraillePlot);
+                hBox.setVisible(!useBraillePlot);
+            });
+        }
+
+        if (!useBraillePlot) {
+            // re-enable & update all specific options for selected type, in case of unrestricted feature support
+            toggleBarChartOptions(guiSvgOptions.getDiagramType() == DiagramType.BarChart);
+            toggleLineChartOptions(guiSvgOptions.getDiagramType() == DiagramType.LineChart);
+            toggleScatterPlotOptions(guiSvgOptions.getDiagramType() == DiagramType.ScatterPlot);
+        }
+    }
+
+    /**
      * Will initiate the first stage. Depending on {@code extended}, some parts will
      * be dis- or enabled.
      */
     private void initStage1() {
 
         super.initGeneralFieldListeners();
+
+        /*
+        TODO: Document Extensions to the ChartWizardFrameController in Stage 1
+        - initialization for generator choice box (essentially the same as GuiSvgPlot already does it for the outputDevice choice box)
+        - init for brlplot output mode
+        */
+
+        // output generator
+        ObservableList<OutputGenerator> outputGenerators = FXCollections.observableArrayList(OutputGenerator.values());
+        choiceBox_outputGenerator.setItems(outputGenerators);
+        choiceBox_outputGenerator.setConverter(converter.getOutputGeneratorStringConverter()); // for lang accessibility
+        choiceBox_outputGenerator.getSelectionModel().select(0); // set first entry (enum ordinal 0 = SvgPlot) as default
+        choiceBox_outputGenerator.getSelectionModel().selectedItemProperty() // add listener
+                .addListener((observable, oldValue, newValue) -> {
+                    this.guiSvgOptions.setOutputGenerator(newValue);
+                    updateSupportedGeneratorFeatures();
+                });
+
+        // brailleplot config
+        ArrayList<File> fileList = new ArrayList<>();
+        Path printerDirPath = Paths.get(System.getProperty("user.home") + "/svgPlot/braillePlot/printers");
+        File printerDir = printerDirPath.toFile();
+        printerDir.mkdirs();
+        File[] filesFound;
+        filesFound = Objects.requireNonNull(printerDir.listFiles((dir, name) -> name.endsWith(".properties")));
+        if (filesFound.length < 1) {
+            logger.info("Exporting printer configuration files.");
+            try {
+                if(printerDir.exists()) {
+                    printerDir.delete();
+                }
+                Files.move(GeneralResource.getOrExportResourceFile("brlPlotDeploy/printers/").toPath(), printerDirPath);
+            } catch (IOException e) {
+                logger.error("Can not export printer configuration files.", e);
+                e.printStackTrace();
+            }
+            filesFound = printerDir.listFiles((dir, name) -> name.endsWith(".properties"));
+        }
+        fileList.addAll(Arrays.asList(filesFound));
+        ObservableList<File> configFiles = FXCollections.observableArrayList(fileList);
+        choiceBox_brlPlotConfig.setItems(configFiles);
+        choiceBox_brlPlotConfig.setConverter(converter.getFileStringConverter());
+        guiSvgOptions.setBrlPlotConfig(fileList.get(0));
+        choiceBox_brlPlotConfig.getSelectionModel().select(0);
+        choiceBox_brlPlotConfig.getSelectionModel().selectedItemProperty() // add listener
+                .addListener((observable, oldValue, newValue) -> this.guiSvgOptions.setBrlPlotConfig(newValue));
+
+        // brailleplot actions
+        checkbox_brlplot_print.setSelected(true);
+        checkbox_brlplot_print.selectedProperty().addListener((observableValue, oldValue, newValue) -> guiSvgOptions.setBrlPlotPrint(newValue));
+        checkbox_brlplot_textdump.setSelected(false);
+        checkbox_brlplot_textdump.selectedProperty().addListener((observableValue, oldValue, newValue) -> guiSvgOptions.setBrlPlotTextDump(newValue));
+        checkbox_brlplot_svgexport.setSelected(false);
+        checkbox_brlplot_svgexport.selectedProperty().addListener((observableValue, oldValue, newValue) -> guiSvgOptions.setBrlPlotSvgExport(newValue));
+
+        /*
+        // brailleplot mode
+        ObservableList<BrlPlotMode> brlPlotModes = FXCollections.observableArrayList(BrlPlotMode.values());
+        choiceBox_brlPlotOutputMode.setItems(brlPlotModes);
+        choiceBox_brlPlotOutputMode.setConverter(converter.getBrlPlotModeStringConverter()); // for lang accessibility
+        choiceBox_brlPlotOutputMode.getSelectionModel().select(0); // set first entry (enum ordinal 0 = DefaultPrinter) as default
+        choiceBox_brlPlotOutputMode.getSelectionModel().selectedItemProperty() // add listener
+                .addListener((observable, oldValue, newValue) -> this.guiSvgOptions.setBrlPlotMode(newValue));
+         */
+
+        // automatically apply feature restriction on update
+        guiSvgOptions.onUpdate((options) -> this.updateSupportedGeneratorFeatures());
 
         // diagram type
         ObservableList<DiagramType> diagramTypeObservableList = FXCollections.observableArrayList(DiagramType.values());
@@ -291,6 +458,9 @@ public class ChartWizardFrameController extends SVGWizardController {
                         toggleBarChartOptions(newValue == DiagramType.BarChart);
                         toggleLineChartOptions(newValue == DiagramType.LineChart);
                         toggleScatterPlotOptions(newValue == DiagramType.ScatterPlot);
+
+                        // Need to recheck feature support that may have been toggled in the step before
+                        updateSupportedGeneratorFeatures();
                     }
                 });
         this.choiceBox_diagramType.getSelectionModel().select(0);
@@ -982,8 +1152,11 @@ public class ChartWizardFrameController extends SVGWizardController {
 
         this.guiSvgOptions.csvPathProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    if (!dataSets.isEmpty() && !dataSets.get(0).getAllPoints().isEmpty())
+                    if (!dataSets.isEmpty() && !dataSets.get(0).getAllPoints().isEmpty()) {
+                        System.out.println("Calling build preview");
                         svgOptionsService.buildPreviewSVG(guiSvgOptions, webView_svg);
+                        System.out.println("Build preview finished");
+                    }
                 });
 
         this.guiSvgOptions.hideOriginalPointsProperty().addListener((observable, oldValue, newValue) -> {
@@ -1006,7 +1179,10 @@ public class ChartWizardFrameController extends SVGWizardController {
         this.guiSvgOptions.diagramTypeProperty().addListener((observable, oldValue, newValue) -> {
             this.choiceBox_diagramType.getSelectionModel().select(newValue);
         });
-        this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions,
+        /*
+        TODO: Document extension of listener: preview update on generator or config change
+         */
+        this.choiceBoxUtil.addReloadPreviewOnChangeListener(this.webView_svg, this.guiSvgOptions, choiceBox_outputGenerator, choiceBox_brlPlotConfig,
                 this.choiceBox_diagramType, this.choiceBox_baraccumulation, this.choiceBox_firstTexture,
                 this.choiceBox_secondTexture, this.choiceBox_thirdTexture, this.choicebox_dblaxes,
                 this.choiceBox_firstLineStyle, this.choiceBox_secondLineStyle, this.choiceBox_thirdLineStyle,

@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -14,6 +15,7 @@ import application.controller.SettingsDialogController;
 import application.infrastructure.UTF8Control;
 import application.model.Settings;
 import application.util.DialogUtil;
+import de.tudresden.inf.mci.brailleplot.GeneralResource;
 import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
