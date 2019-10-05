@@ -15,7 +15,6 @@ import application.controller.SettingsDialogController;
 import application.infrastructure.UTF8Control;
 import application.model.Settings;
 import application.util.DialogUtil;
-import de.tudresden.inf.mci.brailleplot.GeneralResource;
 import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;

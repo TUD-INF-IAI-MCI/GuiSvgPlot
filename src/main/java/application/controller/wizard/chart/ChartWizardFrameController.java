@@ -1,7 +1,6 @@
 package application.controller.wizard.chart;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -11,12 +10,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
-import application.model.BrlPlotMode;
 import application.model.OutputGenerator;
 import application.util.dialog.AccessibleTextInputDialog;
-import de.tudresden.inf.mci.brailleplot.GeneralResource;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import de.tudresden.inf.mci.brailleplot.util.GeneralResource;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;

@@ -3,10 +3,10 @@ package application.service;
 import application.GuiSvgPlott;
 import application.model.GuiSvgOptions;
 import application.model.OutputGenerator;
-import de.tudresden.inf.mci.brailleplot.GeneralResource;
 import de.tudresden.inf.mci.brailleplot.configparser.ConfigurationParsingException;
 import de.tudresden.inf.mci.brailleplot.configparser.ConfigurationValidationException;
 import de.tudresden.inf.mci.brailleplot.layout.InsufficientRenderingAreaException;
+import de.tudresden.inf.mci.brailleplot.rendering.LiblouisBrailleTextRasterizer;
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Worker;
 import javafx.scene.control.Alert;
@@ -106,19 +106,19 @@ public class SvgOptionsService {
                             String svgPath = file.getAbsolutePath();
                             String svgLegendPath = svgPath.substring(0, svgPath.length() - 4) + "_legend.svg";
                             brlplot.svgExport(svgPath, svgLegendPath);
-                            logger.info(this.bundle.getString("brailleplot_svg_export_message") + ": " + file.getAbsolutePath());
+                            logger.info(this.bundle.getString("brailleplot_svg_export_message") + file.getParentFile().getAbsolutePath());
                             initialDir = file.getParentFile(); // save location for txt dump
                         }
                     }
                     if (guiSvgOptions.getBrlPlotTextDump()) {
                         fc.setInitialDirectory(initialDir);
                         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Dump", "*.bin"));
-                        fc.setInitialFileName(initialName + ".txt");
+                        fc.setInitialFileName(initialName + ".bin");
                         File file = fc.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
                         if (file != null) {
                             String txtPath = file.getAbsolutePath();
-                            String txtLegendPath = txtPath.substring(0, txtPath.length() - 4) + "_legend.txt";
-                            logger.info(this.bundle.getString("brailleplot_text_dump_message") + ": " + file.getAbsolutePath());
+                            String txtLegendPath = txtPath.substring(0, txtPath.length() - 4) + "_legend.bin";
+                            logger.info(this.bundle.getString("brailleplot_text_dump_message") + file.getParentFile().getAbsolutePath());
                             brlplot.textDump(txtPath, txtLegendPath);
                         }
                     }
@@ -259,7 +259,7 @@ public class SvgOptionsService {
             window.widthProperty().addListener(stageSizeListener);
             window.heightProperty().addListener(stageSizeListener);
 
-        } catch (BraillePlotService.LibLouisLibraryMissingException e) {
+        } catch (LiblouisBrailleTextRasterizer.LibLouisLibraryMissingException e) {
             logger.error(this.bundle.getString("liblouis_missing") + " '" + System.getProperty("jna.library.path") + "'");
             e.printStackTrace();
         } catch (InsufficientRenderingAreaException e) {
