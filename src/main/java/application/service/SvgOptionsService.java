@@ -106,7 +106,7 @@ public class SvgOptionsService {
                             String svgPath = file.getAbsolutePath();
                             String svgLegendPath = svgPath.substring(0, svgPath.length() - 4) + "_legend.svg";
                             brlplot.svgExport(svgPath, svgLegendPath);
-                            logger.info(this.bundle.getString("brailleplot_svg_export_message") + file.getParentFile().getAbsolutePath());
+                            logger.info(this.bundle.getString("brailleplot_svg_export_message") + " " + file.getParentFile().getAbsolutePath());
                             initialDir = file.getParentFile(); // save location for txt dump
                         }
                     }
@@ -118,7 +118,7 @@ public class SvgOptionsService {
                         if (file != null) {
                             String txtPath = file.getAbsolutePath();
                             String txtLegendPath = txtPath.substring(0, txtPath.length() - 4) + "_legend.bin";
-                            logger.info(this.bundle.getString("brailleplot_text_dump_message") + file.getParentFile().getAbsolutePath());
+                            logger.info(this.bundle.getString("brailleplot_text_dump_message") + " " + file.getParentFile().getAbsolutePath());
                             brlplot.textDump(txtPath, txtLegendPath);
                         }
                     }
