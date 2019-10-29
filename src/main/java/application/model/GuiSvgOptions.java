@@ -37,6 +37,8 @@ import tud.tangram.svgplot.styles.GridStyle;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * @author Robert Schlegel, Emma Müller
@@ -66,6 +68,14 @@ public class GuiSvgOptions {
     private ObjectProperty<GridStyle> gridStyle;
     private ObjectProperty<GuiAxisStyle> axisStyle;
     private ObjectProperty<IntegralPlotSettings> integral;
+
+    // TODO: Document this extension
+    private ObjectProperty<OutputGenerator> outputGenerator;
+    private ObjectProperty<File> brlPlotConfig;
+    private ObjectProperty<Boolean> brlPlotPrint;
+    private ObjectProperty<Boolean> brlPlotTextDump;
+    private ObjectProperty<Boolean> brlPlotSvgExport;
+    private ObjectProperty<BrlPlotMode> brlPlotMode;
 
     @JsonIgnore
     private ObjectProperty<PointListList> points;
@@ -117,6 +127,15 @@ public class GuiSvgOptions {
     public GuiSvgOptions(SvgPlotOptions options) {
         this.options = options;
         this.diagramType = new SimpleObjectProperty<>(this.options.getDiagramType());
+
+        // TODO: Document this extension
+        outputGenerator = new SimpleObjectProperty<>(OutputGenerator.SvgPlot);
+        brlPlotConfig = new SimpleObjectProperty<>(new File(""));
+        brlPlotPrint = new SimpleObjectProperty<>(true);
+        brlPlotTextDump = new SimpleObjectProperty<>(false);
+        brlPlotSvgExport = new SimpleObjectProperty<>(false);
+        //brlPlotMode = new SimpleObjectProperty<>(BrlPlotMode.DefaultPrinter);
+
         this.outputDevice = new SimpleObjectProperty<>(this.options.getOutputDevice());
         this.csvType = new SimpleObjectProperty<>(this.options.getCsvType());
         this.csvOrientation = new SimpleObjectProperty<>(this.options.getCsvOrientation());
@@ -405,6 +424,49 @@ public class GuiSvgOptions {
     public void setOutputDevice(final OutputDevice outputDevice) {
         this.outputDevice.set(outputDevice);
     }
+
+    /*
+    TODO: Document extension to GuiSvgOption container
+    - added member, getter & setter for output generator property
+     */
+    public void setOutputGenerator(final OutputGenerator newGenerator) {
+        outputGenerator.set(newGenerator);
+    }
+    public OutputGenerator getOutputGenerator() {
+        return outputGenerator.get();
+    }
+    public void setBrlPlotConfig(File brlPlotConfig) {
+        this.brlPlotConfig.set(brlPlotConfig);
+    }
+    public File getBrlPlotConfig() {
+        return brlPlotConfig.get();
+    }
+    public Boolean getBrlPlotPrint() {
+        return brlPlotPrint.get();
+    }
+    public void setBrlPlotPrint(Boolean brlPlotPrint) {
+        this.brlPlotPrint.set(brlPlotPrint);
+    }
+    public Boolean getBrlPlotTextDump() {
+        return brlPlotTextDump.get();
+    }
+    public void setBrlPlotTextDump(Boolean brlPlotTextDump) {
+        this.brlPlotTextDump.set(brlPlotTextDump);
+    }
+    public Boolean getBrlPlotSvgExport() {
+        return brlPlotSvgExport.get();
+    }
+    public void setBrlPlotSvgExport(Boolean brlPlotSvgExport) {
+        this.brlPlotSvgExport.set(brlPlotSvgExport);
+    }
+    /*
+    public void setBrlPlotMode(BrlPlotMode brlPlotMode) {
+        this.brlPlotMode.set(brlPlotMode);
+    }
+    public BrlPlotMode getBrlPlotMode() {
+        return brlPlotMode.get();
+    }
+     */
 
     public Point getSize() {
         return size.get();
@@ -875,5 +937,19 @@ public class GuiSvgOptions {
             this.colors.setAll(guiSvgOptions.colors);
         }
         this.hideOriginalPoints.set(guiSvgOptions.hideOriginalPoints.get());
+
+        // onUpdate Callback
+        if(Objects.nonNull(onUpdateCallback)) {
+            onUpdateCallback.accept(guiSvgOptions);
+        }
     }
+
+    /*
+    TODO: Document extension: added callback function to react to updates
+     */
+    private Consumer<GuiSvgOptions> onUpdateCallback;
+    public void onUpdate(Consumer<GuiSvgOptions> callback) {
+        onUpdateCallback = callback;
+    }
+
 }

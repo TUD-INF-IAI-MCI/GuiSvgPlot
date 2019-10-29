@@ -19,9 +19,17 @@ import java.util.ResourceBundle;
 
 import javax.xml.bind.ValidationException;
 
+/*
+TODO: Document extended imports:
+- OutputGenerator
+- App
+ */
 import application.controller.wizard.functions.FunctionWizardFrameController;
+import application.model.BrlPlotMode;
+import application.model.OutputGenerator;
 import application.util.*;
 import application.util.dialog.AccessibleChoiceDialog;
+import de.tudresden.inf.mci.brailleplot.App;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -125,6 +133,28 @@ public class SVGWizardController implements Initializable {
     protected TextField textField_title;
     @FXML
     protected ChoiceBox<OutputDevice> choiceBox_outputDevice;
+
+    /*
+    TODO: Document Extensions to the Wizard Controller
+    - Control references added as they were defined in the ChartWizardFrame.fxml
+     */
+    @FXML
+    public Label label_outputGenerator;
+    @FXML
+    public ChoiceBox<OutputGenerator> choiceBox_outputGenerator;
+    @FXML
+    public ChoiceBox<File> choiceBox_brlPlotConfig;
+    //@FXML
+    //public ChoiceBox<BrlPlotMode> choiceBox_brlPlotOutputMode;
+    @FXML
+    public Label label_brailleplot_actions;
+    @FXML
+    public CheckBox checkbox_brlplot_print;
+    @FXML
+    public CheckBox checkbox_brlplot_textdump;
+    @FXML
+    public CheckBox checkbox_brlplot_svgexport;
+
     @FXML
     protected ChoiceBox<PageSize> choiceBox_size;
     @FXML
@@ -177,7 +207,7 @@ public class SVGWizardController implements Initializable {
     @FXML
     private Button button_cssPath;
     @FXML
-    private HBox hBox_cssPath;
+    public HBox hBox_cssPath;
     @FXML
     public Label label_cssCustom;
     @FXML
@@ -763,35 +793,50 @@ public class SVGWizardController implements Initializable {
                 if(this instanceof FunctionWizardFrameController)
                     ((FunctionWizardFrameController)this).createFuntionsCsv();
 
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setInitialDirectory(userDir);
-                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                        "Scalable Vector Graphics (SVG)", "*.svg");
-                fileChooser.getExtensionFilters().add(extFilter);
-                String title = this.guiSvgOptions.getTitle().isEmpty() ? "untitled" : this.guiSvgOptions.getTitle();
-                fileChooser.setInitialFileName(title.toLowerCase() + ".svg");
-                File file = fileChooser.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
-                if (file != null) {
-                    try {
-                        String tempPath = this.guiSvgOptions.getCsvPath();
-                        File tempCSV = new File(tempPath);
-                        File newCsv = new File(file.getAbsolutePath().replaceAll(".svg", ".csv"));
-                        if (tempCSV.exists())
-                            Files.copy(tempCSV.toPath(), newCsv.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                // TODO: Document extension: Output selection depending on generator and selected actions
 
-                        this.guiSvgOptions.setOutput(file.getAbsolutePath());
-                        this.svgOptionsService.buildSVG(guiSvgOptions.getOptions());
-                        this.popOver_infos.hide();
-                        this.popOver_warnings.hide();
-                        GuiSvgPlott.getInstance().closeWizard(true);
-                    } catch (ValidationException | IOException e) {
-                        logger.error(this.bundle.getString("svg_creation_validation_error"));
+                try {
+                    OutputGenerator gen = guiSvgOptions.getOutputGenerator();
+
+                    switch (gen) {
+                        case SvgPlot:
+                            FileChooser fileChooser = new FileChooser();
+                            fileChooser.setInitialDirectory(userDir);
+                            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                                    "Scalable Vector Graphics (SVG)", "*.svg");
+                            fileChooser.getExtensionFilters().add(extFilter);
+                            String title = this.guiSvgOptions.getTitle().isEmpty() ? "untitled" : this.guiSvgOptions.getTitle();
+                            fileChooser.setInitialFileName(title.toLowerCase() + ".svg");
+                            File file = fileChooser.showSaveDialog(GuiSvgPlott.getInstance().getPrimaryStage());
+                            if (file != null) {
+
+                                String tempPath = this.guiSvgOptions.getCsvPath();
+                                File tempCSV = new File(tempPath);
+                                File newCsv = new File(file.getAbsolutePath().replaceAll(".svg", ".csv"));
+                                if (tempCSV.exists())
+                                    Files.copy(tempCSV.toPath(), newCsv.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                                this.guiSvgOptions.setOutput(file.getAbsolutePath());
+                                this.svgOptionsService.buildSVG(guiSvgOptions); // refactored to pass the full gui state instead of just the svg options.
+                                this.popOver_infos.hide();
+                                this.popOver_warnings.hide();
+                                //GuiSvgPlott.getInstance().closeWizard(true); It may be more sensible to let the user decide if he wants to close it, LOSING ALL OF HIS DATA...
+                            }
+                            break;
+                        case BraillePlot:
+                            // No file selection here. Since BraillePlot offers different output actions,
+                            // this is handled by the SvgOptionsService controlling the BraillePlot Generator.
+                            this.svgOptionsService.buildSVG(guiSvgOptions);
+                            break;
                     }
+
+                } catch (ValidationException | IOException e) {
+                    logger.error(this.bundle.getString("svg_creation_validation_error"));
                 }
             }
         });
 
-        // rerender preview
+        // render preview
         this.button_rerenderPreview.graphicProperty().setValue(new Glyph("FontAwesome", '\uf021'));
         this.button_rerenderPreview
                 .setOnAction(event -> this.svgOptionsService.buildPreviewSVG(this.guiSvgOptions, this.webView_svg));
@@ -853,7 +898,7 @@ public class SVGWizardController implements Initializable {
     private static void fixBlurryText(Node node) {
         try {
             @SuppressWarnings("restriction")
-            Field field = com.sun.javafx.scene.control.skin.ScrollPaneSkin.class.getDeclaredField("viewRect");
+            Field field = javafx.scene.control.skin.ScrollPaneSkin.class.getDeclaredField("viewRect");
             field.setAccessible(true);
 
             ScrollPane scrollPane = (ScrollPane) node.lookup(".scroll-pane");

@@ -23,6 +23,8 @@
 <?import javafx.scene.web.WebView?>
 <?import org.controlsfx.glyphfont.Glyph?>
 
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.text.Text?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="application.controller.wizard.chart.ChartWizardFrameController">
     <BorderPane fx:id="borderPane_Wizard" layoutX="200.0" layoutY="100.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
@@ -64,7 +66,7 @@
                                                     AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                                 <children>
-                                                    <GridPane fx:id="stage1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" vgap="25.0"
+                                                    <GridPane fx:id="stage1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="273.0" prefWidth="400.0" vgap="15.0"
                                                               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                         <columnConstraints>
                                                             <ColumnConstraints hgrow="NEVER" maxWidth="1.7976931348623157E308" minWidth="10.0"/>
@@ -95,15 +97,32 @@
                                                                 </tooltip>
                                                             </TextField>
 
-                                                            <Label fx:id="label_outputDevice" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_output_device"
+                                                            <!--
+                                                                TODO: Document extensions to the JavaFX control tree:
+                                                                - output generator label and choice box added
+                                                                - grid pane indices had to be updated to fit new controls in between
+                                                                - since only ChartWizardFrame is updated, the generator selection will not appear in the "create function" dialog
+                                                            -->
+                                                            <Label fx:id="label_outputGenerator" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_output_generator"
                                                                    GridPane.rowIndex="2"/>
-                                                            <ChoiceBox fx:id="choiceBox_outputDevice" accessibleHelp="%label_output_device" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                            <ChoiceBox fx:id="choiceBox_outputGenerator" accessibleHelp="%label_output_generator" maxWidth="1.7976931348623157E308" minWidth="50.0"
                                                                        prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
+                                                            <Label fx:id="label_outputDevice" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_output_device"
+                                                                   GridPane.rowIndex="3"/>
+                                                            <ChoiceBox fx:id="choiceBox_outputDevice" accessibleHelp="%label_output_device" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                       prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                                                            <ChoiceBox fx:id="choiceBox_brlPlotConfig" accessibleHelp="%label_output_device" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                       prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                                                            <!--ChoiceBox fx:id="choiceBox_brlPlotOutputMode" accessibleHelp="%label_output_device" maxWidth="1.7976931348623157E308" minWidth="50.0"
+                                                                       prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/-->
+
                                                             <Label fx:id="label_pageOrientation" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0"
-                                                                   text="%label_pageOrientation" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                                                   text="%label_pageOrientation" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
                                                             <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="17.0" GridPane.columnIndex="1"
-                                                                  GridPane.rowIndex="3">
+                                                                  GridPane.rowIndex="4">
                                                                 <children>
                                                                     <RadioButton fx:id="radioBtn_portrait" accessibleText="%radio_portrait" mnemonicParsing="false" prefHeight="17.0"
                                                                                  text="%radio_portrait" GridPane.valignment="CENTER">
@@ -122,25 +141,35 @@
                                                                     </RadioButton>
                                                                 </children>
                                                             </HBox>
-                                                            <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram" GridPane.rowIndex="4"/>
+                                                            <Label fx:id="label_size" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram" GridPane.rowIndex="5"/>
                                                             <ChoiceBox fx:id="choiceBox_size" accessibleHelp="%label_size_of_diagram" maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                                       prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                                                       prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
                                                             <Label fx:id="label_customSizeWidth" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_width"
-                                                                   visible="false" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                                                                   visible="false" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
                                                             <TextField fx:id="textField_customSizeWidth" accessibleHelp="%size_of_diagram_width" maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                                       prefHeight="25.0" promptText="%size_of_diagram_width" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                                       prefHeight="25.0" promptText="%size_of_diagram_width" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                                                 <tooltip>
                                                                     <Tooltip text="%size_of_diagram_width"/>
                                                                 </tooltip>
                                                             </TextField>
                                                             <Label fx:id="label_customSizeHeight" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_size_of_diagram_height"
-                                                                   visible="false" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                                                                   visible="false" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
                                                             <TextField fx:id="textField_customSizeHeight" accessibleHelp="%size_of_diagram_height" maxWidth="1.7976931348623157E308" minWidth="50.0"
-                                                                       prefHeight="25.0" promptText="%size_of_diagram_height" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                                       prefHeight="25.0" promptText="%size_of_diagram_height" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                                                 <tooltip>
                                                                     <Tooltip text="%size_of_diagram_height"/>
                                                                 </tooltip>
                                                             </TextField>
+
+                                                            <Label fx:id="label_brailleplot_actions" contentDisplay="RIGHT" minHeight="40.0" prefWidth="200.0" text="%label_brailleplot_actions" GridPane.rowIndex="8" wrapText="true"/>
+                                                            <VBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="50.0" minHeight="70.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                                                <children>
+                                                                    <CheckBox fx:id="checkbox_brlplot_print" contentDisplay="RIGHT" GridPane.valignment="TOP" prefHeight="17.0" prefWidth="200.0" text="%brailleplot_print_on_default" accessibleHelp="%label_brailleplot_actions" />
+                                                                    <CheckBox fx:id="checkbox_brlplot_textdump" contentDisplay="RIGHT" GridPane.valignment="CENTER" prefHeight="17.0" prefWidth="200.0" text="%brailleplot_textdump" accessibleHelp="%label_brailleplot_actions" />
+                                                                    <CheckBox fx:id="checkbox_brlplot_svgexport" contentDisplay="RIGHT" GridPane.valignment="BOTTOM" prefHeight="17.0" prefWidth="200.0" text="%brailleplot_svgexport" accessibleHelp="%label_brailleplot_actions" />
+                                                                </children>
+                                                            </VBox>
+
                                                         </children>
                                                     </GridPane>
                                                 </children>
@@ -260,6 +289,7 @@
                                                             </padding>
                                                             <children>
                                                                 <!--bar chart-->
+                                                                <Text fx:id="text_stage3_not_supported" accessibleText="%brailleplot_not_supported" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" />
                                                                 <Label fx:id="label_baraccumulation" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_acc" visible="false"
                                                                        GridPane.rowIndex="0"/>
                                                                 <ChoiceBox fx:id="choiceBox_baraccumulation" accessibleHelp="%baraccumulation_help"
@@ -549,6 +579,7 @@
                                                                 <Insets left="10.0" right="10.0" top="10.0"/>
                                                             </padding>
                                                             <children>
+                                                                <Text fx:id="text_stage5_not_supported" accessibleText="%brailleplot_not_supported" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" />
                                                                 <Label fx:id="label_grid" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="200.0" text="%label_grid_style"/>
                                                                 <ChoiceBox fx:id="choicebox_gridStyle" accessibleHelp="%label_grid_style" maxWidth="1.7976931348623157E308" minWidth="50.0"
                                                                            prefHeight="25.0" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
@@ -602,6 +633,7 @@
                                                                 <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="ALWAYS"/>
                                                             </rowConstraints>
                                                             <children>
+                                                                <Text fx:id="text_stage6_not_supported" accessibleText="%brailleplot_not_supported" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" />
                                                                 <Label fx:id="label_css" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="200.0"
                                                                        text="%label_csstype" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                                                                 <ChoiceBox fx:id="choiceBox_cssType" accessibleHelp="%label_csstype" maxWidth="1.7976931348623157E308" minWidth="50.0" prefHeight="25.0"
